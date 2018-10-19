@@ -1,0 +1,13 @@
+@import './constants/scss/variables.scss';
+
+#{$root} {
+  all: initial;
+
+  * {
+    all: unset;
+  }
+
+  div {
+    display: block;
+  }
+}
