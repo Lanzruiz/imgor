@@ -2,6 +2,7 @@
 
 #{$root} {
   all: initial;
+  position: relative;
 
   * {
     all: unset;
@@ -9,5 +10,9 @@
 
   div {
     display: block;
+  }
+
+  .upper-case {
+    text-transform: uppercase;
   }
 }

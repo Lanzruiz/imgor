@@ -3,6 +3,7 @@ import * as stepsTypes from '../constants/steps';
 const initialState = {
   currentStep: 1,
   maxStepValue: null,
+  shouldShowEmailModal: true,
 };
 
 const steps = (state = initialState, action = {}) => {
@@ -22,6 +23,11 @@ const steps = (state = initialState, action = {}) => {
       return {
         ...state,
         maxStepValue: payload,
+      };
+    case stepsTypes.CLOSE_EMAIL_MODAL:
+      return {
+        ...state,
+        shouldShowEmailModal: false,
       };
     default:
       return state;
