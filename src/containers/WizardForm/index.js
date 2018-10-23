@@ -1,7 +1,11 @@
+// Modules
 import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+// Components
+import StepOne from '../StepOne';
+// Actions
 import * as stepActions from '../../actions/steps';
 
 class WizardForm extends React.Component {
@@ -28,12 +32,7 @@ class WizardForm extends React.Component {
 
     return (
       <React.Fragment>
-        <div>
-          Email modal must be here <br />
-          <button style={{background:'#aaa',border: '1px solid'}} onClick={() => {this.props.stepActions.incrementStepsCounter()}}>next step</button>
-          {' '}
-          That button need to show how forks form with steps...
-        </div>
+        <StepOne />
         <br />
         {children().slice(startIndex, step)}
         <br />
