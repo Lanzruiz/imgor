@@ -8,11 +8,35 @@
     all: unset;
   }
 
-  div {
+  div, p {
     display: block;
   }
 
   .upper-case {
     text-transform: uppercase;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .mr-0 {
+    margin-right: 0!important;
+  }
+
+  .mb-0 {
+    margin-bottom: 0;
+  }
+
+  .bold {
+    font-weight: bold;
+  }
+
+  .white {
+    color: #fff;
+  }
+
+  .p-1 {
+    padding: 1rem;
   }
 }
