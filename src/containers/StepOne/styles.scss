@@ -60,6 +60,20 @@
                 color: $tab-row-bg;
                 font-size: 12px;
             }
+
+            &--sold {
+                color: #de5963;
+                opacity: 0.5;
+            }
+
+            &--through {
+                text-decoration: line-through;
+            }
+
+            &--small {
+                line-height: 8px;
+                font-size: 8px;
+            }
         }
 
         &__tab-list {

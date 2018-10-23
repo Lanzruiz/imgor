@@ -6,13 +6,13 @@ import PropTypes from 'prop-types';
 import './styles.scss';
 
 const TabRow = (props) => {
-  const { transparent, className } = props;
+  const { transparent, className, ...rest } = props;
   const tabRowClassNames = cx('tab-row', {
     'tab-row--transparent': transparent,
     [className]: className,
   });
   return (
-    <div className={tabRowClassNames}>
+    <div className={tabRowClassNames} {...rest}>
       {props.children}
     </div>
   );
