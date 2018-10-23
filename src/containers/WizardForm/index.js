@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 // Components
-import StepOne from '../StepOne';
+import Footer from '../../components/Footer';
 // Actions
 import * as stepActions from '../../actions/steps';
 
@@ -32,11 +32,8 @@ class WizardForm extends React.Component {
 
     return (
       <React.Fragment>
-        <StepOne />
-        <br />
         {children().slice(startIndex, step)}
-        <br />
-        <div>Footer with prise must be here...</div>
+        <Footer />
       </React.Fragment>
     );
   }

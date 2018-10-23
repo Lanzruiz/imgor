@@ -354,6 +354,28 @@ class StepOne extends React.Component {
               <span className="tab-row__header">kick & punt</span>
             </div>
           </TabRow>
+          <TabRow className="tab-row__container align-initial" style={{ minHeight: '90px' }}>
+            <div className="tab-row__section center-left">
+              <div style={{ marginBottom: '3px' }}>
+                <span className="tab-row__header white">adult camps</span>
+              </div>
+              <span className="tab-row__header tab-row__header--small white">
+                options available for every skill level
+              </span>
+            </div>
+            <div className="center-center tab-row__section tab-row__section--bg-white w-25">
+              <span className="tab-row__header">1/2 day</span>
+              <span className="tab-row__header">training</span>
+            </div>
+            <div className="center-center tab-row__section tab-row__section--bg-white w-25">
+              <span className="tab-row__header">full day</span>
+              <span className="tab-row__header">training</span>
+            </div>
+            <div className="center-center tab-row__section tab-row__section--bg-white w-25">
+              <span className="tab-row__header">3 day</span>
+              <span className="tab-row__header">training</span>
+            </div>
+          </TabRow>
         </Container>
       </React.Fragment>
     );

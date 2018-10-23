@@ -4,7 +4,7 @@ import * as stepsTypes from '../constants/steps';
 const initialState = {
   currentStep: 1,
   maxStepValue: null,
-  shouldShowEmailModal: false, // TODO: remove that!
+  shouldShowEmailModal: true,
 };
 
 const steps = (state = initialState, action = {}) => {
