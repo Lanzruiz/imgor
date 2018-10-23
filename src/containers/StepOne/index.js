@@ -5,21 +5,38 @@ import { bindActionCreators } from 'redux';
 import { Container, Row, Col } from 'react-grid-system';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { Field, Form, reduxForm } from 'redux-form';
+import PropTypes from 'prop-types';
 // Components
 import EmailModal from '../../components/EmailModal';
 import Header from '../../components/Header';
 import TabRow from '../../components/TabRow';
 import GreenBlock from '../../components/GreenBlock';
+import Button from '../../components/Button';
 // Actions
 import { closeEmailModal } from '../../actions/steps';
+import * as weeksActions from '../../actions/weeks';
 // Helpers
 import validation from '../../helpers/validate';
 // Styles
 import './styles.scss';
 
 class StepOne extends React.Component {
+  static propTypes = {
+    weeksCounter: PropTypes.number,
+    shouldShowEmailModal: PropTypes.bool,
+    weeksActions: PropTypes.objectOf(PropTypes.func),
+    stepActions: PropTypes.objectOf(PropTypes.func),
+  };
+
+  static defaultProps = {
+    weeksCounter: 0,
+    shouldShowEmailModal: true,
+    weeksActions: {},
+    stepActions: {},
+  };
+
   render() {
-    const { shouldShowEmailModal } = this.props;
+    const { shouldShowEmailModal, weeksCounter } = this.props;
     return (
       <React.Fragment>
         <EmailModal
@@ -36,7 +53,7 @@ class StepOne extends React.Component {
             </Col>
           </Row>
           <TabRow transparent>
-            <div className="tab-row__section  mb-0" />
+            <div className="tab-row__section mb-0" />
             <div className="tab-row__section tab-row__section--center mb-0">
               <GreenBlock className="tab-row__green-block">
                 <span className="tab-row__header tab-row__header--green-block">our most</span>
@@ -92,7 +109,7 @@ class StepOne extends React.Component {
             </TabRow>
             <TabPanel />
             <TabPanel>
-              <div className="tab-content__container content">
+              <div className="tab-content__container tab-row__container content">
                 <div className="content__first-col">
                   <h2 className="content__header content__header--h2">
                     our most popular camp
@@ -247,7 +264,7 @@ class StepOne extends React.Component {
                             name="gender"
                             component="input"
                             type="radio"
-                            value="yes"
+                            value="male"
                           />{' '}
                           Male
                         </label>
@@ -257,7 +274,7 @@ class StepOne extends React.Component {
                             name="gender"
                             component="input"
                             type="radio"
-                            value="no"
+                            value="female"
                           />{' '}
                           Female
                         </label>
@@ -268,12 +285,53 @@ class StepOne extends React.Component {
               </div>
             </TabPanel>
             <TabPanel>
-              <div className="tab-content__container">2</div>
+              <div className="tab-content__container tab-row__container">2</div>
             </TabPanel>
             <TabPanel>
-              <div className="tab-content__container">3</div>
+              <div className="tab-content__container tab-row__container">3</div>
             </TabPanel>
           </Tabs>
+          <TabRow className="tab-row__container align-initial">
+            <div className="tab-row__section tab-row__section--p15px0 mr-auto">
+              <div style={{ marginBottom: '3px' }}>
+                <span className="tab-row__header white">year-round</span>{' '}
+                <span className="tab-row__header white">weekly camps</span>
+              </div>
+              <div style={{ lineHeight: '8px', fontSize: '8px' }}>
+                <span className="tab-row__header white" style={{ fontSize: '8px' }}>
+                  build your own camp experience
+                </span>
+              </div>
+            </div>
+            <div className="tab-row__section tab-row__section--bg-white tab-row__section--center w-75 d-flex align-center justify-evenly">
+              <div className="d-flex align-center justify-end w-35">
+                <span className="tab-row__header">1 week</span>
+                <span className="tab-row__separator" style={{ marginLeft: '20px' }} />
+              </div>
+              <div className="d-flex align-center justify-center w-30">
+                <Button
+                  style={{ marginRight: '20px', padding: '4px' }}
+                  className="tab-row__header"
+                  onClick={this.decrementWeeksCounter}
+                  children="-"
+                />
+                <span className="tab-row__header" style={{ fontSize: '4em' }}>{weeksCounter}</span>
+                <Button
+                  style={{ marginLeft: '20px', padding: '4px' }}
+                  className="tab-row__header"
+                  onClick={this.incrementWeeksCounter}
+                  children="+"
+                />
+              </div>
+              <div className="d-flex align-center justify-start w-35">
+                <span className="tab-row__separator" style={{ marginRight: '20px' }} />
+                <span className="d-flex f-direction-column">
+                  <span className="tab-row__header">up to</span>
+                  <span className="tab-row__header">12 week</span>
+                </span>
+              </div>
+            </div>
+          </TabRow>
         </Container>
       </React.Fragment>
     );
@@ -281,15 +339,25 @@ class StepOne extends React.Component {
 
   closeEmailModal = () => {
     this.props.stepActions.closeEmailModal();
-  }
+  };
+
+  incrementWeeksCounter = () => {
+    this.props.weeksActions.incrementWeeksCounter();
+  };
+
+  decrementWeeksCounter = () => {
+    this.props.weeksActions.decrementWeeksCounter();
+  };
 }
 
 const mapStateToProps = (state) => ({
   shouldShowEmailModal: state.steps.shouldShowEmailModal,
+  weeksCounter: state.weeks.weeksCounter,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   stepActions: bindActionCreators({ closeEmailModal }, dispatch),
+  weeksActions: bindActionCreators(weeksActions, dispatch),
 });
 
 export default reduxForm({

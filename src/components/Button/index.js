@@ -6,12 +6,12 @@ import PropTypes from 'prop-types';
 import './styles.scss';
 
 const Button = (props) => {
-  const { className, children, buttonClassName, type, onClick } = props;
+  const { className, children, buttonClassName, type, onClick, ...rest } = props;
   const buttonClassNames = cx('button', {
     [buttonClassName]: buttonClassName,
   });
   return (
-    <div className={className}>
+    <div className={className} {...rest}>
       <button type={type} className={buttonClassNames} onClick={onClick}>
         {children}
       </button>
@@ -24,6 +24,7 @@ Button.propTypes = {
   buttonClassName: PropTypes.string,
   type: PropTypes.string,
   onClick: PropTypes.func,
+  style: PropTypes.object,
 };
 
 Button.defaultProps = {
@@ -31,6 +32,7 @@ Button.defaultProps = {
   buttonClassName: '',
   type: 'button',
   onClick: () => {},
+  style: {},
 };
 
 export default Button;

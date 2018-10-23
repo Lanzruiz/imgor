@@ -1,3 +1,4 @@
+// Constants
 import * as stepsTypes from '../constants/steps';
 
 const initialState = {
