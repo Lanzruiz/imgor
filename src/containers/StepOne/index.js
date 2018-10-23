@@ -74,33 +74,35 @@ class StepOne extends React.Component {
             </div>
           </TabRow>
           <Tabs selectedTabClassName="tab-row__section--selected">
-            <TabRow className="tab-row__container">
+            <TabRow className="tab-row__container align-initial" style={{ minHeight: '90px' }}>
               <TabList className="tab-row__tab-list">
-                <Tab className="tab-row__section tab-row__section--p15px0 tab-row__section--bg-transparent">
-                  <div style={{ marginBottom: '3px' }}>
-                    <span className="tab-row__header white">summer training</span>{' '}
-                    <span className="tab-row__header white">programms</span>
-                  </div>
-                  <div style={{ lineHeight: '8px', fontSize: '8px' }}>
-                    <span className="tab-row__header white" style={{ fontSize: '8px' }}>
-                      progressive training modeled after
-                    </span>{' '}
-                    <span className="tab-row__header white" style={{ fontSize: '8px' }}>
-                      our boarding athletics
-                    </span>
+                <Tab className="tab-row__section tab-row__section--bg-transparent center-left">
+                  <div>
+                    <div style={{ marginBottom: '3px' }}>
+                      <span className="tab-row__header white">summer training</span>{' '}
+                      <span className="tab-row__header white">programms</span>
+                    </div>
+                    <div style={{ lineHeight: '8px', fontSize: '8px' }}>
+                      <span className="tab-row__header white" style={{ fontSize: '8px' }}>
+                        progressive training modeled after
+                      </span>{' '}
+                      <span className="tab-row__header white" style={{ fontSize: '8px' }}>
+                        our boarding athletics
+                      </span>
+                    </div>
                   </div>
                 </Tab>
-                <Tab className="tab-row__section tab-row__section--bg-white tab-row__section--p15px0 tab-row__section--center">
+                <Tab className="tab-row__section tab-row__section--bg-white tab-row__section--center center-center">
                   <span className="tab-row__header">3 week</span>
                   <span className="tab-row__header">training</span>
                   <span className="tab-row__header">programm</span>
                 </Tab>
-                <Tab className="tab-row__section tab-row__section--bg-white tab-row__section--p15px0 tab-row__section--center">
+                <Tab className="tab-row__section tab-row__section--bg-white tab-row__section--center center-center">
                   <span className="tab-row__header">5 week</span>
                   <span className="tab-row__header">training</span>
                   <span className="tab-row__header">programm</span>
                 </Tab>
-                <Tab className="tab-row__section tab-row__section--bg-white tab-row__section--p15px0 tab-row__section--center">
+                <Tab className="tab-row__section tab-row__section--bg-white tab-row__section--center center-center">
                   <span className="tab-row__header">2 week</span>
                   <span className="tab-row__header">invitation</span>
                   <span className="tab-row__header">programm</span>
@@ -291,17 +293,15 @@ class StepOne extends React.Component {
               <div className="tab-content__container tab-row__container">3</div>
             </TabPanel>
           </Tabs>
-          <TabRow className="tab-row__container align-initial">
-            <div className="tab-row__section tab-row__section--p15px0 mr-auto">
+          <TabRow className="tab-row__container align-initial" style={{ minHeight: '90px' }}>
+            <div className="tab-row__section center-left">
               <div style={{ marginBottom: '3px' }}>
                 <span className="tab-row__header white">year-round</span>{' '}
                 <span className="tab-row__header white">weekly camps</span>
               </div>
-              <div style={{ lineHeight: '8px', fontSize: '8px' }}>
-                <span className="tab-row__header white" style={{ fontSize: '8px' }}>
-                  build your own camp experience
-                </span>
-              </div>
+              <span className="tab-row__header tab-row__header--small white">
+                build your own camp experience
+              </span>
             </div>
             <div className="tab-row__section tab-row__section--bg-white tab-row__section--center w-75 d-flex align-center justify-evenly">
               <div className="d-flex align-center justify-end w-35">
@@ -330,6 +330,28 @@ class StepOne extends React.Component {
                   <span className="tab-row__header">12 week</span>
                 </span>
               </div>
+            </div>
+          </TabRow>
+          <TabRow className="tab-row__container align-initial" style={{ minHeight: '90px' }}>
+            <div className="tab-row__section center-left">
+              <div style={{ marginBottom: '3px' }}>
+                <span className="tab-row__header white">specialty camp</span>
+              </div>
+              <span className="tab-row__header tab-row__header--small white">
+                camps with a specific goal in mind
+              </span>
+            </div>
+            <div className="center-center tab-row__section tab-row__section--bg-white w-25">
+              <span className="tab-row__header">spring break</span>
+            </div>
+            <div className="center-center tab-row__section tab-row__section--bg-white w-25">
+              <span className="d-flex align-center justify-center f-direction-column tab-row__header tab-row__header--sold">
+                <span className="tab-row__header--through">holiday</span>
+                <span className="tab-row__header--small">sold out</span>
+              </span>
+            </div>
+            <div className="center-center tab-row__section tab-row__section--bg-white w-25">
+              <span className="tab-row__header">kick & punt</span>
             </div>
           </TabRow>
         </Container>
