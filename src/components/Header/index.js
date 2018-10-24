@@ -1,6 +1,7 @@
 // Modules
 import React from 'react';
 import PropTypes from 'prop-types';
+import LocaleString from '../LocaleString';
 // Styles
 import './styles.scss';
 
@@ -8,8 +9,12 @@ const Header = (props) => {
   const { header, subHeader } = props;
   return (
     <div className="header__container">
-      <h2 className="header__h2">{header}</h2>
-      <h6 className="header__h6">{subHeader}</h6>
+      <h2 className="header__h2">
+        <LocaleString stringKey={header} />
+      </h2>
+      <h6 className="header__h6">
+        <LocaleString stringKey={subHeader} />
+      </h6>
     </div>
   );
 };

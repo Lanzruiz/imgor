@@ -43,12 +43,12 @@ class StepOne extends React.Component {
           onSubmit={this.closeEmailModal}
           shouldShowEmailModal={shouldShowEmailModal}
         />
-        <Container>
+        <Container style={{ marginBottom: '65px' }}>
           <Row>
             <Col>
               <Header
-                header="Step 1 - start by choosing a camp"
-                subHeader="Make sure to coose camper sleepaway option, age and gender"
+                header="step_one.header"
+                subHeader="step_one.sub_header"
               />
             </Col>
           </Row>

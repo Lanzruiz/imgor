@@ -1,0 +1,15 @@
+{
+    "step_one.header": "Step 1 - start by choosing a camp",
+    "step_one.sub_header": "Make sure to coose camper sleepaway option, age and gender",
+    "step_two.header": "Step 2 - choose your check-in date",
+    "step_two.sub_header": "Displayed dates are available check-in options for camp sected in step 1",
+    "step_two.questions.questions": "Questions?",
+    "step_two.questions.header": "Talk to an advisor",
+    "step_two.questions.description": "Calm specialists are standing by to help you fing the right camp",
+    "step_two.dates.header": "Upcoming 1 week football camps",
+    "step_two.dates.header_descripion": "Starting price may change based on selected date and seasonal demand",
+    "step_two.dates.sold_out": "Sold out",
+    "step_two.dates.check_in": "Check-in",
+    "step_two.dates.check_out": "Check-out",
+    "step_two.dates.selected.header": "Selected dates"
+}
