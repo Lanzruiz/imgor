@@ -3,9 +3,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+// Providers
+import ReactLocalization from '../../providers/ReactLocalization';
 // Components
 import WizardForm from '../WizardForm';
 import StepOne from '../StepOne';
+import StepTwo from '../StepTwo';
 // Actions
 import { setMaxStepValue } from '../../actions/steps';
 
@@ -18,7 +21,7 @@ class App extends React.Component {
 
   wizardFormChildren = [
     <StepOne key="0" />,
-    <div key="1">step two block</div>,
+    <StepTwo key="1" />,
     <div key="2">step three block</div>,
     <div key="3">step four block</div>,
     <div key="4">step five block</div>,
@@ -32,9 +35,11 @@ class App extends React.Component {
 
   render() {
     return (
-      <WizardForm>
-        {() => this.wizardFormChildren}
-      </WizardForm>
+      <ReactLocalization>
+        <WizardForm>
+          {() => this.wizardFormChildren}
+        </WizardForm>
+      </ReactLocalization>
     );
   }
 }
