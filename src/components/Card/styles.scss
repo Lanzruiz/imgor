@@ -1,0 +1,188 @@
+@import '../../constants/scss/variables.scss';
+
+#{$root} {
+    .card {
+        &__container {
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+            width: 100%;
+
+            &--opacity {
+                opacity: 0.5;
+            }
+        }
+
+        &__head {
+            align-items: stretch;
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+        }
+
+        &__header {
+            align-self: flex-end;
+            font-family: "Trade Gothic LT Std - Bold";
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-right: auto;
+            margin-bottom: -0.25em;
+
+            &--small {
+                font-size: 28px;
+            }
+
+            &--large {
+                font-size: 40px;
+            }
+
+            &--light-blue {
+                color: $card-light-blue-color;
+            }
+
+            &--dark-blue {
+                color: $card-dark-blue-color;
+            }
+
+            &--blue {
+                color: $card-blue-color;
+            }
+
+            &--red {
+                color: $card-red-color;
+            }
+        }
+
+        &__label {
+            align-items: center;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            margin-left: auto;
+            padding: 5px;
+            width: 30%;
+        }
+    }
+
+    .card-label {
+        &__header {
+            margin: auto;
+            color: $tab-row-bg;
+            font-family: "Trade Gothic LT Std - Bold";
+            font-size: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        &__via {
+            display: flex;
+            flex-direction: column;
+            margin-left: auto;
+        }
+
+        &__text {
+            color: $tab-row-bg;
+            font-family: "Trade Gothic LT Std - Bold";
+            font-weight: 700;
+            text-transform: uppercase;
+
+            &--small {
+                font-size: 7px;
+                line-height: 7px;
+            }
+
+            &--medium {
+                font-size: 20px;
+                line-height: 20px;
+            }
+        }
+    }
+
+    .card-body {
+        &__head {
+            align-items: center;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+
+            &--light-blue {
+                background-color: $card-light-blue-color;
+            }
+
+            &--dark-blue {
+                background-color: $card-dark-blue-color;
+            }
+
+            &--blue {
+                background-color: $card-blue-color;
+            }
+
+            &--red {
+                background-color: $card-red-color;
+            }
+        }
+
+        &__text {
+            color: $white;
+            font-family: "Trade Gothic LT Std - Bold";
+            font-size: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        &__image {
+            width: 30%;
+
+            &-item {
+                display: block;
+                height: auto;
+                width: 100%;
+            }
+        }
+
+        &__body {
+            background-color: $card-body-bg;
+            display: flex;
+            flex-direction: row;
+        }
+
+        &__content {
+            align-items: center;
+            box-sizing: border-box;
+            display: flex;
+            padding: 5px;
+            justify-content: center;
+
+            &--width-100 {
+                width: 100%;
+            }
+
+            &--width-70 {
+                width: 70%;
+            }
+        }
+
+        &__button {
+            border: 1px solid $date-block-selected-bg;
+            box-sizing: border-box;
+            font-family: "Serifa Std - Bold";
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 21px;
+            padding: 5px;
+            text-transform: uppercase;
+
+            &--regular {
+                background-color: $white;
+                color: $date-block-selected-bg;
+            }
+
+            &--selected {
+                background-color: $date-block-selected-bg;
+                color: $white;
+            }
+        }
+    }
+}

@@ -15,7 +15,7 @@ import './styles.scss';
 class StepTwo extends React.Component {
   render() {
     return (
-      <Container style={{ marginBottom: '130px' }}>
+      <Container style={{ marginBottom: '65px' }}>
         <Row>
           <Col>
             <Header
@@ -40,15 +40,21 @@ class StepTwo extends React.Component {
                 <div className="questions__icons icons">
                   <span className="icons__container">
                     <Img src={call} alt="call" />
-                    <span className="icons__text">call</span>
+                    <span className="icons__text">
+                      <LocaleString stringKey="step_two.questions.call" />
+                    </span>
                   </span>
                   <span className="icons__container">
                     <Img src={email} alt="email" />
-                    <span className="icons__text">email</span>
+                    <span className="icons__text">
+                      <LocaleString stringKey="step_two.questions.email" />
+                    </span>
                   </span>
                   <span className="icons__container">
                     <Img src={chat} alt="chat" />
-                    <span className="icons__text">chat</span>
+                    <span className="icons__text">
+                      <LocaleString stringKey="step_two.questions.chat" />
+                    </span>
                   </span>
                 </div>
               </div>
