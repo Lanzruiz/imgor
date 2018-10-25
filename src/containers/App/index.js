@@ -9,6 +9,7 @@ import ReactLocalization from '../../providers/ReactLocalization';
 import WizardForm from '../WizardForm';
 import StepOne from '../StepOne';
 import StepTwo from '../StepTwo';
+import StepThree from '../StepThree';
 // Actions
 import { setMaxStepValue } from '../../actions/steps';
 
@@ -17,12 +18,13 @@ class App extends React.Component {
     stepActions: PropTypes.shape({
       setMaxStepValue: PropTypes.func.isRequired,
     }),
+    lang: PropTypes.string,
   };
 
   wizardFormChildren = [
     <StepOne key="0" />,
     <StepTwo key="1" />,
-    <div key="2">step three block</div>,
+    <StepThree key="2" />,
     <div key="3">step four block</div>,
     <div key="4">step five block</div>,
     <div key="5">final step block</div>,
@@ -34,8 +36,9 @@ class App extends React.Component {
   }
 
   render() {
+    const { lang } = this.props;
     return (
-      <ReactLocalization>
+      <ReactLocalization lang={lang}>
         <WizardForm>
           {() => this.wizardFormChildren}
         </WizardForm>

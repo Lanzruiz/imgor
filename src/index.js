@@ -11,7 +11,11 @@ import './index.scss';
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <App
+      businessType=""
+      sport=""
+      lang="en"
+    />
   </Provider>,
   document.getElementById('imgor-root'),
 );
