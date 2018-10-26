@@ -15,7 +15,7 @@
             }
 
             &--bg-white {
-                background-color: #fff;
+                background-color: $white;
             }
 
             &--selected {
@@ -37,7 +37,7 @@
                 }
 
                 & > .tab-row__header {
-                    color: #fff;
+                    color: $white;
                 }
             }
 

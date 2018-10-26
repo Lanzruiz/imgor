@@ -1,5 +1,6 @@
 // Modules
 import React from 'react';
+import PropTypes from 'prop-types';
 // Components
 import { ReactLocalizationConsumer } from '../../providers/ReactLocalization';
 
@@ -14,6 +15,10 @@ const LocaleString = ({ stringKey }) => {
       )}
     </ReactLocalizationConsumer>
   );
+};
+
+LocaleString.propTypes = {
+  stringKey: PropTypes.string.isRequired,
 };
 
 export default LocaleString;

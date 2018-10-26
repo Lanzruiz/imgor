@@ -16,5 +16,16 @@
     "step_two.dates.check_out": "Check-out",
     "step_two.dates.selected.header": "Selected dates",
     "step_three.header": "Step 3 - Choose your Training",
-    "step_three.sub_header": "Listed price is for entire camp stay, from check-in through check-out"
+    "step_three.sub_header": "Listed price is for entire camp stay, from check-in through check-out",
+    "step_four.header": "Step 4 - Customize with Training Concentrations",
+    "step_four.sub_header": "Make a selection for each week, Price listed is for each week’s selection",
+    "week": "week",
+    "strength": "Strength",
+    "speed": "Speed",
+    "esl": "ESL",
+    "mental": "Mental",
+    "nutrition": "Nutrition",
+    "no_daily_session": "No Daily Session",
+    "vision": "Vision",
+    "SAT/ACT": "SAT/ACT"
 }
