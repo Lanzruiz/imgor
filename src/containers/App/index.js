@@ -10,6 +10,7 @@ import WizardForm from '../WizardForm';
 import StepOne from '../StepOne';
 import StepTwo from '../StepTwo';
 import StepThree from '../StepThree';
+import StepFour from '../StepFour';
 // Actions
 import { setMaxStepValue } from '../../actions/steps';
 
@@ -25,7 +26,7 @@ class App extends React.Component {
     <StepOne key="0" />,
     <StepTwo key="1" />,
     <StepThree key="2" />,
-    <div key="3">step four block</div>,
+    <StepFour key="3" />,
     <div key="4">step five block</div>,
     <div key="5">final step block</div>,
   ];

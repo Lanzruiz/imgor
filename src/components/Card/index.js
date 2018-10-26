@@ -20,11 +20,15 @@ const colorEnum = {
   'dark-blue': 'dark-blue',
   'blue': 'blue',
   'red': 'red',
+  'dark': 'dark',
 };
 
 class Card extends React.Component {
   static propTypes = {
-    header: PropTypes.string,
+    header: PropTypes.oneOfType([
+      PropTypes.element,
+      PropTypes.string,
+    ]),
     label: PropTypes.string,
     headerSize: PropTypes.oneOf([
       headerSizeEnum.small,
@@ -36,6 +40,7 @@ class Card extends React.Component {
       colorEnum['dark-blue'],
       colorEnum['blue'],
       colorEnum['red'],
+      colorEnum['dark'],
     ]),
     via: PropTypes.bool,
     cardHeader: PropTypes.string,
@@ -126,19 +131,34 @@ class Card extends React.Component {
     );
   }
 
-  renderViaBlock = () => this.props.via && (
-    <span className="card-label__via">
-      <span className="card-label__text card-label__text--medium">via</span>
-      <span className="card-label__text card-label__text--small">approved</span>
-    </span>
-  );
+  renderViaBlock = () => {
+    const { via, headerSize } = this.props;
+    const cardLabelViaClassName = cx('card-label__text card-label__text--serifa-bold', {
+      'card-label__text--regular': headerSize === headerSizeEnum.small,
+      'card-label__text--medium': headerSize === headerSizeEnum.large,
+    });
+    return via && (
+      <span className="card-label__via">
+        <span className={cardLabelViaClassName}>via</span>
+        <span className="card-label__text card-label__text--small card-label__text--serifa-roman">approved</span>
+      </span>
+    );
+  };
 
-  renderLabel = (label) => label && (
-    <GreenBlock className="card__label card-label">
-      <span className="card-label__header">{label}</span>
-      {this.renderViaBlock()}
-    </GreenBlock>
-  );
+  renderLabel = (label) => {
+    const { headerSize } = this.props;
+    const cardLabelHeaderClassNames = cx('card-label__header', {
+      'card-label__header--small': headerSize === headerSizeEnum.small,
+      'card-label__header--regular': headerSize === headerSizeEnum.regular,
+      'card-label__header--large': headerSize === headerSizeEnum.large,
+    });
+    return label && (
+      <GreenBlock className="card__label card-label">
+        <span className={cardLabelHeaderClassNames}>{label}</span>
+        {this.renderViaBlock()}
+      </GreenBlock>
+    );
+  };
 
   renderImage = (src) => src && (
     <div className="card-body__image">

@@ -23,7 +23,7 @@
 
         &__header {
             align-self: flex-end;
-            font-family: "Trade Gothic LT Std - Bold";
+            font-family: "Trade-Gothic-Bold";
             font-weight: 700;
             text-transform: uppercase;
             margin-right: auto;
@@ -52,6 +52,10 @@
             &--red {
                 color: $card-red-color;
             }
+
+            &--dark {
+                color: $tab-row-bg;
+            }
         }
 
         &__label {
@@ -61,18 +65,28 @@
             justify-content: center;
             margin-left: auto;
             padding: 5px;
-            width: 30%;
+            width: auto;
         }
     }
 
     .card-label {
         &__header {
             margin: auto;
+            padding: 0 5px;
             color: $tab-row-bg;
-            font-family: "Trade Gothic LT Std - Bold";
-            font-size: 20px;
+            font-family: "Trade-Gothic-Bold";
             font-weight: 700;
             text-transform: uppercase;
+
+            &--small {
+                font-size: 16px;
+            }
+
+            &--regular {
+                font-size: 20px;
+            }
+
+            &--large {}
         }
 
         &__via {
@@ -83,7 +97,7 @@
 
         &__text {
             color: $tab-row-bg;
-            font-family: "Trade Gothic LT Std - Bold";
+            font-family: "Trade-Gothic-Bold";
             font-weight: 700;
             text-transform: uppercase;
 
@@ -92,9 +106,22 @@
                 line-height: 7px;
             }
 
+            &--regular {
+                font-size: 14px;
+                line-height: 14px;
+            }
+
             &--medium {
                 font-size: 20px;
-                line-height: 20px;
+                line-height: 14px;
+            }
+
+            &--serifa-roman {
+                font-family: "Serifa-Roman";
+            }
+
+            &--serifa-bold {
+                font-family: "Serifa-Bold";
             }
         }
     }
@@ -122,11 +149,15 @@
             &--red {
                 background-color: $card-red-color;
             }
+
+            &--dark {
+                background-color: $tab-row-bg;
+            }
         }
 
         &__text {
             color: $white;
-            font-family: "Trade Gothic LT Std - Bold";
+            font-family: "Trade-Gothic-Bold";
             font-size: 20px;
             font-weight: 700;
             text-transform: uppercase;
@@ -167,7 +198,7 @@
         &__button {
             border: 1px solid $date-block-selected-bg;
             box-sizing: border-box;
-            font-family: "Serifa Std - Bold";
+            font-family: "Serifa-Bold";
             font-size: 14px;
             font-weight: 700;
             line-height: 21px;

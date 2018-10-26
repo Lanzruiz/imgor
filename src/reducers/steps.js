@@ -2,7 +2,7 @@
 import * as stepsTypes from '../constants/steps';
 
 const initialState = {
-  currentStep: 3, // TODO: change this to 1!
+  currentStep: 4, // TODO: change this to 1!
   maxStepValue: null,
   shouldShowEmailModal: false, // TODO: change this to true!
 };
