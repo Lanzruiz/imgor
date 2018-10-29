@@ -10,6 +10,7 @@ import GreenBlock from '../GreenBlock';
 import './styles.scss';
 
 const headerSizeEnum = {
+  extraSmall: 'extra-small',
   small: 'small',
   regular: 'regular',
   large: 'large',
@@ -29,8 +30,12 @@ class Card extends React.Component {
       PropTypes.element,
       PropTypes.string,
     ]),
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([
+      PropTypes.element,
+      PropTypes.string,
+    ]),
     headerSize: PropTypes.oneOf([
+      headerSizeEnum.extraSmall,
       headerSizeEnum.small,
       headerSizeEnum.regular,
       headerSizeEnum.large,
@@ -43,7 +48,10 @@ class Card extends React.Component {
       colorEnum['dark'],
     ]),
     via: PropTypes.bool,
-    cardHeader: PropTypes.string,
+    cardHeader: PropTypes.oneOfType([
+      PropTypes.element,
+      PropTypes.string,
+    ]),
     price: PropTypes.string,
     imgSrc: PropTypes.string,
     id: PropTypes.oneOfType([
@@ -83,6 +91,7 @@ class Card extends React.Component {
     });
 
     const headerClassNames = cx('card__header', {
+      'card__header--extra-small': headerSize === headerSizeEnum.extraSmall,
       'card__header--small': headerSize === headerSizeEnum.small,
       'card__header--regular': headerSize === headerSizeEnum.regular,
       'card__header--large': headerSize === headerSizeEnum.large,
@@ -103,9 +112,13 @@ class Card extends React.Component {
       'card-body__content--width-100': !imgSrc,
     });
 
+    const cardHeadClassNames = cx('card__head', {
+      'card__head--min-height-30px': !label && (headerSize === headerSizeEnum.extraSmall || headerSize === headerSizeEnum.small),
+    });
+
     return (
       <div className={cardContainerClassNames} onClick={() => onClick(id)}>
-        <div className="card__head">
+        <div className={cardHeadClassNames}>
           <h2 className={headerClassNames}>{header}</h2>
           {this.renderLabel(label)}
         </div>
@@ -169,5 +182,13 @@ class Card extends React.Component {
     </div>
   );
 }
+
+export const CardContent = ({ children, ...rest }) => <div className="card-content" {...rest}>{children}</div>;
+
+export const CardContentRow = ({ children, ...rest }) => <div className="card-content__row" {...rest}>{children}</div>;
+
+export const CardContentCol = ({ children, ...rest }) => <div className="card-content__col" {...rest}>{children}</div>;
+
+export const CardContentText = ({ children, ...rest }) => <div className="card-content__text" {...rest}>{children}</div>;
 
 export default Card;
