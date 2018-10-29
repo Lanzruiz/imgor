@@ -11,6 +11,7 @@ import StepOne from '../StepOne';
 import StepTwo from '../StepTwo';
 import StepThree from '../StepThree';
 import StepFour from '../StepFour';
+import StepFive from '../StepFive';
 // Actions
 import { setMaxStepValue } from '../../actions/steps';
 
@@ -27,7 +28,7 @@ class App extends React.Component {
     <StepTwo key="1" />,
     <StepThree key="2" />,
     <StepFour key="3" />,
-    <div key="4">step five block</div>,
+    <StepFive key="4" />,
     <div key="5">final step block</div>,
   ];
 
