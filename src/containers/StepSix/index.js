@@ -1,26 +1,21 @@
 // Modules
 import React from 'react';
 import { Container, Row, Col } from 'react-grid-system';
-import ReactHeight from 'react-height';
 import Img from 'react-image';
 // Components
 import Header from '../../components/Header';
 import Card, { CardContent, CardContentRow, CardContentCol, CardContentText } from '../../components/Card';
 import LocaleString from '../../components/LocaleString';
 import Radio from '../../components/Radio';
+import Carousel, { CarouselItem } from '../../components/Carousel';
+import GreenBlock from '../../components/GreenBlock';
 // Images
 import stubImage from '../../assets/img/2018-Suburban.png';
 // Styles
 import './styles.scss';
 
 class StepSix extends React.Component {
-  state = {
-    height: 100,
-  };
-
   render() {
-    const { height } = this.state;
-    const cardContentTextStyles = { minHeight: `${height}px` };
     return (
       <Container style={{ marginBottom: '65px' }}>
         <Row>
@@ -61,30 +56,60 @@ class StepSix extends React.Component {
                     </div>
                   </CardContentCol>
                 </CardContentRow>
-                <CardContentText style={cardContentTextStyles}>
-                  <ReactHeight onHeightReady={this.setMinHeight}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi viverra mattis sapien sed sollicitudin.
-                    Phasellus id massa ac sapien gravida bibendum. Nulla pellentesque hendrerit turpis, in cursus eros lacinia
-                    sit amet. Morbi consectetur nibh ut eros luctus, nec consectetur nibh rhoncus. Pellentesque at diam ante.
-                    Nullam sagittis tempor nibh sit amet eleifend. Vestibulum eu commodo ex, ut pretium nulla.
-                  </ReactHeight>
+                <CardContentText>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi viverra mattis sapien sed sollicitudin.
+                  Phasellus id massa ac sapien gravida bibendum. Nulla pellentesque hendrerit turpis, in cursus eros lacinia
+                  sit amet. Morbi consectetur nibh ut eros luctus, nec consectetur nibh rhoncus. Pellentesque at diam ante.
+                  Nullam sagittis tempor nibh sit amet eleifend. Vestibulum eu commodo ex, ut pretium nulla.
                 </CardContentText>
               </CardContent>
             </Card>
           </Col>
-          <Col md={8} style={{ border: '1px solid #4481a3', padding: 0, marginBottom: '15px' }}>
-            slider
+          <Col md={8} style={{ border: '1px solid #4481a3', padding: 0, marginBottom: '15px', marginTop: '30px' }}>
+            <Carousel>
+              <CarouselItem>
+                <h3 className="step-six__slide-header">step 1 of 5</h3>
+                <h4 className="step-six__slide-sub-header">*Unaccompanied Minor?</h4>
+                <div className="step-six__radio-container">
+                  <div className="step-six__radio-block">
+                    <Radio name="unaccompanied">Yes + $50</Radio>
+                  </div>
+                  <div className="step-six__radio-block">
+                    <Radio name="unaccompanied">No + $0</Radio>
+                  </div>
+                </div>
+                <GreenBlock className="step-six__text-container">
+                  <p className="step-six__paragraph">
+                    *This is a separate service from the airlines. To avoid complications it is highly recommended
+                    that you setup the unaccompanied minor service with the airline as well.
+                  </p>
+                  <p className="step-six__paragraph">
+                    *Ages 12 and under.
+                  </p>
+                </GreenBlock>
+              </CarouselItem>
+              <CarouselItem>
+                <h3 className="step-six__slide-header">step 2 of 5</h3>
+                <h4 className="step-six__slide-sub-header">Arrival Flight Information</h4>
+              </CarouselItem>
+              <CarouselItem>
+                <h3 className="step-six__slide-header">step 3 of 5</h3>
+                <h4 className="step-six__slide-sub-header">Dropoff Location</h4>
+              </CarouselItem>
+              <CarouselItem>
+                <h3 className="step-six__slide-header">step 4 of 5</h3>
+                <h4 className="step-six__slide-sub-header">Dropoff Location</h4>
+              </CarouselItem>
+              <CarouselItem>
+                <h3 className="step-six__slide-header">step 5 of 5</h3>
+                <h4 className="step-six__slide-sub-header">Dropoff Location</h4>
+              </CarouselItem>
+            </Carousel>
           </Col>
         </Row>
       </Container>
     );
   }
-
-  setMinHeight = (height) => {
-    if (this.state.height < height) {
-      this.setState(() => ({ height }));
-    }
-  };
 }
 
 export default StepSix;

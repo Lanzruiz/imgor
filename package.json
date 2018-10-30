@@ -13,12 +13,14 @@
     "react-outside-click-handler": "^1.2.2",
     "react-redux": "^5.0.7",
     "react-scripts": "2.0.5",
+    "react-slick": "^0.23.2",
     "react-tabs": "^2.3.0",
     "redux": "^4.0.1",
     "redux-devtools-extension": "^2.13.5",
     "redux-form": "^7.4.2",
     "redux-form-validators": "^2.7.2",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "slick-carousel": "^1.8.1"
   },
   "scripts": {
     "start": "react-scripts start",
