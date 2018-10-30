@@ -63,6 +63,11 @@ class Card extends React.Component {
       PropTypes.string,
       PropTypes.number,
     ]),
+    priceDescription: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.element,
+    ]),
+    buttonBlock: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -76,11 +81,13 @@ class Card extends React.Component {
     imgSrc: '',
     onClick: () => {},
     selectedId: null,
+    priceDescription: '',
+    buttonBlock: true,
   };
 
   render() {
     const {
-      children, header, label, headerSize, color, cardHeader, price, imgSrc, id, onClick, selectedId,
+      children, header, label, headerSize, color, cardHeader, imgSrc, id, onClick, selectedId, priceDescription,
     } = this.props;
 
     const isSelectedIdExists = (typeof selectedId === 'number' || typeof selectedId === 'string');
@@ -100,6 +107,7 @@ class Card extends React.Component {
 
     const cardBodyHeadClassNames = cx('card-body__head', {
       [`card-body__head--${color}`]: true,
+      'card-body__head--flex-end': priceDescription,
     });
 
     const buttonClassNames = cx('card-body__button', {
@@ -125,7 +133,7 @@ class Card extends React.Component {
         <div className="card__body card-body">
           <div className={cardBodyHeadClassNames}>
             <h4 className="card-body__text">{cardHeader}</h4>
-            <span className="card-body__text">&#36;{price}</span>
+            {this.renderPriceBlock(priceDescription)}
           </div>
           <div className="card-body__body">
             {this.renderImage(imgSrc)}
@@ -133,12 +141,7 @@ class Card extends React.Component {
               {children}
             </div>
           </div>
-          <div className="card-body__footer">
-            <Button
-              children="selected"
-              className={buttonClassNames}
-            />
-          </div>
+          {this.renderButtonBlock(buttonClassNames)}
         </div>
       </div>
     );
@@ -181,6 +184,33 @@ class Card extends React.Component {
       />
     </div>
   );
+
+  renderPriceBlock = (priceDescription) => {
+    const { price } = this.props;
+    return (
+      priceDescription
+        ? (
+            <div className="card-body__price">
+              <span className="card-body__text">&#36;{price}</span>
+              <span className="card-body__price-description">{priceDescription}</span>
+            </div>
+          )
+        : (
+            <span className="card-body__text">&#36;{price}</span>
+          )
+    );
+  };
+
+  renderButtonBlock = (buttonClassNames) => {
+    return this.props.buttonBlock && (
+      <div className="card-body__footer">
+        <Button
+          children="selected"
+          className={buttonClassNames}
+        />
+      </div>
+    );
+  }
 }
 
 export const CardContent = ({ children, ...rest }) => <div className="card-content" {...rest}>{children}</div>;

@@ -159,6 +159,10 @@
             &--dark {
                 background-color: $tab-row-bg;
             }
+
+            &--flex-end {
+                align-items: flex-end;
+            }
         }
 
         &__text {
@@ -220,13 +224,28 @@
                 color: $white;
             }
         }
+
+        &__price {
+            align-items: flex-end;
+            display: flex;
+            flex-direction: column;
+        }
+
+        &__price-description {
+            color: $white;
+            font-family: "Trade Gothic Bold";
+            font-size: 11px;
+            font-weight: 700;
+            margin-top: -5px;
+            text-transform: uppercase;
+        }
     }
 
     .card-content {
         width: 100%;
 
         &__row {
-            align-items: center;
+            align-items: stretch;
             display: flex;
             flex-direction: row;
             width: 100%;

@@ -1,6 +1,5 @@
 // Modules
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Container, Row, Col } from 'react-grid-system';
 import Img from 'react-image';
 import { ReactHeight } from 'react-height';
@@ -23,8 +22,6 @@ class StepFive extends React.Component {
   state = {
     height: 100,
   };
-
-  static propTypes = {};
 
   render() {
     const { height } = this.state;
