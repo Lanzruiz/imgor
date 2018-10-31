@@ -13,6 +13,7 @@ import StepThree from '../StepThree';
 import StepFour from '../StepFour';
 import StepFive from '../StepFive';
 import StepSix from '../StepSix';
+import StepFinal from '../StepFinal';
 // Actions
 import { setMaxStepValue } from '../../actions/steps';
 
@@ -31,6 +32,7 @@ class App extends React.Component {
     <StepFour key="3" />,
     <StepFive key="4" />,
     <StepSix key="5" />,
+    <StepFinal key="6" />,
   ];
 
   componentDidMount() {

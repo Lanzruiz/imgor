@@ -171,6 +171,10 @@
             font-size: 20px;
             font-weight: 700;
             text-transform: uppercase;
+
+            &--capitalize {
+                text-transform: capitalize;
+            }
         }
 
         &__image {

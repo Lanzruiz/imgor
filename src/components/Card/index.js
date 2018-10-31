@@ -68,6 +68,8 @@ class Card extends React.Component {
       PropTypes.element,
     ]),
     buttonBlock: PropTypes.bool,
+    priceBlock: PropTypes.bool,
+    cardHeaderCapitalize: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -83,11 +85,13 @@ class Card extends React.Component {
     selectedId: null,
     priceDescription: '',
     buttonBlock: true,
+    priceBlock: true,
+    cardHeaderCapitalize: false,
   };
 
   render() {
     const {
-      children, header, label, headerSize, color, cardHeader, imgSrc, id, onClick, selectedId, priceDescription,
+      children, header, label, headerSize, color, cardHeader, imgSrc, id, onClick, selectedId, priceDescription, cardHeaderCapitalize, style,
     } = this.props;
 
     const isSelectedIdExists = (typeof selectedId === 'number' || typeof selectedId === 'string');
@@ -95,14 +99,6 @@ class Card extends React.Component {
 
     const cardContainerClassNames = cx('card__container', {
       'card__container--opacity': isSelectedIdExists && !isCurrentCardSelected,
-    });
-
-    const headerClassNames = cx('card__header', {
-      'card__header--extra-small': headerSize === headerSizeEnum.extraSmall,
-      'card__header--small': headerSize === headerSizeEnum.small,
-      'card__header--regular': headerSize === headerSizeEnum.regular,
-      'card__header--large': headerSize === headerSizeEnum.large,
-      [`card__header--${color}`]: true,
     });
 
     const cardBodyHeadClassNames = cx('card-body__head', {
@@ -120,19 +116,16 @@ class Card extends React.Component {
       'card-body__content--width-100': !imgSrc,
     });
 
-    const cardHeadClassNames = cx('card__head', {
-      'card__head--min-height-30px': !label && (headerSize === headerSizeEnum.extraSmall || headerSize === headerSizeEnum.small),
+    const cardHeaderClassNames = cx('card-body__text', {
+      'card-body__text--capitalize': cardHeaderCapitalize,
     });
 
     return (
-      <div className={cardContainerClassNames} onClick={() => onClick(id)}>
-        <div className={cardHeadClassNames}>
-          <h2 className={headerClassNames}>{header}</h2>
-          {this.renderLabel(label)}
-        </div>
+      <div className={cardContainerClassNames} onClick={() => onClick(id)} style={style}>
+        {this.renderCardHead({ header, label, headerSize, color })}
         <div className="card__body card-body">
           <div className={cardBodyHeadClassNames}>
-            <h4 className="card-body__text">{cardHeader}</h4>
+            <h4 className={cardHeaderClassNames}>{cardHeader}</h4>
             {this.renderPriceBlock(priceDescription)}
           </div>
           <div className="card-body__body">
@@ -186,7 +179,10 @@ class Card extends React.Component {
   );
 
   renderPriceBlock = (priceDescription) => {
-    const { price } = this.props;
+    const { price, priceBlock } = this.props;
+    if (!priceBlock) {
+      return false;
+    }
     return (
       priceDescription
         ? (
@@ -208,6 +204,31 @@ class Card extends React.Component {
           children="selected"
           className={buttonClassNames}
         />
+      </div>
+    );
+  };
+
+  renderCardHead = ({ header, label, headerSize, color }) => {
+    if (!header && !label) {
+      return false;
+    }
+
+    const cardHeadClassNames = cx('card__head', {
+      'card__head--min-height-30px': !label && (headerSize === headerSizeEnum.extraSmall || headerSize === headerSizeEnum.small),
+    });
+
+    const headerClassNames = cx('card__header', {
+      'card__header--extra-small': headerSize === headerSizeEnum.extraSmall,
+      'card__header--small': headerSize === headerSizeEnum.small,
+      'card__header--regular': headerSize === headerSizeEnum.regular,
+      'card__header--large': headerSize === headerSizeEnum.large,
+      [`card__header--${color}`]: true,
+    });
+
+    return (
+      <div className={cardHeadClassNames}>
+        <h2 className={headerClassNames}>{header}</h2>
+        {this.renderLabel(label)}
       </div>
     );
   }
