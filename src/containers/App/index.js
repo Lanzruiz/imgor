@@ -16,15 +16,25 @@ import StepSix from '../StepSix';
 import StepFinal from '../StepFinal';
 // Actions
 import { setMaxStepValue } from '../../actions/steps';
+import { createCartRequest } from '../../actions/cart';
 
 class App extends React.Component {
   static propTypes = {
     stepActions: PropTypes.shape({
       setMaxStepValue: PropTypes.func.isRequired,
     }),
+    cartActions: PropTypes.shape({
+      createCartRequest: PropTypes.func.isRequired,
+    }),
     lang: PropTypes.string,
+    cartId:  PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+    maxStepValue: PropTypes.number,
   };
 
+  // To add more steps just add component into this array
   wizardFormChildren = [
     <StepOne key="0" />,
     <StepTwo key="1" />,
@@ -36,8 +46,14 @@ class App extends React.Component {
   ];
 
   componentDidMount() {
-    const maxStepValue = this.wizardFormChildren.length;
-    this.props.stepActions.setMaxStepValue(maxStepValue);
+    const { maxStepValue, cartId } = this.props;
+    const currentMaxStepValue = this.wizardFormChildren.length;
+    if (maxStepValue !== currentMaxStepValue) {
+      this.props.stepActions.setMaxStepValue(currentMaxStepValue);
+    }
+    if (!cartId) {
+      this.props.cartActions.createCartRequest();
+    }
   }
 
   render() {
@@ -52,8 +68,14 @@ class App extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  stepActions: bindActionCreators({ setMaxStepValue }, dispatch),
+const mapStateToProps = (state) => ({
+  cartId: state.cart.id,
+  maxStepValue: state.steps.maxStepValue,
 });
 
-export default connect(null, mapDispatchToProps)(App);
+const mapDispatchToProps = (dispatch) => ({
+  stepActions: bindActionCreators({ setMaxStepValue }, dispatch),
+  cartActions: bindActionCreators({ createCartRequest }, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

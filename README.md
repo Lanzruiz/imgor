@@ -1,6 +1,11 @@
-# Imgor-React
+# Imgor rebuild
 
 ### Getting started
+1. ##### Create .env file from example
+```sh
+  $ cp .env.example .env
+```
+
 1. ##### Install packages
 ```sh
   $ npm i

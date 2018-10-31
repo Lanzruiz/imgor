@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.18.0",
     "classnames": "^2.2.6",
+    "localforage": "^1.7.3",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-grid-system": "^4.3.1",
@@ -19,6 +21,7 @@
     "redux-devtools-extension": "^2.13.5",
     "redux-form": "^7.4.2",
     "redux-form-validators": "^2.7.2",
+    "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
     "slick-carousel": "^1.8.1"
   },
