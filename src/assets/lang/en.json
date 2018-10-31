@@ -43,5 +43,21 @@
     "step_six.sub_header": "Make your camp journey headache free",
     "step_six.airport_pickup": "Airport Pickup",
     "step_six.travel": "Travel",
-    "step_six.starting_at": "Starting At"
+    "step_six.starting_at": "Starting At",
+    "step_final.header": "Final Step - Enter Camper Information",
+    "step_final.subHeader": "Athletes under 19 years old must also provide parent or guardian information",
+    "step_final.camper_information": "Camper Information",
+    "step_final.position": "Position",
+    "step_final.position.wing": "Wing",
+    "step_final.position.point_guard": "Point Guard",
+    "step_final.position.center": "Center",
+    "step_final.position.power_forward": "Power Forward",
+    "step_final.shirt_size": "Shirt Size",
+    "step_final.shirt_size.x-small": "x-small",
+    "step_final.shirt_size.medium": "medium",
+    "step_final.shirt_size.x-large": "x-large",
+    "step_final.shirt_size.small": "small",
+    "step_final.shirt_size.large": "large",
+    "step_final.shirt_size.xx-large": "xx-large",
+    "step_final.guardian_information": "Parent / Guardian Information"
 }
