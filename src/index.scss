@@ -1,0 +1,158 @@
+@import './constants/scss/variables.scss';
+@import './assets/fonts/Proxima-Nova-Bold/styles.css';
+@import './assets/fonts/Proxima-Nova-Regular/styles.css';
+@import './assets/fonts/Serifa-Black/styles.css';
+@import './assets/fonts/Serifa-Bold/styles.css';
+@import './assets/fonts/Serifa-Roman/styles.css';
+@import './assets/fonts/Trade-Gothic-Bold/styles.css';
+
+#{$root} {
+  all: initial;
+  position: relative;
+
+  * {
+    all: unset;
+  }
+
+  div, p {
+    display: block;
+  }
+
+  .upper-case {
+    text-transform: uppercase;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .mr {
+    &-auto {
+      margin-right: auto;
+    }
+
+    &-0 {
+      margin-right: 0!important;
+    }
+  }
+
+  .w {
+    &-100 {
+      width: 100%;
+    }
+
+    &-75 {
+      width: 75%;
+    }
+
+    &-40 {
+      width: 40%;
+    }
+
+    &-35 {
+      width: 35%;
+    }
+
+    &-30 {
+      width: 30%;
+    }
+
+    &-25 {
+      width: 25%;
+    }
+
+    &-20 {
+      width: 20%;
+    }
+  }
+
+  .d {
+    &-flex {
+      display: flex;
+    }
+  }
+
+  .align {
+    &-center {
+      align-items: center;
+    }
+
+    &-initial {
+      align-items: initial;
+    }
+  }
+
+  .justify {
+    &-around {
+      justify-content: space-around;
+    }
+
+    &-center {
+      justify-content: center;
+    }
+
+    &-between {
+      justify-content: space-between;
+    }
+
+    &-evenly {
+      justify-content: space-evenly;
+    }
+
+    &-end {
+      justify-content: flex-end;
+    }
+
+    &-start {
+      justify-content: flex-start;
+    }
+  }
+
+  .f {
+    &-direction {
+      &-column {
+        flex-direction: column;
+      }
+
+      &-row {
+        flex-direction: row;
+      }
+    }
+  }
+
+  .mb-0 {
+    margin-bottom: 0;
+  }
+
+  .bold {
+    font-weight: bold;
+  }
+
+  .white {
+    color: #fff;
+  }
+
+  .p-1 {
+    padding: 1rem;
+  }
+
+  .center {
+    &-center {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    &-left {
+      align-items: flex-start;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+
+  .hidden {
+    display: none!important;
+  }
+}

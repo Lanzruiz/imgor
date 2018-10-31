@@ -1,0 +1,1 @@
+export const SAVE_TRAINING_ID = 'SAVE_TRAINING_ID';

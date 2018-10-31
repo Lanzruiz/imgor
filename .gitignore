@@ -1,0 +1,58 @@
+# FRONTEND #
+############
+.sass-cache/
+node_modules/
+.bundle/
+npm-debug.log
+bower_components/
+build/
+
+# PACKAGES #
+############
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+*.tgz
+
+# LOGS AND DATABASES #
+######################
+*.log
+*.sql
+*.sqlite
+*.mysql
+
+# OS FILES #
+############
+*.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# IDE files #
+#############
+nbproject
+.idea
+*.pydevproject
+.metadata
+.gradle
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.project
+.externalToolBuilders/
+*.launch
+.cproject
+.buildpath
+.texlipse
+.recommenders/
