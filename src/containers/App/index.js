@@ -32,11 +32,16 @@ class App extends React.Component {
       PropTypes.number,
     ]),
     maxStepValue: PropTypes.number,
+    sport: PropTypes.string,
+  };
+
+  static defaultProps = {
+    sport: '',
   };
 
   // To add more steps just add component into this array
   wizardFormChildren = [
-    <StepOne key="0" />,
+    <StepOne key="0" sport={this.props.sport} />,
     <StepTwo key="1" />,
     <StepThree key="2" />,
     <StepFour key="3" />,
@@ -71,6 +76,7 @@ class App extends React.Component {
 const mapStateToProps = (state) => ({
   cartId: state.cart.id,
   maxStepValue: state.steps.maxStepValue,
+  participantId: state.participant.id,
 });
 
 const mapDispatchToProps = (dispatch) => ({

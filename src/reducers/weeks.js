@@ -9,7 +9,7 @@ const initialState = {
 
 const maxWeeksCount = 12;
 
-const weeks = (state = initialState, action) => {
+export default function(state = initialState, action) {
   const { type, payload } = action;
   switch(type) {
     case weeksTypes.INCREMENT_WEEKS_COUNTER: {
@@ -40,6 +40,28 @@ const weeks = (state = initialState, action) => {
       };
     }
 
+    case weeksTypes.SET_WEEKS_COUNTER: {
+      const weeks = [...state.weeks];
+      const weeksCounter = weeks.length;
+      if (weeksCounter === payload) {
+        return state;
+      }
+      if (weeksCounter > payload) {
+        weeks.splice(payload);
+      }
+      if (weeksCounter < payload) {
+        while(weeks.length < payload) {
+          const id = weeks.length;
+          weeks.push({ id });
+        }
+      }
+      return {
+        ...state,
+        weeks,
+        weeksCounter: payload,
+      };
+    }
+
     case weeksTypes.SELECT_WEEK: {
       return {
         ...state,
@@ -61,5 +83,3 @@ const weeks = (state = initialState, action) => {
     }
   }
 };
-
-export default weeks;

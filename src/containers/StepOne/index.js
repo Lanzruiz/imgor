@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Container, Row, Col } from 'react-grid-system';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import { Field, Form, reduxForm } from 'redux-form';
+import { Field, Form, reduxForm, formValueSelector } from 'redux-form';
 import PropTypes from 'prop-types';
 // Components
 import EmailModal from '../../components/EmailModal';
@@ -12,9 +12,12 @@ import Header from '../../components/Header';
 import TabRow from '../../components/TabRow';
 import GreenBlock from '../../components/GreenBlock';
 import Button from '../../components/Button';
+import LocaleString from '../../components/LocaleString';
 // Actions
 import { closeEmailModal } from '../../actions/steps';
 import * as weeksActions from '../../actions/weeks';
+import { getCatalogGroup } from '../../actions/step.one';
+import { addParticipantByCardId } from '../../actions/participant';
 // Helpers
 import validation from '../../helpers/validate';
 // Styles
@@ -23,9 +26,18 @@ import './styles.scss';
 class StepOne extends React.Component {
   static propTypes = {
     weeksCounter: PropTypes.number,
-    shouldShowEmailModal: PropTypes.bool,
     weeksActions: PropTypes.objectOf(PropTypes.func),
     stepActions: PropTypes.objectOf(PropTypes.func),
+    stepOneActions: PropTypes.shape({
+      getCatalogGroup: PropTypes.func.isRequired,
+    }),
+    participantActions: PropTypes.shape({
+      addParticipantByCardId: PropTypes.func.isRequired,
+    }),
+    participantId: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
   };
 
   static defaultProps = {
@@ -35,13 +47,20 @@ class StepOne extends React.Component {
     stepActions: {},
   };
 
+  componentDidMount() {
+    // TODO: Api call here!
+    // TODO: add exaption sport not provided
+    const { sport } = this.props;
+    this.props.stepOneActions.getCatalogGroup({ sport });
+  }
+
   render() {
-    const { shouldShowEmailModal, weeksCounter } = this.props;
+    const { weeksCounter, participantId } = this.props;
     return (
       <React.Fragment>
         <EmailModal
           onSubmit={this.closeEmailModal}
-          shouldShowEmailModal={shouldShowEmailModal}
+          shouldShowEmailModal={!participantId}
         />
         <Container style={{ marginBottom: '65px' }}>
           <Row>
@@ -56,20 +75,32 @@ class StepOne extends React.Component {
             <div className="tab-row__section mb-0" />
             <div className="tab-row__section tab-row__section--center mb-0">
               <GreenBlock className="tab-row__green-block">
-                <span className="tab-row__header tab-row__header--green-block">our most</span>
-                <span className="tab-row__header tab-row__header--green-block">popular camp</span>
+                <span className="tab-row__header tab-row__header--green-block">
+                  <LocaleString stringKey="step_one.tabs.our_most" />
+                </span>
+                <span className="tab-row__header tab-row__header--green-block">
+                  <LocaleString stringKey="step_one.tabs.popular_camp" />
+                </span>
               </GreenBlock>
             </div>
             <div className="tab-row__section tab-row__section--center  mb-0">
               <GreenBlock className="tab-row__green-block">
-                <span className="tab-row__header tab-row__header--green-block">the ultimate</span>
-                <span className="tab-row__header tab-row__header--green-block">training experience</span>
+                <span className="tab-row__header tab-row__header--green-block">
+                  <LocaleString stringKey="step_one.tabs.the_ultimate" />
+                </span>
+                <span className="tab-row__header tab-row__header--green-block">
+                  <LocaleString stringKey="step_one.tabs.training_experience" />
+                </span>
               </GreenBlock>
             </div>
             <div className="tab-row__section tab-row__section--center  mb-0">
               <GreenBlock className="tab-row__green-block">
-                <span className="tab-row__header tab-row__header--green-block">invite only</span>
-                <span className="tab-row__header tab-row__header--green-block">programm</span>
+                <span className="tab-row__header tab-row__header--green-block">
+                  <LocaleString stringKey="step_one.tabs.invite_only" />
+                </span>
+                <span className="tab-row__header tab-row__header--green-block">
+                  <LocaleString stringKey="step_one.tabs.programm" />
+                </span>
               </GreenBlock>
             </div>
           </TabRow>
@@ -305,7 +336,9 @@ class StepOne extends React.Component {
             </div>
             <div className="tab-row__section tab-row__section--bg-white tab-row__section--center w-75 d-flex align-center justify-evenly">
               <div className="d-flex align-center justify-end w-35">
-                <span className="tab-row__header">1 week</span>
+                <Button onClick={() => this.setWeeksCounter(1)}>
+                  <span className="tab-row__header">1 week</span>
+                </Button>
                 <span className="tab-row__separator" style={{ marginLeft: '20px' }} />
               </div>
               <div className="d-flex align-center justify-center w-30">
@@ -325,10 +358,10 @@ class StepOne extends React.Component {
               </div>
               <div className="d-flex align-center justify-start w-35">
                 <span className="tab-row__separator" style={{ marginRight: '20px' }} />
-                <span className="d-flex f-direction-column">
+                <Button buttonClassName="d-flex f-direction-column" onClick={() => this.setWeeksCounter(12)}>
                   <span className="tab-row__header">up to</span>
                   <span className="tab-row__header">12 week</span>
-                </span>
+                </Button>
               </div>
             </div>
           </TabRow>
@@ -382,7 +415,10 @@ class StepOne extends React.Component {
   }
 
   closeEmailModal = () => {
-    this.props.stepActions.closeEmailModal();
+    const { cartId, email } = this.props;
+    if (cartId && email) {
+      this.props.participantActions.addParticipantByCardId({ cartId, email });
+    }
   };
 
   incrementWeeksCounter = () => {
@@ -392,16 +428,26 @@ class StepOne extends React.Component {
   decrementWeeksCounter = () => {
     this.props.weeksActions.decrementWeeksCounter();
   };
+
+  setWeeksCounter = (count) => {
+    this.props.weeksActions.setWeeksCounter(count);
+  }
 }
 
+const selector = formValueSelector('wizard');
+
 const mapStateToProps = (state) => ({
-  shouldShowEmailModal: state.steps.shouldShowEmailModal,
   weeksCounter: state.weeks.weeksCounter,
+  participantId: state.participant.id,
+  email: selector(state, 'email'),
+  cartId: state.cart.id,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   stepActions: bindActionCreators({ closeEmailModal }, dispatch),
   weeksActions: bindActionCreators(weeksActions, dispatch),
+  stepOneActions: bindActionCreators({ getCatalogGroup }, dispatch),
+  participantActions: bindActionCreators({ addParticipantByCardId }, dispatch),
 });
 
 export default reduxForm({

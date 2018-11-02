@@ -17,7 +17,7 @@ ReactDOM.render(
     <PersistGate loading={null} persistor={persistor}>
       <App
         businessType=""
-        sport=""
+        sport="Football" // Configure your port here
         lang="en"
       />
     </PersistGate>
