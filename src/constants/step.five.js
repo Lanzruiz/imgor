@@ -1,0 +1,1 @@
+export const GET_CATALOG_GEAR = 'GET_CATALOG_GEAR';

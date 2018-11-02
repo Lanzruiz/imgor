@@ -52,7 +52,7 @@ class Card extends React.Component {
       PropTypes.element,
       PropTypes.string,
     ]),
-    price: PropTypes.string,
+    price: PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
     imgSrc: PropTypes.string,
     id: PropTypes.oneOfType([
       PropTypes.string,

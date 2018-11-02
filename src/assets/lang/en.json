@@ -1,6 +1,12 @@
 {
     "step_one.header": "Step 1 - start by choosing a camp",
     "step_one.sub_header": "Make sure to coose camper sleepaway option, age and gender",
+    "step_one.tabs.our_most": "our most",
+    "step_one.tabs.popular_camp": "popular camp",
+    "step_one.tabs.the_ultimate": "the ultimate",
+    "step_one.tabs.training_experience": "training experience",
+    "step_one.tabs.invite_only": "invite only",
+    "step_one.tabs.programm": "programm",
     "step_two.header": "Step 2 - choose your check-in date",
     "step_two.sub_header": "Displayed dates are available check-in options for camp sected in step 1",
     "step_two.questions.questions": "Questions?",

@@ -3,34 +3,92 @@ import React from 'react';
 import { Container, Row, Col } from 'react-grid-system';
 import Img from 'react-image';
 import { ReactHeight } from 'react-height';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 // Components
 import Header from '../../components/Header';
 import Card, { CardContent, CardContentRow, CardContentCol, CardContentText } from '../../components/Card';
-import LocaleString from '../../components/LocaleString';
 import Dropdown from '../../components/Dropdown';
-// Images
-import eliteUpdateStubImage from '../../assets/img/030118-Men_s-Elite-Update_760x.png';
-import gtmkStubImage from '../../assets/img/gt-mk.png';
-import premierUpdateStubImage from '../../assets/img/0318-Men_s-Premier-Update_1024x1024.png';
-import gtuoStubImage from '../../assets/img/gt-uo.png';
-import elitePackageStubImage from '../../assets/img/Camp_Essentials_Elite_Package_760x.png';
-import bg8StubImage from '../../assets/img/bg8.png';
+// Actions
+import { getCatalogGearRequest } from '../../actions/step.five';
+// Helpers
+import splitArray from '../../helpers/splitArray';
 // Styles
 import './styles.scss';
 
 class StepFive extends React.Component {
+  static propTypes = {
+    stepFiveActions: PropTypes.shape({
+      getCatalogGearRequest: PropTypes.func.isRequired,
+    }),
+    data: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
+        is_package: PropTypes.oneOf([ 0, 1 ]),
+        package_product_id: PropTypes.string,
+        primary_product_id: PropTypes.string,
+        name: PropTypes.string,
+        package_type: PropTypes.string,
+        business: PropTypes.string,
+        business_type: PropTypes.string,
+        gender: PropTypes.oneOf([ 'Male', 'Female' ]),
+        length: PropTypes.string,
+        length_program: PropTypes.string,
+        length_days: PropTypes.number,
+        from_age: PropTypes.number,
+        to_age: PropTypes.number,
+        age_range: PropTypes.string,
+        capacity_id: PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
+        capacity_start_date: PropTypes.data,
+        capacity_end_date: PropTypes.data,
+        sort_order: PropTypes.number,
+        group: PropTypes.string,
+        secondary_group: PropTypes.string,
+        price: PropTypes.number,
+        price_refundable: PropTypes.number,
+        capacity_available: PropTypes.number,
+        attributes: PropTypes.arrayOf({
+          key: PropTypes.string,
+            name: PropTypes.string,
+            display_name: PropTypes.string,
+            options: PropTypes.arrayOf({
+              id: PropTypes.string,
+              name: PropTypes.string,
+              display_name: PropTypes.string,
+            }),
+        }),
+        image_url: PropTypes.string,
+        weight: PropTypes.number,
+        description: PropTypes.string,
+        categories: PropTypes.arrayOf({
+          name: PropTypes.string,
+          display_name: PropTypes.string,
+          weight: PropTypes.string,
+        }),
+        display_name: PropTypes.string,
+        display_length_program: PropTypes.string,
+        display_length: PropTypes.string,
+        display_business: PropTypes.string,
+        display_business_type: PropTypes.string,
+        display_gender: PropTypes.string,
+        display_package_type: PropTypes.string,
+      }),
+    ),
+  };
+
   state = {
     height: 100,
   };
 
+  componentDidMount() {
+    // TODO: Api calls here!
+    this.props.stepFiveActions.getCatalogGearRequest({});
+  }
+
   render() {
-    const { height } = this.state;
-    const cardContentTextStyles = { minHeight: `${height}px` };
-    const dropdownOptions = [
-      { label: 'small', value: 'small' },
-      { label: 'medium', value: 'medium' },
-      { label: 'large', value: 'large' },
-    ];
+    const { data } = this.props;
+    const { array_1, array_2, array_3 } = splitArray({ array: data, arrayCount: 3 });
     return (
       <Container style={{ marginBottom: '65px' }}>
         <Row>
@@ -42,203 +100,9 @@ class StepFive extends React.Component {
           </Col>
         </Row>
         <Row>
-          <Col>
-            <Card
-              id={0}
-              cardHeader={<LocaleString stringKey="step_five.apparel" />}
-              color="dark"
-              header={<LocaleString stringKey="step_five.elite_gear_kit" />}
-              label={<LocaleString stringKey="step_five.popular_item" />}
-              price="299"
-              selectedId={null}
-              headerSize="extra-small"
-            >
-              <CardContent>
-                <CardContentRow>
-                  <CardContentCol>
-                    <Img
-                      className="card-content__img"
-                      src={eliteUpdateStubImage}
-                    />
-                  </CardContentCol>
-                  <CardContentCol>
-                    <div style={{ width: '100%', padding: '0 35px', boxSizing: 'border-box' }}>
-                      <Dropdown
-                        label="Size"
-                        options={dropdownOptions}
-                        handleChange={(value) => this.selectDropdownItem({ id: 0, value })}
-                      />
-                    </div>
-                  </CardContentCol>
-                </CardContentRow>
-                <CardContentText style={cardContentTextStyles}>
-                  <ReactHeight onHeightReady={this.setMinHeight}>
-                    Coming for camp or training at home get the gear. 1 Backpack with water repellent finish.
-                    3 performance T-shirts. 3 pairs of  shorts. 1 Long sleeve shirt. 1 IMG sport towel and Gatorade water bottle.
-                    All items are Under Armour HeatGear apparel to keep you cool, dry and light on the field and in the gym.
-                    Men's & Kid's. Colors may Vary.
-                  </ReactHeight>
-                </CardContentText>
-              </CardContent>
-            </Card>
-            <Card
-              id={1}
-              cardHeader={<LocaleString stringKey="step_five.off_campus_excursion" />}
-              color="dark"
-              header={<LocaleString stringKey="step_five.magic_kingdom" />}
-              label={<LocaleString stringKey="step_five.popular_item" />}
-              price="225"
-              selectedId={null}
-              headerSize="extra-small"
-            >
-              <CardContent>
-                <CardContentRow>
-                  <CardContentCol>
-                    <Img
-                      className="card-content__img"
-                      src={gtmkStubImage}
-                    />
-                  </CardContentCol>
-                  <CardContentCol>
-                    content here
-                  </CardContentCol>
-                </CardContentRow>
-                <CardContentText style={cardContentTextStyles}>
-                  <ReactHeight onHeightReady={this.setMinHeight}>
-                    Coming for camp or training at home get the gear. 3 performance T-shirts. 3 pairs of shorts.
-                    All items are Under Armour HeatGear apparel to keep you cool, dry and light on the field and in the gym.
-                    Men's & Kid's.  Colors may Vary.
-                  </ReactHeight>
-                </CardContentText>
-              </CardContent>
-            </Card>
-          </Col>
-          <Col>
-            <Card
-              id={2}
-              cardHeader={<LocaleString stringKey="step_five.apparel" />}
-              color="dark"
-              header={<LocaleString stringKey="step_five.essential_gear_kit" />}
-              price="199"
-              selectedId={null}
-              headerSize="extra-small"
-            >
-              <CardContent>
-                <CardContentRow>
-                  <CardContentCol>
-                    <Img
-                      className="card-content__img"
-                      src={premierUpdateStubImage}
-                    />
-                  </CardContentCol>
-                  <CardContentCol>
-                    content here
-                  </CardContentCol>
-                </CardContentRow>
-                <CardContentText style={cardContentTextStyles}>
-                  <ReactHeight onHeightReady={this.setMinHeight}>
-                    Coming for camp or training at home get the gear. 3 performance T-shirts. 3 pairs of shorts.
-                    All items are Under Armour HeatGear apparel to keep you cool, dry and light on the field and in the gym.
-                    Men's & Kid's.  Colors may Vary.
-                  </ReactHeight>
-                </CardContentText>
-              </CardContent>
-            </Card>
-            <Card
-              id={3}
-              cardHeader={<LocaleString stringKey="step_five.off_campus_excursion" />}
-              color="dark"
-              header={<LocaleString stringKey="step_five.universal_studios" />}
-              price="225"
-              selectedId={null}
-              headerSize="extra-small"
-            >
-              <CardContent>
-                <CardContentRow>
-                  <CardContentCol>
-                    <Img
-                      className="card-content__img"
-                      src={gtuoStubImage}
-                    />
-                  </CardContentCol>
-                  <CardContentCol>
-                    content here
-                  </CardContentCol>
-                </CardContentRow>
-                <CardContentText style={cardContentTextStyles}>
-                  <ReactHeight onHeightReady={this.setMinHeight}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi viverra mattis sapien sed sollicitudin.
-                    Phasellus id massa ac sapien gravida bibendum. Nulla pellentesque hendrerit turpis, in cursus eros lacinia
-                    sit amet. Morbi consectetur nibh ut eros luctus, nec consectetur nibh rhoncus. Pellentesque at diam ante.
-                    Nullam sagittis tempor nibh sit amet eleifend. Vestibulum eu commodo ex, ut pretium nulla.
-                  </ReactHeight>
-                </CardContentText>
-              </CardContent>
-            </Card>
-          </Col>
-          <Col>
-            <Card
-              id={4}
-              cardHeader={<LocaleString stringKey="step_five.apparel" />}
-              color="dark"
-              header={<LocaleString stringKey="step_five.starter_gear_kit" />}
-              price="99"
-              selectedId={null}
-              headerSize="extra-small"
-            >
-              <CardContent>
-                <CardContentRow>
-                  <CardContentCol>
-                    <Img
-                      className="card-content__img"
-                      src={elitePackageStubImage}
-                    />
-                  </CardContentCol>
-                  <CardContentCol>
-                    content here
-                  </CardContentCol>
-                </CardContentRow>
-                <CardContentText style={cardContentTextStyles}>
-                  <ReactHeight onHeightReady={this.setMinHeight}>
-                    3 Laundry Bags, 1 set of Sheets, 2 Bath Towels, 1 Tooth Brush, 1 Tooth Paste, 1 Gatorade Water Bottle and 1
-                    Combination Lock
-                  </ReactHeight>
-                </CardContentText>
-              </CardContent>
-            </Card>
-            <Card
-              id={5}
-              cardHeader={<LocaleString stringKey="step_five.off_campus_excursion" />}
-              color="dark"
-              header={<LocaleString stringKey="step_five.busch_gardens" />}
-              price="225"
-              selectedId={null}
-              headerSize="extra-small"
-            >
-              <CardContent>
-                <CardContentRow>
-                  <CardContentCol>
-                    <Img
-                      className="card-content__img"
-                      src={bg8StubImage}
-                      style={{ padding: '37px 0', backgroundColor: '#fff' }}
-                    />
-                  </CardContentCol>
-                  <CardContentCol>
-                    content here
-                  </CardContentCol>
-                </CardContentRow>
-                <CardContentText style={cardContentTextStyles}>
-                  <ReactHeight onHeightReady={this.setMinHeight}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi viverra mattis sapien sed sollicitudin.
-                    Phasellus id massa ac sapien gravida bibendum. Nulla pellentesque hendrerit turpis, in cursus eros lacinia
-                    sit amet. Morbi consectetur nibh ut eros luctus, nec consectetur nibh rhoncus. Pellentesque at diam ante.
-                    Nullam sagittis tempor nibh sit amet eleifend. Vestibulum eu commodo ex, ut pretium nulla.
-                  </ReactHeight>
-                </CardContentText>
-              </CardContent>
-            </Card>
-          </Col>
+          <Col>{array_1.map(this.renderCardItem)}</Col>
+          <Col>{array_2.map(this.renderCardItem)}</Col>
+          <Col>{array_3.map(this.renderCardItem)}</Col>
         </Row>
       </Container>
     );
@@ -252,7 +116,70 @@ class StepFive extends React.Component {
 
   selectDropdownItem = ({ id, value }) => {
     console.log(`card_id: ${id}, value: ${value}`);
+  };
+
+  renderCardItem = (card) => {
+    const { height } = this.state;
+    const cardContentTextStyles = { minHeight: `${height}px` };
+    const { price, image_url, id, categories, description, display_name, attributes, } = card;
+    const [ label = {}, header = {} ] = categories;
+    return (
+      <Card
+        key={id}
+        id={id}
+        cardHeader={display_name}
+        color="dark"
+        header={header.display_name}
+        label={label.display_name}
+        price={price}
+        selectedId={null}
+        headerSize="extra-small"
+      >
+        <CardContent>
+          <CardContentRow>
+            <CardContentCol>
+              <Img className="card-content__img" src={image_url} />
+            </CardContentCol>
+            <CardContentCol>
+              {attributes.map(this.renderCardAttributes)}
+            </CardContentCol>
+          </CardContentRow>
+          <CardContentText style={cardContentTextStyles}>
+            <ReactHeight onHeightReady={this.setMinHeight} children={description} />
+          </CardContentText>
+        </CardContent>
+      </Card>
+    );
+  };
+
+  renderCardAttributes = (attripute) => {
+    const { display_name, key, options } = attripute;
+    const styles = {
+      width: '100%',
+      padding: '0 35px',
+      boxSizing: 'border-box',
+      display: 'flex',
+      alignItems: 'center',
+      height: '100%',
+    };
+    return (
+      <div key={key} style={styles}>
+        <Dropdown options={options} label={display_name} />
+      </div>
+    );
   }
 }
 
-export default StepFive;
+function mapStateToProps(state) {
+  return {
+    data: state.stepFive.data,
+  };
+};
+
+function mapDispatchToProps(dispatch) {
+  return {
+    stepFiveActions: bindActionCreators({ getCatalogGearRequest }, dispatch),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(StepFive);

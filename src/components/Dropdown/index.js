@@ -12,15 +12,13 @@ export default class Dropdown extends React.Component {
   static propTypes = {
     options: PropTypes.arrayOf(
       PropTypes.shape({
-        value: PropTypes.string,
-        label: PropTypes.string,
+        id: PropTypes.string,
+        display_name: PropTypes.string,
+        name: PropTypes.string,
       }),
     ).isRequired,
-    id: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]),
     handleChange: PropTypes.func,
+    label: PropTypes.string,
   };
 
   static defaultProps = {
@@ -36,6 +34,7 @@ export default class Dropdown extends React.Component {
   render() {
     const { options, selectedOption, handleChange, label } = this.props;
     const { isOpen } = this.state;
+    // TODO: Write handler to select option
     return (
       <OutsideClickHandler onOutsideClick={this.closeDropdown}>
         <div className="dropdown__label" onClick={this.toggleDropdown}>{label}</div>
@@ -46,12 +45,12 @@ export default class Dropdown extends React.Component {
           </div>
           {isOpen && (
             <div className="dropdown__options">
-              {options.map((option, idx) => (
+              {options.map(({ id, display_name }) => (
                 <div
                   className="dropdown__option"
-                  key={idx}
-                  children={option.value}
-                  onClick={() => handleChange(option.value)}
+                  key={id}
+                  children={display_name}
+                  onClick={() => handleChange(id)}
                 />
               ))}
             </div>
