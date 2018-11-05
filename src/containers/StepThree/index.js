@@ -116,12 +116,16 @@ class StepThree extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  selectedId: state.training.selectedId,
-});
+function mapStateToProps(state) {
+  return {
+    selectedId: state.training.selectedId,
+  };
+};
 
-const mapDispatchToProps = (dispatch) => ({
-  trainingActions: bindActionCreators(trainingActions, dispatch),
-});
+function mapDispatchToProps(dispatch) {
+  return {
+    trainingActions: bindActionCreators(trainingActions, dispatch),
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(StepThree);

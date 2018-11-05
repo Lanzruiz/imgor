@@ -33,6 +33,13 @@
             margin-top: 15px;
             width: 100%;
         }
+
+        &__description {
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+            margin-top: auto;
+        }
     }
 
     .questions {
@@ -123,8 +130,11 @@
         }
 
         &__item {
+            cursor: pointer;
+
             &.sold-out {
                 color: #de3942;
+                cursor: not-allowed;
                 text-decoration: line-through;
             }
 

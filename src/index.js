@@ -16,9 +16,10 @@ ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <App
-        businessType=""
-        sport="Football" // Configure your port here
-        lang="en"
+        businessType="" // Configure your business type here
+        packageType="Sport" // Configure your package type here
+        sport="Soccer" // Configure your sport here
+        lang="en" // Configure your language here
       />
     </PersistGate>
   </Provider>,

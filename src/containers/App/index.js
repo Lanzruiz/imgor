@@ -18,6 +18,8 @@ import StepFinal from '../StepFinal';
 import { setMaxStepValue } from '../../actions/steps';
 import { createCartRequest } from '../../actions/cart';
 
+import Api from '../../api';
+
 class App extends React.Component {
   static propTypes = {
     stepActions: PropTypes.shape({
@@ -33,22 +35,35 @@ class App extends React.Component {
     ]),
     maxStepValue: PropTypes.number,
     sport: PropTypes.string,
+    packageType: PropTypes.string.isRequired,
+    businessType: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
     sport: '',
   };
 
-  // To add more steps just add component into this array
-  wizardFormChildren = [
-    <StepOne key="0" sport={this.props.sport} />,
-    <StepTwo key="1" />,
-    <StepThree key="2" />,
-    <StepFour key="3" />,
-    <StepFive key="4" />,
-    <StepSix key="5" />,
-    <StepFinal key="6" />,
-  ];
+  constructor(props) {
+    super(props);
+    // To add more steps just add component into this array
+    this.wizardFormChildren = [
+      <StepOne
+        key="0"
+        sport={props.sport}
+      />,
+      <StepTwo
+        key="1"
+        sport={props.sport}
+        packageType={props.packageType}
+        businessType={props.businessType}
+      />,
+      <StepThree key="2" />,
+      <StepFour key="3" />,
+      <StepFive key="4" />,
+      <StepSix key="5" />,
+      <StepFinal key="6" />,
+    ];
+  }
 
   componentDidMount() {
     const { maxStepValue, cartId } = this.props;
@@ -59,6 +74,7 @@ class App extends React.Component {
     if (!cartId) {
       this.props.cartActions.createCartRequest();
     }
+    window.api = Api;
   }
 
   render() {
@@ -73,15 +89,19 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  cartId: state.cart.id,
-  maxStepValue: state.steps.maxStepValue,
-  participantId: state.participant.id,
-});
+function mapStateToProps(state) {
+  return {
+    cartId: state.cart.id,
+    maxStepValue: state.steps.maxStepValue,
+    participantId: state.participant.id,
+  };
+};
 
-const mapDispatchToProps = (dispatch) => ({
-  stepActions: bindActionCreators({ setMaxStepValue }, dispatch),
-  cartActions: bindActionCreators({ createCartRequest }, dispatch),
-});
+function mapDispatchToProps(dispatch) {
+  return {
+    stepActions: bindActionCreators({ setMaxStepValue }, dispatch),
+    cartActions: bindActionCreators({ createCartRequest }, dispatch),
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

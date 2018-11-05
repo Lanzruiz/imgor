@@ -175,13 +175,17 @@ class StepFour extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  weeks: state.weeks.weeks,
-  selectedWeekId: state.weeks.selectedWeekId,
-});
+function mapStateToProps(state) {
+  return {
+    weeks: state.weeks.weeks,
+    selectedWeekId: state.weeks.selectedWeekId,
+  };
+};
 
-const mapDispatchToProps = (dispatch) => ({
-  weeksActions: bindActionCreators(weeksActions, dispatch),
-});
+function mapDispatchToProps(dispatch) {
+  return {
+    weeksActions: bindActionCreators(weeksActions, dispatch),
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(StepFour);

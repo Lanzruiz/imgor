@@ -14,7 +14,6 @@ import GreenBlock from '../../components/GreenBlock';
 import Button from '../../components/Button';
 import LocaleString from '../../components/LocaleString';
 // Actions
-import { closeEmailModal } from '../../actions/steps';
 import * as weeksActions from '../../actions/weeks';
 import { getCatalogGroup } from '../../actions/step.one';
 import { addParticipantByCardId } from '../../actions/participant';
@@ -26,8 +25,11 @@ import './styles.scss';
 class StepOne extends React.Component {
   static propTypes = {
     weeksCounter: PropTypes.number,
-    weeksActions: PropTypes.objectOf(PropTypes.func),
-    stepActions: PropTypes.objectOf(PropTypes.func),
+    weeksActions: PropTypes.shape({
+      incrementWeeksCounter: PropTypes.func.isRequired,
+      decrementWeeksCounter: PropTypes.func.isRequired,
+      setWeeksCounter: PropTypes.func.isRequired,
+    }),
     stepOneActions: PropTypes.shape({
       getCatalogGroup: PropTypes.func.isRequired,
     }),
@@ -436,19 +438,22 @@ class StepOne extends React.Component {
 
 const selector = formValueSelector('wizard');
 
-const mapStateToProps = (state) => ({
-  weeksCounter: state.weeks.weeksCounter,
-  participantId: state.participant.id,
-  email: selector(state, 'email'),
-  cartId: state.cart.id,
-});
+function mapStateToProps(state) {
+  return {
+    weeksCounter: state.weeks.weeksCounter,
+    participantId: state.participant.id,
+    email: selector(state, 'email'),
+    cartId: state.cart.id,
+  };
+};
 
-const mapDispatchToProps = (dispatch) => ({
-  stepActions: bindActionCreators({ closeEmailModal }, dispatch),
-  weeksActions: bindActionCreators(weeksActions, dispatch),
-  stepOneActions: bindActionCreators({ getCatalogGroup }, dispatch),
-  participantActions: bindActionCreators({ addParticipantByCardId }, dispatch),
-});
+function mapDispatchToProps(dispatch) {
+  return {
+    weeksActions: bindActionCreators(weeksActions, dispatch),
+    stepOneActions: bindActionCreators({ getCatalogGroup }, dispatch),
+    participantActions: bindActionCreators({ addParticipantByCardId }, dispatch),
+  };
+};
 
 export default reduxForm({
   form: 'wizard', // <------ same form name

@@ -30,15 +30,38 @@ class Api {
   }
 
   async getCatalogGroup({ sport }) {
-    return await instance.get('catalog/group', { params: { sport } });
+    return await instance.get('catalog/group', {
+      params: {
+        sport,
+      },
+    });
   }
 
   async postCartCartIdParticipant({ cartId, email }) {
-    return await instance.post(`cart/${cartId}/participant`, { email });
+    return await instance.post(`cart/${cartId}/participant`, {
+      email,
+    });
   }
 
   async getCatalogGear({ sport, gender, start_date, end_date }) {
-    return await instance.get('catalog/gear', { sport, gender, start_date, end_date });
+    return await instance.get('catalog/gear', {
+      params: {
+        sport,
+        gender,
+        start_date,
+        end_date,
+      },
+    });
+  }
+
+  async getCatalogCampsCalendar({ package_type, sport, length_program }) {
+    return await instance.get('catalog/camps/calendar', {
+      params: {
+        package_type,
+        sport,
+        length_program,
+      },
+    });
   }
 }
 

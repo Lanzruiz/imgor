@@ -3,13 +3,15 @@ import * as participantTypes from '../constants/participant';
 // Api
 import Api from '../api';
 
-export const addParticipantByCardId = ({ cartId, email }) => (dispatch) => {
-  Api.req({
-    apiCall: () => Api.postCartCartIdParticipant({ cartId, email }),
-    res200: data => dispatch(addParticipant(data)),
-    res404: () => dispatch(),
-    reject: err => dispatch(err),
-  });
+export function addParticipantByCardId({ cartId, email }) {
+  return function(dispatch) {
+    Api.req({
+      apiCall: () => Api.postCartCartIdParticipant({ cartId, email }),
+      res200: data => dispatch(addParticipant(data)),
+      res404: () => console.log('Api.postCartCartIdParticipant({ cartId, email }) => 404'), // TODO: Add error handler!
+      reject: err => console.log(err), // TODO: Add error handler!
+    });
+  };
 };
 
 function addParticipant(participant) {

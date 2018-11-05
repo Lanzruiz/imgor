@@ -5,7 +5,7 @@ const initialState = {
   selectedId: null,
 };
 
-const training = (state = initialState, action) => {
+export default function(state = initialState, action) {
   const { type, payload } = action;
   switch(type) {
     case trainingTypes.SAVE_TRAINING_ID:
@@ -20,5 +20,3 @@ const training = (state = initialState, action) => {
       return state;
   }
 };
-
-export default training;

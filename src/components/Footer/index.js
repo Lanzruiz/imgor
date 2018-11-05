@@ -8,7 +8,6 @@ import './styles.scss';
 
 const Footer = (props) => {
   const { price } = props;
-  // TODO: Write connect to the store
   return (
     <div className="footer__container footer__container--fixed">
       <Container style={{ height: '100%' }}>
