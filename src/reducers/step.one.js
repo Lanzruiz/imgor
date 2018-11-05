@@ -1,7 +1,9 @@
 // Constants
 import * as stepOneTypes from '../constants/step.one';
 
-const initialState = {};
+const initialState = {
+  lengthProgram: '1 Week Camps',
+};
 
 export default function(state = initialState, action) {
   const { type, payload } = action;

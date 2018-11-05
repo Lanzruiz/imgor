@@ -15,7 +15,7 @@
     "step_two.questions.call": "call",
     "step_two.questions.chat": "chat",
     "step_two.questions.email": "email",
-    "step_two.dates.header": "Upcoming 1 week football camps",
+    "step_two.dates.header": "Upcoming {length_program} {sport} camps",
     "step_two.dates.header_descripion": "Starting price may change based on selected date and seasonal demand",
     "step_two.dates.sold_out": "Sold out",
     "step_two.dates.check_in": "Check-in",

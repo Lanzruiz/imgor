@@ -7,7 +7,7 @@ const initialState = {
   shouldShowEmailModal: true,
 };
 
-const steps = (state = initialState, action = {}) => {
+export default function(state = initialState, action) {
   const { type, payload } = action;
   switch(type) {
     case stepsTypes.INCREMENT_CURRENT_STEP:
@@ -34,5 +34,3 @@ const steps = (state = initialState, action = {}) => {
       return state;
   }
 };
-
-export default steps;

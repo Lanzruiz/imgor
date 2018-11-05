@@ -1,19 +1,77 @@
 // Modules
 import React from 'react';
 import { Container, Row, Col } from 'react-grid-system';
-import Img from 'react-image'
+import Img from 'react-image';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import cx from 'classnames';
+import isEquel from 'lodash/isEqual';
 // Components
 import Header from '../../components/Header';
 import LocaleString from '../../components/LocaleString';
+// Actions
+import * as stepTwoActions from '../../actions/step.two';
 // Images
 import call from '../../assets/img/call-icon.png';
 import email from '../../assets/img/email-icon.png';
 import chat from '../../assets/img/chat-icon.png';
+// Helpers
+import splitArray from '../../helpers/splitArray';
+import dateFormat from '../../helpers/dateFormat';
+import isBeforeDate from '../../helpers/isBeforeDate';
 // Styles
 import './styles.scss';
 
 class StepTwo extends React.Component {
+  static propTypes = {
+    stepTwoActions: PropTypes.shape({
+      getCatalogCampsCalendarRequest: PropTypes.func.isRequired,
+      selectDate: PropTypes.func.isRequired,
+    }),
+    data: PropTypes.arrayOf(
+      PropTypes.shape({
+        capacity: PropTypes.arrayOf(
+          PropTypes.shape({
+            available: PropTypes.number,
+            boarding: PropTypes.bool,
+          }),
+        ),
+        capacity_end_date: PropTypes.date,
+        capacity_start_date: PropTypes.date,
+        display_length: PropTypes.string,
+        display_sport: PropTypes.string,
+        length: PropTypes.string,
+        length_days: PropTypes.number,
+        program_types: PropTypes.arrayOf(
+          PropTypes.shape({
+            capacity: PropTypes.number,
+            display_name: PropTypes.string,
+            name: PropTypes.string,
+            sold_out: PropTypes.bool,
+          }),
+        ),
+        sport: PropTypes.string,
+        selectedDate: PropTypes.shape({
+          capacity_start_date: PropTypes.date,
+          capacity_end_date: PropTypes.date,
+        }),
+      }),
+    ),
+  };
+
+  static defaultProps = {
+    data: [],
+  };
+
+  componentDidMount() {
+    const { packageType, sport, lengthProgram } = this.props;
+    this.props.stepTwoActions.getCatalogCampsCalendarRequest({ sport, length_program: lengthProgram, package_type: packageType });
+  }
+
   render() {
+    const { data, lengthProgram, sport, selectedDate } = this.props;
+    const dataObject = splitArray({ arrayCount: 6, array: data });
     return (
       <Container style={{ marginBottom: '65px' }}>
         <Row>
@@ -60,69 +118,13 @@ class StepTwo extends React.Component {
               </div>
               <div className="step-two__dates dates">
                 <h2 className="dates__header">
-                  <LocaleString stringKey="step_two.dates.header" />&#42;
+                  <LocaleString
+                    stringKey="step_two.dates.header"
+                    formatString={{ sport, length_program: lengthProgram }}
+                  />&#42;
                 </h2>
                 <ul className="dates__container">
-                  <li className="dates__column">
-                    <ul>
-                      <li className="dates__item sold-out">Sep 16, 2018</li>
-                      <li className="dates__item sold-out">Sep 16, 2018</li>
-                      <li className="dates__item sold-out">Sep 16, 2018</li>
-                      <li className="dates__item sold-out">Sep 16, 2018</li>
-                      <li className="dates__item sold-out">Sep 16, 2018</li>
-                      <li className="dates__item sold-out">Sep 16, 2018</li>
-                    </ul>
-                  </li>
-                  <li className="dates__column">
-                    <ul>
-                      <li className="dates__item">Sep 16, 2018</li>
-                      <li className="dates__item active">Sep 16, 2018</li>
-                      <li className="dates__item">Sep 16, 2018</li>
-                      <li className="dates__item">Sep 16, 2018</li>
-                      <li className="dates__item sold-out">Sep 16, 2018</li>
-                      <li className="dates__item sold-out">Sep 16, 2018</li>
-                    </ul>
-                  </li>
-                  <li className="dates__column">
-                    <ul>
-                      <li className="dates__item">Sep 16, 2018</li>
-                      <li className="dates__item sold-out">Sep 16, 2018</li>
-                      <li className="dates__item">Sep 16, 2018</li>
-                      <li className="dates__item">Sep 16, 2018</li>
-                      <li className="dates__item sold-out">Sep 16, 2018</li>
-                      <li className="dates__item">Sep 16, 2018</li>
-                    </ul>
-                  </li>
-                  <li className="dates__column">
-                    <ul>
-                      <li className="dates__item">Sep 16, 2018</li>
-                      <li className="dates__item sold-out">Sep 16, 2018</li>
-                      <li className="dates__item">Sep 16, 2018</li>
-                      <li className="dates__item">Sep 16, 2018</li>
-                      <li className="dates__item sold-out">Sep 16, 2018</li>
-                      <li className="dates__item">Sep 16, 2018</li>
-                    </ul>
-                  </li>
-                  <li className="dates__column">
-                    <ul>
-                      <li className="dates__item">Sep 16, 2018</li>
-                      <li className="dates__item sold-out">Sep 16, 2018</li>
-                      <li className="dates__item sold-out">Sep 16, 2018</li>
-                      <li className="dates__item">Sep 16, 2018</li>
-                      <li className="dates__item">Sep 16, 2018</li>
-                      <li className="dates__item">Sep 16, 2018</li>
-                    </ul>
-                  </li>
-                  <li className="dates__column">
-                    <ul>
-                      <li className="dates__item sold-out">Sep 16, 2018</li>
-                      <li className="dates__item">Sep 16, 2018</li>
-                      <li className="dates__item">Sep 16, 2018</li>
-                      <li className="dates__item sold-out">Sep 16, 2018</li>
-                      <li className="dates__item">Sep 16, 2018</li>
-                      <li className="dates__item sold-out">Sep 16, 2018</li>
-                    </ul>
-                  </li>
+                  {this.renderDates(dataObject)}
                 </ul>
                 <div className="step-two__description description">
                   <span className="description__info">
@@ -136,43 +138,105 @@ class StepTwo extends React.Component {
             </div>
           </Col>
         </Row>
-        <Row>
-          <Col>
-            <div className="step-two__selected-date selected-date">
-              <div className="selected-date__container">
-                <div className="selected-date__info">
-                  <div className="selected-date__check-in check-in">
-                    <span className="check-in__text">
-                      <LocaleString stringKey="step_two.dates.check_in" />
-                    </span>
+        {this.renderSelectedDate(selectedDate)}
+      </Container>
+    );
+  }
+
+  renderDates = (dataObject) => {
+    const result = [];
+    const { selectedDate } = this.props;
+    for (let key in dataObject) {
+      result.push(
+        <li key={key} className="dates__column">
+          <ul>
+            {dataObject[key].map((item, idx) => {
+              const { capacity_start_date, capacity_end_date } = item;
+              const itemKey = `${key}_${idx}`;
+              const isBefore = isBeforeDate({ startDate: undefined, endDate: capacity_end_date });
+              const onClickHandler = isBefore ? () => this.selectDate({ capacity_start_date, capacity_end_date }) : null;
+              const dateString = dateFormat({ date: capacity_start_date, dateFormat: 'YYYY-MM-DD', resultFormat: 'MMM, DD YYYY' });
+              const listItemClassNames = cx('dates__item', {
+                'sold-out': !isBefore,
+                'active': isEquel(selectedDate, { capacity_start_date, capacity_end_date }),
+              });
+              return (
+                <li
+                  key={itemKey}
+                  className={listItemClassNames}
+                  onClick={onClickHandler}
+                  children={dateString}
+                />
+              );
+            })}
+          </ul>
+      </li>
+      );
+    }
+    return result;
+  };
+
+  selectDate = (date) => {
+    this.props.stepTwoActions.selectDate(date);
+  };
+
+  renderSelectedDate = ({ capacity_start_date, capacity_end_date }) => {
+    if (!capacity_start_date || !capacity_end_date) return false;
+    const startDateDay = dateFormat({ date: capacity_start_date, dateFormat: 'YYYY-MM-DD', resultFormat: 'dddd' });
+    const endDateDay = dateFormat({ date: capacity_end_date, dateFormat: 'YYYY-MM-DD', resultFormat: 'dddd' });
+    const startDate = dateFormat({ date: capacity_start_date, dateFormat: 'YYYY-MM-DD', resultFormat: 'MMM, DD YYYY' });
+    const endDate = dateFormat({ date: capacity_end_date, dateFormat: 'YYYY-MM-DD', resultFormat: 'MMM, DD YYYY' });
+    return (
+      <Row>
+        <Col>
+          <div className="step-two__selected-date selected-date">
+            <div className="selected-date__container">
+              <div className="selected-date__info">
+                <div className="selected-date__check-in check-in">
+                  <span className="check-in__text">
+                    <LocaleString stringKey="step_two.dates.check_in" />
+                  </span>
+                </div>
+                <div className="selected-date__current-selected current-selected">
+                  <h2 className="current-selected__header">
+                    <LocaleString stringKey="step_two.dates.selected.header" />
+                  </h2>
+                  <div className="current-selected__days">
+                    <span>{startDateDay}</span>
+                    <span>{endDateDay}</span>
                   </div>
-                  <div className="selected-date__current-selected current-selected">
-                    <h2 className="current-selected__header">
-                      <LocaleString stringKey="step_two.dates.selected.header" />
-                    </h2>
-                    <div className="current-selected__days">
-                      <span className="">satuday</span>
-                      <span className="">satuday</span>
-                    </div>
-                    <div className="current-selected__dates">
-                      <span>Nov 16, 2018</span>
-                      <span className="">-</span>
-                      <span className="">Nov 16, 2018</span>
-                    </div>
+                  <div className="current-selected__dates">
+                    <span>{startDate}</span>
+                    <span>-</span>
+                    <span>{endDate}</span>
                   </div>
-                  <div className="selected-date__check-out check-out">
-                    <span className="check-out__text">
-                      <LocaleString stringKey="step_two.dates.check_out" />
-                    </span>
-                  </div>
+                </div>
+                <div className="selected-date__check-out check-out">
+                  <span className="check-out__text">
+                    <LocaleString stringKey="step_two.dates.check_out" />
+                  </span>
                 </div>
               </div>
             </div>
-          </Col>
-        </Row>
-      </Container>
+          </div>
+        </Col>
+      </Row>
     );
   }
 }
 
-export default StepTwo;
+function mapStateToProps(state) {
+  return {
+    lengthProgram: state.stepOne.lengthProgram,
+    data: state.stepTwo.data,
+    selectedDate: state.stepTwo.selectedDate,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    stepTwoActions: bindActionCreators(stepTwoActions, dispatch),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(StepTwo);

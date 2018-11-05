@@ -15,39 +15,42 @@ class WizardForm extends React.Component {
     stepActions: PropTypes.shape({
       incrementStepsCounter: PropTypes.func,
     }),
+    stepTwoStartingPrice: PropTypes.number.isRequired,
   };
 
   static defaultProps = {
     step: 0,
+    stepTwoStartingPrice: 0,
   };
 
   render() {
-    const { children, step } = this.props;
+    const { children, step, stepTwoStartingPrice } = this.props;
     const startIndex = 0;
     if (typeof children !== 'function') {
       return (
         <span>Error!</span>
       );
     }
-
+    const price = stepTwoStartingPrice;
     return (
       <React.Fragment>
         {children().slice(startIndex, step)}
-        <Footer />
+        <Footer price={price} />
       </React.Fragment>
     );
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+function mapDispatchToProps(dispatch) {
   return {
     stepActions: bindActionCreators(stepActions, dispatch),
   };
 };
 
-const mapStateToProps = (state) => {
+function mapStateToProps(state) {
   return {
     step: state.steps.currentStep,
+    stepTwoStartingPrice: state.stepTwo.stepTwoStartingPrice,
   };
 };
 

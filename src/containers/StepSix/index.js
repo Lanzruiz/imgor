@@ -2,6 +2,8 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-grid-system';
 import Img from 'react-image';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 // Components
 import Header from '../../components/Header';
 import Card, { CardContent, CardContentRow, CardContentCol, CardContentText } from '../../components/Card';
@@ -112,4 +114,12 @@ class StepSix extends React.Component {
   }
 }
 
-export default StepSix;
+function mapStateToProps(state) {
+  return {};
+}
+
+function mapDispatchToProps(dispatch) {
+  return {};
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(StepSix);
