@@ -10,16 +10,19 @@
         &__h2 {
             display: block;
             color: $header-text-color;
-            font-size: 26px;
-            font-weight: bold;
+            font-size: 40px;
+            font-weight: 700;
+            font-family: "Trade-Gothic-Bold";
             text-transform: uppercase;
         }
 
         &__h6 {
+            color: $subheader-text-color;
             display: block;
-            font-size: 16px;
-            font-weight: bold;
+            font-size: 20px;
+            font-weight: 700;
             text-transform: uppercase;
+            font-family: "Trade-Gothic-Bold";
         }
     }
 }

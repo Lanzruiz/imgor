@@ -7,14 +7,12 @@ const initialState = {
   weeks: [],
 };
 
-const maxWeeksCount = 12;
-
 export default function(state = initialState, action) {
   const { type, payload } = action;
   switch(type) {
     case weeksTypes.INCREMENT_WEEKS_COUNTER: {
       const counter = state.weeks.length + 1;
-      if (counter <= maxWeeksCount) {
+      if (counter <= weeksTypes.maxWeekCount) {
         const weeks = [ ...state.weeks, { id: counter, customize_id: null }];
         return {
           ...state,

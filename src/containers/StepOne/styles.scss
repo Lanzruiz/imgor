@@ -48,17 +48,43 @@
                     display: none;
                 }
             }
+
+            &--disabled {
+                position: relative;
+
+                &:after {
+                    background: $white;
+                    bottom: 0;
+                    content: '';
+                    cursor: not-allowed;
+                    height: 100%;
+                    opacity: 0.5;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    width: 100%;
+                }
+
+                & .tab-row__section--locked {
+                    background: $white url('../../assets/img/locked-padlock-dark.png') no-repeat center center;
+                }
+            }
         }
 
         &__header {
             color: $tab-header-color;
             display: block;
             font-weight: bold;
+            max-width: $tab-header-max-width;
+            text-align: center;
             text-transform: uppercase;
 
             &--green-block {
                 color: $tab-row-bg;
-                font-size: 12px;
+                font-size: 15px;
+                font-family: "Serifa-Bold";
+                margin: auto;
             }
 
             &--sold {
@@ -74,6 +100,18 @@
                 line-height: 8px;
                 font-size: 8px;
             }
+
+            &--regular {
+                font-size: 24px;
+            }
+
+            &--medium {
+                font-size: 26px;
+            }
+
+            &--mw-initial {
+                max-width: initial;
+            }
         }
 
         &__tab-list {
@@ -83,6 +121,7 @@
 
         &__container {
             margin-bottom: 15px;
+            min-height: $min-tab-row-height;
         }
 
         &__green-block {
@@ -122,8 +161,9 @@
 
         &__header {
             color: $tab-row-bg;
+            font-family: "Trade-Gothic-Bold";
             display: block;
-            font-weight: bold;
+            font-weight: 700;
             text-transform: uppercase;
             margin-bottom: 10px;
 
@@ -132,7 +172,7 @@
             }
 
             &--h3 {
-                font-size: 16px;
+                font-size: 21px;
             }
 
             &--h4 {
@@ -160,6 +200,13 @@
             font-size: 12px;
             font-weight: bold;
             user-select: none;
+        }
+
+        &__sleepaway-label {
+            color: $tab-row-bg;
+            font-family: "Trade-Gothic-Bold";
+            font-size: 16px;
+            font-weight: 700;
         }
 
         &__radio-btn {

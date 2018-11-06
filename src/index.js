@@ -16,7 +16,7 @@ ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <App
-        businessType="" // Configure your business type here
+        businessType="Youth Camp" // Configure your business type here
         packageType="Sport" // Configure your package type here
         sport="Soccer" // Configure your sport here
         lang="en" // Configure your language here

@@ -26,6 +26,10 @@
     text-align: center;
   }
 
+  .text-left {
+    text-align: left;
+  }
+
   .mr {
     &-auto {
       margin-right: auto;
@@ -120,8 +124,14 @@
     }
   }
 
-  .mb-0 {
-    margin-bottom: 0;
+  .mb {
+    &-0 {
+      margin-bottom: 0;
+    }
+
+    &-10 {
+      margin-bottom: 10px;
+    }
   }
 
   .bold {
