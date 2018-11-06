@@ -20,7 +20,6 @@ class Api {
         if (status === 404) res404();
       })
       .catch(function(err) {
-        console.log(err);
         reject(err);
       });
   }
@@ -29,8 +28,8 @@ class Api {
     return await instance.post('cart');
   }
 
-  async getCatalogGroup({ sport }) {
-    return await instance.get('catalog/group', {
+  async getCatalogCampsGroup({ sport }) {
+    return await instance.get('catalog/camps/groups', {
       params: {
         sport,
       },
