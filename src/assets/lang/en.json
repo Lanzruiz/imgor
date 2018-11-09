@@ -1,6 +1,6 @@
 {
     "step_one.header": "Step 1 - start by choosing a camp",
-    "step_one.sub_header": "Make sure to coose camper sleepaway option, age and gender",
+    "step_one.sub_header": "Make sure to choose camper sleepaway option, age and gender",
     "step_one.tabs.our_most": "our most",
     "step_one.tabs.popular_camp": "popular camp",
     "step_one.tabs.the_ultimate": "the ultimate",
@@ -73,5 +73,12 @@
     "step_final.shirt_size.small": "small",
     "step_final.shirt_size.large": "large",
     "step_final.shirt_size.xx-large": "xx-large",
-    "step_final.guardian_information": "Parent / Guardian Information"
+    "step_final.guardian_information": "Parent / Guardian Information",
+    "enter_email": "Enter email to build a camp",
+    "choose_sleepaway_age_and_gender": "Choose camper sleepaway option, age and gender",
+    "choose_age_and_gender": "Choose camper age and gender",
+    "choose_age": "Choose camper age",
+    "choose_gender": "Choose camper gender",
+    "choose_weeks": "Choose camper weeks length",
+    "camp_subtotal": "Camp subtotal"
 }

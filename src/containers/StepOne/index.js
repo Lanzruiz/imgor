@@ -25,6 +25,9 @@ import validation from '../../helpers/validate';
 import { minWeekCount, maxWeekCount } from '../../constants/weeks';
 // Styles
 import './styles.scss';
+
+export const weekly_camp = 'Weekly Camp';
+
 class StepOne extends React.Component {
   static propTypes = {
     weeksCounter: PropTypes.number,
@@ -36,6 +39,8 @@ class StepOne extends React.Component {
     stepOneActions: PropTypes.shape({
       getCatalogCampsGroup: PropTypes.func.isRequired,
       selectGroup: PropTypes.func.isRequired,
+      setTabIndex: PropTypes.func.isRequired,
+      stepOneSetPrice: PropTypes.func.isRequired,
     }),
     participantActions: PropTypes.shape({
       addParticipantByCardId: PropTypes.func.isRequired,
@@ -64,6 +69,11 @@ class StepOne extends React.Component {
         start_price: PropTypes.number,
       }),
     ),
+    tabIndex: PropTypes.number,
+    group: PropTypes.string,
+    sleepaway: PropTypes.string,
+    age: PropTypes.string,
+    gender: PropTypes.string,
   };
 
   static defaultProps = {
@@ -71,6 +81,7 @@ class StepOne extends React.Component {
     shouldShowEmailModal: true,
     weeksActions: {},
     stepActions: {},
+    tabIndex: 0,
   };
 
   componentDidMount() {
@@ -78,8 +89,15 @@ class StepOne extends React.Component {
     this.props.stepOneActions.getCatalogCampsGroup({ sport });
   }
 
+  componentDidUpdate(prevProps) {
+    const { sport } = this.props;
+    if (prevProps.sport !== sport) {
+      this.props.stepOneActions.getCatalogCampsGroup({ sport });
+    }
+  }
+
   render() {
-    const { weeksCounter, participantId, data } = this.props;
+    const { weeksCounter, participantId, data, tabIndex, group } = this.props;
     return (
       <React.Fragment>
         <EmailModal
@@ -96,118 +114,45 @@ class StepOne extends React.Component {
             </Col>
           </Row>
           <TabRow transparent>
-            <div className="tab-row__section mb-0" />
-            <div className="tab-row__section tab-row__section--center mb-0">
+            <TabRowSection />
+            <TabRowSection tabIndex={tabIndex} index={1}>
               <GreenBlock className="tab-row__green-block">
-                <span className="tab-row__header tab-row__header--green-block">
-                  <LocaleString stringKey="step_one.tabs.our_most" />
-                </span>
-                <span className="tab-row__header tab-row__header--green-block">
-                  <LocaleString stringKey="step_one.tabs.popular_camp" />
-                </span>
+                <TabRowHeaderGreenBlock localeKey="step_one.tabs.our_most" />
+                <TabRowHeaderGreenBlock localeKey="step_one.tabs.popular_camp" />
               </GreenBlock>
-            </div>
-            <div className="tab-row__section tab-row__section--center mb-0">
+            </TabRowSection>
+            <TabRowSection tabIndex={tabIndex} index={2}>
               <GreenBlock className="tab-row__green-block">
-                <span className="tab-row__header tab-row__header--green-block">
-                  <LocaleString stringKey="step_one.tabs.the_ultimate" />
-                </span>
-                <span className="tab-row__header tab-row__header--green-block">
-                  <LocaleString stringKey="step_one.tabs.training_experience" />
-                </span>
+                <TabRowHeaderGreenBlock localeKey="step_one.tabs.the_ultimate" />
+                <TabRowHeaderGreenBlock localeKey="step_one.tabs.training_experience" />
               </GreenBlock>
-            </div>
-            <div className="tab-row__section tab-row__section--center  mb-0">
+            </TabRowSection>
+            <TabRowSection tabIndex={tabIndex} index={3}>
               <GreenBlock className="tab-row__green-block">
-                <span className="tab-row__header tab-row__header--green-block">
-                  <LocaleString stringKey="step_one.tabs.invite_only" />
-                </span>
-                <span className="tab-row__header tab-row__header--green-block">
-                  <LocaleString stringKey="step_one.tabs.programm" />
-                </span>
+                <TabRowHeaderGreenBlock localeKey="step_one.tabs.invite_only" />
+                <TabRowHeaderGreenBlock localeKey="step_one.tabs.programm" />
               </GreenBlock>
-            </div>
+            </TabRowSection>
           </TabRow>
           {data.map((row, idx) => {
-            if ((row.options.length === 1) && (row.options[0].name === 'Other')) {
-              return (
-                <TabRow className="tab-row__container align-initial" key={idx}>
-                  <div className="tab-row__section center-left">
-                    <div style={{ marginBottom: '3px' }}>
-                      <span className={cx(`
-                        tab-row__header
-                        tab-row__header--mw-initial
-                        tab-row__header--regular
-                        text-left
-                        white`)}
-                      >
-                        {row.name}
-                      </span>
-                    </div>
-                  </div>
-                  <div className={cx(`
-                    tab-row__section
-                    tab-row__section--bg-white
-                    tab-row__section--center
-                    w-75
-                    d-flex
-                    align-center
-                    justify-evenly`)}
-                  >
-                    <div className="d-flex align-center justify-end w-35">
-                      <Button onClick={() => this.setWeeksCounter(minWeekCount)}>
-                        <span className="tab-row__header">
-                          {minWeekCount} <LocaleString stringKey="week" />
-                        </span>
-                      </Button>
-                      <span className="tab-row__separator" style={{ marginLeft: '20px' }} />
-                    </div>
-                    <div className="d-flex align-center justify-center w-30">
-                      <Button
-                        style={{ marginRight: '20px', padding: '4px' }}
-                        className="tab-row__header"
-                        onClick={this.decrementWeeksCounter}
-                        children="-"
-                      />
-                      <span className="tab-row__header" style={{ fontSize: '4em' }}>
-                        {weeksCounter}
-                      </span>
-                      <Button
-                        style={{ marginLeft: '20px', padding: '4px' }}
-                        className="tab-row__header"
-                        onClick={this.incrementWeeksCounter}
-                        children="+"
-                      />
-                    </div>
-                    <div className="d-flex align-center justify-start w-35">
-                      <span className="tab-row__separator" style={{ marginRight: '20px' }} />
-                      <Button
-                        buttonClassName="d-flex f-direction-column"
-                        onClick={() => this.setWeeksCounter(maxWeekCount)}
-                      >
-                        <span className="tab-row__header">
-                          <LocaleString stringKey="up_to" />
-                        </span>
-                        <span className="tab-row__header">
-                          {maxWeekCount} <LocaleString stringKey="week" />
-                        </span>
-                      </Button>
-                    </div>
-                  </div>
-                </TabRow>
-              );
-            }
             return (
               <React.Fragment key={idx}>
                 <Tabs
                   selectedTabClassName="tab-row__section--selected"
                   disabledTabClassName="tab-row__section--disabled"
+                  selectedIndex={(row.name === group) ? tabIndex : 0}
+                  onSelect={this.setTabIndex}
                 >
-                  <TabRow className="tab-row__container align-initial">
+                  <TabRow className={cx('tab-row__container align-initial', {
+                    'tab-row__container--disabled': (tabIndex > 0) && (group !== row.name),
+                  })}>
                     <TabList className="tab-row__tab-list">
                       <Tab
                         className="tab-row__section tab-row__section--bg-transparent center-left"
-                        onClick={() => this.selectGroup({ group: null, secondary_group: null })}
+                        onClick={() => {
+                          this.selectGroup({ group: null, secondary_group: null });
+                          this.setPrice(0);
+                        }}
                       >
                         <div style={{ marginBottom: '3px' }}>
                           <span children={row.name} className={cx(`
@@ -219,42 +164,128 @@ class StepOne extends React.Component {
                           />
                         </div>
                       </Tab>
-                      {row.options && (
-                        row.options.map((option, idx) => {
-                          return (
+                      {
+                        (row.name === weekly_camp)
+                          ? (
                             <Tab
-                              key={idx}
-                              onClick={() => this.selectGroup({ group: row.name, secondary_group: option.name })}
+                              onClick={() => this.selectGroup({ group: row.name, secondary_group: row.options[0].name })}
                               className={cx(`
                                 tab-row__section
                                 tab-row__section--bg-white
                                 tab-row__section--center
-                                center-center`)
-                              }
+                                w-75
+                                d-flex
+                                align-center
+                                justify-evenly`
+                              )}
                             >
-                              <span className="tab-row__header tab-row__header--medium">
-                                {option.name}
-                              </span>
+                              <div className="d-flex align-center justify-end w-35">
+                                <Button
+                                  onClick={() => {
+                                    this.setWeeksCounter(minWeekCount);
+                                    this.setPrice(row.options[0].price);
+                                  }}
+                                >
+                                  <span className="tab-row__header">
+                                    {minWeekCount} <LocaleString stringKey="week" />
+                                  </span>
+                                </Button>
+                                <span className="tab-row__separator" style={{ marginLeft: '20px' }} />
+                              </div>
+                              <div className="d-flex align-center justify-center w-30">
+                                <Button
+                                  style={{ marginRight: '20px', padding: '4px' }}
+                                  className="tab-row__header"
+                                  onClick={() => {
+                                    this.decrementWeeksCounter();
+                                    this.setPrice(row.options[0].price);
+                                  }}
+                                  children="-"
+                                />
+                                <span className="tab-row__header" style={{ fontSize: '4em' }}>
+                                  {weeksCounter}
+                                </span>
+                                <Button
+                                  style={{ marginLeft: '20px', padding: '4px' }}
+                                  className="tab-row__header"
+                                  onClick={() => {
+                                    this.incrementWeeksCounter();
+                                    this.setPrice(row.options[0].price);
+                                  }}
+                                  children="+"
+                                />
+                              </div>
+                              <div className="d-flex align-center justify-start w-35">
+                                <span className="tab-row__separator" style={{ marginRight: '20px' }} />
+                                <Button
+                                  buttonClassName="d-flex f-direction-column"
+                                  onClick={() => {
+                                    this.setWeeksCounter(maxWeekCount);
+                                    this.setPrice(row.options[0].price);
+                                  }}
+                                >
+                                  <span className="tab-row__header">
+                                    <LocaleString stringKey="up_to" />
+                                  </span>
+                                  <span className="tab-row__header">
+                                    {maxWeekCount} <LocaleString stringKey="week" />
+                                  </span>
+                                </Button>
+                              </div>
                             </Tab>
-                          );
-                        })
-                      )}
+                          ) : (
+                            <React.Fragment>
+                              {row.options && (
+                                row.options.map((option, idx) => {
+                                  return (
+                                    <Tab
+                                      key={idx}
+                                      onClick={() => {
+                                        this.selectGroup({ group: row.name, secondary_group: option.name });
+                                        this.setWeeksCounter(0);
+                                        this.setPrice(option.price);
+                                      }}
+                                      className={cx(`
+                                        tab-row__section
+                                        tab-row__section--bg-white
+                                        tab-row__section--center
+                                        center-center`
+                                      )}
+                                    >
+                                      <div className={cx('tab-row__wrapper', {
+                                        'tab-row__container--disabled': (tabIndex > 0) && ((idx + 1 !== tabIndex) && (group !== row.group)),
+                                      })}>
+                                        <span className="tab-row__header tab-row__header--medium">
+                                          {option.name}
+                                        </span>
+                                      </div>
+                                    </Tab>
+                                  );
+                                })
+                              )}
+                            </React.Fragment>
+                          )
+                      }
                     </TabList>
                   </TabRow>
-                  <TabPanel />
-                  {row.options && (
-                    row.options.map((item, idx) => {
-                      return (
-                        <TabPanel key={idx}>
-                          {this.renderTabPanel(item.name)}
-                        </TabPanel>
-                      );
-                    })
-                  )}
+                  <React.Fragment>
+                    <TabPanel />
+                    {row.options && (
+                      row.options.map((option, idx) => {
+                        const { age_from, age_to, name } = option;
+                        const range = Array.from(Array(age_to - age_from + 1).keys(), x => x + age_from);
+                        return (
+                          <TabPanel key={idx}>
+                            {this.renderTabPanel(name, range)}
+                          </TabPanel>
+                        );
+                      })
+                    )}
+                  </React.Fragment>
                 </Tabs>
               </React.Fragment>
             );
-            })}
+          })}
         </Container>
       </React.Fragment>
     );
@@ -279,40 +310,39 @@ class StepOne extends React.Component {
     this.props.weeksActions.setWeeksCounter(count);
   };
 
-  renderTabPanel = (name = '') => {
+  renderTabPanel = (name = '', range = []) => {
     const regExp = /\s/g;
     const prefix = name.toLowerCase().replace(regExp,'_');
+    const { sleepaway, age, gender } = this.props;
     return (
       <div className="tab-content__container tab-row__container content">
         <div className="content__first-col">
-          <h2 className="content__header content__header--h2">
-            our most popular camp
-          </h2>
-          <p className="content__paragraph">
+          <H2>our most popular camp</H2>
+          <Paragraph>
             Perfect for campers ages 10-18. Expand upon your current knowledge of the game while increasing
             your position-specific scills and profisiency through the best progressive youth football camp setting
             that also introduces 1-on-1 completion. Discover the ideal environment for growth and maturity both
             on the field and as an overall athlete.
-          </p>
-          <h4 className="content__header content__header--h4">week 1: technical skill development</h4>
-          <p className="content__paragraph">
+          </Paragraph>
+          <H4>week 1: technical skill development</H4>
+          <Paragraph>
             QB: Throwing mechanics; 3- and 5- step drops. RB/WR: Footwork; agility; ball catching and route
             running. DB/LB: Alignment; coverage and taskling fundamentals. OL/DL: Stance/start; pass rush and
             pro technique; run blocking. K/P: Leg swing; ball striking; stride; short and long distance kicking.
-          </p>
-          <h4 className="content__header content__header--h4">week 2: pre-competition</h4>
-          <p className="content__paragraph">
+          </Paragraph>
+          <H4>week 2: pre-competition</H4>
+          <Paragraph>
             Position specific refinement of mechanics and footwork, classroom instruction and understanding
             critical fundamental aspects.
-          </p>
-          <h4 className="content__header content__header--h4">week 3: competition</h4>
-          <p className="content__paragraph">
+          </Paragraph>
+          <H4>week 3: competition</H4>
+          <Paragraph>
             1-on-1 competitive drills and video analysis/classroom discussion of individual technique. QB: Half-
             field routes and reads; 1-on-1 drills RB/WB: Post-snap adjustments; 1-on-1s vs. DB/LB: pattern
             reads; 1-on-1s vs. RB/WR & OL/DL: Post snap reactions,; understanding stunts/blitzes; 1-on-1 pass
             pro and pass rush competition K/P: Situational kicking and punting; directional kicking; pooch punts;
             goal line punting; on-side kicks
-          </p>
+          </Paragraph>
         </div>
         <div className="content__second-col">
           <Form onSubmit={this.props.handleSubmit(() => {})}>
@@ -320,175 +350,31 @@ class StepOne extends React.Component {
               <h4 className="content__header content__header--h3">
                 <LocaleString stringKey="step_one.choose_sleepaway" />
               </h4>
-              <div className="content__sleepaway-label mb-10">
-                <Field
-                  className="content__radio-btn"
-                  name={`${prefix}_sleepaway`}
-                  type="radio"
-                  value="yes"
-                  component={({ input }) => (
-                    <Radio {...input}>
-                      <LocaleString stringKey="step_one.sleepaway_yes" />
-                    </Radio>
-                  )}
-                />
-              </div>
-              <div className="content__sleepaway-label mb-10">
-                <Field
-                  className="content__radio-btn"
-                  name={`${prefix}_sleepaway`}
-                  type="radio"
-                  value="no"
-                  component={({ input }) => (
-                    <Radio {...input}>
-                      <LocaleString stringKey="step_one.sleepaway_no" />
-                    </Radio>
-                  )}
-                />
-              </div>
+              <SleepawayRadioBtn
+                prefix={prefix}
+                options={[{ value: 'yes' },{ value: 'no' }]}
+                sleepaway={sleepaway}
+              />
             </div>
             <div className="content__form-control">
               <h4 className="content__header content__header--h3">
                 <LocaleString stringKey="step_one.select_camper_age" />
               </h4>
-              <div className="content__radio-container">
-                <div className="mb-10">
-                  <Field
-                    className="content__radio-btn"
-                    name={`${prefix}_age`}
-                    type="radio"
-                    value="10"
-                    component={({ input }) => (
-                      <Radio {...input} children={10} />
-                    )}
-                  />
-                </div>
-                <div className="mb-10">
-                  <Field
-                    className="content__radio-btn"
-                    name={`${prefix}_age`}
-                    type="radio"
-                    value="13"
-                    component={({ input }) => (
-                      <Radio {...input} children={13} />
-                    )}
-                  />
-                </div>
-                <div className="mb-10">
-                  <Field
-                    className="content__radio-btn"
-                    name={`${prefix}_age`}
-                    type="radio"
-                    value="16"
-                    component={({ input }) => (
-                      <Radio {...input} children={16} />
-                    )}
-                  />
-                </div>
-              </div>
-              <div className="content__radio-container">
-                <div className="mb-10">
-                  <Field
-                    className="content__radio-btn"
-                    name={`${prefix}_age`}
-                    type="radio"
-                    value="11"
-                    component={({ input }) => (
-                      <Radio {...input} children={11} />
-                    )}
-                  />
-                </div>
-                <div className="mb-10">
-                  <Field
-                    className="content__radio-btn"
-                    name={`${prefix}_age`}
-                    type="radio"
-                    value="14"
-                    component={({ input }) => (
-                      <Radio {...input} children={14} />
-                    )}
-                  />
-                </div>
-                <div className="mb-10">
-                  <Field
-                    className="content__radio-btn"
-                    name={`${prefix}_age`}
-                    type="radio"
-                    value="17"
-                    component={({ input }) => (
-                      <Radio {...input} children={17} />
-                    )}
-                  />
-                </div>
-              </div>
-              <div className="content__radio-container">
-                <div className="mb-10">
-                  <Field
-                    className="content__radio-btn"
-                    name={`${prefix}_age`}
-                    type="radio"
-                    value="12"
-                    component={({ input }) => (
-                      <Radio {...input} children={12} />
-                    )}
-                  />
-                </div>
-                <div className="mb-10">
-                  <Field
-                    className="content__radio-btn"
-                    name={`${prefix}_age`}
-                    type="radio"
-                    value="15"
-                    component={({ input }) => (
-                      <Radio {...input} children={15} />
-                    )}
-                  />
-                </div>
-                <div className="mb-10">
-                  <Field
-                    className="content__radio-btn"
-                    name={`${prefix}_age`}
-                    type="radio"
-                    value="18"
-                    component={({ input }) => (
-                      <Radio {...input} children={18} />
-                    )}
-                  />
-                </div>
-              </div>
+              <AgeRadioBtnContainer
+                age={age}
+                prefix={prefix}
+                range={range}
+              />
             </div>
             <div className="content__form-control">
               <h4 className="content__header content__header--h3">
                 <LocaleString stringKey="step_one.gender" />
               </h4>
-              <div className="content__radio-container">
-                <div className="content__label">
-                  <Field
-                    className="content__radio-btn"
-                    name={`${prefix}_gender`}
-                    type="radio"
-                    value="male"
-                    component={({ input }) => (
-                      <Radio {...input}>
-                        <LocaleString stringKey="male" />
-                      </Radio>
-                    )}
-                  />
-                </div>
-                <div className="content__label">
-                  <Field
-                    className="content__radio-btn"
-                    name={`${prefix}_gender`}
-                    type="radio"
-                    value="female"
-                    component={({ input }) => (
-                      <Radio {...input}>
-                        <LocaleString stringKey="female" />
-                      </Radio>
-                    )}
-                  />
-                </div>
-              </div>
+              <GenderRadioBtnContainer
+                prefix={prefix}
+                options={['male', 'female']}
+                value={gender}
+              />
             </div>
           </Form>
         </div>
@@ -498,18 +384,147 @@ class StepOne extends React.Component {
 
   selectGroup = ({ group, secondary_group }) => {
     this.props.stepOneActions.selectGroup({ group, secondary_group });
+  };
+
+  setTabIndex = (tabIndex) => {
+    this.props.stepOneActions.setTabIndex(tabIndex);
+  };
+
+  setPrice = (price) => {
+    this.props.stepOneActions.stepOneSetPrice(price);
   }
 }
 
+function TabRowSection({ index = 0, children, tabIndex = 0 }) {
+  return (
+    <div children={children} className={cx('tab-row__section tab-row__section--center mb-0', {
+      'tab-row__section--disabled': (tabIndex > 0) && (tabIndex !== index),
+    })} />
+  );
+}
+
+function TabRowHeaderGreenBlock ({ localeKey }) {
+  return (
+    <span className="tab-row__header tab-row__header--green-block">
+      <LocaleString stringKey={localeKey} />
+    </span>
+  );
+}
+
+function H2({ children }) {
+  return (
+    <h2 className="content__header content__header--h2">
+      {children}
+    </h2>
+  );
+}
+
+function H4({ children }) {
+  return (
+    <h4 className="content__header content__header--h4">
+      {children}
+    </h4>
+  );
+}
+
+function Paragraph({ children }) {
+  return (
+    <p className="content__paragraph">
+      {children}
+    </p>
+  );
+}
+
+function SleepawayRadioBtn({ options, prefix, sleepaway }) {
+  return (
+    <Field
+      className="content__radio-btn"
+      name={`${prefix}_sleepaway`}
+      type="radio"
+      options={options}
+      component={({ input, options }) => (
+        options.map(({ value }) => (
+          <div key={value} className="content__sleepaway-label mb-10">
+            <Radio {...input} value={value} checked={sleepaway === value}>
+              <LocaleString stringKey={`step_one.sleepaway_${value}`} />
+            </Radio>
+          </div>
+        ))
+      )}
+    />
+  );
+}
+
+function AgeRadioBtnContainer ({ prefix, range, age }) {
+  return (
+    <div className="content__age--block">
+      <Field
+        name={`${prefix}_age`}
+        type="radio"
+        options={range}
+        component={({ input, options }) => (
+          options.map((value) => (
+            <div key={value} className="content__age text-center mb-10">
+              <Radio
+                {...input}
+                checked={`${age}` === `${value}`}
+                children={`${value}`.length < 2 ? `0${value}` : value}
+                value={value}
+              />
+            </div>
+          ))
+        )}
+      />
+    </div>
+  );
+}
+
+function GenderRadioBtnContainer ({ prefix, options, value }) {
+  return (
+    <div className="content__radio-container">
+      <Field
+        className="content__radio-btn"
+        name={`${prefix}_gender`}
+        type="radio"
+        value="male"
+        options={options}
+        component={({ input, options }) => (
+          options.map((gender) => (
+            <div key={gender} className="content__label">
+              <Radio {...input} value={gender} checked={gender === value}>
+                <LocaleString stringKey={gender} />
+              </Radio>
+            </div>
+          ))
+        )}
+      />
+    </div>
+  );
+}
+
 const selector = formValueSelector('wizard');
+
+export function stepOneFormValueSelector(state, prefix) {
+  const regExp = /\s/g;
+  let name = state.stepOne.secondary_group;
+  if (name) {
+    name = name.toLowerCase().replace(regExp, '_');
+  }
+  return selector(state, `${name}_${prefix}`);
+}
 
 function mapStateToProps(state) {
   return {
     weeksCounter: state.weeks.weeksCounter,
     participantId: state.participant.id,
     email: selector(state, 'email'),
+    sleepaway: stepOneFormValueSelector(state, 'sleepaway'),
+    age: stepOneFormValueSelector(state, 'age'),
+    gender: stepOneFormValueSelector(state, 'gender'),
     cartId: state.cart.id,
     data: state.stepOne.data,
+    tabIndex: state.stepOne.tabIndex,
+    group: state.stepOne.group,
   };
 };
 

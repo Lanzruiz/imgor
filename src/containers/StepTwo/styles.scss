@@ -45,7 +45,7 @@
     .questions {
         &__questions {
             color: $white;
-            font-family: "Trade Gothic LT Std";
+            font-family: "Trade-Gothic";
             font-size: 14px;
             opacity: 0.8;
             margin-bottom: 5px;
@@ -53,7 +53,7 @@
 
         &__header {
             color: $white;
-            font-family: "Trade Gothic LT Std - Bold";
+            font-family: "Trade-Gothic-Bold";
             font-size: 18px;
             font-weight: 700;
             text-transform: uppercase;
@@ -62,7 +62,7 @@
 
         &__description {
             color: $white;
-            font-family: "Trade Gothic LT Std";
+            font-family: "Trade-Gothic";
             font-size: 14px;
             line-height: 14px;
             opacity: 0.8;
@@ -141,7 +141,7 @@
             &.active {
                 background-color: #4481a3;
                 color: $white;
-                font-family: "Trade Gothic LT Std - Bold";
+                font-family: "Trade-Gothic-Bold";
                 font-size: 14px;
                 font-weight: 700;
             }
@@ -185,7 +185,7 @@
                 height: 0;
                 border-left: 15px solid transparent;
                 border-right: 15px solid transparent;
-                border-bottom: 15px solid $date-block-selected-bg;
+                border-top: 15px solid $date-block-selected-bg;
                 clear: both;
             }
         }

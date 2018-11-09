@@ -8,6 +8,8 @@ const initialState = {
   data: [],
   group: null,
   secondary_group: null,
+  tabIndex: 0,
+  stepOnePrice: 0,
 };
 
 export default function(state = initialState, action) {
@@ -15,6 +17,7 @@ export default function(state = initialState, action) {
   switch(type) {
     case stepOneTypes.STEP_ONE_GET_CATALOG_GROUP: {
       const { results } = payload;
+      console.log('STEP_ONE_GET_CATALOG_GROUP ', payload);
       if (isEqual(state.data, results)) {
         return state;
       }
@@ -32,6 +35,24 @@ export default function(state = initialState, action) {
         ...state,
         group,
         secondary_group,
+      };
+    }
+    case stepOneTypes.STEP_ONE_SET_TAB_INDEX: {
+      if (state.tabIndex === payload) {
+        return state;
+      }
+      return {
+        ...state,
+        tabIndex: payload,
+      };
+    }
+    case stepOneTypes.STEP_ONE_SET_PRICE: {
+      if (state.stepOnePrice === payload) {
+        return state;
+      }
+      return {
+        ...state,
+        stepOnePrice: payload,
       };
     }
     default:

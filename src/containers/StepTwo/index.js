@@ -69,6 +69,23 @@ class StepTwo extends React.Component {
     this.props.stepTwoActions.getCatalogCampsCalendarRequest({ sport, length_program: lengthProgram, package_type: packageType });
   }
 
+  componentDidUpdate(prevProps) {
+    const { packageType, sport, lengthProgram } = this.props;
+    const getCatalogCampsCalendarRequestArgs = {
+      sport,
+      length_program: lengthProgram,
+      package_type: packageType,
+    };
+    const shouldSendRequest = isEquel(getCatalogCampsCalendarRequestArgs, {
+      sport: prevProps.sport,
+      length_program: prevProps.lengthProgram,
+      package_type: prevProps.packageType,
+    });
+    if (!shouldSendRequest) {
+      this.props.stepTwoActions.getCatalogCampsCalendarRequest(getCatalogCampsCalendarRequestArgs);
+    }
+  }
+
   render() {
     const { data, lengthProgram, sport, selectedDate } = this.props;
     const dataObject = splitArray({ arrayCount: 6, array: data });
