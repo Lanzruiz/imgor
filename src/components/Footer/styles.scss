@@ -10,7 +10,7 @@
 
         &__container {
             background-color: $green-block-bg;
-            height: 60px;
+            height: 71px;
 
             &--fixed {
                 position: fixed;
@@ -23,14 +23,19 @@
         }
 
         &__image {
+            max-height: 36px;
+            max-width: 89px;
             display: block;
             width: auto;
             height: 100%;
-            padding: 15px;
-            box-sizing: border-box;
+            padding: 15px 20px;
+            box-sizing: content-box;
 
             &-container {
-                height: 60px;
+                align-items: center;
+                display: flex;
+                height: 71px;
+                justify-content: center;
             }
         }
 
@@ -38,19 +43,28 @@
             font-weight: bold;
 
             &-container {
-                color: $green-block-color;
+                color: $subheader-text-color;
                 display: flex;
                 flex-direction: column;
+                font-family: "Trade-Gothic-Bold";
+                font-size: 36px;
+                font-weight: 700;
+                text-transform: uppercase;
             }
 
             &-total {
-                font-size: 12px;
-                line-height: 12px;
+                font-size: 11px;
             }
         }
 
         &__text {
             margin: 0 auto;
+            color: $subheader-text-color;
+            font-family: "Trade-Gothic-Bold";
+            font-size: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 15px 20px;
         }
     }
 }

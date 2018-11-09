@@ -10,6 +10,7 @@ import stepOne from './step.one';
 import participant from './participant';
 import stepFive from './step.five';
 import stepTwo from './step.two';
+import stepThree from './step.three';
 
 export default combineReducers({
   cart,
@@ -18,6 +19,7 @@ export default combineReducers({
   training,
   stepOne,
   stepTwo,
+  stepThree,
   stepFive,
   participant,
   form: formReducer,

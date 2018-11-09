@@ -13,8 +13,8 @@ class Api {
     return Api.instance;
   }
 
-  async req({ apiCall, res200, res404, reject }) {
-    return await apiCall()
+  async req({ apiCall, res200, res404, reject, apiCallParams }) {
+    return await apiCall(apiCallParams)
       .then(function({ data, status }) {
         if (status === 200) res200(data);
         if (status === 404) res404();
@@ -59,6 +59,36 @@ class Api {
         package_type,
         sport,
         length_program,
+      },
+    });
+  }
+
+  async putCartCartIdParticipantParticipantId({ cartId, participantId, gender, age }) {
+    return await instance.put(`cart/${cartId}/participant/${participantId}`, {
+      gender,
+      age,
+    });
+  }
+
+  async getCatalogCampsLevels(args) {
+    const {
+      sport, business_type, package_type, gender, boarding, length, length_program, days, age, date, start_date, end_date, year,
+    } = args;
+    return await instance.get('catalog/camps/levels', {
+      params: {
+        sport,
+        business_type,
+        package_type,
+        gender,
+        boarding,
+        length,
+        length_program,
+        days,
+        age,
+        date,
+        start_date,
+        end_date,
+        year,
       },
     });
   }

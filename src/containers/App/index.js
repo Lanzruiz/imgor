@@ -18,8 +18,6 @@ import StepFinal from '../StepFinal';
 import { setMaxStepValue } from '../../actions/steps';
 import { createCartRequest } from '../../actions/cart';
 
-import Api from '../../api';
-
 class App extends React.Component {
   static propTypes = {
     stepActions: PropTypes.shape({
@@ -57,7 +55,12 @@ class App extends React.Component {
         packageType={props.packageType}
         businessType={props.businessType}
       />,
-      <StepThree key="2" />,
+      <StepThree
+        key="2"
+        sport={props.sport}
+        packageType={props.packageType}
+        businessType={props.businessType}
+      />,
       <StepFour key="3" />,
       <StepFive key="4" />,
       <StepSix key="5" />,
@@ -74,7 +77,6 @@ class App extends React.Component {
     if (!cartId) {
       this.props.cartActions.createCartRequest();
     }
-    window.api = Api;
   }
 
   render() {
