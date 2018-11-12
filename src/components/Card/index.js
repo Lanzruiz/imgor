@@ -234,12 +234,32 @@ class Card extends React.Component {
   }
 }
 
-export const CardContent = ({ children, ...rest }) => <div className="card-content" {...rest}>{children}</div>;
+export function CardContent({ children, ...rest }) {
+  return (
+    <div className="card-content" {...rest}>
+      {children}
+    </div>
+  );
+};
 
-export const CardContentRow = ({ children, ...rest }) => <div className="card-content__row" {...rest}>{children}</div>;
+export function CardContentRow({ children, ...rest }) {
+  return (
+    <div className="card-content__row" {...rest}>
+      {children}
+    </div>
+  );
+};
 
-export const CardContentCol = ({ children, ...rest }) => <div className="card-content__col" {...rest}>{children}</div>;
+export function CardContentCol({ children, ...rest }) {
+  return (
+    <div className="card-content__col" {...rest}>{children}</div>
+  );
+};
 
-export const CardContentText = ({ children, ...rest }) => <div className="card-content__text" {...rest}>{children}</div>;
+export function CardContentText({ children, ...rest }) {
+  return (
+    <div className="card-content__text" {...rest}>{children}</div>
+  );
+};
 
 export default Card;

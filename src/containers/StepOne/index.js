@@ -7,6 +7,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { Field, Form, reduxForm, formValueSelector } from 'redux-form';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import include from 'lodash/includes';
 // Components
 import EmailModal from '../../components/EmailModal';
 import Header from '../../components/Header';
@@ -272,11 +273,11 @@ class StepOne extends React.Component {
                     <TabPanel />
                     {row.options && (
                       row.options.map((option, idx) => {
-                        const { age_from, age_to, name } = option;
+                        const { age_from, age_to, name, boarding_options, gender_options } = option;
                         const range = Array.from(Array(age_to - age_from + 1).keys(), x => x + age_from);
                         return (
                           <TabPanel key={idx}>
-                            {this.renderTabPanel(name, range)}
+                            {this.renderTabPanel({ name, range, boardingOptions: boarding_options, genderOptions: gender_options })}
                           </TabPanel>
                         );
                       })
@@ -310,7 +311,7 @@ class StepOne extends React.Component {
     this.props.weeksActions.setWeeksCounter(count);
   };
 
-  renderTabPanel = (name = '', range = []) => {
+  renderTabPanel = ({ name = '', range = [], boardingOptions = [], genderOptions = [] }) => {
     const regExp = /\s/g;
     const prefix = name.toLowerCase().replace(regExp,'_');
     const { sleepaway, age, gender } = this.props;
@@ -352,8 +353,9 @@ class StepOne extends React.Component {
               </h4>
               <SleepawayRadioBtn
                 prefix={prefix}
-                options={[{ value: 'yes' },{ value: 'no' }]}
+                options={[{ value: 'Boarding', stringKey: 'yes' },{ value: 'Non-Boarding', stringKey: 'no' }]}
                 sleepaway={sleepaway}
+                possibleValues={boardingOptions}
               />
             </div>
             <div className="content__form-control">
@@ -372,8 +374,9 @@ class StepOne extends React.Component {
               </h4>
               <GenderRadioBtnContainer
                 prefix={prefix}
-                options={['male', 'female']}
+                options={['Male', 'Female']}
                 value={gender}
+                possibleValues={genderOptions}
               />
             </div>
           </Form>
@@ -435,7 +438,7 @@ function Paragraph({ children }) {
   );
 }
 
-function SleepawayRadioBtn({ options, prefix, sleepaway }) {
+function SleepawayRadioBtn({ options, prefix, sleepaway, possibleValues }) {
   return (
     <Field
       className="content__radio-btn"
@@ -443,14 +446,23 @@ function SleepawayRadioBtn({ options, prefix, sleepaway }) {
       type="radio"
       options={options}
       component={({ input, options }) => (
-        options.map(({ value }) => (
-          <div key={value} className="content__sleepaway-label mb-10">
-            <Radio {...input} value={value} checked={sleepaway === value}>
-              <LocaleString stringKey={`step_one.sleepaway_${value}`} />
-            </Radio>
-          </div>
-        ))
-      )}
+        options.map(({ value, stringKey }) => {
+          const isDisabled = !include(possibleValues, value);
+          const radioBtnClassNames = cx('content__sleepaway-label mb-10', {
+            'content__sleepaway-label--disabled': isDisabled,
+          });
+          return (
+            <div key={value} className={radioBtnClassNames}>
+              <Radio
+                {...input}
+                value={value}
+                checked={sleepaway === value}
+                disabled={isDisabled}
+                children={<LocaleString stringKey={`step_one.sleepaway_${stringKey}`} />}
+              />
+            </div>
+          );
+      }))}
     />
   );
 }
@@ -479,23 +491,32 @@ function AgeRadioBtnContainer ({ prefix, range, age }) {
   );
 }
 
-function GenderRadioBtnContainer ({ prefix, options, value }) {
+function GenderRadioBtnContainer ({ prefix, options, value, possibleValues }) {
   return (
     <div className="content__radio-container">
       <Field
         className="content__radio-btn"
         name={`${prefix}_gender`}
         type="radio"
-        value="male"
         options={options}
         component={({ input, options }) => (
-          options.map((gender) => (
-            <div key={gender} className="content__label">
-              <Radio {...input} value={gender} checked={gender === value}>
-                <LocaleString stringKey={gender} />
-              </Radio>
-            </div>
-          ))
+          options.map((gender) => {
+            const isDisabled = !include(possibleValues, gender);
+            const radioBtnClassNames = cx('content__label', {
+              'content__label--disabled': isDisabled,
+            });
+            return (
+              <div key={gender} className={radioBtnClassNames}>
+                <Radio
+                  {...input}
+                  value={gender}
+                  checked={gender === value}
+                  disabled={isDisabled}
+                  children={<LocaleString stringKey={gender.toLowerCase()} />}
+                />
+              </div>
+            );
+          })
         )}
       />
     </div>

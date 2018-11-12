@@ -4,7 +4,7 @@ import { Container, Row, Col } from 'react-grid-system';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import { reduxForm, formValueSelector } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import isEqual from 'lodash/isEqual';
 // Components
 import Header from '../../components/Header';
@@ -13,6 +13,7 @@ import Card from '../../components/Card';
 import stubImg from '../../assets/img/football-core_copy_2.png';
 // Helpers
 import validation from '../../helpers/validate';
+import { stepOneFormValueSelector } from '../StepOne';
 // Actions
 import * as trainingActions from '../../actions/training';
 import * as stepThreeActions from '../../actions/step.three';
@@ -36,6 +37,28 @@ class StepThree extends React.Component {
     lengthProgram: PropTypes.string,
     age: PropTypes.string,
     date: PropTypes.string,
+    data: PropTypes.arrayOf(
+      PropTypes.shape({
+        age_range: PropTypes.string,
+        business_type: PropTypes.string,
+        capacity_available: PropTypes.number,
+        capacity_id: PropTypes.string,
+        display_business_type: PropTypes.string,
+        display_length_program: PropTypes.string,
+        display_name: PropTypes.string,
+        display_package_type: PropTypes.string,
+        display_sport: PropTypes.string,
+        has_secondary_program: PropTypes.bool,
+        id: PropTypes.number,
+        length_program: PropTypes.string,
+        name: PropTypes.string,
+        package_type: PropTypes.string,
+        price: PropTypes.number,
+        price_refundable: PropTypes.number,
+        sold_out: PropTypes.bool,
+        sport: PropTypes.string,
+      }),
+    ),
   };
 
   componentDidMount() {
@@ -81,7 +104,7 @@ class StepThree extends React.Component {
   }
 
   render() {
-    const { selectedId } = this.props;
+    const { selectedId, data } = this.props;
     return (
       <Container style={{ marginBottom: '65px' }}>
         <Row>
@@ -93,6 +116,21 @@ class StepThree extends React.Component {
           </Col>
         </Row>
         <Row>
+          {data.map(({ age_range, display_name, price, id }) => {
+            return (
+              <Col xl={6} key={id}>
+                <Card
+                  header={display_name}
+                  label={age_range ? `ages ${age_range}` : ''}
+                  price={price}
+                  size="large"
+                  via={true}
+                >
+                  render from data
+                </Card>
+              </Col>
+            );
+          })}
           <Col xl={6}>
             <Card
               cardHeader="group sport training"
@@ -171,21 +209,15 @@ class StepThree extends React.Component {
   }
 }
 
-const selector = formValueSelector('wizard');
-
-const stepOneFormValueSelector = function(state, prefix) {
-  const regExp = /\s/g;
-  return selector(state, `${state.stepOne.secondary_group.toLowerCase().replace(regExp, '_')}${prefix}`)
-}
-
 function mapStateToProps(state) {
   return {
     selectedId: state.training.selectedId,
     lengthProgram: state.stepOne.lengthProgram,
-    gender: stepOneFormValueSelector(state, '_gender'),
-    boarding: stepOneFormValueSelector(state, '_sleepaway'),
-    age: stepOneFormValueSelector(state, '_age'),
+    gender: stepOneFormValueSelector(state, 'gender'),
+    boarding: stepOneFormValueSelector(state, 'sleepaway'),
+    age: stepOneFormValueSelector(state, 'age'),
     date: state.stepTwo.selectedDate.capacity_start_date,
+    data: state.stepThree.data,
   };
 };
 
