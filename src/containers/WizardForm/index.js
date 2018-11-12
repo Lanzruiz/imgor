@@ -35,6 +35,8 @@ class WizardForm extends React.Component {
     group: PropTypes.string,
     weeks: PropTypes.number,
     cartId: PropTypes.number,
+    secondary_group: PropTypes.string,
+    start_date: PropTypes.string,
   };
 
   static defaultProps = {
@@ -50,6 +52,9 @@ class WizardForm extends React.Component {
     if (step === 1) {
       this.goingToStepTwo();
     }
+    if (step === 2) {
+      this.goingToStepThree();
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -62,6 +67,9 @@ class WizardForm extends React.Component {
         age: prevProps.age,
         weeks: prevProps.weeks,
       });
+    }
+    if (step === 2) {
+      this.goingToStepThree({ start_date: prevProps.start_date });
     }
   }
 
@@ -89,7 +97,7 @@ class WizardForm extends React.Component {
   }
 
   renderMessage = () => {
-    const { age, gender, group, participantId, sleepaway, weeks } = this.props;
+    const { age, gender, group, participantId, sleepaway, start_date, weeks } = this.props;
     let stringKey;
     switch(true) {
       case (!isString(participantId) && !isNumber(participantId)): {
@@ -116,6 +124,10 @@ class WizardForm extends React.Component {
         stringKey = 'choose_weeks';
         break;
       }
+      case (isString(sleepaway) && isString(gender) && isString(age)) && !start_date: {
+        stringKey = 'choose_date';
+        break;
+      }
       default:
         stringKey = '';
     }
@@ -123,11 +135,25 @@ class WizardForm extends React.Component {
   };
 
   goingToStepTwo = (prevProps = {}) => {
-    const { group, sleepaway, gender, age, weeks, cartId, participantId } = this.props;
-    if ((isString(sleepaway) && isString(gender) && isString(age)) && (weekly_camp === group) && (weeks > 0)) {
-      if (!isEqual({ group, sleepaway, gender, age, weeks }, prevProps)) {
-        this.props.stepOneActions.stepOnePutCartCartIdParticipantParticipantIdRequest({ cartId, participantId, gender, age });
+    const { group, sleepaway, gender, age, weeks, cartId, participantId, secondary_group } = this.props;
+    if ((isString(sleepaway) && isString(gender) && isString(age))) {
+      if (((weekly_camp === group) && (weeks > 0)) || (group && secondary_group)) {
+        if (!isEqual({ group, sleepaway, gender, age, weeks }, prevProps)) {
+          this.props.stepOneActions.stepOnePutCartCartIdParticipantParticipantIdRequest({
+            age,
+            cartId,
+            participantId,
+            gender: gender.toLowerCase(),
+          });
+        }
       }
+    }
+  };
+
+  goingToStepThree = (prevProps = {}) => {
+    const { start_date } = this.props;
+    if (start_date && !isEqual({ start_date }, prevProps)) {
+      this.props.stepActions.incrementStepsCounter();
     }
   }
 }
@@ -152,6 +178,8 @@ function mapStateToProps(state) {
     group: state.stepOne.group,
     weeks: state.weeks.weeksCounter,
     cartId: state.cart.id,
+    secondary_group: state.stepOne.secondary_group,
+    start_date: state.stepTwo.selectedDate.capacity_start_date,
   };
 };
 

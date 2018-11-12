@@ -4,7 +4,7 @@ import isEqual from 'lodash/isEqual';
 import * as stepOneTypes from '../constants/step.one';
 
 const initialState = {
-  lengthProgram: '1 Week Camps',
+  lengthProgram: '5 Week Camps',
   data: [],
   group: null,
   secondary_group: null,

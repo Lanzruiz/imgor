@@ -10,7 +10,16 @@ export function getCatalogCampsLevelsRequest(args) {
       res200: data => dispatch(getCatalogCampsLevels(data)),
       res404: () => console.log('Api.getCatalogCampsLevels() => 404'),
       reject: err => console.log(err),
-      apiCallParams: args,
+      apiCallParams: {
+        age: args.age,
+        date: args.date,
+        sport: args.sport,
+        gender: args.gender,
+        boarding: args.boarding,
+        business_type: args.business_type,
+        package_type: args.package_type,
+        length_program: args.length_program,
+      },
     });
   }
 }

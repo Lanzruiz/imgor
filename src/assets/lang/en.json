@@ -13,7 +13,7 @@
     "step_one.tabs.programm": "programm",
     "step_one.gender": "select camper gender",
     "step_two.header": "Step 2 - choose your check-in date",
-    "step_two.sub_header": "Displayed dates are available check-in options for camp sected in step 1",
+    "step_two.sub_header": "Displayed dates are available check-in options for camp selected in step 1",
     "step_two.questions.questions": "Questions?",
     "step_two.questions.header": "Talk to an advisor",
     "step_two.questions.description": "Calm specialists are standing by to help you fing the right camp",
@@ -80,5 +80,6 @@
     "choose_age": "Choose camper age",
     "choose_gender": "Choose camper gender",
     "choose_weeks": "Choose camper weeks length",
-    "camp_subtotal": "Camp subtotal"
+    "camp_subtotal": "Camp subtotal",
+    "choose_date": "Choose your check-in date"
 }

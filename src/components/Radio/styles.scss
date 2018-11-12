@@ -33,7 +33,6 @@
         }
 
         &__container {
-            cursor: pointer;
             height: 19px;
             padding-left: 25px;
             position: relative;
@@ -44,6 +43,14 @@
                 font-family: "Trade-Gothic-Bold";
                 font-size: 15px;
                 font-weight: 700;
+            }
+
+            &--pointer {
+                cursor: pointer;
+            }
+
+            &--not-allowed {
+                cursor: not-allowed;
             }
         }
     }
