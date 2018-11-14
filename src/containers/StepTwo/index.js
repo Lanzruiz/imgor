@@ -11,12 +11,14 @@ import isEquel from 'lodash/isEqual';
 import Header from '../../components/Header';
 import LocaleString from '../../components/LocaleString';
 // Actions
+import * as stepOneActions from '../../actions/step.one';
 import * as stepTwoActions from '../../actions/step.two';
 // Images
 import call from '../../assets/img/call-icon.png';
 import email from '../../assets/img/email-icon.png';
 import chat from '../../assets/img/chat-icon.png';
 // Helpers
+import { stepOneFormValueSelector } from '../StepOne';
 import splitArray from '../../helpers/splitArray';
 import dateFormat from '../../helpers/dateFormat';
 import isBeforeDate from '../../helpers/isBeforeDate';
@@ -25,6 +27,9 @@ import './styles.scss';
 
 class StepTwo extends React.Component {
   static propTypes = {
+    stepOneActions: PropTypes.shape({
+      stepOneSetCampLength: PropTypes.func.isRequired,
+    }),
     stepTwoActions: PropTypes.shape({
       getCatalogCampsCalendarRequest: PropTypes.func.isRequired,
       selectDate: PropTypes.func.isRequired,
@@ -58,6 +63,11 @@ class StepTwo extends React.Component {
         }),
       }),
     ),
+    sleepaway: PropTypes.string,
+    age: PropTypes.string,
+    gender: PropTypes.string,
+    group: PropTypes.string,
+    secondary_group: PropTypes.string,
   };
 
   static defaultProps = {
@@ -65,24 +75,44 @@ class StepTwo extends React.Component {
   };
 
   componentDidMount() {
-    const { packageType, sport, lengthProgram } = this.props;
-    this.props.stepTwoActions.getCatalogCampsCalendarRequest({ sport, length_program: lengthProgram, package_type: packageType });
+    const { age, businessType, sleepaway, packageType, sport, group, secondary_group, gender } = this.props;
+    const getCatalogCampsCalendarArgs = {
+      age,
+      sport,
+      gender,
+      group,
+      secondary_group,
+      boarding: sleepaway,
+      business_type: businessType,
+      package_type: packageType,
+    };
+    this.getCatalogCampsCalendar(getCatalogCampsCalendarArgs);
   }
 
   componentDidUpdate(prevProps) {
-    const { packageType, sport, lengthProgram } = this.props;
-    const getCatalogCampsCalendarRequestArgs = {
+    const { age, businessType, sleepaway, packageType, sport, group, secondary_group, gender } = this.props;
+    const getCatalogCampsCalendarArgs = {
+      age,
       sport,
-      length_program: lengthProgram,
+      gender,
+      group,
+      secondary_group,
+      boarding: sleepaway,
+      business_type: businessType,
       package_type: packageType,
     };
-    const shouldSendRequest = isEquel(getCatalogCampsCalendarRequestArgs, {
+    const shouldSendRequest = isEquel(getCatalogCampsCalendarArgs, {
+      age: prevProps.age,
       sport: prevProps.sport,
-      length_program: prevProps.lengthProgram,
+      gender: prevProps.gender,
+      group: prevProps.group,
+      secondary_group: prevProps.secondary_group,
+      boarding: prevProps.sleepaway,
+      business_type: prevProps.businessType,
       package_type: prevProps.packageType,
     });
     if (!shouldSendRequest) {
-      this.props.stepTwoActions.getCatalogCampsCalendarRequest(getCatalogCampsCalendarRequestArgs);
+      this.props.stepTwoActions.getCatalogCampsCalendarRequest(getCatalogCampsCalendarArgs);
     }
   }
 
@@ -163,15 +193,24 @@ class StepTwo extends React.Component {
   renderDates = (dataObject) => {
     const result = [];
     const { selectedDate } = this.props;
+    const now = Date.now();
     for (let key in dataObject) {
       result.push(
         <li key={key} className="dates__column">
           <ul>
             {dataObject[key].map((item, idx) => {
-              const { capacity_start_date, capacity_end_date } = item;
+              const { capacity_start_date, capacity_end_date, length } = item;
               const itemKey = `${key}_${idx}`;
-              const isBefore = isBeforeDate({ startDate: undefined, endDate: capacity_end_date });
-              const onClickHandler = isBefore ? () => this.selectDate({ capacity_start_date, capacity_end_date }) : null;
+              const isBefore = isBeforeDate({ startDate: now, endDate: capacity_end_date });
+              const onClickHandler = (
+                isBefore
+                  ?
+                    () => {
+                      this.selectDate({ capacity_start_date, capacity_end_date });
+                      this.selectCampLength(`${length} Camps`);
+                    }
+                  : null
+              );
               const dateString = dateFormat({ date: capacity_start_date, dateFormat: 'YYYY-MM-DD', resultFormat: 'MMM, DD YYYY' });
               const listItemClassNames = cx('dates__item', {
                 'sold-out': !isBefore,
@@ -195,6 +234,10 @@ class StepTwo extends React.Component {
 
   selectDate = (date) => {
     this.props.stepTwoActions.selectDate(date);
+  };
+
+  selectCampLength = (length) => {
+    this.props.stepOneActions.stepOneSetCampLength(length);
   };
 
   renderSelectedDate = ({ capacity_start_date, capacity_end_date }) => {
@@ -239,19 +282,28 @@ class StepTwo extends React.Component {
         </Col>
       </Row>
     );
+  };
+
+  getCatalogCampsCalendar = (args) => {
+    this.props.stepTwoActions.getCatalogCampsCalendarRequest(args);
   }
 }
 
 function mapStateToProps(state) {
   return {
-    lengthProgram: state.stepOne.lengthProgram,
     data: state.stepTwo.data,
     selectedDate: state.stepTwo.selectedDate,
+    sleepaway: stepOneFormValueSelector(state, 'sleepaway'),
+    age: stepOneFormValueSelector(state, 'age'),
+    gender: stepOneFormValueSelector(state, 'gender'),
+    group: state.stepOne.group,
+    secondary_group: state.stepOne.secondary_group,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
+    stepOneActions: bindActionCreators(stepOneActions, dispatch),
     stepTwoActions: bindActionCreators(stepTwoActions, dispatch),
   };
 }

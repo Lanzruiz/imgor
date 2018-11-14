@@ -8,9 +8,10 @@ import { reduxForm } from 'redux-form';
 import isEqual from 'lodash/isEqual';
 // Components
 import Header from '../../components/Header';
-import Card from '../../components/Card';
-// TODO image stub! remove that in prodction!
-import stubImg from '../../assets/img/football-core_copy_2.png';
+import BreakthroughCard from '../../components/BreakthroughCard';
+import CoreCard from '../../components/CoreCard';
+import TotalAthleteCard from '../../components/TotalAthleteCard';
+import GameChangerCard from '../../components/GameChangerCard';
 // Helpers
 import validation from '../../helpers/validate';
 import { stepOneFormValueSelector } from '../StepOne';
@@ -59,47 +60,67 @@ class StepThree extends React.Component {
         sport: PropTypes.string,
       }),
     ),
+    group: PropTypes.string,
+    secondaryGroup: PropTypes.string,
+    cartId: PropTypes.number,
   };
 
   componentDidMount() {
-    const { sport, packageType, businessType, gender, boarding, lengthProgram, age, date } = this.props;
+    const {
+      sport, packageType, businessType, gender, boarding, age, date, group, secondaryGroup, lengthProgram,
+      selectedId, cartId,
+    } = this.props;
     const getCatalogCampsLevelsRequestArgs = {
       age,
       date,
       sport,
       gender,
       boarding,
+      group,
       business_type: businessType,
       package_type: packageType,
+      secondary_group: secondaryGroup,
       length_program: lengthProgram,
     };
     this.props.stepThreeActions.getCatalogCampsLevelsRequest(getCatalogCampsLevelsRequestArgs);
+    if (cartId && selectedId) {
+      this.createProductBySelectedId({ cartId, id: selectedId });
+    }
   }
 
   componentDidUpdate(prevProps) {
-    const { sport, packageType, businessType, gender, boarding, lengthProgram, age, date } = this.props;
+    const {
+      sport, packageType, businessType, gender, boarding, age, date, group, secondaryGroup, lengthProgram, selectedId, cartId,
+    } = this.props;
     const getCatalogCampsLevelsRequestArgs = {
-      sport,
-      packageType,
-      businessType,
-      gender,
-      boarding,
-      lengthProgram,
       age,
       date,
+      sport,
+      gender,
+      boarding,
+      group,
+      business_type: businessType,
+      package_type: packageType,
+      secondary_group: secondaryGroup,
+      length_program: lengthProgram,
     };
     const shouldSendRequest = isEqual(getCatalogCampsLevelsRequestArgs, {
-      sport: prevProps.sport,
-      packageType: prevProps.packageType,
-      businessType: prevProps.businessType,
-      gender: prevProps.gender,
-      boarding: prevProps.boarding,
-      lengthProgram: prevProps.lengthProgram,
       age: prevProps.age,
       date: prevProps.date,
+      sport: prevProps.sport,
+      gender: prevProps.gender,
+      boarding: prevProps.boarding,
+      group: prevProps.group,
+      business_type: prevProps.businessType,
+      package_type: prevProps.packageType,
+      secondary_group: prevProps.secondaryGroup,
+      length_program: prevProps.lengthProgram,
     });
     if (!shouldSendRequest) {
       this.props.stepThreeActions.getCatalogCampsLevelsRequest(getCatalogCampsLevelsRequestArgs);
+    }
+    if (cartId && (selectedId !== prevProps.selectedId)) {
+      this.props.createProductBySelectedId({ cartId, id: selectedId });
     }
   }
 
@@ -116,96 +137,62 @@ class StepThree extends React.Component {
           </Col>
         </Row>
         <Row>
-          {data.map(({ age_range, display_name, price, id }) => {
+          {data.map(({ age_range, display_name, price, id, name }) => {
             return (
               <Col xl={6} key={id}>
-                <Card
-                  header={display_name}
-                  label={age_range ? `ages ${age_range}` : ''}
-                  price={price}
-                  size="large"
-                  via={true}
-                >
-                  render from data
-                </Card>
+                {this.renderCurrentCard({ age_range, display_name, price, id, name, selectedId })}
               </Col>
             );
           })}
-          <Col xl={6}>
-            <Card
-              cardHeader="group sport training"
-              color="light-blue"
-              header="core"
-              headerSize="large"
-              id={0}
-              imgSrc={stubImg}
-              label="ages 11-18"
-              onClick={this.selectCard}
-              price="1,289"
-              selectedId={selectedId}
-              size="large"
-              via={true}
-            >
-              <div>content here</div>
-            </Card>
-            <Card
-              cardHeader="group sport training"
-              color="blue"
-              header="total athlete"
-              headerSize="large"
-              id={1}
-              imgSrc={stubImg}
-              label="ages 11-18"
-              onClick={this.selectCard}
-              price="1,789"
-              selectedId={selectedId}
-              size="large"
-              via={true}
-            >
-              <div>content here</div>
-            </Card>
-          </Col>
-          <Col xl={6}>
-            <Card
-              cardHeader="individualized sport training"
-              color="dark-blue"
-              header="breakthrough"
-              headerSize="large"
-              id={2}
-              imgSrc={stubImg}
-              label="ages 11-18"
-              onClick={this.selectCard}
-              price="2,059"
-              selectedId={selectedId}
-              size="large"
-              via={true}
-            >
-              <div>content here</div>
-            </Card>
-            <Card
-              cardHeader="individualized sport training"
-              color="red"
-              header="game changer"
-              headerSize="large"
-              id={3}
-              imgSrc={stubImg}
-              label="ages 11-18"
-              onClick={this.selectCard}
-              price="2,459"
-              selectedId={selectedId}
-              size="large"
-              via={true}
-            >
-              <div>content here</div>
-            </Card>
-          </Col>
         </Row>
       </Container>
     );
   }
 
+  renderCurrentCard = ({ age_range, display_name, name = '', price, id, selectedId }) => {
+    const computedLabel = age_range ? `ages ${age_range}` : '';
+    const nameLowerCase = name.toLowerCase();
+    const cardProps = {
+      id,
+      price,
+      selectedId,
+      header: display_name,
+      key: id,
+      onClick: this.selectCard,
+      label: computedLabel,
+    };
+    switch(nameLowerCase) {
+      case 'breakthrough': {
+        return (
+          <BreakthroughCard {...cardProps} />
+        );
+      }
+      case 'core': {
+        return (
+          <CoreCard {...cardProps} />
+        );
+      }
+      case 'total athlete': {
+        return (
+          <TotalAthleteCard {...cardProps} />
+        );
+      }
+      case 'game changer': {
+        return (
+          <GameChangerCard {...cardProps} />
+        );
+      }
+      default:
+        return false;
+    }
+  };
+
   selectCard = (id) => {
     this.props.trainingActions.saveTrainingId(id);
+  };
+
+  createProductBySelectedId = ({ cartId, id }) => {
+    this.props.stepThreeActions.postCartCartIdParticipantIdProductRequest({ cartId, id });
   }
 }
 
@@ -218,6 +205,9 @@ function mapStateToProps(state) {
     age: stepOneFormValueSelector(state, 'age'),
     date: state.stepTwo.selectedDate.capacity_start_date,
     data: state.stepThree.data,
+    group: state.stepOne.group,
+    secondaryGroup: state.stepOne.secondary_group,
+    cartId: state.cart.id,
   };
 };
 

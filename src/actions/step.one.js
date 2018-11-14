@@ -68,3 +68,10 @@ export function stepOneSetPrice(price) {
     payload: price,
   }
 }
+
+export function stepOneSetCampLength(length) {
+  return {
+    type: stepOneTypes.STEP_ONE_SET_CAMP_LENGTH,
+    payload: length,
+  };
+}

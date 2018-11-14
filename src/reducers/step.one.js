@@ -4,7 +4,7 @@ import isEqual from 'lodash/isEqual';
 import * as stepOneTypes from '../constants/step.one';
 
 const initialState = {
-  lengthProgram: '5 Week Camps',
+  lengthProgram: '',
   data: [],
   group: null,
   secondary_group: null,
@@ -53,6 +53,15 @@ export default function(state = initialState, action) {
       return {
         ...state,
         stepOnePrice: payload,
+      };
+    }
+    case stepOneTypes.STEP_ONE_SET_CAMP_LENGTH: {
+      if (state.lengthProgram === payload) {
+        return state;
+      }
+      return {
+        ...state,
+        lengthProgram: payload,
       };
     }
     default:

@@ -18,10 +18,34 @@ export function getCatalogCampsLevelsRequest(args) {
         boarding: args.boarding,
         business_type: args.business_type,
         package_type: args.package_type,
+        group: args.group,
+        secondary_group: args.secondary_group,
         length_program: args.length_program,
       },
     });
   }
+}
+
+export function postCartCartIdParticipantIdProductRequest({ cartId, id }) {
+  return function(dispatch) {
+    Api.req({
+      apiCall: Api.postCartCartIdParticipantIdProduct,
+      res200: (data) => dispatch(postCartCartIdParticipantIdProduct(data)),
+      res404: () => console.log('Api.postCartCartIdParticipantIdProduct() => 404'),
+      reject: err => console.log(err),
+      apiCallParams: {
+        cartId,
+        id,
+      },
+    });
+  }
+}
+
+function postCartCartIdParticipantIdProduct(data) {
+  return {
+    type: stepThreeTypes.STEP_THREE_POST_CART_CART_ID_PARTICIPANT_ID_PRODUCT,
+    payload: data,
+  };
 }
 
 function getCatalogCampsLevels(data) {
