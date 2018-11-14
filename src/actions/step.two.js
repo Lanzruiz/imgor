@@ -3,7 +3,7 @@ import * as stepTwoTypes from '../constants/step.two';
 // Api
 import Api from '../api';
 
-export function getCatalogCampsCalendarRequest({ package_type, sport, length_program }) {
+export function getCatalogCampsCalendarRequest(args) {
   return function(dispatch) {
     Api.req({
       apiCall: Api.getCatalogCampsCalendar,
@@ -11,9 +11,14 @@ export function getCatalogCampsCalendarRequest({ package_type, sport, length_pro
       res404: () => console.log('Api.getCatalogCampsCalendar() => 404'), // TODO: Add error handler!
       reject: err => console.log(err), // TODO: Add error handler!
       apiCallParams: {
-        package_type,
-        sport,
-        length_program,
+        age: args.age,
+        boarding: args.boarding,
+        business_type: args.business_type,
+        gender: args.gender,
+        package_type: args.package_type,
+        sport: args.sport,
+        group: args.group,
+        secondary_group: args.secondary_group,
       },
     });
   };

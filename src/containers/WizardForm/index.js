@@ -37,6 +37,7 @@ class WizardForm extends React.Component {
     cartId: PropTypes.number,
     secondary_group: PropTypes.string,
     start_date: PropTypes.string,
+    stepThreePrice: PropTypes.number,
   };
 
   static defaultProps = {
@@ -45,6 +46,7 @@ class WizardForm extends React.Component {
     stepOnePrice: 0,
     stepOneWeeks: 0,
     weeks: 0,
+    stepThreePrice: 0,
   };
 
   componentDidMount() {
@@ -74,7 +76,7 @@ class WizardForm extends React.Component {
   }
 
   render() {
-    const { children, group, step, stepOnePrice, stepTwoStartingPrice, stepOneWeeks } = this.props;
+    const { children, group, step, stepOnePrice, stepTwoStartingPrice, stepOneWeeks, stepThreePrice } = this.props;
     const startIndex = 0;
     if (typeof children !== 'function') {
       return (
@@ -82,7 +84,7 @@ class WizardForm extends React.Component {
       );
     }
     const stepOneComputedPrice = group === weekly_camp ? stepOnePrice * stepOneWeeks : stepOnePrice;
-    const price = stepOneComputedPrice + stepTwoStartingPrice;
+    const price = stepOneComputedPrice + stepTwoStartingPrice + stepThreePrice;
     const arrowPosition = true;
     return (
       <React.Fragment>
@@ -180,6 +182,7 @@ function mapStateToProps(state) {
     cartId: state.cart.id,
     secondary_group: state.stepOne.secondary_group,
     start_date: state.stepTwo.selectedDate.capacity_start_date,
+    stepThreePrice: state.stepThree.starting_price,
   };
 };
 

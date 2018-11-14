@@ -6,6 +6,8 @@ import Img from 'react-image';
 // Components
 import Button from '../Button';
 import GreenBlock from '../GreenBlock';
+// Images
+import plus from '../../assets/img/plus.png';
 // Styles
 import './styles.scss';
 
@@ -252,14 +254,26 @@ export function CardContentRow({ children, ...rest }) {
 
 export function CardContentCol({ children, ...rest }) {
   return (
-    <div className="card-content__col" {...rest}>{children}</div>
+    <div className="card-content__col" {...rest}>
+      {children}
+    </div>
   );
 };
 
 export function CardContentText({ children, ...rest }) {
   return (
-    <div className="card-content__text" {...rest}>{children}</div>
+    <div className="card-content__text" {...rest}>
+      {children}
+    </div>
   );
 };
+
+export function ImagePlus({ className }) {
+  return (
+    <span className={cx('card-body__image-plus', { [className]: className })}>
+      <Img src={plus} className="card-body__image-item" />
+    </span>
+  );
+}
 
 export default Card;
