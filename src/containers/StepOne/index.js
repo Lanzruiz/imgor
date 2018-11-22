@@ -211,7 +211,7 @@ class StepOne extends React.Component {
                                 justify-evenly`
                               )}
                             >
-                              <div className="d-flex align-center justify-end w-35">
+                              <div className="d-flex align-center justify-end w-35  tab-row__header--font-18 tab-row__header--trade-gothic-bold">
                                 <Button
                                   onClick={() => {
                                     this.setWeeksCounter(minWeekCount);
@@ -224,22 +224,22 @@ class StepOne extends React.Component {
                                 </Button>
                                 <span className="tab-row__separator" style={{ marginLeft: '20px' }} />
                               </div>
-                              <div className="d-flex align-center justify-center w-30">
+                              <div className="d-flex align-center justify-center w-30 tab-row__header--trade-gothic-bold">
                                 <Button
                                   style={{ marginRight: '20px', padding: '4px' }}
-                                  className="tab-row__header"
+                                  className="tab-row__header tab-row__header--font-80"
                                   onClick={() => {
                                     this.decrementWeeksCounter();
                                     this.setPrice(row.price);
                                   }}
                                   children="-"
                                 />
-                                <span className="tab-row__header" style={{ fontSize: '4em' }}>
+                                <span className="tab-row__header tab-row__header--font-100">
                                   {weeksCounter}
                                 </span>
                                 <Button
                                   style={{ marginLeft: '20px', padding: '4px' }}
-                                  className="tab-row__header"
+                                  className="tab-row__header tab-row__header--font-50"
                                   onClick={() => {
                                     this.incrementWeeksCounter();
                                     this.setPrice(row.price);
@@ -247,7 +247,7 @@ class StepOne extends React.Component {
                                   children="+"
                                 />
                               </div>
-                              <div className="d-flex align-center justify-start w-35">
+                              <div className="d-flex align-center justify-start w-35 tab-row__header--font-18 tab-row__header--trade-gothic-bold">
                                 <span className="tab-row__separator" style={{ marginRight: '20px' }} />
                                 <Button
                                   buttonClassName="d-flex f-direction-column"
@@ -393,9 +393,9 @@ class StepOne extends React.Component {
         <div className="content__second-col">
           <Form onSubmit={this.props.handleSubmit(() => {})}>
             <div className="content__form-control">
-              <h4 className="content__header content__header--h3">
+              <H3>
                 <LocaleString stringKey="step_one.choose_sleepaway" />
-              </h4>
+              </H3>
               <SleepawayRadioBtn
                 prefix={prefix}
                 options={[{ value: 'Boarding', stringKey: 'yes' },{ value: 'Non-Boarding', stringKey: 'no' }]}
@@ -404,9 +404,9 @@ class StepOne extends React.Component {
               />
             </div>
             <div className="content__form-control">
-              <h4 className="content__header content__header--h3">
+              <H3>
                 <LocaleString stringKey="step_one.select_camper_age" />
-              </h4>
+              </H3>
               <AgeRadioBtnContainer
                 age={age}
                 prefix={prefix}
@@ -414,9 +414,9 @@ class StepOne extends React.Component {
               />
             </div>
             <div className="content__form-control">
-              <h4 className="content__header content__header--h3">
+              <H3>
                 <LocaleString stringKey="step_one.gender" />
-              </h4>
+              </H3>
               <GenderRadioBtnContainer
                 prefix={prefix}
                 options={['Male', 'Female']}
@@ -467,6 +467,14 @@ function H2({ children }) {
   );
 }
 
+function H3({ children }) {
+  return (
+    <h3 className="content__header content__header--h3">
+      {children}
+    </h3>
+  );
+}
+
 function H4({ children }) {
   return (
     <h4 className="content__header content__header--h4">
@@ -500,6 +508,7 @@ function SleepawayRadioBtn({ options, prefix, sleepaway, possibleValues }) {
             <div key={value} className={radioBtnClassNames}>
               <Radio
                 {...input}
+                className="content__radio-btn--font-16"
                 value={value}
                 checked={sleepaway === value}
                 disabled={isDisabled}
@@ -521,9 +530,10 @@ function AgeRadioBtnContainer ({ prefix, range, age }) {
         options={range}
         component={({ input, options }) => (
           options.map((value) => (
-            <div key={value} className="content__age text-center mb-10">
+            <div key={value} className="content__age text-left mb-10">
               <Radio
                 {...input}
+                className="content__radio-btn--font-16"
                 checked={`${age}` === `${value}`}
                 children={`${value}`.length < 2 ? `0${value}` : value}
                 value={value}
@@ -554,6 +564,7 @@ function GenderRadioBtnContainer ({ prefix, options, value, possibleValues }) {
               <div key={gender} className={radioBtnClassNames}>
                 <Radio
                   {...input}
+                  className="content__radio-btn--font-16"
                   value={gender}
                   checked={gender === value}
                   disabled={isDisabled}
