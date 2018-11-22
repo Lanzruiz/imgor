@@ -120,6 +120,26 @@
             &--mw-initial {
                 max-width: initial;
             }
+
+            &--trade-gothic-bold {
+                font-family: 'Trade-Gothic-Bold';
+            }
+
+            &--font-18 {
+                font-size: 18px;
+            }
+
+            &--font-50 {
+                font-size: 50px;
+            }
+
+            &--font-80 {
+                font-size: 80px;
+            }
+
+            &--font-100 {
+                font-size: 100px;
+            }
         }
 
         &__tab-list {
@@ -159,7 +179,7 @@
         &__first-col {
             background-color: #f0f0f0;
             border: 1px solid #366e92;
-            padding: 15px 10px;
+            padding: 28px 24px;
             width: 65%;
         }
 
@@ -167,7 +187,8 @@
             background-color: $green-block-bg;
             border: 1px solid #366e92;
             border-left-color: transparent;
-            padding: 25px 20px;
+            padding: 43px 39px;
+            max-width: 398px;
             width: 35%;
         }
 
@@ -180,7 +201,7 @@
             margin-bottom: 10px;
 
             &--h2 {
-                font-size: 20px;
+                font-size: 28px;
             }
 
             &--h3 {
@@ -188,14 +209,17 @@
             }
 
             &--h4 {
-                font-size: 14px;
+                font-size: 15px;
+                line-height: 16px;
             }
         }
 
         &__paragraph {
             color: $tab-row-bg;
-            font-size: 12px;
+            font-size: 15px;
             margin-bottom: 15px;
+            font-family: "Trade-Gothic";
+            line-height: 16px;
         }
 
         &__form-control {
@@ -206,11 +230,11 @@
             display: block;
             margin-bottom: 10px;
             position: relative;
-            padding-left: 36px;
             margin-bottom: 12px;
-            font-size: 12px;
+            font-size: 16px;
             font-weight: bold;
             user-select: none;
+            width: 33%;
 
             &--disabled {
                 text-decoration: line-through;
@@ -267,12 +291,16 @@
                     font-size: 22px;
                 }
             }
+
+            &--font-16 {
+                font-size: 16px!important;
+            }
         }
 
         &__radio-container {
             display: flex;
             align-items: center;
-            justify-content: space-around;
+            justify-content: flex-start;
         }
     }
 }
