@@ -18,10 +18,15 @@ import call from '../../assets/img/call-icon.png';
 import email from '../../assets/img/email-icon.png';
 import chat from '../../assets/img/chat-icon.png';
 // Helpers
-import { stepOneFormValueSelector } from '../StepOne';
 import splitArray from '../../helpers/splitArray';
 import dateFormat from '../../helpers/dateFormat';
 import isBeforeDate from '../../helpers/isBeforeDate';
+// Constants
+import { weekly_camp } from '../StepOne';
+// Selectors
+import { stepTwoDataSelector, stepTwoSelectedDateSelector } from './selectors';
+import { stepOneFormValueSelector } from '../StepOne';
+import { stepOneGroupSelector, weeksCounterSelector, stepOneSecondaryGroupSelector } from '../StepOne/selectors';
 // Styles
 import './styles.scss';
 
@@ -33,6 +38,7 @@ class StepTwo extends React.Component {
     stepTwoActions: PropTypes.shape({
       getCatalogCampsCalendarRequest: PropTypes.func.isRequired,
       selectDate: PropTypes.func.isRequired,
+      stepTwoSetDefaultState: PropTypes.func.isRequired,
     }),
     data: PropTypes.arrayOf(
       PropTypes.shape({
@@ -68,14 +74,19 @@ class StepTwo extends React.Component {
     gender: PropTypes.string,
     group: PropTypes.string,
     secondary_group: PropTypes.string,
+    weeksCounter: PropTypes.number,
   };
 
   static defaultProps = {
     data: [],
+    weeksCounter: 0,
   };
 
   componentDidMount() {
-    const { age, businessType, sleepaway, packageType, sport, group, secondary_group, gender } = this.props;
+    const {
+      age, businessType, sleepaway, packageType, sport, group, secondary_group, gender, weeksCounter,
+    } = this.props;
+
     const getCatalogCampsCalendarArgs = {
       age,
       sport,
@@ -86,41 +97,25 @@ class StepTwo extends React.Component {
       business_type: businessType,
       package_type: packageType,
     };
+
+    if ((group === weekly_camp) && weeksCounter) {
+      delete getCatalogCampsCalendarArgs.group;
+      delete getCatalogCampsCalendarArgs.secondary_group;
+      getCatalogCampsCalendarArgs.length = `${weeksCounter} Week`;
+    }
+
     this.getCatalogCampsCalendar(getCatalogCampsCalendarArgs);
   }
 
-  componentDidUpdate(prevProps) {
-    const { age, businessType, sleepaway, packageType, sport, group, secondary_group, gender } = this.props;
-    const getCatalogCampsCalendarArgs = {
-      age,
-      sport,
-      gender,
-      group,
-      secondary_group,
-      boarding: sleepaway,
-      business_type: businessType,
-      package_type: packageType,
-    };
-    const shouldSendRequest = isEquel(getCatalogCampsCalendarArgs, {
-      age: prevProps.age,
-      sport: prevProps.sport,
-      gender: prevProps.gender,
-      group: prevProps.group,
-      secondary_group: prevProps.secondary_group,
-      boarding: prevProps.sleepaway,
-      business_type: prevProps.businessType,
-      package_type: prevProps.packageType,
-    });
-    if (!shouldSendRequest) {
-      this.props.stepTwoActions.getCatalogCampsCalendarRequest(getCatalogCampsCalendarArgs);
-    }
+  componentWillUnmount() {
+    this.setDefaultState();
   }
 
   render() {
-    const { data, lengthProgram, sport, selectedDate } = this.props;
+    const { data, weeksCounter, sport, selectedDate } = this.props;
     const dataObject = splitArray({ arrayCount: 6, array: data });
     return (
-      <Container style={{ marginBottom: '65px' }}>
+      <Container style={{ marginBottom: '130px' }}>
         <Row>
           <Col>
             <Header
@@ -167,12 +162,20 @@ class StepTwo extends React.Component {
                 <h2 className="dates__header">
                   <LocaleString
                     stringKey="step_two.dates.header"
-                    formatString={{ sport, length_program: lengthProgram }}
+                    formatString={{ sport, length_program: weeksCounter ? `${weeksCounter} week` : '' }}
                   />&#42;
                 </h2>
-                <ul className="dates__container">
-                  {this.renderDates(dataObject)}
-                </ul>
+                {data.length
+                  ? (
+                    <ul className="dates__container">
+                      {this.renderDates(dataObject)}
+                    </ul>
+                  ) : (
+                    <div className="dates__no-data">
+                      <LocaleString stringKey="step_two.dates.no-data" />
+                    </div>
+                  )
+                }
                 <div className="step-two__description description">
                   <span className="description__info">
                     &#42;<LocaleString stringKey="step_two.dates.header_descripion" />
@@ -286,18 +289,27 @@ class StepTwo extends React.Component {
 
   getCatalogCampsCalendar = (args) => {
     this.props.stepTwoActions.getCatalogCampsCalendarRequest(args);
+  };
+
+  getCatalogCampsHistogram = (args) => {
+    this.props.stepTwoActions.getCatalogCampsHistogramRequest(args);
+  };
+
+  setDefaultState = () => {
+    this.props.stepTwoActions.stepTwoSetDefaultState();
   }
 }
 
 function mapStateToProps(state) {
   return {
-    data: state.stepTwo.data,
-    selectedDate: state.stepTwo.selectedDate,
+    data: stepTwoDataSelector(state),
+    selectedDate: stepTwoSelectedDateSelector(state),
     sleepaway: stepOneFormValueSelector(state, 'sleepaway'),
     age: stepOneFormValueSelector(state, 'age'),
     gender: stepOneFormValueSelector(state, 'gender'),
-    group: state.stepOne.group,
-    secondary_group: state.stepOne.secondary_group,
+    group: stepOneGroupSelector(state),
+    secondary_group: stepOneSecondaryGroupSelector(state),
+    weeksCounter: weeksCounterSelector(state),
   };
 }
 

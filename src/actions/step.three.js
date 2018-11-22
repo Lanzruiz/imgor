@@ -54,3 +54,9 @@ function getCatalogCampsLevels(data) {
     payload: data,
   };
 }
+
+export function stepThreeSetDefaultState() {
+  return {
+    type: stepThreeTypes.STEP_THREE_SET_DEFAULT_STATE,
+  };
+}

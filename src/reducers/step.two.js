@@ -24,6 +24,7 @@ export default function(state = initialState, action) {
         data: results,
       };
     }
+
     case stepTwoTypes.STEP_TWO_SELECT_DATE: {
       if (isEqual(state.selectedDate, payload)) {
         return state;
@@ -33,6 +34,14 @@ export default function(state = initialState, action) {
         selectedDate: payload,
       }
     }
+
+    case stepTwoTypes.STEP_TWO_SET_DEFAULT_STATE: {
+      return {
+        ...state,
+        ...initialState,
+      };
+    }
+
     default:
       return state;
   }

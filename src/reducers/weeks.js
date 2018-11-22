@@ -11,12 +11,11 @@ export default function(state = initialState, action) {
   const { type, payload } = action;
   switch(type) {
     case weeksTypes.INCREMENT_WEEKS_COUNTER: {
-      const counter = state.weeks.length + 1;
+      const counter = state.weeksCounter + 1;
       if (counter <= weeksTypes.maxWeekCount) {
-        const weeks = [ ...state.weeks, { id: counter, customize_id: null }];
         return {
           ...state,
-          weeks,
+          weeks: createWeeksArray(counter),
           weeksCounter: counter,
         };
       }
@@ -24,39 +23,42 @@ export default function(state = initialState, action) {
     }
 
     case weeksTypes.DECREMENT_WEEKS_COUNTER: {
-      const counter = state.weeks.length - 1;
+      const counter = state.weeksCounter - 1;
       if (counter < 0) {
         return state;
       }
-      const weeks = [...state.weeks];
-      weeks.splice(-1, 1);
       return {
         ...state,
-        weeks,
+        weeks: createWeeksArray(counter),
         weeksCounter: counter,
         selectedWeekId: (state.selectedWeekId > counter) ? 0 : state.selectedWeekId,
       };
     }
 
     case weeksTypes.SET_WEEKS_COUNTER: {
-      const weeks = [...state.weeks];
-      const weeksCounter = weeks.length;
-      if (weeksCounter === payload) {
+      if (state.weeksCounter === payload) {
         return state;
       }
-      if (weeksCounter > payload) {
-        weeks.splice(payload);
-      }
-      if (weeksCounter < payload) {
-        while(weeks.length < payload) {
-          const id = weeks.length;
-          weeks.push({ id });
-        }
+      if (payload === 0) {
+        return {
+          ...state,
+          ...initialState,
+        };
       }
       return {
         ...state,
-        weeks,
+        weeks: createWeeksArray(payload),
         weeksCounter: payload,
+      };
+    }
+
+    case weeksTypes.SET_ONLY_WEEKS: {
+      if (state.weeksCounter === payload) {
+        return state;
+      }
+      return {
+        ...state,
+        weeks: createWeeksArray(payload),
       };
     }
 
@@ -81,3 +83,12 @@ export default function(state = initialState, action) {
     }
   }
 };
+
+function createWeeksArray(counter) {
+  const weeksArr = [];
+  while(weeksArr.length < counter) {
+    const id = weeksArr.length + 1;
+    weeksArr.push({ id, customize_id: null });
+  }
+  return weeksArr;
+}

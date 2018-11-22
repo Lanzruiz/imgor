@@ -4,7 +4,7 @@ import * as stepOneTypes from '../constants/step.one';
 import Api from '../api';
 // Actions
 import { addParticipant } from './participant';
-import { incrementStepsCounter } from './steps';
+import { setStepsCounter } from './steps';
 
 export function getCatalogCampsGroup({ sport }) {
   return function(dispatch) {
@@ -27,7 +27,7 @@ export function stepOnePutCartCartIdParticipantParticipantIdRequest({ cartId, pa
       res200: (data) => {
         console.log(data);
         dispatch(addParticipant(data));
-        dispatch(incrementStepsCounter());
+        dispatch(setStepsCounter(2));
       },
       res404: () => console.log('Api.putCartCartIdParticipantParticipantId() => Error 404'), // TODO: Add error handler
       reject: err => console.log(err), // TODO: Add error handler

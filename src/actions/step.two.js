@@ -19,6 +19,7 @@ export function getCatalogCampsCalendarRequest(args) {
         sport: args.sport,
         group: args.group,
         secondary_group: args.secondary_group,
+        length: args.length,
       },
     });
   };
@@ -35,5 +36,36 @@ export function selectDate(date) {
   return {
     type: stepTwoTypes.STEP_TWO_SELECT_DATE,
     payload: date,
+  };
+}
+
+function getCatalogCampsHistogram(data) {
+  return {
+    type: stepTwoTypes.STEP_TWO_GET_CATALOG_CAMPS_HISTOGRAM,
+    payload: data,
+  };
+}
+
+export function getCatalogCampsHistogramRequest({ sport, gender, boarding, days, age }) {
+  return function(dispatch) {
+    Api.req({
+      apiCall: Api.getCatalogCampsHistogram,
+      res200: data => dispatch(getCatalogCampsHistogram(data)),
+      res404: () => console.log('Api.getCatalogCampsHistogram() => 404'), // TODO: Add error handler!
+      reject: err => console.log(err), // TODO: Add error handler!
+      apiCallParams: {
+        sport,
+        gender,
+        boarding,
+        days,
+        age,
+      },
+    });
+  }
+}
+
+export function stepTwoSetDefaultState() {
+  return {
+    type: stepTwoTypes.STEP_TWO_SET_DEFAULT_STATE,
   };
 }

@@ -22,6 +22,14 @@ export default function(state = initialState, action) {
         data: results,
       };
     }
+
+    case stepThreeTypes.STEP_THREE_SET_DEFAULT_STATE: {
+      return {
+        ...state,
+        ...initialState,
+      };
+    }
+
     default:
       return state;
   }

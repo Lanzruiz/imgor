@@ -10,7 +10,7 @@ const initialState = {
 export default function(state = initialState, action) {
   const { type, payload } = action;
   switch(type) {
-    case stepsTypes.INCREMENT_CURRENT_STEP:
+    case stepsTypes.INCREMENT_CURRENT_STEP: {
       const counter = (
         (state.maxStepValue > state.currentStep)
           ? state.currentStep + 1
@@ -20,16 +20,32 @@ export default function(state = initialState, action) {
         ...state,
         currentStep: counter,
       };
-    case stepsTypes.SET_MAX_STEP_VALUE:
+    }
+
+    case stepsTypes.SET_MAX_STEP_VALUE: {
       return {
         ...state,
         maxStepValue: payload,
       };
-    case stepsTypes.CLOSE_EMAIL_MODAL:
+    }
+
+    case stepsTypes.CLOSE_EMAIL_MODAL: {
       return {
         ...state,
         shouldShowEmailModal: false,
       };
+    }
+
+    case stepsTypes.SET_STEPS_COUNTER: {
+      if (state.currentStep === payload) {
+        return state;
+      }
+      return {
+        ...state,
+        currentStep: payload,
+      };
+    }
+
     default:
       return state;
   }

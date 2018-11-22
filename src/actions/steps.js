@@ -11,3 +11,11 @@ export function setMaxStepValue(value) {
     payload: value,
   };
 };
+
+export function setStepsCounter(payload) {
+  return function(dispatch) {
+    return new Promise(function(resolve) {
+      resolve({ type: stepTypes.SET_STEPS_COUNTER, payload: payload });
+    }).then(dispatch);
+  }
+}

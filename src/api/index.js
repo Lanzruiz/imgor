@@ -36,6 +36,20 @@ class Api {
     });
   }
 
+  async getCatalogCamps({ business_type, program_type, sport, age, gender, start_date, end_date }) {
+    return await instance.get('catalog/camps', {
+      params: {
+        business_type,
+        program_type,
+        sport,
+        age,
+        gender,
+        start_date,
+        end_date,
+      },
+    });
+  }
+
   async postCartCartIdParticipant({ cartId, email }) {
     return await instance.post(`cart/${cartId}/participant`, {
       email,
@@ -53,7 +67,7 @@ class Api {
     });
   }
 
-  async getCatalogCampsCalendar({ age, boarding, business_type, gender, package_type, sport, group, secondary_group }) {
+  async getCatalogCampsCalendar({ age, boarding, business_type, gender, package_type, sport, group, secondary_group, length, }) {
     return await instance.get('catalog/camps/calendar', {
       params: {
         age,
@@ -64,6 +78,7 @@ class Api {
         sport,
         group,
         secondary_group,
+        length,
       },
     });
   }
@@ -98,6 +113,18 @@ class Api {
 
   async postCartCartIdParticipantIdProduct({ cartId, id }) {
     return await instance.post(`cart/${cartId}/participant/${id}/product`);
+  }
+
+  async getCatalogCampsHistogram({ sport, gender, boarding, days, age }) {
+    return await instance.get('catalog/camps/histogram', {
+      params: {
+        sport,
+        gender,
+        boarding,
+        days,
+        age,
+      },
+    });
   }
 }
 
