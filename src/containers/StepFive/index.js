@@ -14,6 +14,7 @@ import Dropdown from '../../components/Dropdown';
 import { getCatalogGearRequest } from '../../actions/step.five';
 // Helpers
 import splitArray from '../../helpers/splitArray';
+import { stepOneFormValueSelector } from '../StepOne';
 // Styles
 import './styles.scss';
 
@@ -82,8 +83,7 @@ class StepFive extends React.Component {
   };
 
   componentDidMount() {
-    // TODO: Api calls here!
-    this.props.stepFiveActions.getCatalogGearRequest({});
+    this.getCatalogGear(this.props);
   }
 
   render() {
@@ -167,12 +167,21 @@ class StepFive extends React.Component {
         <Dropdown options={options} label={display_name} />
       </div>
     );
+  };
+
+  getCatalogGear = ({ sport, gender, startDate, endDate }) => {
+    if (sport && gender && startDate && endDate) {
+      this.props.stepFiveActions.getCatalogGearRequest({ sport, gender, startDate, endDate });
+    }
   }
 }
 
 function mapStateToProps(state) {
   return {
     data: state.stepFive.data,
+    gender: stepOneFormValueSelector(state, 'gender'),
+    startDate: state.stepTwo.selectedDate.capacity_start_date,
+    endDate: state.stepTwo.selectedDate.capacity_end_date,
   };
 };
 

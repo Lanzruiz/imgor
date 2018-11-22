@@ -33,3 +33,10 @@ export function setWeeksCounter(count) {
     payload: count,
   };
 }
+
+export function setOnlyWeeks(count) {
+  return {
+    type: weeksTypes.SET_ONLY_WEEKS,
+    payload: count,
+  };
+}

@@ -20,14 +20,20 @@ import Radio from '../../components/Radio';
 import * as weeksActions from '../../actions/weeks';
 import * as stepOneActions from '../../actions/step.one';
 import { addParticipantByCardId } from '../../actions/participant';
+import * as stepsActions from '../../actions/steps';
 // Helpers
 import validation from '../../helpers/validate';
+import createNumbersArray from '../../helpers/createNumbersArray';
 // Constants
 import { minWeekCount, maxWeekCount } from '../../constants/weeks';
+// Selectors
+import {
+  stepOneGroupSelector, stepOneDataSelector, stepOneTabIndexSelector, weeksCounterSelector,
+} from './selectors';
 // Styles
 import './styles.scss';
 
-export const weekly_camp = 'Weekly Camp';
+export const weekly_camp = 'Year-Round Weekly Camps';
 
 class StepOne extends React.Component {
   static propTypes = {
@@ -50,6 +56,9 @@ class StepOne extends React.Component {
       PropTypes.string,
       PropTypes.number,
     ]),
+    stepsActions: PropTypes.shape({
+      setStepsCounter: PropTypes.func.isRequired,
+    }),
     data: PropTypes.arrayOf(
       PropTypes.shape({
         age_range: PropTypes.string,
@@ -75,6 +84,7 @@ class StepOne extends React.Component {
     sleepaway: PropTypes.string,
     age: PropTypes.string,
     gender: PropTypes.string,
+    weeksLengthNumber: PropTypes.number,
   };
 
   static defaultProps = {
@@ -83,17 +93,24 @@ class StepOne extends React.Component {
     weeksActions: {},
     stepActions: {},
     tabIndex: 0,
+    weeksLengthNumber: 0,
   };
 
   componentDidMount() {
-    const { sport } = this.props;
+    const { sport, weeksLengthNumber } = this.props;
     this.props.stepOneActions.getCatalogCampsGroup({ sport });
+    if (typeof weeksLengthNumber === 'number') {
+      this.props.weeksActions.setOnlyWeeks(weeksLengthNumber);
+    }
   }
 
   componentDidUpdate(prevProps) {
-    const { sport } = this.props;
+    const { sport, weeksLengthNumber } = this.props;
     if (prevProps.sport !== sport) {
       this.props.stepOneActions.getCatalogCampsGroup({ sport });
+    }
+    if (typeof weeksLengthNumber === 'number' && (weeksLengthNumber !== prevProps.weeksLengthNumber)) {
+      this.props.weeksActions.setOnlyWeeks(weeksLengthNumber);
     }
   }
 
@@ -136,12 +153,25 @@ class StepOne extends React.Component {
             </TabRowSection>
           </TabRow>
           {data.map((row, idx) => {
+            const selectedIndex = (
+              (row.name === group)
+                ? (
+                    (row.name === weekly_camp)
+                      ? (
+                          (weeksCounter > 0)
+                            ? tabIndex
+                            : 0
+                        )
+                      : tabIndex
+                    )
+                : 0
+            );
             return (
               <React.Fragment key={idx}>
                 <Tabs
                   selectedTabClassName="tab-row__section--selected"
                   disabledTabClassName="tab-row__section--disabled"
-                  selectedIndex={(row.name === group) ? tabIndex : 0}
+                  selectedIndex={selectedIndex}
                   onSelect={this.setTabIndex}
                 >
                   <TabRow className={cx('tab-row__container align-initial', {
@@ -152,6 +182,7 @@ class StepOne extends React.Component {
                         className="tab-row__section tab-row__section--bg-transparent center-left"
                         onClick={() => {
                           this.selectGroup({ group: null, secondary_group: null });
+                          this.setWeeksCounter(0);
                           this.setPrice(0);
                         }}
                       >
@@ -169,7 +200,7 @@ class StepOne extends React.Component {
                         (row.name === weekly_camp)
                           ? (
                             <Tab
-                              onClick={() => this.selectGroup({ group: row.name, secondary_group: row.options[0].name })}
+                              onClick={() => this.selectGroup({ group: row.name, secondary_group: null })}
                               className={cx(`
                                 tab-row__section
                                 tab-row__section--bg-white
@@ -184,7 +215,7 @@ class StepOne extends React.Component {
                                 <Button
                                   onClick={() => {
                                     this.setWeeksCounter(minWeekCount);
-                                    this.setPrice(row.options[0].price);
+                                    this.setPrice(row.price);
                                   }}
                                 >
                                   <span className="tab-row__header">
@@ -199,7 +230,7 @@ class StepOne extends React.Component {
                                   className="tab-row__header"
                                   onClick={() => {
                                     this.decrementWeeksCounter();
-                                    this.setPrice(row.options[0].price);
+                                    this.setPrice(row.price);
                                   }}
                                   children="-"
                                 />
@@ -211,7 +242,7 @@ class StepOne extends React.Component {
                                   className="tab-row__header"
                                   onClick={() => {
                                     this.incrementWeeksCounter();
-                                    this.setPrice(row.options[0].price);
+                                    this.setPrice(row.price);
                                   }}
                                   children="+"
                                 />
@@ -222,7 +253,7 @@ class StepOne extends React.Component {
                                   buttonClassName="d-flex f-direction-column"
                                   onClick={() => {
                                     this.setWeeksCounter(maxWeekCount);
-                                    this.setPrice(row.options[0].price);
+                                    this.setPrice(row.price);
                                   }}
                                 >
                                   <span className="tab-row__header">
@@ -271,17 +302,31 @@ class StepOne extends React.Component {
                   </TabRow>
                   <React.Fragment>
                     <TabPanel />
-                    {row.options && (
-                      row.options.map((option, idx) => {
-                        const { age_from, age_to, name, boarding_options, gender_options } = option;
-                        const range = Array.from(Array(age_to - age_from + 1).keys(), x => x + age_from);
-                        return (
-                          <TabPanel key={idx}>
-                            {this.renderTabPanel({ name, range, boardingOptions: boarding_options, genderOptions: gender_options })}
-                          </TabPanel>
-                        );
-                      })
-                    )}
+                    {
+                      (row.name === weekly_camp)
+                        ? (
+                            <TabPanel>
+                              {this.renderTabPanel({
+                                name: row.name,
+                                range: createNumbersArray({ from: 8, to: 18 }),
+                                boardingOptions: ['Boarding', 'Non-Boarding'],
+                                genderOptions: ['Male', 'Female'],
+                              })}
+                            </TabPanel>
+                        ) : (
+                          row.options && (
+                            row.options.map((option, idx) => {
+                              const { age_from, age_to, name, boarding_options, gender_options } = option;
+                              const range = createNumbersArray({ from: age_from, to: age_to });
+                              return (
+                                <TabPanel key={idx}>
+                                  {this.renderTabPanel({ name, range, boardingOptions: boarding_options, genderOptions: gender_options })}
+                                </TabPanel>
+                              );
+                            })
+                          )
+                        )
+                    }
                   </React.Fragment>
                 </Tabs>
               </React.Fragment>
@@ -313,7 +358,7 @@ class StepOne extends React.Component {
 
   renderTabPanel = ({ name = '', range = [], boardingOptions = [], genderOptions = [] }) => {
     const regExp = /\s/g;
-    const prefix = name.toLowerCase().replace(regExp,'_');
+    const prefix = name.toLowerCase().replace(regExp, '_');
     const { sleepaway, age, gender } = this.props;
     return (
       <div className="tab-content__container tab-row__container content">
@@ -527,7 +572,11 @@ const selector = formValueSelector('wizard');
 
 export function stepOneFormValueSelector(state, prefix) {
   const regExp = /\s/g;
-  let name = state.stepOne.secondary_group;
+  let name = (
+    (state.stepOne.group === weekly_camp)
+      ? state.stepOne.group
+      : state.stepOne.secondary_group
+  );
   if (name) {
     name = name.toLowerCase().replace(regExp, '_');
   }
@@ -536,16 +585,17 @@ export function stepOneFormValueSelector(state, prefix) {
 
 function mapStateToProps(state) {
   return {
-    weeksCounter: state.weeks.weeksCounter,
+    weeksCounter: weeksCounterSelector(state),
     participantId: state.participant.id,
     email: selector(state, 'email'),
     sleepaway: stepOneFormValueSelector(state, 'sleepaway'),
     age: stepOneFormValueSelector(state, 'age'),
     gender: stepOneFormValueSelector(state, 'gender'),
     cartId: state.cart.id,
-    data: state.stepOne.data,
-    tabIndex: state.stepOne.tabIndex,
-    group: state.stepOne.group,
+    data: stepOneDataSelector(state),
+    tabIndex: stepOneTabIndexSelector(state),
+    group: stepOneGroupSelector(state),
+    weeksLengthNumber: state.stepOne.weeksLengthNumber,
   };
 };
 
@@ -554,6 +604,7 @@ function mapDispatchToProps(dispatch) {
     weeksActions: bindActionCreators(weeksActions, dispatch),
     stepOneActions: bindActionCreators(stepOneActions, dispatch),
     participantActions: bindActionCreators({ addParticipantByCardId }, dispatch),
+    stepsActions: bindActionCreators(stepsActions, dispatch),
   };
 };
 
