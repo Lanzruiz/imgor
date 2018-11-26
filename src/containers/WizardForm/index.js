@@ -110,8 +110,8 @@ class WizardForm extends React.Component {
       this.goingToStepByStepNymber(3);
     }
 
-    if (step === 2) {
-      this.goingToStepThree({ startDate: prevProps.startDate });
+    if (step === 2 && !isEqual({ startDate }, prevProps)) {
+      this.goingToStepThree();
     }
   }
 
@@ -214,9 +214,9 @@ class WizardForm extends React.Component {
     }
   };
 
-  goingToStepThree = (prevProps = {}) => {
+  goingToStepThree = () => {
     const { startDate } = this.props;
-    if (startDate && !isEqual({ startDate }, prevProps)) {
+    if (startDate) {
       this.goingToStepByStepNymber(3);
     }
   }

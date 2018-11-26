@@ -21,12 +21,13 @@ import chat from '../../assets/img/chat-icon.png';
 import splitArray from '../../helpers/splitArray';
 import dateFormat from '../../helpers/dateFormat';
 import isBeforeDate from '../../helpers/isBeforeDate';
-// Constants
-import { weekly_camp } from '../StepOne';
 // Selectors
 import { stepTwoDataSelector, stepTwoSelectedDateSelector } from './selectors';
 import { stepOneFormValueSelector } from '../StepOne';
-import { stepOneGroupSelector, weeksCounterSelector, stepOneSecondaryGroupSelector } from '../StepOne/selectors';
+import {
+  stepOneGroupSelector, weeksCounterSelector,
+  stepOneSecondaryGroupSelector, isWeeklyCampSelector,
+} from '../StepOne/selectors';
 // Styles
 import './styles.scss';
 
@@ -75,6 +76,7 @@ class StepTwo extends React.Component {
     group: PropTypes.string,
     secondary_group: PropTypes.string,
     weeksCounter: PropTypes.number,
+    isWeeklyCamp: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -84,7 +86,8 @@ class StepTwo extends React.Component {
 
   componentDidMount() {
     const {
-      age, businessType, sleepaway, packageType, sport, group, secondary_group, gender, weeksCounter,
+      age, businessType, sleepaway, packageType, sport,
+      group, secondary_group, gender, weeksCounter, isWeeklyCamp,
     } = this.props;
 
     const getCatalogCampsCalendarArgs = {
@@ -98,10 +101,9 @@ class StepTwo extends React.Component {
       package_type: packageType,
     };
 
-    if ((group === weekly_camp) && weeksCounter) {
+    if (isWeeklyCamp && weeksCounter) {
       delete getCatalogCampsCalendarArgs.group;
       delete getCatalogCampsCalendarArgs.secondary_group;
-      getCatalogCampsCalendarArgs.length = `${weeksCounter} Week`;
     }
 
     this.getCatalogCampsCalendar(getCatalogCampsCalendarArgs);
@@ -114,6 +116,7 @@ class StepTwo extends React.Component {
   render() {
     const { data, weeksCounter, sport, selectedDate } = this.props;
     const dataObject = splitArray({ arrayCount: 6, array: data });
+    console.log(data);
     return (
       <Container style={{ marginBottom: '130px' }}>
         <Row>
@@ -310,6 +313,7 @@ function mapStateToProps(state) {
     group: stepOneGroupSelector(state),
     secondary_group: stepOneSecondaryGroupSelector(state),
     weeksCounter: weeksCounterSelector(state),
+    isWeeklyCamp: isWeeklyCampSelector(state),
   };
 }
 
