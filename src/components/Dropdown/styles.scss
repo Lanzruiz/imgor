@@ -4,6 +4,7 @@
     .dropdown {
         &__container {
             border: 1px solid #d3d3d3;
+            box-sizing: border-box;
             padding: 13px 10px 7px;
             position: relative;
             width: 100%;
@@ -59,6 +60,7 @@
             top: 0;
             left: 0;
             width: 100%;
+            z-index: 1000;
         }
     }
 }

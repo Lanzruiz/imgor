@@ -56,15 +56,8 @@ class Api {
     });
   }
 
-  async getCatalogGear({ sport, gender, start_date, end_date }) {
-    return await instance.get('catalog/gear', {
-      params: {
-        sport,
-        gender,
-        start_date,
-        end_date,
-      },
-    });
+  async getCatalogGear() {
+    return await instance.get('catalog/gear');
   }
 
   async getCatalogCampsCalendar({ age, boarding, business_type, gender, package_type, sport, group, secondary_group, length, }) {

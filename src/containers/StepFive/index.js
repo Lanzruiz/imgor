@@ -15,8 +15,12 @@ import { getCatalogGearRequest } from '../../actions/step.five';
 // Helpers
 import splitArray from '../../helpers/splitArray';
 import { stepOneFormValueSelector } from '../StepOne';
+// Selectors
+import { stepFiveDataSelector } from './selectors';
+import { stepTwoStartDateSelector, stepTwoEndDateSelector } from '../StepTwo/selectors';
 // Styles
 import './styles.scss';
+import LocaleString from '../../components/LocaleString';
 
 class StepFive extends React.Component {
   static propTypes = {
@@ -83,7 +87,7 @@ class StepFive extends React.Component {
   };
 
   componentDidMount() {
-    this.getCatalogGear(this.props);
+    this.getCatalogGear();
   }
 
   render() {
@@ -100,9 +104,22 @@ class StepFive extends React.Component {
           </Col>
         </Row>
         <Row>
-          <Col>{array_1.map(this.renderCardItem)}</Col>
-          <Col>{array_2.map(this.renderCardItem)}</Col>
-          <Col>{array_3.map(this.renderCardItem)}</Col>
+          {
+            (data.length > 0)
+              ? (
+                <React.Fragment>
+                  <Col>{array_1.map(this.renderCardItem)}</Col>
+                  <Col>{array_2.map(this.renderCardItem)}</Col>
+                  <Col>{array_3.map(this.renderCardItem)}</Col>
+                </React.Fragment>
+              ) : (
+                <Col>
+                  <div className="step-five__no-items">
+                    <LocaleString stringKey="no_gear_available" />!
+                  </div>
+                </Col>
+              )
+          }
         </Row>
       </Container>
     );
@@ -169,19 +186,17 @@ class StepFive extends React.Component {
     );
   };
 
-  getCatalogGear = ({ sport, gender, startDate, endDate }) => {
-    if (sport && gender && startDate && endDate) {
-      this.props.stepFiveActions.getCatalogGearRequest({ sport, gender, startDate, endDate });
-    }
+  getCatalogGear = () => {
+    this.props.stepFiveActions.getCatalogGearRequest();
   }
 }
 
 function mapStateToProps(state) {
   return {
-    data: state.stepFive.data,
+    data: stepFiveDataSelector(state),
     gender: stepOneFormValueSelector(state, 'gender'),
-    startDate: state.stepTwo.selectedDate.capacity_start_date,
-    endDate: state.stepTwo.selectedDate.capacity_end_date,
+    startDate: stepTwoStartDateSelector(state),
+    endDate: stepTwoEndDateSelector(state),
   };
 };
 

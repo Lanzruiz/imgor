@@ -14,6 +14,10 @@ import StepFour from '../StepFour';
 import StepFive from '../StepFive';
 import StepSix from '../StepSix';
 import StepFinal from '../StepFinal';
+// Selectors
+import {
+  languageSelelector, businessTypeSelector, packageTypeSelector, sportSelector,
+} from '../InitialComponent/selectors';
 // Actions
 import { setMaxStepValue } from '../../actions/steps';
 import { createCartRequest } from '../../actions/cart';
@@ -104,6 +108,10 @@ function mapStateToProps(state) {
     cartId: state.cart.id,
     maxStepValue: state.steps.maxStepValue,
     participantId: state.participant.id,
+    lang: languageSelelector(state),
+    businessType: businessTypeSelector(state),
+    packageType: packageTypeSelector(state),
+    sport: sportSelector(state),
   };
 };
 

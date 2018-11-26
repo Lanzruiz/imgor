@@ -101,5 +101,6 @@
     "skills": "Skills",
     "daily-training-concentration": "Daily Training Concentration",
     "education-class": "Education Class SAT/ACT or ESL",
-    "breakthrough": "Breakthrough"
+    "breakthrough": "Breakthrough",
+    "no_gear_available": "No gear available"
 }

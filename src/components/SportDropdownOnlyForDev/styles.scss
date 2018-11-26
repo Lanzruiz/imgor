@@ -1,0 +1,9 @@
+@import '../../constants/scss/variables.scss';
+
+#{$root} {
+    .sport-dropdown-only-for-dev {
+        background-color: #f4f5f4;
+        display: inline-block;
+        min-width: 320px;
+    }
+}

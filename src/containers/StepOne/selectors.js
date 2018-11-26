@@ -1,5 +1,7 @@
 // Modules
 import { createSelector } from 'reselect';
+// Constants
+import { weekly_camp } from './index';
 
 function stepOneSelector(state) {
   return state.stepOne;
@@ -55,5 +57,12 @@ export const weeksItemsSelector = createSelector(
   weeksSelector,
   function(weeks) {
     return weeks.weeks;
+  }
+);
+
+export const isWeeklyCampSelector = createSelector(
+  stepOneGroupSelector,
+  function(group) {
+    return group === weekly_camp;
   }
 );

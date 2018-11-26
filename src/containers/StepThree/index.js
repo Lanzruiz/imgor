@@ -106,7 +106,6 @@ class StepThree extends React.Component {
 
   render() {
     const { selectedId, data } = this.props;
-    console.log('render STEP 3');
     return (
       <Container style={{ marginBottom: '65px' }}>
         <Row>
