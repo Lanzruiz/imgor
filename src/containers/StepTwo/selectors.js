@@ -32,7 +32,18 @@ export const stepTwoDataSelector = createSelector(
 
 export const stepTwoSelectedDateSelector = createSelector(
   stepTwoSelector,
-  function(stepTwo) {
+  weeksCounterSelector,
+  isWeeklyCampSelector,
+  function(stepTwo, weeksCounter, isWeeklyCamp) {
+    if (isWeeklyCamp && weeksCounter > 1) {
+      const { selectedDate } = stepTwo;
+      const stringFormat = 'YYYY-MM-DD';
+      selectedDate.capacity_end_date = (
+        moment(selectedDate.capacity_end_date, stringFormat)
+          .add(daysInWeek * (weeksCounter - 1), 'days')
+          .format(stringFormat)
+      );
+    }
     return stepTwo.selectedDate;
   }
 );

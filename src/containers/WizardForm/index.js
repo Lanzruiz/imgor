@@ -17,8 +17,12 @@ import { stepOneFormValueSelector, weekly_camp } from '../StepOne';
 // Selectors
 import { stepTreeSelectedIdSelector } from '../StepThree/selector';
 import { totalPriceSelector, currentStepSelector } from './selectors';
-import { stepOneGroupSelector, stepOneSecondaryGroupSelector, weeksCounterSelector } from '../StepOne/selectors';
+import {
+  stepOneGroupSelector, stepOneSecondaryGroupSelector, weeksCounterSelector, isWeeklyCampSelector,
+} from '../StepOne/selectors';
 import { stepTwoStartDateSelector, stepTwoEndDateSelector } from '../StepTwo/selectors';
+// Constants
+import { stepsEnum } from '../../constants/steps';
 
 class WizardForm extends React.Component {
   static propTypes = {
@@ -43,6 +47,7 @@ class WizardForm extends React.Component {
     endDate: PropTypes.string,
     totalPrice: PropTypes.number,
     stepTreeSelectedId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    isWeeklyCamp: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -56,12 +61,16 @@ class WizardForm extends React.Component {
   componentDidMount() {
     const { step } = this.props;
 
-    if (step === 1) {
+    if (step === stepsEnum.one) {
       this.goingToStepTwo();
     }
 
-    if (step === 2) {
+    if (step === stepsEnum.two) {
       this.goingToStepThree();
+    }
+
+    if (step === stepsEnum.three) {
+      this.goingToStepFour();
     }
   }
 
@@ -74,12 +83,13 @@ class WizardForm extends React.Component {
     const isWeeksCounterChanged = (weeksCounter !== prevProps.weeksCounter);
     const isAgeChanged = (age !== prevProps.age);
     const isGenderChanged = (gender !== prevProps.gender);
+
     const shouldGoingToStepTwo = (
-      (step > 1) && (
+      (step > stepsEnum.one) && (
         (isStepOneGroupChanged || isStepOneSecondaryGroupChanged) || isWeeksCounterChanged || isAgeChanged || isGenderChanged)
     );
 
-    if (step === 1) {
+    if (step === stepsEnum.one) {
       this.goingToStepTwo({
         group: prevProps.group,
         sleepaway: prevProps.sleepaway,
@@ -91,7 +101,7 @@ class WizardForm extends React.Component {
     }
 
     if (shouldGoingToStepTwo) {
-      this.goingToStepByStepNymber(1);
+      this.goingToStepByStepNymber(stepsEnum.one);
       this.goingToStepTwo({
         group: prevProps.group,
         sleepaway: prevProps.sleepaway,
@@ -102,16 +112,20 @@ class WizardForm extends React.Component {
       });
     }
 
-    if ((step > 2) && isDateChanged) {
-      this.goingToStepByStepNymber(2);
+    if ((step > stepsEnum.two) && isDateChanged) {
+      this.goingToStepByStepNymber(stepsEnum.two);
     }
 
-    if ((step > 3) && (startDate && endDate) && isStepTreeSelectedIdChanged) {
-      this.goingToStepByStepNymber(3);
-    }
-
-    if (step === 2 && !isEqual({ startDate }, prevProps)) {
+    if ((step === stepsEnum.two) && startDate) {
       this.goingToStepThree();
+    }
+
+    if ((step === stepsEnum.three) && stepTreeSelectedId) {
+      this.goingToStepFour();
+    }
+
+    if ((step > stepsEnum.three) && (startDate && endDate) && isStepTreeSelectedIdChanged) {
+      this.goingToStepByStepNymber(stepsEnum.three);
     }
   }
 
@@ -183,9 +197,9 @@ class WizardForm extends React.Component {
   };
 
   goingToStepTwo = (prevProps = {}) => {
-    const { group, sleepaway, gender, age, weeksCounter, cartId, participantId, secondaryGroup } = this.props;
+    const { group, sleepaway, gender, age, weeksCounter, cartId, participantId, secondaryGroup, isWeeklyCamp } = this.props;
     if ((isString(sleepaway) && isString(gender) && isString(age))) {
-      if (((weekly_camp === group) && (weeksCounter > 0)) || (group && secondaryGroup)) {
+      if (((isWeeklyCamp) && (weeksCounter > 0)) || (group && secondaryGroup)) {
         if (!isEqual({ gender, age }, { gender: prevProps.gender, age: prevProps.age })) {
           this.props.stepOneActions.stepOnePutCartCartIdParticipantParticipantIdRequest({
             age,
@@ -208,7 +222,7 @@ class WizardForm extends React.Component {
             secondaryGroup: prevProps.secondaryGroup,
           },
         )) {
-          this.goingToStepByStepNymber(2);
+          this.goingToStepByStepNymber(stepsEnum.two);
         }
       }
     }
@@ -217,7 +231,14 @@ class WizardForm extends React.Component {
   goingToStepThree = () => {
     const { startDate } = this.props;
     if (startDate) {
-      this.goingToStepByStepNymber(3);
+      this.goingToStepByStepNymber(stepsEnum.three);
+    }
+  };
+
+  goingToStepFour = () => {
+    const { stepTreeSelectedId } = this.props;
+    if (stepTreeSelectedId) {
+      this.goingToStepByStepNymber(stepsEnum.four);
     }
   }
 }
@@ -244,6 +265,7 @@ function mapStateToProps(state) {
     endDate: stepTwoEndDateSelector(state),
     stepTreeSelectedId: stepTreeSelectedIdSelector(state),
     totalPrice: totalPriceSelector(state),
+    isWeeklyCamp: isWeeklyCampSelector(state),
   };
 };
 

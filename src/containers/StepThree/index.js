@@ -14,15 +14,13 @@ import TotalAthleteCard from '../../components/TotalAthleteCard';
 import GameChangerCard from '../../components/GameChangerCard';
 // Helpers
 import validation from '../../helpers/validate';
-import { stepOneFormValueSelector } from '../StepOne';
 // Actions
 import * as trainingActions from '../../actions/training';
 import * as stepThreeActions from '../../actions/step.three';
 import * as stepsActions from '../../actions/steps';
-// Constants
-import { weekly_camp } from '../StepOne';
 // Selectors
 import { stepThreeDataSelector, stepTreeSelectedIdSelector } from './selector';
+import { isWeeklyCampSelector, stepOneAgeSelector, stepOneGenderSelector, stepOneSleepawaySelector } from '../StepOne/selectors';
 // Styles
 import './styles.scss';
 
@@ -76,26 +74,16 @@ class StepThree extends React.Component {
       capacity_start_date: PropTypes.date,
       capacity_end_date: PropTypes.date,
     }),
+    isWeeklyCamp: PropTypes.bool,
   };
 
   componentDidMount() {
-    const { selectedId, currentStep } = this.props;
-
     this.getCatalogCampsLevels();
-
-    if (selectedId && (currentStep === 3)) {
-      this.props.stepsActions.incrementStepsCounter();
-    }
   }
 
   componentDidUpdate(prevProps) {
-    const { currentStep, selectedId, selectedDate } = this.props;
-
-    if ((selectedId && selectedId !== prevProps.selectedId) && (currentStep === 3)) {
-      this.props.stepsActions.incrementStepsCounter();
-    }
-
-    if (!isEquel(selectedDate, prevProps.selectedDate)) {
+    const { selectedId } = this.props;
+    if (selectedId !== prevProps.selectedId) {
       this.getCatalogCampsLevels();
     }
   }
@@ -183,7 +171,7 @@ class StepThree extends React.Component {
 
   getCatalogCampsLevels = () => {
     const {
-      sport, packageType, businessType, gender, boarding, age, date, group, secondaryGroup, lengthProgram,
+      sport, packageType, businessType, gender, boarding, age, date, group, secondaryGroup, lengthProgram, isWeeklyCamp,
     } = this.props;
 
     const getCatalogCampsLevelsRequestArgs = {
@@ -199,7 +187,7 @@ class StepThree extends React.Component {
       length_program: lengthProgram,
     };
 
-    if (group === weekly_camp) {
+    if (isWeeklyCamp) {
       delete getCatalogCampsLevelsRequestArgs.group;
       delete getCatalogCampsLevelsRequestArgs.secondary_group;
     }
@@ -217,15 +205,16 @@ function mapStateToProps(state) {
   return {
     selectedId: stepTreeSelectedIdSelector(state),
     lengthProgram: state.stepOne.lengthProgram,
-    gender: stepOneFormValueSelector(state, 'gender'),
-    boarding: stepOneFormValueSelector(state, 'sleepaway'),
-    age: stepOneFormValueSelector(state, 'age'),
+    gender: stepOneGenderSelector(state),
+    boarding: stepOneSleepawaySelector(state),
+    age: stepOneAgeSelector(state),
     date: state.stepTwo.selectedDate.capacity_start_date,
     data: stepThreeDataSelector(state),
     group: state.stepOne.group,
     secondaryGroup: state.stepOne.secondary_group,
     currentStep: state.steps.currentStep,
     selectedDate: state.stepTwo.selectedDate,
+    isWeeklyCamp: isWeeklyCampSelector(state),
   };
 };
 
