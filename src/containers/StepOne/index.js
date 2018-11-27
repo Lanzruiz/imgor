@@ -29,6 +29,7 @@ import { minWeekCount, maxWeekCount } from '../../constants/weeks';
 // Selectors
 import {
   stepOneGroupSelector, stepOneDataSelector, stepOneTabIndexSelector, weeksCounterSelector,
+  stepOneAgeSelector, stepOneGenderSelector, stepOneSleepawaySelector,
 } from './selectors';
 // Styles
 import './styles.scss';
@@ -599,9 +600,9 @@ function mapStateToProps(state) {
     weeksCounter: weeksCounterSelector(state),
     participantId: state.participant.id,
     email: selector(state, 'email'),
-    sleepaway: stepOneFormValueSelector(state, 'sleepaway'),
-    age: stepOneFormValueSelector(state, 'age'),
-    gender: stepOneFormValueSelector(state, 'gender'),
+    sleepaway: stepOneSleepawaySelector(state),
+    age: stepOneAgeSelector(state),
+    gender: stepOneGenderSelector(state),
     cartId: state.cart.id,
     data: stepOneDataSelector(state),
     tabIndex: stepOneTabIndexSelector(state),

@@ -6,7 +6,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import isEquel from 'lodash/isEqual';
 // Components
 import Header from '../../components/Header';
 import LocaleString from '../../components/LocaleString';
@@ -220,7 +219,7 @@ class StepTwo extends React.Component {
               const dateString = dateFormat({ date: capacity_start_date, dateFormat: 'YYYY-MM-DD', resultFormat: 'MMM, DD YYYY' });
               const listItemClassNames = cx('dates__item', {
                 'sold-out': !isBefore,
-                'active': isEquel(selectedDate, { capacity_start_date, capacity_end_date }),
+                'active': (selectedDate.capacity_start_date === capacity_start_date),
               });
               return (
                 <li
