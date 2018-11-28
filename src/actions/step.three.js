@@ -5,6 +5,7 @@ import Api from '../api';
 
 export function getCatalogCampsLevelsRequest(args) {
   return function(dispatch) {
+    console.log('args ', args);
     Api.req({
       apiCall: Api.getCatalogCampsLevels,
       res200: data => dispatch(getCatalogCampsLevels(data)),
@@ -12,7 +13,6 @@ export function getCatalogCampsLevelsRequest(args) {
       reject: err => console.log(err),
       apiCallParams: {
         age: args.age,
-        date: args.date,
         sport: args.sport,
         gender: args.gender,
         boarding: args.boarding,
@@ -20,7 +20,8 @@ export function getCatalogCampsLevelsRequest(args) {
         package_type: args.package_type,
         group: args.group,
         secondary_group: args.secondary_group,
-        length_program: args.length_program,
+        //length_program: args.length_program,
+        start_date: args.start_date,
       },
     });
   }

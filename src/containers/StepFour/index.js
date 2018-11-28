@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
+import scrollToComponent from 'react-scroll-to-component';
 // Components
 import Header from '../../components/Header';
 import LocaleString from '../../components/LocaleString';
@@ -24,6 +25,11 @@ import { weeksItemsSelector } from '../StepOne/selectors';
 import './styles.scss';
 
 class StepFour extends React.Component {
+  constructor(props) {
+    super(props);
+    this.stepFour = React.createRef();
+  }
+
   static propTypes = {
     stepFourActions: PropTypes.shape({
       getCatalogCampRequest: PropTypes.func.isRequired,
@@ -69,6 +75,7 @@ class StepFour extends React.Component {
     if (!hasSecondaryProgram && (currentStep === 4)) {
       this.nextStep();
     }
+    scrollToComponent(this.stepFour.current);
   }
 
   componentDidUpdate(prevProps) {
@@ -204,7 +211,7 @@ class StepFour extends React.Component {
       );
     });
     return (
-      <Container style={{ marginBottom: '65px' }}>
+      <Container style={{ marginBottom: '65px' }} ref={this.stepFour}>
         <Row>
           <Col>
             <Header

@@ -15,8 +15,8 @@ export function redirectToMainPage(initialSettings) {
   return function(dispatch) {
     const { lang, sport, packageType, businessType } = initialSettings;
     if (lang || sport || packageType || businessType) {
-      setInitialSettings(initialSettings);
-      return dispatch(push('/'));
+      dispatch(setInitialSettings(initialSettings));
+      dispatch(push('/'));
     }
   }
 }

@@ -6,6 +6,7 @@ import { ReactHeight } from 'react-height';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import scrollToComponent from 'react-scroll-to-component';
 // Components
 import Header from '../../components/Header';
 import Card, { CardContent, CardContentRow, CardContentCol, CardContentText } from '../../components/Card';
@@ -23,6 +24,11 @@ import './styles.scss';
 import LocaleString from '../../components/LocaleString';
 
 class StepFive extends React.Component {
+  constructor(props) {
+    super(props);
+    this.stepFour = React.createRef();
+  }
+
   static propTypes = {
     stepFiveActions: PropTypes.shape({
       getCatalogGearRequest: PropTypes.func.isRequired,
@@ -88,13 +94,14 @@ class StepFive extends React.Component {
 
   componentDidMount() {
     this.getCatalogGear();
+    scrollToComponent(this.stepFour.current);
   }
 
   render() {
     const { data } = this.props;
     const { array_1, array_2, array_3 } = splitArray({ array: data, arrayCount: 3 });
     return (
-      <Container style={{ marginBottom: '65px' }}>
+      <Container style={{ marginBottom: '65px' }} ref={this.stepFive}>
         <Row>
           <Col>
             <Header

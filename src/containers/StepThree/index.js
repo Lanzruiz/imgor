@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { reduxForm } from 'redux-form';
-import isEquel from 'lodash/isEqual';
+import scrollToComponent from 'react-scroll-to-component';
 // Components
 import Header from '../../components/Header';
 import BreakthroughCard from '../../components/BreakthroughCard';
@@ -20,11 +20,20 @@ import * as stepThreeActions from '../../actions/step.three';
 import * as stepsActions from '../../actions/steps';
 // Selectors
 import { stepThreeDataSelector, stepTreeSelectedIdSelector } from './selector';
-import { isWeeklyCampSelector, stepOneAgeSelector, stepOneGenderSelector, stepOneSleepawaySelector } from '../StepOne/selectors';
+import {
+  isWeeklyCampSelector, stepOneAgeSelector, stepOneGenderSelector,
+  stepOneSleepawaySelector, stepOneGroupSelector, stepOneSecondaryGroupSelector,
+} from '../StepOne/selectors';
+import { stepTwoStartDateSelector, stepTwoEndDateSelector } from '../StepTwo/selectors';
 // Styles
 import './styles.scss';
 
 class StepThree extends React.Component {
+  constructor(props) {
+    super(props);
+    this.stepThree = React.createRef();
+  }
+
   static propTypes = {
     selectedId: PropTypes.oneOfType([
       PropTypes.string,
@@ -44,7 +53,6 @@ class StepThree extends React.Component {
     boarding: PropTypes.string,
     lengthProgram: PropTypes.string,
     age: PropTypes.string,
-    date: PropTypes.string,
     data: PropTypes.arrayOf(
       PropTypes.shape({
         age_range: PropTypes.string,
@@ -69,16 +77,12 @@ class StepThree extends React.Component {
     ),
     group: PropTypes.string,
     secondaryGroup: PropTypes.string,
-    currentStep: PropTypes.number,
-    selectedDate: PropTypes.shape({
-      capacity_start_date: PropTypes.date,
-      capacity_end_date: PropTypes.date,
-    }),
     isWeeklyCamp: PropTypes.bool,
   };
 
   componentDidMount() {
     this.getCatalogCampsLevels();
+    scrollToComponent(this.stepThree.current);
   }
 
   componentDidUpdate(prevProps) {
@@ -95,7 +99,7 @@ class StepThree extends React.Component {
   render() {
     const { selectedId, data } = this.props;
     return (
-      <Container style={{ marginBottom: '65px' }}>
+      <Container style={{ marginBottom: '65px' }} ref={this.stepThree}>
         <Row>
           <Col>
             <Header
@@ -171,12 +175,14 @@ class StepThree extends React.Component {
 
   getCatalogCampsLevels = () => {
     const {
-      sport, packageType, businessType, gender, boarding, age, date, group, secondaryGroup, lengthProgram, isWeeklyCamp,
+      sport, packageType, businessType, gender, boarding,
+      age, date, group, secondaryGroup, lengthProgram, isWeeklyCamp,
+      startDate, endDate,
     } = this.props;
 
     const getCatalogCampsLevelsRequestArgs = {
       age,
-      date,
+      //date,
       sport,
       gender,
       boarding,
@@ -184,7 +190,9 @@ class StepThree extends React.Component {
       business_type: businessType,
       package_type: packageType,
       secondary_group: secondaryGroup,
-      length_program: lengthProgram,
+      start_date: startDate,
+      end_date: endDate,
+      // length_program: lengthProgram,
     };
 
     if (isWeeklyCamp) {
@@ -210,11 +218,11 @@ function mapStateToProps(state) {
     age: stepOneAgeSelector(state),
     date: state.stepTwo.selectedDate.capacity_start_date,
     data: stepThreeDataSelector(state),
-    group: state.stepOne.group,
-    secondaryGroup: state.stepOne.secondary_group,
-    currentStep: state.steps.currentStep,
-    selectedDate: state.stepTwo.selectedDate,
+    group: stepOneGroupSelector(state),
+    secondaryGroup: stepOneSecondaryGroupSelector(state),
     isWeeklyCamp: isWeeklyCampSelector(state),
+    startDate: stepTwoStartDateSelector(state),
+    endDate: stepTwoEndDateSelector(state),
   };
 };
 

@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import scrollToComponent from 'react-scroll-to-component';
 // Components
 import Header from '../../components/Header';
 import LocaleString from '../../components/LocaleString';
@@ -31,6 +32,11 @@ import {
 import './styles.scss';
 
 class StepTwo extends React.Component {
+  constructor(props) {
+    super(props);
+    this.stepTwo = React.createRef();
+  }
+
   static propTypes = {
     stepOneActions: PropTypes.shape({
       stepOneSetCampLength: PropTypes.func.isRequired,
@@ -106,6 +112,7 @@ class StepTwo extends React.Component {
     }
 
     this.getCatalogCampsCalendar(getCatalogCampsCalendarArgs);
+    scrollToComponent(this.stepTwo.current, { offset: 0, align: 'middle' });
   }
 
   componentWillUnmount() {
@@ -117,7 +124,7 @@ class StepTwo extends React.Component {
     const dataObject = splitArray({ arrayCount: 6, array: data });
     console.log(data);
     return (
-      <Container style={{ marginBottom: '130px' }}>
+      <Container style={{ marginBottom: '130px' }} ref={this.stepTwo}>
         <Row>
           <Col>
             <Header
