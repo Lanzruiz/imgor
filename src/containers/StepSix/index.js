@@ -3,7 +3,7 @@ import React from 'react';
 import { Container, Row, Col } from 'react-grid-system';
 import Img from 'react-image';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import scrollToComponent from 'react-scroll-to-component';
 // Components
 import Header from '../../components/Header';
 import Card, { CardContent, CardContentRow, CardContentCol, CardContentText } from '../../components/Card';
@@ -17,9 +17,18 @@ import stubImage from '../../assets/img/2018-Suburban.png';
 import './styles.scss';
 
 class StepSix extends React.Component {
+  constructor(props) {
+    super(props);
+    this.stepSix = React.createRef();
+  }
+
+  componentDidMount() {
+    scrollToComponent(this.stepSix.current);
+  }
+
   render() {
     return (
-      <Container style={{ marginBottom: '65px' }}>
+      <Container style={{ marginBottom: '65px' }} ref={this.stepSix}>
         <Row>
           <Col>
             <Header

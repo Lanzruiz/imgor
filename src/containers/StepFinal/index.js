@@ -2,6 +2,7 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-grid-system';
 import { Form, Field, reduxForm } from 'redux-form';
+import scrollToComponent from 'react-scroll-to-component';
 // Components
 import Header from '../../components/Header';
 import Card, { CardContent, CardContentRow, CardContentCol } from '../../components/Card';
@@ -14,9 +15,18 @@ import validation from '../../helpers/validate';
 import './styles.scss';
 
 class StepFinal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.stepFinal = React.createRef();
+  }
+
+  componentDidMount() {
+    scrollToComponent(this.stepFinal.current);
+  }
+
   render() {
     return (
-      <Container style={{ marginBottom: '65px' }}>
+      <Container style={{ marginBottom: '65px' }} ref={this.stepFinal}>
         <Row>
           <Col>
             <Header

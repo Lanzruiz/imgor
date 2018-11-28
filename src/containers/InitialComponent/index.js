@@ -7,7 +7,7 @@ import queryString from 'query-string';
 // Components
 import Preloader from '../../components/Preloader';
 // Actions
-import * as initialSettingsActions from '../../actions/initialState';
+import * as initialSettingsActions from '../../actions/initialSettings';
 // Styles
 import './styles.scss';
 

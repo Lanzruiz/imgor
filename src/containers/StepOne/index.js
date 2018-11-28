@@ -8,6 +8,7 @@ import { Field, Form, reduxForm, formValueSelector } from 'redux-form';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import include from 'lodash/includes';
+import scrollToComponent from 'react-scroll-to-component';
 // Components
 import EmailModal from '../../components/EmailModal';
 import Header from '../../components/Header';
@@ -37,6 +38,11 @@ import './styles.scss';
 export const weekly_camp = 'Year-Round Weekly Camps';
 
 class StepOne extends React.Component {
+  constructor(props) {
+    super(props);
+    this.stepOne = React.createRef();
+  }
+
   static propTypes = {
     weeksCounter: PropTypes.number,
     weeksActions: PropTypes.shape({
@@ -103,6 +109,7 @@ class StepOne extends React.Component {
     if (typeof weeksLengthNumber === 'number') {
       this.props.weeksActions.setOnlyWeeks(weeksLengthNumber);
     }
+    scrollToComponent(this.stepOne.current);
   }
 
   componentDidUpdate(prevProps) {
@@ -123,7 +130,7 @@ class StepOne extends React.Component {
           onSubmit={this.closeEmailModal}
           shouldShowEmailModal={!participantId}
         />
-        <Container style={{ marginBottom: '65px' }}>
+        <Container style={{ marginBottom: '65px' }} ref={this.stepOne}>
           <Row>
             <Col>
               <Header
