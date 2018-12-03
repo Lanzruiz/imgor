@@ -68,7 +68,7 @@ class App extends React.Component {
       <StepFour
         key="3"
         sport={props.sport}
-        programType="concentrations"
+        programType="concentration"
         businessType={props.businessType}
       />,
       <StepFive
@@ -89,6 +89,7 @@ class App extends React.Component {
     if (!cartId) {
       this.props.cartActions.createCartRequest();
     }
+    console.log('href', window.top.location.href);
   }
 
   render() {

@@ -10,6 +10,7 @@ const initialState = {
     capacity_start_date: null,
     capacity_end_date: null,
   },
+  stepTwoCampDaysLength: 0,
 };
 
 export default function(state = initialState, action) {
@@ -39,6 +40,16 @@ export default function(state = initialState, action) {
       return {
         ...state,
         ...initialState,
+      };
+    }
+
+    case stepTwoTypes.STEP_TWO_SET_CAMP_DAYS_LENGTH: {
+      if (payload === state.stepTwoCampDaysLength) {
+        return state;
+      }
+      return {
+        ...state,
+        stepTwoCampDaysLength: payload,
       };
     }
 

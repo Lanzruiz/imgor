@@ -75,3 +75,5 @@ export function stepOneSetCampLength(length) {
     payload: length,
   };
 }
+
+// TODO: write action to set default business_type

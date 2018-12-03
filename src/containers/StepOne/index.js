@@ -104,21 +104,15 @@ class StepOne extends React.Component {
   };
 
   componentDidMount() {
-    const { sport, weeksLengthNumber } = this.props;
+    const { sport } = this.props;
     this.props.stepOneActions.getCatalogCampsGroup({ sport });
-    if (typeof weeksLengthNumber === 'number') {
-      this.props.weeksActions.setOnlyWeeks(weeksLengthNumber);
-    }
     scrollToComponent(this.stepOne.current);
   }
 
   componentDidUpdate(prevProps) {
-    const { sport, weeksLengthNumber } = this.props;
+    const { sport } = this.props;
     if (prevProps.sport !== sport) {
       this.props.stepOneActions.getCatalogCampsGroup({ sport });
-    }
-    if (typeof weeksLengthNumber === 'number' && (weeksLengthNumber !== prevProps.weeksLengthNumber)) {
-      this.props.weeksActions.setOnlyWeeks(weeksLengthNumber);
     }
   }
 

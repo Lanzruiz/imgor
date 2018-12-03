@@ -85,7 +85,7 @@ class Api {
 
   async getCatalogCampsLevels(args) {
     const {
-      sport, business_type, package_type, gender, boarding, group, secondary_group, age, start_date, length_program,
+      sport, business_type, package_type, gender, boarding, group, secondary_group, age, date,
     } = args;
     return await instance.get('catalog/camps/levels', {
       params: {
@@ -95,10 +95,9 @@ class Api {
         gender,
         boarding,
         age,
-        start_date,
         group,
         secondary_group,
-        length_program,
+        date,
       },
     });
   }
@@ -117,6 +116,18 @@ class Api {
         age,
       },
     });
+  }
+
+  async getCatalogTransport() {
+    return await instance.get('catalog/transport');
+  }
+
+  async getCatalogAirlines() {
+    return await instance.get('catalog/airlines');
+  }
+
+  async getCatalogTransportUnaccompanied() {
+    return  await instance.get('catalog/transport/unaccompanied');
   }
 }
 
