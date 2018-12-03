@@ -102,5 +102,11 @@
     "daily-training-concentration": "Daily Training Concentration",
     "education-class": "Education Class SAT/ACT or ESL",
     "breakthrough": "Breakthrough",
-    "no_gear_available": "No gear available"
+    "no_gear_available": "No gear available",
+    "step_six.initial_header": "Would you like to arrange transportation to or from the airport?",
+    "step_six.yes": "Yes",
+    "step_six.no": "No",
+    "step_six.roundtrip": "Roundtrip",
+    "step_six.pickup": "Pickup only",
+    "step_six.dropoff": "Dropoff only"
 }

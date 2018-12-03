@@ -20,13 +20,11 @@ import chat from '../../assets/img/chat-icon.png';
 // Helpers
 import splitArray from '../../helpers/splitArray';
 import dateFormat from '../../helpers/dateFormat';
-import isBeforeDate from '../../helpers/isBeforeDate';
 // Selectors
 import { stepTwoDataSelector, stepTwoSelectedDateSelector } from './selectors';
-import { stepOneFormValueSelector } from '../StepOne';
 import {
-  stepOneGroupSelector, weeksCounterSelector,
-  stepOneSecondaryGroupSelector, isWeeklyCampSelector,
+  stepOneGroupSelector, weeksCounterSelector, stepOneAgeSelector, stepOneGenderSelector,
+  stepOneSecondaryGroupSelector, isWeeklyCampSelector, stepOneSleepawaySelector, stepOneBoardingBooleanSelector,
 } from '../StepOne/selectors';
 // Styles
 import './styles.scss';
@@ -38,6 +36,7 @@ class StepTwo extends React.Component {
   }
 
   static propTypes = {
+    boarding: PropTypes.bool,
     stepOneActions: PropTypes.shape({
       stepOneSetCampLength: PropTypes.func.isRequired,
     }),
@@ -45,6 +44,7 @@ class StepTwo extends React.Component {
       getCatalogCampsCalendarRequest: PropTypes.func.isRequired,
       selectDate: PropTypes.func.isRequired,
       stepTwoSetDefaultState: PropTypes.func.isRequired,
+      stepTwoSetCampDaysLength: PropTypes.func.isRequired,
     }),
     data: PropTypes.arrayOf(
       PropTypes.shape({
@@ -91,7 +91,7 @@ class StepTwo extends React.Component {
 
   componentDidMount() {
     const {
-      age, businessType, sleepaway, packageType, sport,
+      age, businessType, boarding, packageType, sport,
       group, secondary_group, gender, weeksCounter, isWeeklyCamp,
     } = this.props;
 
@@ -101,13 +101,12 @@ class StepTwo extends React.Component {
       gender,
       group,
       secondary_group,
-      boarding: sleepaway,
+      boarding,
       business_type: businessType,
       package_type: packageType,
     };
 
     if (isWeeklyCamp && weeksCounter) {
-      delete getCatalogCampsCalendarArgs.group;
       delete getCatalogCampsCalendarArgs.secondary_group;
     }
 
@@ -204,28 +203,29 @@ class StepTwo extends React.Component {
 
   renderDates = (dataObject) => {
     const result = [];
-    const { selectedDate } = this.props;
-    const now = Date.now();
+    const { boarding, selectedDate } = this.props;
     for (let key in dataObject) {
       result.push(
         <li key={key} className="dates__column">
           <ul>
             {dataObject[key].map((item, idx) => {
-              const { capacity_start_date, capacity_end_date, length } = item;
+              const { capacity, capacity_start_date, capacity_end_date, length, length_days } = item;
               const itemKey = `${key}_${idx}`;
-              const isBefore = isBeforeDate({ startDate: now, endDate: capacity_end_date });
+              const capacityItemByBoardingValue = capacity.find((capacityItem) => capacityItem.boarding === boarding);
+              const isAvailable = capacityItemByBoardingValue.available > 0;
               const onClickHandler = (
-                isBefore
+                isAvailable
                   ?
                     () => {
                       this.selectDate({ capacity_start_date, capacity_end_date });
-                      this.selectCampLength(`${length} Camps`);
+                      this.selectCampLength(length);
+                      this.setCampDaysLength(length_days);
                     }
                   : null
               );
               const dateString = dateFormat({ date: capacity_start_date, dateFormat: 'YYYY-MM-DD', resultFormat: 'MMM, DD YYYY' });
               const listItemClassNames = cx('dates__item', {
-                'sold-out': !isBefore,
+                'sold-out': !isAvailable,
                 'active': (selectedDate.capacity_start_date === capacity_start_date),
               });
               return (
@@ -304,6 +304,10 @@ class StepTwo extends React.Component {
     this.props.stepTwoActions.getCatalogCampsHistogramRequest(args);
   };
 
+  setCampDaysLength = (length) => {
+    this.props.stepTwoActions.stepTwoSetCampDaysLength(length);
+  };
+
   setDefaultState = () => {
     this.props.stepTwoActions.stepTwoSetDefaultState();
   }
@@ -311,11 +315,12 @@ class StepTwo extends React.Component {
 
 function mapStateToProps(state) {
   return {
+    boarding: stepOneBoardingBooleanSelector(state),
     data: stepTwoDataSelector(state),
     selectedDate: stepTwoSelectedDateSelector(state),
-    sleepaway: stepOneFormValueSelector(state, 'sleepaway'),
-    age: stepOneFormValueSelector(state, 'age'),
-    gender: stepOneFormValueSelector(state, 'gender'),
+    sleepaway: stepOneSleepawaySelector(state),
+    age: stepOneAgeSelector(state),
+    gender: stepOneGenderSelector(state),
     group: stepOneGroupSelector(state),
     secondary_group: stepOneSecondaryGroupSelector(state),
     weeksCounter: weeksCounterSelector(state),

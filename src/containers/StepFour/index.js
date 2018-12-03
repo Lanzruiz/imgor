@@ -10,17 +10,16 @@ import scrollToComponent from 'react-scroll-to-component';
 // Components
 import Header from '../../components/Header';
 import LocaleString from '../../components/LocaleString';
-import Card from '../../components/Card';
+import StepFourWeekConcentrationComponent from '../../components/StepFourWeekConcentrationComponent';
 // Action
 import * as weeksActions from '../../actions/weeks';
-import * as stepFourActions from '../../actions/step.four';
 import * as stepsActions from '../../actions/steps';
-// Helpers
-import { stepOneFormValueSelector } from '../StepOne';
+import * as stepFourActions from '../../actions/step.four';
 // Selectors
 import { stepThreeHasSecondaryProgram } from '../StepThree/selector';
 import { stepTwoStartDateSelector, stepTwoEndDateSelector } from '../StepTwo/selectors';
-import { weeksItemsSelector } from '../StepOne/selectors';
+import { weeksItemsSelector, stepOneAgeSelector, stepOneGenderSelector } from '../StepOne/selectors';
+import { stepFourDataSelector } from './selectors';
 // Styles
 import './styles.scss';
 
@@ -31,11 +30,12 @@ class StepFour extends React.Component {
   }
 
   static propTypes = {
-    stepFourActions: PropTypes.shape({
-      getCatalogCampRequest: PropTypes.func.isRequired,
-    }),
     stepsActions: PropTypes.shape({
       incrementStepsCounter: PropTypes.func.isRequired,
+    }),
+    stepFourActions: PropTypes.shape({
+      getCatalogCampRequest: PropTypes.func.isRequired,
+      stepFourSetDefaultState: PropTypes.func.isRequired,
     }),
     businessType: PropTypes.string.isRequired,
     programType: PropTypes.string.isRequired,
@@ -47,6 +47,7 @@ class StepFour extends React.Component {
     weeksLengthNumber: PropTypes.number,
     hasSecondaryProgram: PropTypes.bool,
     currentStep: PropTypes.number.isRequired,
+    data: PropTypes.array,
   };
 
   static defaultProps = {
@@ -55,26 +56,11 @@ class StepFour extends React.Component {
   };
 
   componentDidMount() {
-    const {
-      businessType, programType, sport, age, gender, startDate, endDate, hasSecondaryProgram,
-      currentStep,
-    } = this.props;
-
-    const getCatalogCampRequestArgs = {
-      sport,
-      age,
-      gender,
-      business_type: businessType,
-      program_type: programType,
-      start_date: startDate,
-      end_date: endDate,
-    }
-
-    this.props.stepFourActions.getCatalogCampRequest(getCatalogCampRequestArgs);
-
+    const { hasSecondaryProgram, currentStep } = this.props;
     if (!hasSecondaryProgram && (currentStep === 4)) {
       this.nextStep();
     }
+    this.getCatalogCamp();
     scrollToComponent(this.stepFour.current);
   }
 
@@ -85,8 +71,12 @@ class StepFour extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.setDefaultProps();
+  }
+
   render() {
-    const { weeks, selectedWeekId, hasSecondaryProgram } = this.props;
+    const { age, businessType, gender, weeks, selectedWeekId, sport, programType, data } = this.props;
     const tabsList = [];
     const tabPanels = [];
 
@@ -94,9 +84,9 @@ class StepFour extends React.Component {
       'hidden': weeks.length === 1,
     });
 
-    if (!hasSecondaryProgram) return false;
+    if (data.length === 0) return false;
 
-    weeks.forEach(({ id, customize_id }) => {
+    weeks.forEach(({ id, customize_id, end_date, start_date }) => {
       tabsList.push(
         <Tab key={id} className="step-four-tabs__tab">
           <LocaleString stringKey="week" /> {id}
@@ -104,109 +94,17 @@ class StepFour extends React.Component {
       );
       tabPanels.push(
         <TabPanel key={id} className="step-four-tabs__tab-panel">
-          <Row>
-            <Col>
-              <Card
-                id={0}
-                cardHeader="training"
-                color="dark"
-                header={<LocaleString stringKey="strength" />}
-                label="ages 11-18"
-                price="400"
-                onClick={this.customizeWeek}
-                selectedId={customize_id}
-              >
-                <div>content here</div>
-              </Card>
-              <Card
-                id={1}
-                cardHeader="training"
-                color="dark"
-                header={<LocaleString stringKey="speed" />}
-                label="ages 11-18"
-                price="400"
-                onClick={this.customizeWeek}
-                selectedId={customize_id}
-              >
-                <div>content here</div>
-              </Card>
-              <Card
-                id={2}
-                cardHeader="class"
-                color="dark"
-                header={<LocaleString stringKey="esl" />}
-                label="ages 11-18"
-                via={true}
-                price="400"
-                onClick={this.customizeWeek}
-                selectedId={customize_id}
-              >
-                <div>content here</div>
-              </Card>
-            </Col>
-            <Col>
-              <Card
-                id={3}
-                cardHeader="training"
-                color="dark"
-                header={<LocaleString stringKey="mental" />}
-                label="ages 11-18"
-                price="400"
-                onClick={this.customizeWeek}
-                selectedId={customize_id}
-              >
-                <div>content here</div>
-              </Card>
-              <Card
-                id={4}
-                cardHeader="training"
-                color="dark"
-                header={<LocaleString stringKey="nutrition" />}
-                label="ages 11-18"
-                price="400"
-                onClick={this.customizeWeek}
-                selectedId={customize_id}
-              >
-                <div>content here</div>
-              </Card>
-              <Card
-                id={5}
-                cardHeader="skip this week"
-                color="dark"
-                header={<LocaleString stringKey="no_daily_session" />}
-                onClick={this.customizeWeek}
-                selectedId={customize_id}
-              >
-                <div>content here</div>
-              </Card>
-            </Col>
-            <Col>
-              <Card
-                id={6}
-                cardHeader="training"
-                color="dark"
-                header={<LocaleString stringKey="vision" />}
-                label="ages 11-18"
-                price="400"
-                onClick={this.customizeWeek}
-                selectedId={customize_id}
-              >
-                <div>content here</div>
-              </Card>
-              <Card
-                id={7}
-                cardHeader="class"
-                color="dark"
-                header={<LocaleString stringKey="SAT/ACT" />}
-                label="ages 15-18"
-                price="400"
-                onClick={this.customizeWeek}
-                selectedId={customize_id}
-              >
-                <div>content here</div>
-              </Card>
-            </Col>
-          </Row>
+          <StepFourWeekConcentrationComponent
+            age={age}
+            businessType={businessType}
+            customizeId={customize_id}
+            endDate={end_date}
+            gender={gender}
+            startDate={start_date}
+            sport={sport}
+            programType={programType}
+            weekId={id}
+          />
         </TabPanel>
       );
     });
@@ -250,6 +148,24 @@ class StepFour extends React.Component {
 
   nextStep = () => {
     this.props.stepsActions.incrementStepsCounter();
+  };
+
+  getCatalogCamp = () => {
+    const { age, businessType, gender, sport, programType, startDate, endDate } = this.props;
+    const getCatalogCampArgs = {
+      age,
+      gender,
+      sport,
+      business_type: businessType,
+      program_type: programType,
+      start_date: startDate,
+      end_date: endDate,
+    };
+    this.props.stepFourActions.getCatalogCampRequest(getCatalogCampArgs);
+  };
+
+  setDefaultProps = () => {
+    this.props.stepFourActions.stepFourSetDefaultState();
   }
 }
 
@@ -257,21 +173,22 @@ function mapStateToProps(state) {
   return {
     weeks: weeksItemsSelector(state),
     selectedWeekId: state.weeks.selectedWeekId,
-    age: stepOneFormValueSelector(state, 'age'),
-    gender: stepOneFormValueSelector(state, 'gender'),
+    age: stepOneAgeSelector(state),
+    gender: stepOneGenderSelector(state),
     startDate: stepTwoStartDateSelector(state),
     endDate: stepTwoEndDateSelector(state),
     weeksLengthNumber: state.stepOne.weeksLengthNumber,
     hasSecondaryProgram: stepThreeHasSecondaryProgram(state),
     currentStep: state.steps.currentStep,
+    data: stepFourDataSelector(state),
   };
 };
 
 function mapDispatchToProps(dispatch) {
   return {
     weeksActions: bindActionCreators(weeksActions, dispatch),
-    stepFourActions: bindActionCreators(stepFourActions, dispatch),
     stepsActions: bindActionCreators(stepsActions, dispatch),
+    stepFourActions: bindActionCreators(stepFourActions, dispatch),
   };
 };
 

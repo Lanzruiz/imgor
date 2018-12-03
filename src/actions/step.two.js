@@ -69,3 +69,10 @@ export function stepTwoSetDefaultState() {
     type: stepTwoTypes.STEP_TWO_SET_DEFAULT_STATE,
   };
 }
+
+export function stepTwoSetCampDaysLength(length) {
+  return {
+    type: stepTwoTypes.STEP_TWO_SET_CAMP_DAYS_LENGTH,
+    payload: length,
+  };
+}

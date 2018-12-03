@@ -22,9 +22,9 @@ import * as stepsActions from '../../actions/steps';
 import { stepThreeDataSelector, stepTreeSelectedIdSelector } from './selector';
 import {
   isWeeklyCampSelector, stepOneAgeSelector, stepOneGenderSelector,
-  stepOneSleepawaySelector, stepOneGroupSelector, stepOneSecondaryGroupSelector,
+  stepOneBoardingBooleanSelector, stepOneGroupSelector, stepOneSecondaryGroupSelector,
 } from '../StepOne/selectors';
-import { stepTwoStartDateSelector, stepTwoEndDateSelector } from '../StepTwo/selectors';
+import { stepTwoStartDateSelector } from '../StepTwo/selectors';
 // Styles
 import './styles.scss';
 
@@ -50,7 +50,7 @@ class StepThree extends React.Component {
       incrementStepsCounter: PropTypes.func.isRequired,
     }),
     gender: PropTypes.string,
-    boarding: PropTypes.string,
+    boarding: PropTypes.bool,
     lengthProgram: PropTypes.string,
     age: PropTypes.string,
     data: PropTypes.arrayOf(
@@ -82,7 +82,7 @@ class StepThree extends React.Component {
 
   componentDidMount() {
     this.getCatalogCampsLevels();
-    scrollToComponent(this.stepThree.current);
+    scrollToComponent(this.stepThree.current, { offset: 0, align: 'middle' });
   }
 
   componentDidUpdate(prevProps) {
@@ -176,13 +176,11 @@ class StepThree extends React.Component {
   getCatalogCampsLevels = () => {
     const {
       sport, packageType, businessType, gender, boarding,
-      age, date, group, secondaryGroup, lengthProgram, isWeeklyCamp,
-      startDate, endDate,
+      age, group, secondaryGroup, isWeeklyCamp, startDate,
     } = this.props;
 
     const getCatalogCampsLevelsRequestArgs = {
       age,
-      //date,
       sport,
       gender,
       boarding,
@@ -190,13 +188,10 @@ class StepThree extends React.Component {
       business_type: businessType,
       package_type: packageType,
       secondary_group: secondaryGroup,
-      start_date: startDate,
-      end_date: endDate,
-      // length_program: lengthProgram,
+      date: startDate,
     };
 
     if (isWeeklyCamp) {
-      delete getCatalogCampsLevelsRequestArgs.group;
       delete getCatalogCampsLevelsRequestArgs.secondary_group;
     }
 
@@ -212,17 +207,14 @@ class StepThree extends React.Component {
 function mapStateToProps(state) {
   return {
     selectedId: stepTreeSelectedIdSelector(state),
-    lengthProgram: state.stepOne.lengthProgram,
     gender: stepOneGenderSelector(state),
-    boarding: stepOneSleepawaySelector(state),
+    boarding: stepOneBoardingBooleanSelector(state),
     age: stepOneAgeSelector(state),
-    date: state.stepTwo.selectedDate.capacity_start_date,
     data: stepThreeDataSelector(state),
     group: stepOneGroupSelector(state),
     secondaryGroup: stepOneSecondaryGroupSelector(state),
     isWeeklyCamp: isWeeklyCampSelector(state),
     startDate: stepTwoStartDateSelector(state),
-    endDate: stepTwoEndDateSelector(state),
   };
 };
 

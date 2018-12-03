@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
+    "circular-dependency-plugin": "^5.0.2",
     "classnames": "^2.2.6",
     "connected-react-router": "^5.0.1",
     "cross-env": "^5.2.0",

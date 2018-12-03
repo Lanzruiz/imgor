@@ -53,5 +53,30 @@
         &__radio-container {
             margin-bottom: 15px;
         }
+
+        &__initial {
+            &-header {
+                font-size: 30px;
+                line-height: 38px;
+                color: $tab-row-bg;
+                font-family: "Trade-Gothic";
+                margin: 20px 0 0;
+            }
+
+            &-question {
+                margin: 40px auto 80px;
+                max-width: 768px;
+                padding-left: 15px;
+                padding-right: 35px;
+            }
+
+            &-checkbox {
+                margin-left: 23px;
+            }
+
+            &-label {
+                margin-right: 20px;
+            }
+        }
     }
 }

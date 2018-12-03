@@ -1,20 +1,31 @@
 // Modules
 import { createSelector } from 'reselect';
 import moment from 'moment';
-// Selectors
-import { weeksCounterSelector, isWeeklyCampSelector } from '../StepOne/selectors';
 // Constants
 import { daysInWeek } from '../../constants/weeks';
+import { weekly_camp } from '../StepOne/index';
 
 function stepTwoSelector(state) {
   return state.stepTwo;
 }
 
+function stepTwoData(state) {
+  return state.stepTwo.data;
+}
+
+function isWeeklyCampSelector(state) {
+  return state.stepOne.group === weekly_camp;
+}
+
+function weeksCounterSelector(state) {
+  return state.weeks.weeks.length;
+}
+
 export const stepTwoDataSelector = createSelector(
-  stepTwoSelector,
-  weeksCounterSelector,
+  stepTwoData,
   isWeeklyCampSelector,
-  function({ data }, weeksCounter, isWeeklyCamp) {
+  weeksCounterSelector,
+  function(data, isWeeklyCamp, weeksCounter) {
     let weeksCount = weeksCounter;
     let result = [];
     if (isWeeklyCamp) {
@@ -59,6 +70,13 @@ export const stepTwoEndDateSelector = createSelector(
   stepTwoSelectedDateSelector,
   function(selectedDate) {
     return selectedDate.capacity_end_date;
+  }
+);
+
+export const stepTwoCampDaysLengthSelector = createSelector(
+  stepTwoSelector,
+  function(stepTwo) {
+    return stepTwo.stepTwoCampDaysLength;
   }
 );
 
