@@ -5,6 +5,7 @@ import Img from 'react-image';
 import OutsideClickHandler from 'react-outside-click-handler';
 // Images
 import arrowDownSmall from '../../assets/img/arrow-down-small.png';
+import arrowDownSmallWhite from '../../assets/img/arrow-down-white.png';
 // Styles
 import './styles.scss';
 
@@ -19,6 +20,7 @@ export default class Dropdown extends React.Component {
     ).isRequired,
     handleChange: PropTypes.func,
     label: PropTypes.string,
+    whiteArrow: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -32,8 +34,9 @@ export default class Dropdown extends React.Component {
   };
 
   render() {
-    const { options, selectedOption, handleChange, label } = this.props;
+    const { whiteArrow, options, selectedOption, handleChange, label } = this.props;
     const { isOpen } = this.state;
+    const image = whiteArrow ? arrowDownSmallWhite : arrowDownSmall;
     // TODO: Write handler to select option
     return (
       <OutsideClickHandler onOutsideClick={this.closeDropdown}>
@@ -41,7 +44,7 @@ export default class Dropdown extends React.Component {
         <div className="dropdown__container" onClick={this.toggleDropdown}>
           <div className="dropdown__option dropdown__option--selected">
             {selectedOption}
-            <Img src={arrowDownSmall} />
+            <Img src={image} />
           </div>
           {isOpen && (
             <div className="dropdown__options">

@@ -12,7 +12,6 @@ export default class Carousel extends React.Component {
       speed: 500,
       slidesToShow: 1,
       slidesToScroll: 1,
-      adaptiveHeight: true,
       draggable: false,
     };
 
@@ -26,7 +25,7 @@ export default class Carousel extends React.Component {
   }
 }
 
-export const CarouselItem = (props) => {
+export function CarouselItem(props) {
   return (
     <div className="carousel__item">
       {props.children}
