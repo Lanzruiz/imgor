@@ -79,6 +79,7 @@ class StepSix extends React.Component {
       name: PropTypes.string,
     }),
     selectedTransportValue: PropTypes.string,
+    unaccompanied: PropTypes.string,
   };
 
   static defaultProps = {
@@ -144,6 +145,7 @@ class StepSix extends React.Component {
                 <Col md={4} style={{ paddingRight: 0, marginBottom: '15px' }}>
                   <Card
                     id={0}
+                    className="step-six__transportation-card-container"
                     cardHeader={<LocaleString stringKey="step_six.travel" />}
                     color="dark"
                     header={<LocaleString stringKey="step_six.airport_pickup" />}
@@ -154,7 +156,7 @@ class StepSix extends React.Component {
                     priceDescription={<LocaleString stringKey="step_six.starting_at" />}
                     buttonBlock={false}
                   >
-                    <CardContent>
+                    <CardContent className="step-six__transportation-card">
                       <CardContentRow>
                         <CardContentCol>
                           <Img
@@ -167,10 +169,13 @@ class StepSix extends React.Component {
                         </CardContentCol>
                       </CardContentRow>
                       <CardContentText>
+                        {/*
+                        // TODO: rewrite that!
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi viverra mattis sapien sed sollicitudin.
                         Phasellus id massa ac sapien gravida bibendum. Nulla pellentesque hendrerit turpis, in cursus eros lacinia
                         sit amet. Morbi consectetur nibh ut eros luctus, nec consectetur nibh rhoncus. Pellentesque at diam ante.
                         Nullam sagittis tempor nibh sit amet eleifend. Vestibulum eu commodo ex, ut pretium nulla.
+                        */}
                       </CardContentText>
                     </CardContent>
                   </Card>
@@ -419,7 +424,7 @@ function DropoffLocationTextField(args) {
     <div className="step-six__text-input step-six__form-field">
       <Input
         name={stepSixFormFieldNames.dropoffOtherLocation}
-        label={<LocaleString stringKey="step_six.other_location" />}
+        label="step_six.other_location"
         disabled={isDisabled}
       />
     </div>
@@ -433,7 +438,7 @@ function PickUpLocationTextField(args) {
     <div className="step-six__text-input step-six__form-field">
       <Input
         name={stepSixFormFieldNames.pickUpOtherLocation}
-        label={<LocaleString stringKey="step_six.other_location" />}
+        label="step_six.other_location"
         disabled={isDisabled}
       />
     </div>
@@ -513,7 +518,7 @@ function ArrivalFlightNumberTextInput() {
     <div className="step-six__text-input step-six__form-field">
       <Input
         name={stepSixFormFieldNames.arrivalFlightNumber}
-        label={<LocaleString stringKey="step_six.flight_number" />}
+        label="step_six.flight_number"
       />
     </div>
   );
@@ -524,7 +529,7 @@ function FlightNumberDepartingTextInput() {
     <div className="step-six__text-input step-six__form-field">
       <Input
         name={stepSixFormFieldNames.departingFlightNumber}
-        label={<LocaleString stringKey="step_six.flight_number" />}
+        label="step_six.flight_number"
       />
     </div>
   );

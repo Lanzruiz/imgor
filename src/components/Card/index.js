@@ -6,6 +6,7 @@ import Img from 'react-image';
 // Components
 import Button from '../Button';
 import GreenBlock from '../GreenBlock';
+import LocaleString from '../LocaleString';
 // Images
 import plus from '../../assets/img/plus.png';
 // Styles
@@ -93,7 +94,8 @@ class Card extends React.Component {
 
   render() {
     const {
-      children, header, label, headerSize, color, cardHeader, imgSrc, id, onClick, selectedId, priceDescription, cardHeaderCapitalize, style,
+      children, header, label, headerSize, color, cardHeader, imgSrc, id, onClick,
+      selectedId, priceDescription, cardHeaderCapitalize, style, className,
     } = this.props;
 
     const isSelectedIdExists = (typeof selectedId === 'number' || typeof selectedId === 'string');
@@ -101,6 +103,7 @@ class Card extends React.Component {
 
     const cardContainerClassNames = cx('card__container', {
       'card__container--opacity': isSelectedIdExists && !isCurrentCardSelected,
+      [className]: className,
     });
 
     const cardBodyHeadClassNames = cx('card-body__head', {
@@ -136,7 +139,7 @@ class Card extends React.Component {
               {children}
             </div>
           </div>
-          {this.renderButtonBlock(buttonClassNames)}
+          {this.renderButtonBlock(buttonClassNames, isCurrentCardSelected)}
         </div>
       </div>
     );
@@ -199,13 +202,16 @@ class Card extends React.Component {
     );
   };
 
-  renderButtonBlock = (buttonClassNames) => {
-    return this.props.buttonBlock && (
+  renderButtonBlock = (buttonClassNames, isCurrentCardSelected) => {
+    const { buttonBlock } = this.props;
+    return buttonBlock && (
       <div className="card-body__footer">
-        <Button
-          children="selected"
-          className={buttonClassNames}
-        />
+        <Button className={buttonClassNames}>
+          {isCurrentCardSelected
+            ? <LocaleString stringKey="card.selected" />
+            : <LocaleString stringKey="card.select" />
+          }
+        </Button>
       </div>
     );
   };
@@ -236,9 +242,10 @@ class Card extends React.Component {
   }
 }
 
-export function CardContent({ children, ...rest }) {
+export function CardContent({ children, className, ...rest }) {
+  const computedClassNames = cx('card-content', { [className]: className });
   return (
-    <div className="card-content" {...rest}>
+    <div className={computedClassNames} {...rest}>
       {children}
     </div>
   );

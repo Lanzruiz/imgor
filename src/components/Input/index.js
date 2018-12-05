@@ -3,11 +3,13 @@ import React from 'react';
 import { Field } from 'redux-form';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
+// Components
+import { ReactLocalizationConsumer } from '../../providers/ReactLocalization';
 
 export default class Input extends React.Component {
   static propTypes = {
     type: PropTypes.string,
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+    label: PropTypes.string,
     name: PropTypes.string.isRequired,
     inputClassName: PropTypes.string,
     errorBlockClassName: PropTypes.string,
@@ -43,16 +45,20 @@ export default class Input extends React.Component {
     });
     input.disabled = disabled;
     return (
-      <React.Fragment>
-        <input
-          {...input}
-          className={inputClassName}
-          placeholder={label}
-        />
-        <p className={errorBlockClassNames}>
-          {hasError && <span>{error}</span>}
-        </p>
-      </React.Fragment>
+      <ReactLocalizationConsumer>
+        {({ strings }) => (
+          <React.Fragment>
+            <input
+              {...input}
+              className={inputClassName}
+              placeholder={(strings && strings[label]) ? strings[label] : label}
+            />
+            <p className={errorBlockClassNames}>
+              {hasError && <span>{error}</span>}
+            </p>
+          </React.Fragment>
+        )}
+      </ReactLocalizationConsumer>
     );
   }
 }
