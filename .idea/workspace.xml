@@ -2,8 +2,119 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d8a97bb1-5273-40cc-8ef0-86d21314ef48" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/deploy.sh" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.gitignore" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.gitlab-ci.yml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/README.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/deploy.sh" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/package-lock.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/package.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/public/favicon.ico" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/public/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/public/manifest.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/actions/steps.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/actions/training.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/actions/weeks.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Proxima-Nova-Bold/ProximaNovaW01-Bold.eot" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Proxima-Nova-Bold/ProximaNovaW01-Bold.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Proxima-Nova-Bold/ProximaNovaW01-Bold.ttf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Proxima-Nova-Bold/ProximaNovaW01-Bold.woff" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Proxima-Nova-Bold/styles.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Proxima-Nova-Regular/ProximaNovaW01-Regular.eot" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Proxima-Nova-Regular/ProximaNovaW01-Regular.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Proxima-Nova-Regular/ProximaNovaW01-Regular.ttf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Proxima-Nova-Regular/ProximaNovaW01-Regular.woff" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Proxima-Nova-Regular/styles.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Serifa-Black/SerifaW01-75Black.eot" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Serifa-Black/SerifaW01-75Black.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Serifa-Black/SerifaW01-75Black.ttf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Serifa-Black/SerifaW01-75Black.woff" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Serifa-Black/styles.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Serifa-Bold/SerifaW01-65Bold.eot" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Serifa-Bold/SerifaW01-65Bold.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Serifa-Bold/SerifaW01-65Bold.ttf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Serifa-Bold/SerifaW01-65Bold.woff" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Serifa-Bold/styles.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Serifa-Roman/SerifaW01-55Roman.eot" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Serifa-Roman/SerifaW01-55Roman.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Serifa-Roman/SerifaW01-55Roman.ttf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Serifa-Roman/SerifaW01-55Roman.woff" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Serifa-Roman/styles.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Trade-Gothic-Bold/TradeGothicW01-Bold2.eot" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Trade-Gothic-Bold/TradeGothicW01-Bold2.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Trade-Gothic-Bold/TradeGothicW01-Bold2.ttf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Trade-Gothic-Bold/TradeGothicW01-Bold2.woff" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/fonts/Trade-Gothic-Bold/styles.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/img/030118-Men_s-Elite-Update_760x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/img/0318-Men_s-Premier-Update_1024x1024.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/img/2018-Suburban.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/img/Camp_Essentials_Elite_Package_760x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/img/arrow-down-small.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/img/bg8.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/img/call-icon.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/img/chat-icon.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/img/email-icon.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/img/football-core_copy_2.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/img/gt-mk.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/img/gt-uo.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/img/icon-product-check.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/img/shop-img.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/img/slider-next-btn.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/img/slider-prev-btn.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/lang/en.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/Button/index.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/Button/styles.scss" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/Card/index.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/Card/styles.scss" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/Carousel/index.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/Carousel/styles.scss" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/Dropdown/index.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/Dropdown/styles.scss" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/EmailModal/index.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/EmailModal/styles.scss" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/Footer/index.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/Footer/styles.scss" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/GreenBlock/index.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/GreenBlock/styles.scss" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/Header/index.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/Header/styles.scss" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/Input/index.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/LocaleString/index.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/Radio/index.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/Radio/styles.scss" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/TabRow/index.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/TabRow/styles.scss" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/constants/dates.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/constants/scss/variables.scss" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/constants/steps.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/constants/training.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/constants/weeks.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/containers/App/index.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/containers/StepFinal/index.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/containers/StepFinal/styles.scss" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/containers/StepFive/index.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/containers/StepFive/styles.scss" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/containers/StepFour/index.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/containers/StepFour/styles.scss" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/containers/StepOne/index.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/containers/StepOne/styles.scss" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/containers/StepSix/index.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/containers/StepSix/styles.scss" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/containers/StepThree/index.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/containers/StepThree/styles.scss" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/containers/StepTwo/index.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/containers/StepTwo/styles.scss" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/containers/WizardForm/index.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/helpers/validate.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/index.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/index.scss" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/providers/ReactLocalization/index.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/reducers/index.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/reducers/steps.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/reducers/training.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/reducers/weeks.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/store/index.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/yarn.lock" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="imgor-v3-react.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -24,22 +135,12 @@
     <favorites_list name="imgor-v3-react" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
+    <leaf>
+      <file leaf-file-name="deploy.sh" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/deploy.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.60832447">
-              <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.015974442">
+              <caret line="1" column="60" selection-start-line="1" selection-start-column="60" selection-end-line="1" selection-end-column="60" />
               <folding />
             </state>
           </provider>
@@ -59,9 +160,7 @@
     </option>
   </component>
   <component name="JsBuildToolGruntFileManager" detection-done="true" />
-  <component name="JsBuildToolPackageJson" detection-done="true">
-    <package-json value="$PROJECT_DIR$/package.json" />
-  </component>
+  <component name="JsBuildToolPackageJson" detection-done="true" />
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
   </component>
@@ -100,8 +199,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -110,50 +207,14 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="imgor-v3-react" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="imgor-v3-react" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="imgor-v3-react" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="imgor-v3-react" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="imgor-v3-react" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="imgor-v3-react" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="public" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../imgor-new" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
   </component>
@@ -173,6 +234,11 @@
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.npm" factoryName="npm">
@@ -202,9 +268,8 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2550586" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24973376" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2630458" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -212,6 +277,7 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -235,42 +301,10 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/deploy.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.17609392">
-          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.60832447">
-          <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.015974442">
+          <caret line="1" column="60" selection-start-line="1" selection-start-column="60" selection-end-line="1" selection-end-column="60" />
           <folding />
         </state>
       </provider>

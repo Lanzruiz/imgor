@@ -1,6 +1,9 @@
 # Add remote repo
 git remote add cs git@bitbucket.org:cs-bitbucket/imgor-react.git
 
+# Make sure on master
+git checkout master
+
 # Pull from CS remote
 git pull cs master
 
