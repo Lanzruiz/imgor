@@ -1,0 +1,58 @@
+{
+  "name": "imgor-react",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.18.0",
+    "circular-dependency-plugin": "^5.0.2",
+    "classnames": "^2.2.6",
+    "connected-react-router": "^5.0.1",
+    "cross-env": "^5.2.0",
+    "localforage": "^1.7.3",
+    "lodash": "^4.17.11",
+    "moment": "^2.22.2",
+    "query-string": "^6.2.0",
+    "react": "^16.5.2",
+    "react-datepicker": "^2.0.0",
+    "react-dom": "^16.5.2",
+    "react-grid-system": "^4.3.1",
+    "react-height": "^3.0.0",
+    "react-image": "^1.5.1",
+    "react-localization": "^1.0.13",
+    "react-outside-click-handler": "^1.2.2",
+    "react-redux": "^5.0.7",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "2.0.5",
+    "react-scroll-to-component": "^1.0.2",
+    "react-slick": "^0.23.2",
+    "react-tabs": "^2.3.0",
+    "redux": "^4.0.1",
+    "redux-devtools-extension": "^2.13.5",
+    "redux-form": "^7.4.2",
+    "redux-form-validators": "^2.7.2",
+    "redux-persist": "^5.10.0",
+    "redux-thunk": "^2.3.0",
+    "reselect": "^4.0.0",
+    "slick-carousel": "^1.8.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "node-sass": "^4.9.4",
+    "prop-types": "^15.6.2"
+  }
+}

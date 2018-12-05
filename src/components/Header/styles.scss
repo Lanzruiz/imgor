@@ -1,0 +1,28 @@
+@import '../../constants/scss/variables.scss';
+
+#{$root} {
+    .header {
+        &__container {
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        &__h2 {
+            display: block;
+            color: $header-text-color;
+            font-size: 40px;
+            font-weight: 700;
+            font-family: "Trade-Gothic-Bold";
+            text-transform: uppercase;
+        }
+
+        &__h6 {
+            color: $subheader-text-color;
+            display: block;
+            font-size: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-family: "Trade-Gothic-Bold";
+        }
+    }
+}

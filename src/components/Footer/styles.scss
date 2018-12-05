@@ -1,0 +1,70 @@
+@import '../../constants/scss/variables.scss';
+
+#{$root} {
+    .footer {
+        align-items: center;
+        display: flex;
+        height: 100%;
+        justify-content: flex-start;
+        width: 100%;
+
+        &__container {
+            background-color: $green-block-bg;
+            height: 71px;
+
+            &--fixed {
+                position: fixed;
+                z-index: 100000;
+                width: 100%;
+                bottom: 0;
+                left: 0;
+                right: 0;
+            }
+        }
+
+        &__image {
+            max-height: 36px;
+            max-width: 89px;
+            display: block;
+            width: auto;
+            height: 100%;
+            padding: 15px 20px;
+            box-sizing: content-box;
+
+            &-container {
+                align-items: center;
+                display: flex;
+                height: 71px;
+                justify-content: center;
+            }
+        }
+
+        &__price {
+            font-weight: bold;
+
+            &-container {
+                color: $subheader-text-color;
+                display: flex;
+                flex-direction: column;
+                font-family: "Trade-Gothic-Bold";
+                font-size: 36px;
+                font-weight: 700;
+                text-transform: uppercase;
+            }
+
+            &-total {
+                font-size: 11px;
+            }
+        }
+
+        &__text {
+            margin: 0 auto;
+            color: $subheader-text-color;
+            font-family: "Trade-Gothic-Bold";
+            font-size: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 15px 20px;
+        }
+    }
+}

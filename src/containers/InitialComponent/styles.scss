@@ -1,0 +1,15 @@
+@import '../../constants/scss/variables.scss';
+
+#{$root} {
+    .start {
+        &__container {
+            align-items: center;
+            background-color: $green-block-color;
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            position: relative;
+            width: 100%;
+        }
+    }
+}

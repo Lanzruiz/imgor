@@ -1,0 +1,296 @@
+@import '../../constants/scss/variables.scss';
+
+#{$root} {
+    .step-two {
+        &__container {
+            display: flex;
+            flex-direction: row;
+        }
+
+        &__questions {
+            align-items: center;
+            display: flex;
+            background-color: $tab-row-bg;
+            flex-direction: column;
+            justify-content: center;
+            padding: 15px;
+            text-align: center;
+            width: 25%;
+        }
+
+        &__dates {
+            background-color: $date-block-bg;
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            width: 75%;
+        }
+
+        &__selected-date {
+            align-items: center;
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        &__description {
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+            margin-top: auto;
+        }
+    }
+
+    .questions {
+        &__questions {
+            color: $white;
+            font-family: "Trade-Gothic";
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        &__header {
+            color: $white;
+            font-family: "Trade-Gothic-Bold";
+            font-size: 18px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        &__description {
+            color: $white;
+            font-family: "Trade-Gothic";
+            font-size: 14px;
+            line-height: 14px;
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+
+        &__icons {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            width: 100%;
+        }
+    }
+
+    .icons {
+        &__container {
+            align-items: center;
+            background-color: $question-icons-bg;
+            color: $question-icons-color;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 69px;
+            width: 66px;
+        }
+
+        &__text {
+            color: $white;
+            font-family: "Trade Gothic LT Std - Bold";
+            font-size: 18px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+    }
+
+    .dates {
+        &__header {
+            color: $tab-row-bg;
+            font-family: "Trade Gothic LT Std - Bold";
+            font-size: 18px;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        &__container {
+            color: #083451;
+            font-size: 0;
+            line-height: 0;
+            margin: 0 0 10px;
+
+            & > li {
+                font-size: 14px;
+                display: inline-block;
+                line-height: 16px;
+                text-align: center;
+                vertical-align: top;
+                width: calc(100%/6);
+            }
+            & > li li {
+                margin: 0 0 3px;
+                display: block;
+            }
+        }
+
+        &__item {
+            cursor: pointer;
+
+            &.sold-out {
+                color: #de3942;
+                cursor: not-allowed;
+                text-decoration: line-through;
+            }
+
+            &.active {
+                background-color: #4481a3;
+                color: $white;
+                font-family: "Trade-Gothic-Bold";
+                font-size: 14px;
+                font-weight: 700;
+            }
+        }
+
+        &__no-data {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #de3942;
+        }
+
+    }
+    .description {
+        overflow: hidden;
+
+        &__info {
+            color: #083451;
+            float: left;
+            font-size: 12px;
+            line-height: 14px;
+        }
+
+        &__sold-out {
+            color: #de3942;
+            font-size: 12px;
+            float: right;
+            line-height: 14px;
+            text-decoration: line-through;
+        }
+    }
+
+    .selected-date {
+        &__container {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            width: 75%;
+
+            &:before {
+                content: '';
+                position: absolute;
+                transform: translateX(-50%);
+                left: 50%;
+                top: -15px;
+                width: 0;
+                height: 0;
+                border-left: 15px solid transparent;
+                border-right: 15px solid transparent;
+                border-top: 15px solid $date-block-selected-bg;
+                clear: both;
+            }
+        }
+
+        &__info {
+            border: 2px solid $date-block-selected-bg;
+            background-color: $date-block-selected-bg;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 66%;
+        }
+
+        &__check-in {
+            align-items: center;
+            background: $white;
+            justify-content: center;
+            display: flex;
+            padding: 5px 10px;
+            box-sizing: border-box;
+            writing-mode: tb;
+            transform: rotate(180deg);
+        }
+
+        &__check-out {
+            align-items: center;
+            background: $white;
+            justify-content: center;
+            display: flex;
+            padding: 5px 10px;
+            box-sizing: border-box;
+            writing-mode: tb;
+        }
+
+        &__current-selected {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 5px 10px 10px 10px;
+            width: 100%;
+        }
+    }
+
+    .check-in {
+        &__text {
+            color: $date-block-selected-bg;
+            font-family: "Trade Gothic LT Std";
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+    }
+
+    .check-out {
+        &__text {
+            color: $date-block-selected-bg;
+            font-family: "Trade Gothic LT Std";
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+    }
+
+    .current-selected {
+        &__header {
+            color: $white;
+            font-family: "Trade Gothic LT Std - Bold";
+            font-size: 15px;
+            font-weight: 700;
+            text-align: center;
+            text-transform: uppercase;
+            width: 100%;
+        }
+
+        &__days {
+            align-items: center;
+            color: $white;
+            display: flex;
+            flex-direction: row;
+            font-family: "Trade Gothic LT Std";
+            font-size: 15px;
+            justify-content: space-between;
+            text-transform: uppercase;
+            width: 100%;
+        }
+
+        &__dates {
+            align-items: center;
+            color: $white;
+            display: flex;
+            font-family: "Trade Gothic LT Std - Bold";
+            font-size: 32px;
+            font-weight: 700;
+            justify-content: space-between;
+            text-transform: uppercase;
+            width: 100%;
+        }
+    }
+}
