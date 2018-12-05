@@ -5,7 +5,7 @@ git remote add cs git@bitbucket.org:cs-bitbucket/imgor-react.git
 git checkout master
 
 # Pull from CS remote
-git pull cs master
+git pull cs master --allow-unrelated-histories
 
 # Pull from ATL remote
 git pull origin master
