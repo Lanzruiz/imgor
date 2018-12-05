@@ -123,5 +123,7 @@
     "step_six.pick_up_location": "Pick Up Location",
     "step_six.other_location": "Other Location",
     "step_six.flight_number": "Flight Number",
-    "step_six.select_airline": "Select Airline"
+    "step_six.select_airline": "Select Airline",
+    "card.selected": "selected",
+    "card.select": "select"
 }

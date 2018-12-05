@@ -138,5 +138,13 @@
         &__step-paragraph {
             max-width: 285px;
         }
+
+        &__transportation-card {
+            min-height: 335px;
+
+            &-container {
+                margin-bottom: 0;
+            }
+        }
     }
 }

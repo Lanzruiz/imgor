@@ -365,7 +365,8 @@ class StepOne extends React.Component {
     return (
       <div className="tab-content__container tab-row__container content">
         <div className="content__first-col">
-          <H2>our most popular camp</H2>
+          {/*// TODO: rewrite that! */}
+          {/* <H2>our most popular camp</H2>
           <Paragraph>
             Perfect for campers ages 10-18. Expand upon your current knowledge of the game while increasing
             your position-specific scills and profisiency through the best progressive youth football camp setting
@@ -390,7 +391,7 @@ class StepOne extends React.Component {
             reads; 1-on-1s vs. RB/WR & OL/DL: Post snap reactions,; understanding stunts/blitzes; 1-on-1 pass
             pro and pass rush competition K/P: Situational kicking and punting; directional kicking; pooch punts;
             goal line punting; on-side kicks
-          </Paragraph>
+          </Paragraph> */}
         </div>
         <div className="content__second-col">
           <Form onSubmit={this.props.handleSubmit(() => {})}>

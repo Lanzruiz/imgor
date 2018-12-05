@@ -18,19 +18,27 @@
 ```
 
 #### Production
-1. ##### Build imgor.bundle.js
-```sh
-  $ npm run build
+1. ##### Run React App on your server
+2. ##### Add iframe to your website
+
+```html
+	<iframe src={url-path-to-react-app}></iframe>
 ```
 
-#### To add in an existing project
-1. Create root container
-```html
-  <div id="imgor-root"></div>
+3. ##### SCSS
+    ##### You can change SCSS variables if you want change view.
+
+```
+Path to SCSS variables: ./src/constants/scss/variables.scss
 ```
 
-2. Add **div#imgor-root** to your project
-3. Add script in **Head** section
-```html
-  <script src="{/* src to imgor.bundle.js */}"></script>
+4. ##### To add another locale just translate file ```en.json``` and name its ```{locale}.json```
+```
+Path to Locales directory: ./src/assets/lang/en.json
+```
+
+#### App Settings
+1. ##### To set default settings use:
+```
+{app-url}/start?lang={lang}&package_type={packageType}&business_type={businessType}&sport={sport}
 ```
