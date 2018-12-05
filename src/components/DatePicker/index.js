@@ -89,6 +89,17 @@ class renderDatePicker extends React.Component {
           timeFormat="HH:mm"
           timeIntervals={5}
           timeCaption="time"
+          popperModifiers={{
+            offset: {
+              enabled: true,
+              offset: '-40px, 20px'
+            },
+            preventOverflow: {
+              enabled: true,
+              escapeWithReference: false,
+              boundariesElement: 'viewport'
+            }
+          }}
         />
         {touched && error && <span>{error}</span>}
       </div>

@@ -2,6 +2,7 @@
 import { createSelector } from 'reselect';
 // Selectors
 import { stepOnePriceSelector, weeksCounterSelector, stepOneGroupSelector } from '../StepOne/selectors';
+import { stepSixUnaccompaniedSelector } from '../StepSix/selectors';
 // Constants
 import { weekly_camp } from '../StepOne';
 
@@ -9,13 +10,19 @@ export const totalPriceSelector = createSelector(
   stepOnePriceSelector,
   weeksCounterSelector,
   stepOneGroupSelector,
-  function(stepOnePrice, weeksCounter, stepOneGroup) {
+  stepSixUnaccompaniedSelector,
+  function(stepOnePrice, weeksCounter, stepOneGroup, unaccompanied) {
     const stepOneComputedPrice = (
       (stepOneGroup === weekly_camp)
         ? stepOnePrice * weeksCounter
         : stepOnePrice
     );
-    return stepOneComputedPrice;
+    const stepSixComputedPrice = (
+      (unaccompanied === 'true')
+        ? 50
+        : 0
+    );
+    return stepOneComputedPrice + stepSixComputedPrice;
   }
 );
 
