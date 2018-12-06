@@ -30,3 +30,10 @@ function getCatalogGear(catalogGear) {
     payload: catalogGear,
   };
 }
+
+export function stepFiveSetGear(gearItem) {
+  return {
+    type: stepFiveTypes.STEP_FIVE_SET_GEAR,
+    payload: gearItem,
+  };
+}

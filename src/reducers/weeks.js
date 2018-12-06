@@ -78,6 +78,15 @@ export default function(state = initialState, action) {
       };
     }
 
+    case weeksTypes.SET_WEEK_PRICE: {
+      const weeks = [...state.weeks];
+      weeks[state.selectedWeekId].price = payload;
+      return {
+        ...state,
+        weeks,
+      };
+    }
+
     default: {
       return state;
     }

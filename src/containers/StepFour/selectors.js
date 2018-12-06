@@ -1,5 +1,7 @@
 // Modules
 import { createSelector } from 'reselect';
+// Selectors
+import { weeksWeeksSelector } from '../StepOne/selectors';
 
 function stepFourSelector(state) {
   return state.stepFour;
@@ -93,5 +95,18 @@ export const stepFourWeekTwelveDataSelector = createSelector(
   stepFourSelector,
   function(stepFour) {
     return stepFour.week_12_data;
+  }
+);
+
+export const stepFourPriceSelector = createSelector(
+  weeksWeeksSelector,
+  function(weeks) {
+    let result = 0;
+    weeks.forEach(({ price }) => {
+      if (price) {
+        result = result + price;
+      }
+    });
+    return result;
   }
 );

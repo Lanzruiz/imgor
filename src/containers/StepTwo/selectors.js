@@ -91,4 +91,4 @@ function findWeeksDurations(arr) {
     }
   }
   return result;
-}
+};

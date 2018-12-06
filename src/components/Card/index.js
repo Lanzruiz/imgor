@@ -94,7 +94,7 @@ class Card extends React.Component {
 
   render() {
     const {
-      children, header, label, headerSize, color, cardHeader, imgSrc, id, onClick,
+      children, header, label, headerSize, color, cardHeader, imgSrc, id,
       selectedId, priceDescription, cardHeaderCapitalize, style, className,
     } = this.props;
 
@@ -126,7 +126,7 @@ class Card extends React.Component {
     });
 
     return (
-      <div className={cardContainerClassNames} onClick={() => onClick(id)} style={style}>
+      <div className={cardContainerClassNames} style={style}>
         {this.renderCardHead({ header, label, headerSize, color })}
         <div className="card__body card-body">
           <div className={cardBodyHeadClassNames}>
@@ -203,10 +203,10 @@ class Card extends React.Component {
   };
 
   renderButtonBlock = (buttonClassNames, isCurrentCardSelected) => {
-    const { buttonBlock } = this.props;
+    const { buttonBlock, onClick, id } = this.props;
     return buttonBlock && (
       <div className="card-body__footer">
-        <Button className={buttonClassNames}>
+        <Button className={buttonClassNames} onClick={() => onClick(id)}>
           {isCurrentCardSelected
             ? <LocaleString stringKey="card.selected" />
             : <LocaleString stringKey="card.select" />

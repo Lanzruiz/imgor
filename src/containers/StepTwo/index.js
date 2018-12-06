@@ -7,18 +7,19 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import scrollToComponent from 'react-scroll-to-component';
+import moment from 'moment';
 // Components
 import Header from '../../components/Header';
 import LocaleString from '../../components/LocaleString';
 // Actions
 import * as stepOneActions from '../../actions/step.one';
 import * as stepTwoActions from '../../actions/step.two';
+import * as weeksActions from '../../actions/weeks';
 // Images
 import call from '../../assets/img/call-icon.png';
 import email from '../../assets/img/email-icon.png';
 import chat from '../../assets/img/chat-icon.png';
 // Helpers
-import splitArray from '../../helpers/splitArray';
 import dateFormat from '../../helpers/dateFormat';
 // Selectors
 import { stepTwoDataSelector, stepTwoSelectedDateSelector } from './selectors';
@@ -26,6 +27,9 @@ import {
   stepOneGroupSelector, weeksCounterSelector, stepOneAgeSelector, stepOneGenderSelector,
   stepOneSecondaryGroupSelector, isWeeklyCampSelector, stepOneSleepawaySelector, stepOneBoardingBooleanSelector,
 } from '../StepOne/selectors';
+// Constants
+import { monthEnum } from '../../constants/step.two';
+import { daysInWeek } from '../../constants/weeks';
 // Styles
 import './styles.scss';
 
@@ -45,6 +49,9 @@ class StepTwo extends React.Component {
       selectDate: PropTypes.func.isRequired,
       stepTwoSetDefaultState: PropTypes.func.isRequired,
       stepTwoSetCampDaysLength: PropTypes.func.isRequired,
+    }),
+    weeksActions: PropTypes.shape({
+      setOnlyWeeks: PropTypes.func.isRequired,
     }),
     data: PropTypes.arrayOf(
       PropTypes.shape({
@@ -120,8 +127,22 @@ class StepTwo extends React.Component {
 
   render() {
     const { data, weeksCounter, sport, selectedDate } = this.props;
-    const dataObject = splitArray({ arrayCount: 6, array: data });
-    console.log(data);
+    const firstHalfYearDate = {
+      [monthEnum[0]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['jan'])),
+      [monthEnum[1]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['feb'])),
+      [monthEnum[2]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['mar'])),
+      [monthEnum[3]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['apr'])),
+      [monthEnum[4]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['may'])),
+      [monthEnum[5]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['june'])),
+    };
+    const secondHalfYearData = {
+      [monthEnum[6]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['july'])),
+      [monthEnum[7]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['aug'])),
+      [monthEnum[8]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['sept'])),
+      [monthEnum[9]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['oct'])),
+      [monthEnum[10]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['nov'])),
+      [monthEnum[11]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['dec'])),
+    }
     return (
       <Container style={{ marginBottom: '130px' }} ref={this.stepTwo}>
         <Row>
@@ -175,9 +196,14 @@ class StepTwo extends React.Component {
                 </h2>
                 {data.length
                   ? (
-                    <ul className="dates__container">
-                      {this.renderDates(dataObject)}
-                    </ul>
+                    <React.Fragment>
+                      <ul className="dates__container">
+                        {this.renderDates({...firstHalfYearDate, ...secondHalfYearData})}
+                      </ul>
+                      {/* <ul className="dates__container">
+                        {this.renderDates(secondHalfYearData)}
+                      </ul> */}
+                    </React.Fragment>
                   ) : (
                     <div className="dates__no-data">
                       <LocaleString stringKey="step_two.dates.no-data" />
@@ -205,43 +231,52 @@ class StepTwo extends React.Component {
     const result = [];
     const { boarding, selectedDate } = this.props;
     for (let key in dataObject) {
-      result.push(
-        <li key={key} className="dates__column">
-          <ul>
-            {dataObject[key].map((item, idx) => {
-              const { capacity, capacity_start_date, capacity_end_date, length, length_days } = item;
-              const itemKey = `${key}_${idx}`;
-              const capacityItemByBoardingValue = capacity.find((capacityItem) => capacityItem.boarding === boarding);
-              const isAvailable = capacityItemByBoardingValue.available > 0;
-              const onClickHandler = (
-                isAvailable
-                  ?
-                    () => {
-                      this.selectDate({ capacity_start_date, capacity_end_date });
-                      this.selectCampLength(length);
-                      this.setCampDaysLength(length_days);
-                    }
-                  : null
-              );
-              const dateString = dateFormat({ date: capacity_start_date, dateFormat: 'YYYY-MM-DD', resultFormat: 'MMM, DD YYYY' });
-              const listItemClassNames = cx('dates__item', {
-                'sold-out': !isAvailable,
-                'active': (selectedDate.capacity_start_date === capacity_start_date),
-              });
-              return (
-                <li
-                  key={itemKey}
-                  className={listItemClassNames}
-                  onClick={onClickHandler}
-                  children={dateString}
-                />
-              );
-            })}
-          </ul>
-      </li>
-      );
+      if (dataObject[key].length) {
+        result.push(
+          <li key={key} className="dates__column">
+            <ul className="mb-10 d-block">
+              {dataObject[key].map((item, idx) => {
+                const { capacity, capacity_start_date, capacity_end_date, length, length_days } = item;
+                const itemKey = `${key}_${idx}`;
+                const capacityItemByBoardingValue = capacity.find((capacityItem) => capacityItem.boarding === boarding);
+                const isAvailable = capacityItemByBoardingValue.available > 0;
+                const onClickHandler = (
+                  isAvailable
+                    ?
+                      () => {
+                        const weeksCounter = length_days / daysInWeek;
+                        const weeksLength = (weeksCounter > 1) ? weeksCounter : 1;
+                        this.selectDate({ capacity_start_date, capacity_end_date });
+                        this.selectCampLength(length);
+                        this.setCampDaysLength(length_days);
+                        this.setOnlyWeeks(weeksLength);
+                      }
+                    : null
+                );
+                const dateString = dateFormat({ date: capacity_start_date, dateFormat: 'YYYY-MM-DD', resultFormat: 'MMM, DD YYYY' });
+                const listItemClassNames = cx('dates__item', {
+                  'sold-out': !isAvailable,
+                  'active': (selectedDate.capacity_start_date === capacity_start_date),
+                });
+                return (
+                  <li
+                    key={itemKey}
+                    className={listItemClassNames}
+                    onClick={onClickHandler}
+                    children={dateString}
+                  />
+                );
+              })}
+            </ul>
+          </li>
+        );
+      }
     }
     return result;
+  };
+
+  filterDatesByMonth({ capacity_start_date }, monthNumberJS, stringFormat = 'YYYY-MM-DD') {
+    return moment(capacity_start_date, stringFormat).month() === monthNumberJS;
   };
 
   selectDate = (date) => {
@@ -250,6 +285,10 @@ class StepTwo extends React.Component {
 
   selectCampLength = (length) => {
     this.props.stepOneActions.stepOneSetCampLength(length);
+  };
+
+  setOnlyWeeks = (counter) => {
+    this.props.weeksActions.setOnlyWeeks(counter);
   };
 
   renderSelectedDate = ({ capacity_start_date, capacity_end_date }) => {
@@ -332,6 +371,7 @@ function mapDispatchToProps(dispatch) {
   return {
     stepOneActions: bindActionCreators(stepOneActions, dispatch),
     stepTwoActions: bindActionCreators(stepTwoActions, dispatch),
+    weeksActions: bindActionCreators(weeksActions, dispatch),
   };
 }
 

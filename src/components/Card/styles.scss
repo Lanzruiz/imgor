@@ -3,7 +3,7 @@
 #{$root} {
     .card {
         &__container {
-            cursor: pointer;
+            cursor: default;
             display: flex;
             flex-direction: column;
             margin-bottom: 15px;

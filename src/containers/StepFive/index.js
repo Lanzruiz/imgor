@@ -14,7 +14,6 @@ import Dropdown from '../../components/Dropdown';
 // Actions
 import { getCatalogGearRequest } from '../../actions/step.five';
 // Helpers
-import splitArray from '../../helpers/splitArray';
 import { stepOneFormValueSelector } from '../StepOne';
 // Selectors
 import { stepFiveDataSelector } from './selectors';
@@ -32,6 +31,7 @@ class StepFive extends React.Component {
   static propTypes = {
     stepFiveActions: PropTypes.shape({
       getCatalogGearRequest: PropTypes.func.isRequired,
+      stepFiveSetGear: PropTypes.func.isRequired,
     }),
     data: PropTypes.arrayOf(
       PropTypes.shape({
@@ -99,7 +99,6 @@ class StepFive extends React.Component {
 
   render() {
     const { data } = this.props;
-    const { array_1, array_2, array_3 } = splitArray({ array: data, arrayCount: 3 });
     return (
       <Container style={{ marginBottom: '65px' }} ref={this.stepFive}>
         <Row>
@@ -113,13 +112,8 @@ class StepFive extends React.Component {
         <Row>
           {
             (data.length > 0)
-              ? (
-                <React.Fragment>
-                  <Col>{array_1.map(this.renderCardItem)}</Col>
-                  <Col>{array_2.map(this.renderCardItem)}</Col>
-                  <Col>{array_3.map(this.renderCardItem)}</Col>
-                </React.Fragment>
-              ) : (
+              ? data.map(this.renderCardItem)
+              : (
                 <Col>
                   <div className="step-five__no-items">
                     <LocaleString stringKey="no_gear_available" />!
@@ -130,6 +124,10 @@ class StepFive extends React.Component {
         </Row>
       </Container>
     );
+  }
+
+  setGear = (id) => {
+    console.log(id);
   }
 
   setMinHeight = (height) => {
@@ -148,46 +146,41 @@ class StepFive extends React.Component {
     const { price, image_url, id, categories, description, display_name, attributes, } = card;
     const [ label = {}, header = {} ] = categories;
     return (
-      <Card
-        key={id}
-        id={id}
-        cardHeader={display_name}
-        color="dark"
-        header={header.display_name}
-        label={label.display_name}
-        price={price}
-        selectedId={null}
-        headerSize="extra-small"
-      >
-        <CardContent>
-          <CardContentRow>
-            <CardContentCol>
-              <Img className="card-content__img" src={image_url} />
-            </CardContentCol>
-            <CardContentCol>
-              {attributes.map(this.renderCardAttributes)}
-            </CardContentCol>
-          </CardContentRow>
-          <CardContentText style={cardContentTextStyles}>
-            <ReactHeight onHeightReady={this.setMinHeight} children={description} />
-          </CardContentText>
-        </CardContent>
-      </Card>
+      <Col sm={6} md={4}>
+        <Card
+          key={id}
+          id={id}
+          cardHeader={display_name}
+          color="dark"
+          header={header.display_name}
+          label={label.display_name}
+          price={price}
+          selectedId={null}
+          headerSize="extra-small"
+          onClick={this.setGear}
+        >
+          <CardContent>
+            <CardContentRow>
+              <CardContentCol>
+                <Img className="card-content__img" src={image_url} />
+              </CardContentCol>
+              <CardContentCol>
+                {attributes.map(this.renderCardAttributes)}
+              </CardContentCol>
+            </CardContentRow>
+            <CardContentText style={cardContentTextStyles}>
+              <ReactHeight onHeightReady={this.setMinHeight} children={description} />
+            </CardContentText>
+          </CardContent>
+        </Card>
+      </Col>
     );
   };
 
-  renderCardAttributes = (attripute) => {
-    const { display_name, key, options } = attripute;
-    const styles = {
-      width: '100%',
-      padding: '0 35px',
-      boxSizing: 'border-box',
-      display: 'flex',
-      alignItems: 'center',
-      height: '100%',
-    };
+  renderCardAttributes = (attribute) => {
+    const { display_name, key, options } = attribute;
     return (
-      <div key={key} style={styles}>
+      <div key={key} className="step-five__card-attributes">
         <Dropdown options={options} label={display_name} />
       </div>
     );

@@ -4,6 +4,7 @@ import { formValueSelector } from 'redux-form';
 import moment from 'moment';
 // Constants
 import { weekly_camp } from './index';
+import { daysInWeek } from '../../constants/weeks';
 // Selectors
 import { stepTwoCampDaysLengthSelector, stepTwoStartDateSelector } from '../StepTwo/selectors';
 
@@ -61,19 +62,33 @@ export const stepOnePriceSelector = createSelector(
   }
 );
 
+export const weeksLengthSelector = createSelector(
+  stepTwoCampDaysLengthSelector,
+  function(campDaysLength) {
+    const daysLength = campDaysLength / daysInWeek;
+    return daysLength > 1 ? daysLength : 1;
+  }
+);
+
+export const weeksWeeksSelector = createSelector(
+  weeksSelector,
+  function(weeks) {
+    return weeks.weeks;
+  }
+);
+
 export const weeksItemsSelector = createSelector(
   weeksSelector,
-  stepTwoCampDaysLengthSelector,
   stepTwoStartDateSelector,
-  function(weeks, weekLength, start) {
+  function(weeks, start) {
     return weeks.weeks.map(function(week, idx) {
       const days = 'days';
       const stringFormat = 'YYYY-MM-DD';
-      const startDateAddDays = weekLength * idx;
+      const startDateAddDays = idx * daysInWeek;
       const startDate = moment(start, stringFormat).add(startDateAddDays, days).format(stringFormat);
-      const endDate = moment(startDate, stringFormat).add(weekLength, days).subtract(1, days).format(stringFormat);
+      const endDate = moment(startDate, stringFormat).add(7, days).subtract(1, days).format(stringFormat);
       return Object.assign({}, week, { start_date: startDate, end_date: endDate });
-});
+    });
   }
 );
 

@@ -659,7 +659,7 @@ function TransportationCheckboxContainer(args) {
 function TransportRadioContainer(args) {
   const { options, value } = args;
   return (
-    <ul className="">
+    <ul className="step-six__radio-list">
       <Field
         name={stepSixFormFieldNames.transport}
         type="radio"
@@ -688,7 +688,7 @@ function TransportRadioContainer(args) {
 function DepartingTransportRadioContainer(args) {
   const { options, value } = args;
   return (
-    <ul className="">
+    <ul className="step-six__radio-list">
       <Field
         name={stepSixFormFieldNames.departingTransport}
         type="radio"
@@ -697,7 +697,7 @@ function DepartingTransportRadioContainer(args) {
           options.map(({ id, airport, price }) => {
             const computedLabel = price ? `${airport} - $${price}` : airport;
             return (
-              <li key={id} className="">
+              <li key={id} className="step-six__radio-list-item">
                 <Radio
                   {...input}
                   className=""

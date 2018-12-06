@@ -17,7 +17,23 @@ const initialState = {
   week_10_data: [],
   week_11_data: [],
   week_12_data: [],
-  starting_price: 0,
+};
+
+const emptyConcentration = {
+  isDummy: true,
+  id: '1337lorem',
+  display_description: "",
+  display_gender: "All",
+  display_length: "1 Week",
+  display_length_program: "No Daily Sesssion",
+  display_name: "No Daily Sesssion",
+  display_package_type: "Sport",
+  display_program_type: "Concentration",
+  length_program: "No Daily Sesssion",
+  name: "No Daily Sesssion",
+  program_type: "Concentration",
+  raw_name: "No Daily Sesssion",
+  secondary_program_type: "No Daily Sesssion",
 };
 
 export default function(state = initialState, action) {
@@ -47,7 +63,7 @@ export default function(state = initialState, action) {
       }
       return {
         ...state,
-        week_1_data: results,
+        week_1_data: [...results, emptyConcentration],
       };
     }
 
@@ -58,7 +74,7 @@ export default function(state = initialState, action) {
       }
       return {
         ...state,
-        week_2_data: results,
+        week_2_data: [...results, emptyConcentration],
       };
     }
 
@@ -69,7 +85,7 @@ export default function(state = initialState, action) {
       }
       return {
         ...state,
-        week_3_data: results,
+        week_3_data: [...results, emptyConcentration],
       };
     }
 
@@ -80,7 +96,7 @@ export default function(state = initialState, action) {
       }
       return {
         ...state,
-        week_4_data: results,
+        week_4_data: [...results, emptyConcentration],
       };
     }
 
@@ -91,7 +107,7 @@ export default function(state = initialState, action) {
       }
       return {
         ...state,
-        week_5_data: results,
+        week_5_data: [...results, emptyConcentration],
       };
     }
 
@@ -102,7 +118,7 @@ export default function(state = initialState, action) {
       }
       return {
         ...state,
-        week_6_data: results,
+        week_6_data: [...results, emptyConcentration],
       };
     }
 
@@ -113,7 +129,7 @@ export default function(state = initialState, action) {
       }
       return {
         ...state,
-        week_7_data: results,
+        week_7_data: [...results, emptyConcentration],
       };
     }
 
@@ -124,7 +140,7 @@ export default function(state = initialState, action) {
       }
       return {
         ...state,
-        week_8_data: results,
+        week_8_data: [...results, emptyConcentration],
       };
     }
 
@@ -135,7 +151,7 @@ export default function(state = initialState, action) {
       }
       return {
         ...state,
-        week_9_data: results,
+        week_9_data: [...results, emptyConcentration],
       };
     }
 
@@ -146,7 +162,7 @@ export default function(state = initialState, action) {
       }
       return {
         ...state,
-        week_10_data: results,
+        week_10_data: [...results, emptyConcentration],
       };
     }
 
@@ -157,7 +173,7 @@ export default function(state = initialState, action) {
       }
       return {
         ...state,
-        week_11_data: results,
+        week_11_data: [...results, emptyConcentration],
       };
     }
 
@@ -168,7 +184,7 @@ export default function(state = initialState, action) {
       }
       return {
         ...state,
-        week_12_data: results,
+        week_12_data: [...results, emptyConcentration],
       };
     }
 
