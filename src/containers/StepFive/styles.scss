@@ -8,5 +8,18 @@
             font-weight: 700;
             text-align: center;
         }
+
+        &__card-attributes {
+            width: 100%;
+            padding: 0 35px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            height: 100%;
+
+            & > div {
+                width: 100%;
+            }
+        }
     }
 }

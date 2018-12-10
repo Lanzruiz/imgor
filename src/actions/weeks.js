@@ -40,3 +40,11 @@ export function setOnlyWeeks(count) {
     payload: count,
   };
 }
+
+export function setWeekPrice(price) {
+  console.log('price',price);
+  return {
+    type: weeksTypes.SET_WEEK_PRICE,
+    payload: price,
+  };
+}

@@ -1,1 +1,2 @@
 export const GET_CATALOG_GEAR = 'GET_CATALOG_GEAR';
+export const STEP_FIVE_SET_GEAR = 'STEP_FIVE_SET_GEAR';

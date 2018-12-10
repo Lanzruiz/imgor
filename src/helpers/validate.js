@@ -5,8 +5,8 @@ import {
 
 const validations = {
   email: [
-    required({ msg: 'Email is required' }),
-    email({ msg: 'Must be valid email example@yourdomain.com' }),
+    required({ msg: 'Must be valid email. example@yourdomain.com' }),
+    email({ msg: 'Must be valid email. example@yourdomain.com' }),
   ],
 }
 
