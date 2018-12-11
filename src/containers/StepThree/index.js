@@ -114,10 +114,10 @@ class StepThree extends React.Component {
           </Col>
         </Row>
         <Row>
-          {data.map(({ age_range, display_name, price, id, name }) => {
+          {data.map(({ age_range, display_name, price, id, name, sold_out, has_secondary_program }) => {
             return (
               <Col xl={6} key={id}>
-                {this.renderCurrentCard({ age_range, display_name, price, id, name, selectedId })}
+                {this.renderCurrentCard({ age_range, display_name, price, id, name, selectedId, has_secondary_program, soldOut: sold_out })}
               </Col>
             );
           })}
@@ -126,7 +126,7 @@ class StepThree extends React.Component {
     );
   }
 
-  renderCurrentCard = ({ age_range, display_name, name = '', price, id, selectedId }) => {
+  renderCurrentCard = ({ age_range, display_name, name = '', price, id, selectedId, soldOut, has_secondary_program }) => {
     const computedLabel = age_range ? `ages ${age_range}` : '';
     const nameLowerCase = name.toLowerCase();
 
@@ -136,8 +136,9 @@ class StepThree extends React.Component {
       selectedId,
       header: display_name,
       key: id,
-      onClick: this.selectCard,
+      onClick: has_secondary_program ? this.goToNextStep : this.selectCard,
       label: computedLabel,
+      soldOut: soldOut,
     };
 
     switch(nameLowerCase) {
@@ -202,12 +203,14 @@ class StepThree extends React.Component {
   setDefaultState = () => {
     this.props.stepThreeActions.stepThreeSetDefaultState();
     this.props.trainingActions.setDefaultState();
-  }
+  };
 
   postCartCartIdParticipantIdProduct = () => {
     const { product, selectedId, cartId, participantId } = this.props;
     this.props.stepThreeActions.postCartCartIdParticipantIdProductRequest({ cartId, id: selectedId, product, participant_id: participantId });
-  }
+  };
+
+  goToNextStep = () => {}
 }
 
 function mapStateToProps(state) {

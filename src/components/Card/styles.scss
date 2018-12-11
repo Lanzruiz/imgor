@@ -233,6 +233,11 @@
                 background-color: $date-block-selected-bg;
                 color: $white;
             }
+
+            &--sold-out {
+                border: 1px solid $card-red-color;
+                color: $card-red-color;
+            }
         }
 
         &__price {

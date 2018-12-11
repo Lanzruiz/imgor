@@ -73,6 +73,7 @@ class Card extends React.Component {
     buttonBlock: PropTypes.bool,
     priceBlock: PropTypes.bool,
     cardHeaderCapitalize: PropTypes.bool,
+    soldOut: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -90,11 +91,12 @@ class Card extends React.Component {
     buttonBlock: true,
     priceBlock: true,
     cardHeaderCapitalize: false,
+    soldOut: false,
   };
 
   render() {
     const {
-      children, header, label, headerSize, color, cardHeader, imgSrc, id,
+      children, header, label, headerSize, color, cardHeader, imgSrc, id, soldOut,
       selectedId, priceDescription, cardHeaderCapitalize, style, className,
     } = this.props;
 
@@ -112,8 +114,9 @@ class Card extends React.Component {
     });
 
     const buttonClassNames = cx('card-body__button', {
-      'card-body__button--regular': !isCurrentCardSelected,
-      'card-body__button--selected': isCurrentCardSelected,
+      'card-body__button--regular': !isCurrentCardSelected && !soldOut,
+      'card-body__button--selected': isCurrentCardSelected && !soldOut,
+      'card-body__button--sold-out': soldOut,
     });
 
     const contentBlockClassNames = cx('card-body__content', {
@@ -203,13 +206,21 @@ class Card extends React.Component {
   };
 
   renderButtonBlock = (buttonClassNames, isCurrentCardSelected) => {
-    const { buttonBlock, onClick, id } = this.props;
+    const { buttonBlock, onClick, id, soldOut } = this.props;
+    const onClickHandler = soldOut ? null : () => onClick(id);
     return buttonBlock && (
       <div className="card-body__footer">
-        <Button className={buttonClassNames} onClick={() => onClick(id)}>
-          {isCurrentCardSelected
-            ? <LocaleString stringKey="card.selected" />
-            : <LocaleString stringKey="card.select" />
+        <Button className={buttonClassNames} onClick={onClickHandler}>
+          {
+            soldOut
+              ? (
+                  <LocaleString stringKey="sold_out" />
+                )
+              : (
+                  isCurrentCardSelected
+                    ? <LocaleString stringKey="card.selected" />
+                    : <LocaleString stringKey="card.select" />
+                )
           }
         </Button>
       </div>

@@ -10,7 +10,7 @@ import footballGameChanger from '../../assets/img/football-game-changer.png';
 import './styles.scss';
 
 const GameChangerCard = (props) => {
-  const { selectedId, onClick, price, label, id, header } = props;
+  const { selectedId, onClick, price, label, id, header, soldOut } = props;
   return (
     <Card
       cardHeader={<LocaleString stringKey="individualized_sport_training" />}
@@ -25,6 +25,7 @@ const GameChangerCard = (props) => {
       selectedId={selectedId}
       size="large"
       via={true}
+      soldOut={soldOut}
     >
     <CardContentRow>
         <CardContentCol>

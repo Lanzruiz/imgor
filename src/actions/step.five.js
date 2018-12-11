@@ -77,8 +77,8 @@ export function getCatalogGearUpsellNewRequest({ business_type, package_type, sp
     Api.req({
       apiCall: Api.getCatalogGearUpsellNew,
       res200: data => dispatch(getCatalogGearUpsellNew(data)),
-      res404: console.log,
-      reject: console.log,
+      res404: () => console.log('Api.getCatalogGearUpsellNew() => 404'),
+      reject: err => console.log(err),
       apiCallParams: {
         business_type,
         package_type,

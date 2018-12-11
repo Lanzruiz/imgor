@@ -102,8 +102,8 @@ class Api {
     });
   };
 
-  async postCartCartIdParticipantIdProduct({ cartId, id, product }) {
-    return await instance.post(`cart/${cartId}/participant/${id}/product`, {
+  async postCartCartIdParticipantIdProduct({ cartId, id, product, participant_id }) {
+    return await instance.post(`cart/${cartId}/participant/${participant_id}/product`, {
       product,
       product_id: id,
     });
