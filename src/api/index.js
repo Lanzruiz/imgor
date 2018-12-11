@@ -11,7 +11,7 @@ class Api {
         Api.instance = new Api();
     }
     return Api.instance;
-  }
+  };
 
   async req({ apiCall, res200, res404, reject, apiCallParams }) {
     return await apiCall(apiCallParams)
@@ -22,11 +22,11 @@ class Api {
       .catch(function(err) {
         reject(err);
       });
-  }
+  };
 
   async createCart() {
     return await instance.post('cart');
-  }
+  };
 
   async getCatalogCampsGroup({ sport }) {
     return await instance.get('catalog/camps/groups', {
@@ -34,7 +34,7 @@ class Api {
         sport,
       },
     });
-  }
+  };
 
   async getCatalogCamps({ business_type, program_type, sport, age, gender, start_date, end_date }) {
     return await instance.get('catalog/camps', {
@@ -48,17 +48,17 @@ class Api {
         end_date,
       },
     });
-  }
+  };
 
   async postCartCartIdParticipant({ cartId, email }) {
     return await instance.post(`cart/${cartId}/participant`, {
       email,
     });
-  }
+  };
 
   async getCatalogGear() {
     return await instance.get('catalog/gear');
-  }
+  };
 
   async getCatalogCampsCalendar({ age, boarding, business_type, gender, package_type, sport, group, secondary_group, length, }) {
     return await instance.get('catalog/camps/calendar', {
@@ -74,14 +74,14 @@ class Api {
         length,
       },
     });
-  }
+  };
 
   async putCartCartIdParticipantParticipantId({ cartId, participantId, gender, age }) {
     return await instance.put(`cart/${cartId}/participant/${participantId}`, {
       gender,
       age,
     });
-  }
+  };
 
   async getCatalogCampsLevels(args) {
     const {
@@ -100,11 +100,14 @@ class Api {
         date,
       },
     });
-  }
+  };
 
-  async postCartCartIdParticipantIdProduct({ cartId, id }) {
-    return await instance.post(`cart/${cartId}/participant/${id}/product`);
-  }
+  async postCartCartIdParticipantIdProduct({ cartId, id, product }) {
+    return await instance.post(`cart/${cartId}/participant/${id}/product`, {
+      product,
+      product_id: id,
+    });
+  };
 
   async getCatalogCampsHistogram({ sport, gender, boarding, days, age }) {
     return await instance.get('catalog/camps/histogram', {
@@ -116,18 +119,36 @@ class Api {
         age,
       },
     });
-  }
+  };
 
   async getCatalogTransport() {
     return await instance.get('catalog/transport');
-  }
+  };
 
   async getCatalogAirlines() {
     return await instance.get('catalog/airlines');
-  }
+  };
 
   async getCatalogTransportUnaccompanied() {
-    return  await instance.get('catalog/transport/unaccompanied');
+    return await instance.get('catalog/transport/unaccompanied');
+  };
+
+  async getCatalogCampCampId(selectedCampId) {
+    return await instance.get(`catalog/camp/${selectedCampId}`);
+  };
+
+  async getCatalogGearUpsellNew({ business_type, package_type, sport, gender, boarding, age, start_date }) {
+    return await instance.get('catalog/gear/upsell-new', {
+      params: {
+        business_type,
+        package_type,
+        sport,
+        gender,
+        boarding,
+        age,
+        start_date,
+      },
+    });
   }
 }
 

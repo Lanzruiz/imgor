@@ -166,7 +166,7 @@ class StepFour extends React.Component {
 
   setDefaultProps = () => {
     this.props.stepFourActions.stepFourSetDefaultState();
-  }
+  };
 }
 
 function mapStateToProps(state) {

@@ -19,9 +19,9 @@ import * as trainingActions from '../../actions/training';
 import * as stepThreeActions from '../../actions/step.three';
 import * as stepsActions from '../../actions/steps';
 // Selectors
-import { stepThreeDataSelector, stepTreeSelectedIdSelector } from './selector';
+import { stepThreeDataSelector, stepTreeSelectedIdSelector, stepThreeSelectedProductSelector } from './selector';
 import {
-  isWeeklyCampSelector, stepOneAgeSelector, stepOneGenderSelector,
+  isWeeklyCampSelector, stepOneAgeSelector, stepOneGenderSelector, cartIdSelector, participantIdSelector,
   stepOneBoardingBooleanSelector, stepOneGroupSelector, stepOneSecondaryGroupSelector,
 } from '../StepOne/selectors';
 import { stepTwoStartDateSelector } from '../StepTwo/selectors';
@@ -41,10 +41,12 @@ class StepThree extends React.Component {
     ]),
     trainingActions: PropTypes.shape({
       saveTrainingId: PropTypes.func.isRequired,
+      setDefaultState: PropTypes.func.isRequired,
     }),
     stepThreeActions: PropTypes.shape({
       getCatalogCampsLevelsRequest: PropTypes.func.isRequired,
       stepThreeSetDefaultState: PropTypes.func.isRequired,
+      postCartCartIdParticipantIdProductRequest: PropTypes.func.isRequired,
     }),
     stepsActions: PropTypes.shape({
       incrementStepsCounter: PropTypes.func.isRequired,
@@ -86,9 +88,12 @@ class StepThree extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { selectedId } = this.props;
+    const { selectedId, product } = this.props;
     if (selectedId !== prevProps.selectedId) {
       this.getCatalogCampsLevels();
+    }
+    if ((prevProps.product === null) && (product && product.length)) {
+      this.postCartCartIdParticipantIdProduct();
     }
   }
 
@@ -169,10 +174,6 @@ class StepThree extends React.Component {
     this.props.trainingActions.saveTrainingId(id);
   };
 
-  createProductBySelectedId = ({ cartId, id }) => {
-    this.props.stepThreeActions.postCartCartIdParticipantIdProductRequest({ cartId, id });
-  };
-
   getCatalogCampsLevels = () => {
     const {
       sport, packageType, businessType, gender, boarding,
@@ -200,7 +201,12 @@ class StepThree extends React.Component {
 
   setDefaultState = () => {
     this.props.stepThreeActions.stepThreeSetDefaultState();
-    this.props.trainingActions.saveTrainingId(null);
+    this.props.trainingActions.setDefaultState();
+  }
+
+  postCartCartIdParticipantIdProduct = () => {
+    const { product, selectedId, cartId, participantId } = this.props;
+    this.props.stepThreeActions.postCartCartIdParticipantIdProductRequest({ cartId, id: selectedId, product, participant_id: participantId });
   }
 }
 
@@ -215,6 +221,9 @@ function mapStateToProps(state) {
     secondaryGroup: stepOneSecondaryGroupSelector(state),
     isWeeklyCamp: isWeeklyCampSelector(state),
     startDate: stepTwoStartDateSelector(state),
+    product: stepThreeSelectedProductSelector(state),
+    cartId: cartIdSelector(state),
+    participantId: participantIdSelector(state),
   };
 };
 

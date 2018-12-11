@@ -2,6 +2,14 @@
 
 #{$root} {
     .tab-row {
+        &__group-header {
+            font-family: "Serifa-Bold";
+        }
+
+        &__secondary-group-header {
+            font-family: "Trade-Gothic-Bold";
+        }
+
         &__section {
             margin: 1px;
             width: 25%;

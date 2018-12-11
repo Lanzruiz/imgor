@@ -1,13 +1,20 @@
 // Modules
 import { createSelector } from 'reselect';
 
+function trainingSelector(state) {
+  return state.training;
+}
+
 export function stepThreeDataSelector(state) {
   return state.stepThree.data;
 }
 
-export function stepTreeSelectedIdSelector(state) {
-  return state.training.selectedId;
-}
+export const stepTreeSelectedIdSelector = createSelector(
+  trainingSelector,
+  function(training) {
+    return training.selectedId;
+  }
+);
 
 export const stepThreeHasSecondaryProgram = createSelector(
   stepThreeDataSelector,
@@ -20,5 +27,13 @@ export const stepThreeHasSecondaryProgram = createSelector(
       return currentProduct.has_secondary_program;
     }
     return false;
+  }
+);
+
+export const stepThreeSelectedProductSelector = createSelector(
+  trainingSelector,
+  function(training) {
+    console.log('training ', training);
+    return training.product;
   }
 );

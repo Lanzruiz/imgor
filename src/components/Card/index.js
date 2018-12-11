@@ -259,9 +259,12 @@ export function CardContentRow({ children, ...rest }) {
   );
 };
 
-export function CardContentCol({ children, ...rest }) {
+export function CardContentCol({ children, className, ...rest }) {
+  const classNames = cx('card-content__col', {
+    [className]: className,
+  });
   return (
-    <div className="card-content__col" {...rest}>
+    <div className={classNames} {...rest}>
       {children}
     </div>
   );

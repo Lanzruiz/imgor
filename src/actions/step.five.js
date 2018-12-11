@@ -22,18 +22,72 @@ export function getCatalogGearRequest() {
       reject: err => console.log(err), // TODO: Add error handler!
     });
   };
-}
+};
 
 function getCatalogGear(catalogGear) {
   return {
     type: stepFiveTypes.GET_CATALOG_GEAR,
     payload: catalogGear,
   };
-}
+};
 
-export function stepFiveSetGear(gearItem) {
+export function stepFiveSetGear(gearId) {
   return {
     type: stepFiveTypes.STEP_FIVE_SET_GEAR,
-    payload: gearItem,
+    payload: gearId,
   };
+};
+
+export function stepFiveIncrementSelectedGearQuantity(selectedGearId) {
+  return {
+    type: stepFiveTypes.STEP_FIVE_INCREMENT_SELECTED_GEAR_QUANTITY,
+    payload: selectedGearId,
+  };
+};
+
+export function stepFiveDecrementSelectedGearQuantity(selectedGearId) {
+  return {
+    type: stepFiveTypes.STEP_FIVE_DECREMENT_SELECTED_GEAR_QUANTITY,
+    payload: selectedGearId,
+  };
+}
+
+export function stepFiveSetDefaultState() {
+  return {
+    type: stepFiveTypes.STEP_FIVE_SET_DEFAULT_STATE,
+  };
+}
+
+export function stepFiveSelectDropdownItem(selectedOptionIdSelectedGearId) {
+  return {
+    type: stepFiveTypes.STEP_FIVE_SELECT_DROPDOWN_OPTION,
+    payload: selectedOptionIdSelectedGearId,
+  };
+}
+
+function getCatalogGearUpsellNew(data) {
+  return {
+    type: stepFiveTypes.STEP_SIX_GET_CATALOG_GEAR_UPSELL_NEW,
+    payload: data,
+  };
+}
+
+export function getCatalogGearUpsellNewRequest({ business_type, package_type, sport, gender, boarding, age, start_date }) {
+  return function(dispatch) {
+    Api.req({
+      apiCall: Api.getCatalogGearUpsellNew,
+      res200: data => dispatch(getCatalogGearUpsellNew(data)),
+      res404: console.log,
+      reject: console.log,
+      apiCallParams: {
+        business_type,
+        package_type,
+        sport,
+        gender,
+        boarding,
+        age,
+        start_date,
+      },
+    });
+  }
 }

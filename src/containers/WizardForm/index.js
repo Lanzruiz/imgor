@@ -12,6 +12,7 @@ import LocaleString from '../../components/LocaleString';
 // Actions
 import * as stepActions from '../../actions/steps';
 import * as stepOneActions from '../../actions/step.one';
+import * as trainingActions from '../../actions/training';
 // Helpers
 import { stepOneFormValueSelector, weekly_camp } from '../StepOne';
 // Selectors
@@ -34,6 +35,9 @@ class WizardForm extends React.Component {
     }),
     stepOneActions: PropTypes.shape({
       stepOnePutCartCartIdParticipantParticipantIdRequest: PropTypes.func.isRequired,
+    }),
+    trainingActions: PropTypes.shape({
+      getCatalogCampCampIdRequest: PropTypes.func.isRequired,
     }),
     participantId: PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
     sleepaway: PropTypes.string,
@@ -238,15 +242,17 @@ class WizardForm extends React.Component {
   goingToStepFour = () => {
     const { stepTreeSelectedId } = this.props;
     if (stepTreeSelectedId) {
+      this.props.trainingActions.getCatalogCampCampIdRequest(stepTreeSelectedId);
       this.goingToStepByStepNymber(stepsEnum.four);
     }
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     stepActions: bindActionCreators(stepActions, dispatch),
     stepOneActions: bindActionCreators(stepOneActions, dispatch),
+    trainingActions: bindActionCreators(trainingActions, dispatch),
   };
 };
 

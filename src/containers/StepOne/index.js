@@ -190,6 +190,7 @@ class StepOne extends React.Component {
                       >
                         <div style={{ marginBottom: '3px' }}>
                           <span children={row.name} className={cx(`
+                            tab-row__group-header
                             tab-row__header
                             tab-row__header--regular
                             tab-row__header--mw-initial
@@ -283,7 +284,8 @@ class StepOne extends React.Component {
                                         tab-row__section
                                         tab-row__section--bg-white
                                         tab-row__section--center
-                                        center-center`
+                                        center-center
+                                        tab-row__secondary-group-header`
                                       )}
                                     >
                                       <div className={cx('tab-row__wrapper', {

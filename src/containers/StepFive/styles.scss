@@ -10,16 +10,52 @@
         }
 
         &__card-attributes {
-            width: 100%;
-            padding: 0 35px;
+            align-items: center;
             box-sizing: border-box;
             display: flex;
-            align-items: center;
-            height: 100%;
+            padding: 0 35px;
+            margin-bottom: 10px;
+            width: 100%;
 
             & > div {
                 width: 100%;
             }
+        }
+    }
+
+    .card-counter {
+        &__container {
+            align-items: center;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-bottom: 10px;
+            padding: 0 35px;
+            width: 100%;
+        }
+
+        &__header {
+            color: #083451;
+            font-family: "Trade-Gothic-Bold";
+            font-size: 15px;
+
+            &-container {
+                align-items: center;
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                width: 100%;
+            }
+        }
+
+        &__counter {
+            align-items: center;
+            display: flex;
+            flex-direction: row;
+            height: 31px;
+            justify-content: space-around;
+            width: 100%;
         }
     }
 }

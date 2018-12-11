@@ -171,3 +171,25 @@ export const stepOneBoardingBooleanSelector = createSelector(
     }
   }
 );
+
+export function cartSelector(state) {
+  return state.cart;
+};
+
+export function participantSelector(state) {
+  return state.participant;
+}
+
+export const cartIdSelector = createSelector(
+  cartSelector,
+  function(cart) {
+    return cart.id;
+  }
+);
+
+export const participantIdSelector = createSelector(
+  participantSelector,
+  function(participant) {
+    return participant.id;
+  }
+);
