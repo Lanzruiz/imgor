@@ -359,3 +359,10 @@ export function stepFourSetDefaultState() {
     type: stepFourTypes.STEP_FOUR_SET_DEFAULT_STATE,
   };
 }
+
+export function stepFourSetSecondaryProgramId(id) {
+  return {
+    type: stepFourTypes.STEP_FOUR_SET_SECONDARY_PROGRAM_ID,
+    payload: id,
+  };
+}

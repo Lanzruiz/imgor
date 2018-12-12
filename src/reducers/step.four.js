@@ -17,23 +17,24 @@ const initialState = {
   week_10_data: [],
   week_11_data: [],
   week_12_data: [],
+  secondaryProgramId: null,
 };
 
 const emptyConcentration = {
   isDummy: true,
   id: '1337lorem',
-  display_description: "",
-  display_gender: "All",
-  display_length: "1 Week",
-  display_length_program: "No Daily Sesssion",
-  display_name: "No Daily Sesssion",
-  display_package_type: "Sport",
-  display_program_type: "Concentration",
-  length_program: "No Daily Sesssion",
-  name: "No Daily Sesssion",
-  program_type: "Concentration",
-  raw_name: "No Daily Sesssion",
-  secondary_program_type: "No Daily Sesssion",
+  display_description: '',
+  display_gender: 'All',
+  display_length: '1 Week',
+  display_length_program: 'No Daily Sesssion',
+  display_name: 'No Daily Sesssion',
+  display_package_type: 'Sport',
+  display_program_type: 'Concentration',
+  length_program: 'No Daily Sesssion',
+  name: 'No Daily Sesssion',
+  program_type: 'Concentration',
+  raw_name: 'No Daily Sesssion',
+  secondary_program_type: 'No Daily Sesssion',
 };
 
 export default function(state = initialState, action) {
@@ -185,6 +186,16 @@ export default function(state = initialState, action) {
       return {
         ...state,
         week_12_data: [...results, emptyConcentration],
+      };
+    }
+
+    case stepFourTypes.STEP_FOUR_SET_SECONDARY_PROGRAM_ID: {
+      if (state.secondaryProgramId === payload) {
+        return state;
+      }
+      return {
+        ...state,
+        secondaryProgramId: payload,
       };
     }
 

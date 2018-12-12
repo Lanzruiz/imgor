@@ -19,7 +19,10 @@ import * as trainingActions from '../../actions/training';
 import * as stepThreeActions from '../../actions/step.three';
 import * as stepsActions from '../../actions/steps';
 // Selectors
-import { stepThreeDataSelector, stepTreeSelectedIdSelector, stepThreeSelectedProductSelector } from './selector';
+import {
+  stepThreeDataSelector, stepTreeSelectedIdSelector, stepThreeSelectedProductSelector,
+  stepThreeSelectedCardWithSecondaryProgramsIdSelector,
+} from './selector';
 import {
   isWeeklyCampSelector, stepOneAgeSelector, stepOneGenderSelector, cartIdSelector, participantIdSelector,
   stepOneBoardingBooleanSelector, stepOneGroupSelector, stepOneSecondaryGroupSelector,
@@ -47,6 +50,7 @@ class StepThree extends React.Component {
       getCatalogCampsLevelsRequest: PropTypes.func.isRequired,
       stepThreeSetDefaultState: PropTypes.func.isRequired,
       postCartCartIdParticipantIdProductRequest: PropTypes.func.isRequired,
+      stepThreeSetSecondaryPrograms: PropTypes.func.isRequired,
     }),
     stepsActions: PropTypes.shape({
       incrementStepsCounter: PropTypes.func.isRequired,
@@ -80,6 +84,7 @@ class StepThree extends React.Component {
     group: PropTypes.string,
     secondaryGroup: PropTypes.string,
     isWeeklyCamp: PropTypes.bool,
+    selectedCardWithSecondaryProgramsId: PropTypes.number,
   };
 
   componentDidMount() {
@@ -89,7 +94,7 @@ class StepThree extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { selectedId, product } = this.props;
-    if (selectedId !== prevProps.selectedId) {
+    if (selectedId && (selectedId !== prevProps.selectedId)) {
       this.getCatalogCampsLevels();
     }
     if ((prevProps.product === null) && (product && product.length)) {
@@ -102,7 +107,7 @@ class StepThree extends React.Component {
   }
 
   render() {
-    const { selectedId, data } = this.props;
+    const { selectedId, data, selectedCardWithSecondaryProgramsId } = this.props;
     return (
       <Container style={{ marginBottom: '65px' }} ref={this.stepThree}>
         <Row>
@@ -114,10 +119,20 @@ class StepThree extends React.Component {
           </Col>
         </Row>
         <Row>
-          {data.map(({ age_range, display_name, price, id, name, sold_out, has_secondary_program }) => {
+          {data.map(({ age_range, display_name, price, id, name, sold_out, has_secondary_program, secondary_programs, starting_price }, idx) => {
             return (
-              <Col xl={6} key={id}>
-                {this.renderCurrentCard({ age_range, display_name, price, id, name, selectedId, has_secondary_program, soldOut: sold_out })}
+              <Col xl={6} key={idx}>
+                {this.renderCurrentCard({
+                  age_range,
+                  display_name,
+                  name,
+                  has_secondary_program,
+                  price: price || starting_price,
+                  selectedId: selectedId || selectedCardWithSecondaryProgramsId,
+                  id: has_secondary_program ? idx : id,
+                  secondaryPrograms: secondary_programs,
+                  soldOut: sold_out,
+                })}
               </Col>
             );
           })}
@@ -126,17 +141,18 @@ class StepThree extends React.Component {
     );
   }
 
-  renderCurrentCard = ({ age_range, display_name, name = '', price, id, selectedId, soldOut, has_secondary_program }) => {
+  renderCurrentCard = (args) => {
+    const { age_range, display_name, name = '', price, id, selectedId, soldOut, has_secondary_program, secondaryPrograms } = args;
     const computedLabel = age_range ? `ages ${age_range}` : '';
     const nameLowerCase = name.toLowerCase();
 
     const cardProps = {
       id,
-      price,
       selectedId,
+      price,
       header: display_name,
       key: id,
-      onClick: has_secondary_program ? this.goToNextStep : this.selectCard,
+      onClick: has_secondary_program ? cardId => this.goToNextStep({ id: cardId, secondaryPrograms }) : this.selectCard,
       label: computedLabel,
       soldOut: soldOut,
     };
@@ -172,7 +188,19 @@ class StepThree extends React.Component {
   };
 
   selectCard = (id) => {
+    this.saveTrainingId(id);
+    this.setSecondaryPrograms({ id: null, secondary_programs: [] });
+  };
+
+  saveTrainingId = (id) => {
     this.props.trainingActions.saveTrainingId(id);
+  };
+
+  setSecondaryPrograms = ({ id, secondaryPrograms }) => {
+    if (typeof id === 'number') {
+      this.saveTrainingId(null);
+    }
+    this.props.stepThreeActions.stepThreeSetSecondaryPrograms({ id, secondary_programs: secondaryPrograms });
   };
 
   getCatalogCampsLevels = () => {
@@ -210,7 +238,9 @@ class StepThree extends React.Component {
     this.props.stepThreeActions.postCartCartIdParticipantIdProductRequest({ cartId, id: selectedId, product, participant_id: participantId });
   };
 
-  goToNextStep = () => {}
+  goToNextStep = ({ id: cardId, secondaryPrograms }) => {
+    this.setSecondaryPrograms({ id: cardId, secondaryPrograms });
+  }
 }
 
 function mapStateToProps(state) {
@@ -227,6 +257,7 @@ function mapStateToProps(state) {
     product: stepThreeSelectedProductSelector(state),
     cartId: cartIdSelector(state),
     participantId: participantIdSelector(state),
+    selectedCardWithSecondaryProgramsId: stepThreeSelectedCardWithSecondaryProgramsIdSelector(state),
   };
 };
 
