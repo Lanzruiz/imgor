@@ -3,6 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Img from 'react-image';
 import OutsideClickHandler from 'react-outside-click-handler';
+// Components
+import AnimatedHeightComponent from '../AnimateHeightComponent';
 // Images
 import arrowDownSmall from '../../assets/img/arrow-down-small.png';
 import arrowDownSmallWhite from '../../assets/img/arrow-down-white.png';
@@ -46,18 +48,20 @@ export default class Dropdown extends React.Component {
             {selectedOption}
             <Img src={image} />
           </div>
-          {isOpen && (
-            <div className="dropdown__options">
-              {options.map(({ id, display_name }) => (
-                <div
-                  className="dropdown__option"
-                  key={id}
-                  children={display_name}
-                  onClick={() => handleChange(id)}
-                />
-              ))}
-            </div>
-          )}
+          <AnimatedHeightComponent>
+            {isOpen && (
+              <div className="dropdown__options">
+                {options.map(({ id, display_name }) => (
+                  <div
+                    className="dropdown__option"
+                    key={id}
+                    children={display_name}
+                    onClick={() => handleChange(id)}
+                  />
+                ))}
+              </div>
+            )}
+          </AnimatedHeightComponent>
         </div>
       </OutsideClickHandler>
     );

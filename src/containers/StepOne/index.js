@@ -17,6 +17,7 @@ import GreenBlock from '../../components/GreenBlock';
 import Button from '../../components/Button';
 import LocaleString from '../../components/LocaleString';
 import Radio from '../../components/Radio';
+import Dropdown from '../../components/Dropdown';
 // Actions
 import * as weeksActions from '../../actions/weeks';
 import * as stepOneActions from '../../actions/step.one';
@@ -27,6 +28,7 @@ import validation from '../../helpers/validate';
 import createNumbersArray from '../../helpers/createNumbersArray';
 // Constants
 import { minWeekCount, maxWeekCount } from '../../constants/weeks';
+import { stepOneFormFieldsName } from './selectors';
 // Selectors
 import {
   stepOneGroupSelector, stepOneDataSelector, stepOneTabIndexSelector, weeksCounterSelector,
@@ -275,10 +277,12 @@ class StepOne extends React.Component {
                                   return (
                                     <Tab
                                       key={idx}
-                                      onClick={() => {
-                                        this.selectGroup({ group: row.name, secondary_group: option.name });
-                                        this.setWeeksCounter(0);
-                                        this.setPrice(option.price);
+                                      onClick={option.sold_out
+                                        ? null
+                                        : () => {
+                                          this.selectGroup({ group: row.name, secondary_group: option.name });
+                                          this.setWeeksCounter(0);
+                                          this.setPrice(option.price);
                                       }}
                                       className={cx(`
                                         tab-row__section
@@ -289,10 +293,17 @@ class StepOne extends React.Component {
                                       )}
                                     >
                                       <div className={cx('tab-row__wrapper', {
-                                        'tab-row__container--disabled': (tabIndex > 0) && ((idx + 1 !== tabIndex) && (group !== row.group)),
+                                        'tab-row__container--disabled': ((tabIndex > 0) && ((idx + 1 !== tabIndex) && (group !== row.group))) || option.sold_out,
+                                        'sold-out-block': option.sold_out,
                                       })}>
-                                        <span className="tab-row__header tab-row__header--medium">
+                                        <span className={cx('tab-row__header tab-row__header--medium', {
+                                          'tab-row__header--sold': option.sold_out,
+                                          'tab-row__header--through': option.sold_out,
+                                        })}>
                                           {option.name}
+                                        </span>
+                                        <span className="sold-out-text">
+                                          {option.sold_out && <LocaleString stringKey="sold_out" />}
                                         </span>
                                       </div>
                                     </Tab>
@@ -412,11 +423,21 @@ class StepOne extends React.Component {
               <H3>
                 <LocaleString stringKey="step_one.select_camper_age" />
               </H3>
-              <AgeRadioBtnContainer
-                age={age}
-                prefix={prefix}
-                range={range}
-              />
+              {(range.length <= 15)
+                ? (
+                    <AgeRadioBtnContainer
+                      age={age}
+                      prefix={prefix}
+                      range={range}
+                    />
+                  )
+                : (
+                  <Field
+                    name={`${prefix}_${stepOneFormFieldsName.age}`}
+                    component={args => <StepOneAgeDropdown {...args} range={range} />}
+                  />
+                )
+              }
             </div>
             <div className="content__form-control">
               <H3>
@@ -500,7 +521,7 @@ function SleepawayRadioBtn({ options, prefix, sleepaway, possibleValues }) {
   return (
     <Field
       className="content__radio-btn"
-      name={`${prefix}_sleepaway`}
+      name={`${prefix}_${stepOneFormFieldsName.sleepaway}`}
       type="radio"
       options={options}
       component={({ input, options }) => (
@@ -530,7 +551,7 @@ function AgeRadioBtnContainer ({ prefix, range, age }) {
   return (
     <div className="content__age--block">
       <Field
-        name={`${prefix}_age`}
+        name={`${prefix}_${stepOneFormFieldsName.age}`}
         type="radio"
         options={range}
         component={({ input, options }) => (
@@ -552,16 +573,18 @@ function AgeRadioBtnContainer ({ prefix, range, age }) {
 }
 
 function GenderRadioBtnContainer ({ prefix, options, value, possibleValues }) {
+  const defaultPossibleValues = ['Male', 'Female'];
+  const computedPossibleValues = include(possibleValues, 'All') ? defaultPossibleValues : possibleValues;
   return (
     <div className="content__radio-container">
       <Field
         className="content__radio-btn"
-        name={`${prefix}_gender`}
+        name={`${prefix}_${stepOneFormFieldsName.gender}`}
         type="radio"
         options={options}
         component={({ input, options }) => (
           options.map((gender) => {
-            const isDisabled = !include(possibleValues, gender);
+            const isDisabled = !include(computedPossibleValues, gender);
             const radioBtnClassNames = cx('content__label', {
               'content__label--disabled': isDisabled,
             });
@@ -586,17 +609,18 @@ function GenderRadioBtnContainer ({ prefix, options, value, possibleValues }) {
 
 const selector = formValueSelector('wizard');
 
-export function stepOneFormValueSelector(state, prefix) {
-  const regExp = /\s/g;
-  let name = (
-    (state.stepOne.group === weekly_camp)
-      ? state.stepOne.group
-      : state.stepOne.secondary_group
+function StepOneAgeDropdown(args) {
+  const { range, input } = args;
+  const { value, onChange } = input;
+  return (
+    <div className="step-one__dropdown-age">
+      <Dropdown
+        options={range.map(number => ({ id: '' + number, display_name: '' + number, name: '' + number }))}
+        handleChange={onChange}
+        selectedOption={value || <LocaleString stringKey="select_camper_age" />}
+      />
+    </div>
   );
-  if (name) {
-    name = name.toLowerCase().replace(regExp, '_');
-  }
-  return selector(state, `${name}_${prefix}`);
 }
 
 function mapStateToProps(state) {

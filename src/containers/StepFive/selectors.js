@@ -29,3 +29,28 @@ export const stepFivePriceSelector = createSelector(
     return resultPrice;
   }
 );
+
+export const stepFiveItemsPerPageSelector = createSelector(
+  stepFiveSelector,
+  function(stepFive) {
+    return stepFive.itemsPerPage;
+  }
+);
+
+export const stepFiveDataPerPageSelector = createSelector(
+  stepFiveDataSelector,
+  stepFiveItemsPerPageSelector,
+  function(data, perPage) {
+    const startIndex = 0;
+    return data.slice(startIndex, perPage);
+  }
+);
+
+export const stepFiveShouldRenderLoadMoreButtonSelector = createSelector(
+  stepFiveDataSelector,
+  stepFiveItemsPerPageSelector,
+  function(data, perPage) {
+    const maxItemsCount = data.length;
+    return maxItemsCount > perPage;
+  }
+);

@@ -175,6 +175,8 @@
     "concentration.sat_college": "For athletes getting ready to take the SAT college entrance exam, IMG Academy offers classes to prepare them for the test material and offer techniques to help them take it with confidence.",
     "quantity": "Quantity",
     "sold_out": "sold out",
+    "load_more": "Load more",
+    "select_camper_age": "Select camper age",
     "step_final.no_first_name_message": "Please provide camper's first name",
     "step_final.no_last_name_message": "Please provide camper's last name",
     "step_final.no_position_message": "Please provide camper's position",
