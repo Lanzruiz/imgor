@@ -19,9 +19,12 @@ import * as trainingActions from '../../actions/training';
 import * as stepThreeActions from '../../actions/step.three';
 import * as stepsActions from '../../actions/steps';
 // Selectors
-import { stepThreeDataSelector, stepTreeSelectedIdSelector } from './selector';
 import {
-  isWeeklyCampSelector, stepOneAgeSelector, stepOneGenderSelector,
+  stepThreeDataSelector, stepTreeSelectedIdSelector, stepThreeSelectedProductSelector,
+  stepThreeSelectedCardWithSecondaryProgramsIdSelector,
+} from './selector';
+import {
+  isWeeklyCampSelector, stepOneAgeSelector, stepOneGenderSelector, cartIdSelector, participantIdSelector,
   stepOneBoardingBooleanSelector, stepOneGroupSelector, stepOneSecondaryGroupSelector,
 } from '../StepOne/selectors';
 import { stepTwoStartDateSelector } from '../StepTwo/selectors';
@@ -41,10 +44,13 @@ class StepThree extends React.Component {
     ]),
     trainingActions: PropTypes.shape({
       saveTrainingId: PropTypes.func.isRequired,
+      setDefaultState: PropTypes.func.isRequired,
     }),
     stepThreeActions: PropTypes.shape({
       getCatalogCampsLevelsRequest: PropTypes.func.isRequired,
       stepThreeSetDefaultState: PropTypes.func.isRequired,
+      postCartCartIdParticipantIdProductRequest: PropTypes.func.isRequired,
+      stepThreeSetSecondaryPrograms: PropTypes.func.isRequired,
     }),
     stepsActions: PropTypes.shape({
       incrementStepsCounter: PropTypes.func.isRequired,
@@ -78,6 +84,7 @@ class StepThree extends React.Component {
     group: PropTypes.string,
     secondaryGroup: PropTypes.string,
     isWeeklyCamp: PropTypes.bool,
+    selectedCardWithSecondaryProgramsId: PropTypes.number,
   };
 
   componentDidMount() {
@@ -86,9 +93,12 @@ class StepThree extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { selectedId } = this.props;
-    if (selectedId !== prevProps.selectedId) {
+    const { selectedId, product } = this.props;
+    if (selectedId && (selectedId !== prevProps.selectedId)) {
       this.getCatalogCampsLevels();
+    }
+    if ((prevProps.product === null) && (product && product.length)) {
+      this.postCartCartIdParticipantIdProduct();
     }
   }
 
@@ -97,7 +107,7 @@ class StepThree extends React.Component {
   }
 
   render() {
-    const { selectedId, data } = this.props;
+    const { selectedId, data, selectedCardWithSecondaryProgramsId } = this.props;
     return (
       <Container style={{ marginBottom: '65px' }} ref={this.stepThree}>
         <Row>
@@ -109,10 +119,20 @@ class StepThree extends React.Component {
           </Col>
         </Row>
         <Row>
-          {data.map(({ age_range, display_name, price, id, name }) => {
+          {data.map(({ age_range, display_name, price, id, name, sold_out, has_secondary_program, secondary_programs, starting_price }, idx) => {
             return (
-              <Col xl={6} key={id}>
-                {this.renderCurrentCard({ age_range, display_name, price, id, name, selectedId })}
+              <Col xl={6} key={idx}>
+                {this.renderCurrentCard({
+                  age_range,
+                  display_name,
+                  name,
+                  has_secondary_program,
+                  price: price || starting_price,
+                  selectedId: selectedId || selectedCardWithSecondaryProgramsId,
+                  id: has_secondary_program ? idx : id,
+                  secondaryPrograms: secondary_programs,
+                  soldOut: sold_out,
+                })}
               </Col>
             );
           })}
@@ -121,18 +141,20 @@ class StepThree extends React.Component {
     );
   }
 
-  renderCurrentCard = ({ age_range, display_name, name = '', price, id, selectedId }) => {
+  renderCurrentCard = (args) => {
+    const { age_range, display_name, name = '', price, id, selectedId, soldOut, has_secondary_program, secondaryPrograms } = args;
     const computedLabel = age_range ? `ages ${age_range}` : '';
     const nameLowerCase = name.toLowerCase();
 
     const cardProps = {
       id,
-      price,
       selectedId,
+      price,
       header: display_name,
       key: id,
-      onClick: this.selectCard,
+      onClick: has_secondary_program ? cardId => this.goToNextStep({ id: cardId, secondaryPrograms }) : this.selectCard,
       label: computedLabel,
+      soldOut: soldOut,
     };
 
     switch(nameLowerCase) {
@@ -166,11 +188,19 @@ class StepThree extends React.Component {
   };
 
   selectCard = (id) => {
+    this.saveTrainingId(id);
+    this.setSecondaryPrograms({ id: null, secondary_programs: [] });
+  };
+
+  saveTrainingId = (id) => {
     this.props.trainingActions.saveTrainingId(id);
   };
 
-  createProductBySelectedId = ({ cartId, id }) => {
-    this.props.stepThreeActions.postCartCartIdParticipantIdProductRequest({ cartId, id });
+  setSecondaryPrograms = ({ id, secondaryPrograms }) => {
+    if (typeof id === 'number') {
+      this.saveTrainingId(null);
+    }
+    this.props.stepThreeActions.stepThreeSetSecondaryPrograms({ id, secondary_programs: secondaryPrograms });
   };
 
   getCatalogCampsLevels = () => {
@@ -200,7 +230,16 @@ class StepThree extends React.Component {
 
   setDefaultState = () => {
     this.props.stepThreeActions.stepThreeSetDefaultState();
-    this.props.trainingActions.saveTrainingId(null);
+    this.props.trainingActions.setDefaultState();
+  };
+
+  postCartCartIdParticipantIdProduct = () => {
+    const { product, selectedId, cartId, participantId } = this.props;
+    this.props.stepThreeActions.postCartCartIdParticipantIdProductRequest({ cartId, id: selectedId, product, participant_id: participantId });
+  };
+
+  goToNextStep = ({ id: cardId, secondaryPrograms }) => {
+    this.setSecondaryPrograms({ id: cardId, secondaryPrograms });
   }
 }
 
@@ -215,6 +254,10 @@ function mapStateToProps(state) {
     secondaryGroup: stepOneSecondaryGroupSelector(state),
     isWeeklyCamp: isWeeklyCampSelector(state),
     startDate: stepTwoStartDateSelector(state),
+    product: stepThreeSelectedProductSelector(state),
+    cartId: cartIdSelector(state),
+    participantId: participantIdSelector(state),
+    selectedCardWithSecondaryProgramsId: stepThreeSelectedCardWithSecondaryProgramsIdSelector(state),
   };
 };
 

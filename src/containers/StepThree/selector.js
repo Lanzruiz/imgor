@@ -1,24 +1,53 @@
 // Modules
 import { createSelector } from 'reselect';
 
-export function stepThreeDataSelector(state) {
-  return state.stepThree.data;
+function trainingSelector(state) {
+  return state.training;
 }
 
-export function stepTreeSelectedIdSelector(state) {
-  return state.training.selectedId;
+function stepThreeSelector(state) {
+  return state.stepThree;
 }
+
+export const stepThreeDataSelector = createSelector(
+  stepThreeSelector,
+  function(stepThree) {
+    return stepThree.data;
+  }
+);
+
+export const stepTreeSelectedIdSelector = createSelector(
+  trainingSelector,
+  function(training) {
+    return training.selectedId;
+  }
+);
+
+export const stepThreeSelectedCardWithSecondaryProgramsIdSelector = createSelector(
+  stepThreeSelector,
+  function(stepThree) {
+    return stepThree.selected_card_with_secondary_programs_id;
+  }
+);
+
+export const stepThreeSecondaryProgramsSelector = createSelector(
+  stepThreeSelector,
+  function(stepThree) {
+    return stepThree.secondary_programs;
+  }
+);
 
 export const stepThreeHasSecondaryProgram = createSelector(
-  stepThreeDataSelector,
-  stepTreeSelectedIdSelector,
-  function(data, selectedId) {
-    const currentProduct = data.find(function({ id }) {
-      return id === selectedId;
-    });
-    if (currentProduct) {
-      return currentProduct.has_secondary_program;
-    }
-    return false;
+  stepThreeSelectedCardWithSecondaryProgramsIdSelector,
+  stepThreeSecondaryProgramsSelector,
+  function(id, secondaryPrograms) {
+    return ((typeof id === 'number') && (secondaryPrograms.length > 0));
+  }
+);
+
+export const stepThreeSelectedProductSelector = createSelector(
+  trainingSelector,
+  function(training) {
+    return training.product;
   }
 );

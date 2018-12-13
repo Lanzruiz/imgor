@@ -74,6 +74,8 @@ class App extends React.Component {
       <StepFive
         key="4"
         sport={props.sport}
+        packageType={props.packageType}
+        businessType={props.businessType}
       />,
       <StepSix key="5" />,
       <StepFinal key="6" />,

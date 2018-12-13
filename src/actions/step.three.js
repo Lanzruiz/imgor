@@ -25,7 +25,7 @@ export function getCatalogCampsLevelsRequest(args) {
   }
 }
 
-export function postCartCartIdParticipantIdProductRequest({ cartId, id }) {
+export function postCartCartIdParticipantIdProductRequest({ cartId, id, product, participant_id }) {
   return function(dispatch) {
     Api.req({
       apiCall: Api.postCartCartIdParticipantIdProduct,
@@ -35,6 +35,8 @@ export function postCartCartIdParticipantIdProductRequest({ cartId, id }) {
       apiCallParams: {
         cartId,
         id,
+        product,
+        participant_id,
       },
     });
   }
@@ -57,5 +59,12 @@ function getCatalogCampsLevels(data) {
 export function stepThreeSetDefaultState() {
   return {
     type: stepThreeTypes.STEP_THREE_SET_DEFAULT_STATE,
+  };
+}
+
+export function stepThreeSetSecondaryPrograms(secondaryPrograms) {
+  return {
+    type: stepThreeTypes.STEP_THREE_SET_SECONDARY_PROGRAMS,
+    payload: secondaryPrograms,
   };
 }

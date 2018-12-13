@@ -110,3 +110,10 @@ export const stepFourPriceSelector = createSelector(
     return result;
   }
 );
+
+export const stepFourSecondaryProgramIdSelector = createSelector(
+  stepFourSelector,
+  function(stepFour) {
+    return stepFour.secondaryProgramId;
+  }
+);

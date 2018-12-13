@@ -9,6 +9,7 @@ import GreenBlock from '../GreenBlock';
 import LocaleString from '../LocaleString';
 // Images
 import plus from '../../assets/img/plus.png';
+import plusSoldOut from '../../assets/img/sold-out-plus.png';
 // Styles
 import './styles.scss';
 
@@ -73,6 +74,7 @@ class Card extends React.Component {
     buttonBlock: PropTypes.bool,
     priceBlock: PropTypes.bool,
     cardHeaderCapitalize: PropTypes.bool,
+    soldOut: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -90,11 +92,12 @@ class Card extends React.Component {
     buttonBlock: true,
     priceBlock: true,
     cardHeaderCapitalize: false,
+    soldOut: false,
   };
 
   render() {
     const {
-      children, header, label, headerSize, color, cardHeader, imgSrc, id,
+      children, header, label, headerSize, color, cardHeader, imgSrc, id, soldOut,
       selectedId, priceDescription, cardHeaderCapitalize, style, className,
     } = this.props;
 
@@ -112,8 +115,9 @@ class Card extends React.Component {
     });
 
     const buttonClassNames = cx('card-body__button', {
-      'card-body__button--regular': !isCurrentCardSelected,
-      'card-body__button--selected': isCurrentCardSelected,
+      'card-body__button--regular': !isCurrentCardSelected && !soldOut,
+      'card-body__button--selected': isCurrentCardSelected && !soldOut,
+      'card-body__button--sold-out': soldOut,
     });
 
     const contentBlockClassNames = cx('card-body__content', {
@@ -203,13 +207,21 @@ class Card extends React.Component {
   };
 
   renderButtonBlock = (buttonClassNames, isCurrentCardSelected) => {
-    const { buttonBlock, onClick, id } = this.props;
+    const { buttonBlock, onClick, id, soldOut } = this.props;
+    const onClickHandler = soldOut ? null : () => onClick(id);
     return buttonBlock && (
       <div className="card-body__footer">
-        <Button className={buttonClassNames} onClick={() => onClick(id)}>
-          {isCurrentCardSelected
-            ? <LocaleString stringKey="card.selected" />
-            : <LocaleString stringKey="card.select" />
+        <Button className={buttonClassNames} onClick={onClickHandler}>
+          {
+            soldOut
+              ? (
+                  <LocaleString stringKey="sold_out" />
+                )
+              : (
+                  isCurrentCardSelected
+                    ? <LocaleString stringKey="card.selected" />
+                    : <LocaleString stringKey="card.select" />
+                )
           }
         </Button>
       </div>
@@ -259,9 +271,12 @@ export function CardContentRow({ children, ...rest }) {
   );
 };
 
-export function CardContentCol({ children, ...rest }) {
+export function CardContentCol({ children, className, ...rest }) {
+  const classNames = cx('card-content__col', {
+    [className]: className,
+  });
   return (
-    <div className="card-content__col" {...rest}>
+    <div className={classNames} {...rest}>
       {children}
     </div>
   );
@@ -275,10 +290,13 @@ export function CardContentText({ children, ...rest }) {
   );
 };
 
-export function ImagePlus({ className }) {
+export function ImagePlus({ className, soldOut = false }) {
   return (
     <span className={cx('card-body__image-plus', { [className]: className })}>
-      <Img src={plus} className="card-body__image-item" />
+      <Img
+        src={soldOut ? plusSoldOut : plus}
+        className="card-body__image-item"
+      />
     </span>
   );
 }

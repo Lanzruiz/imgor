@@ -639,10 +639,11 @@ function TransportationCheckboxContainer(args) {
         type="radio"
         options={options}
         component={({ input, options }) => (
-          options.map(({ value, stringKey }) => {
+          options.map(({ value, stringKey }, idx) => {
             return (
               <Radio
                 {...input}
+                key={idx}
                 className="step-six__initial-label"
                 value={value}
                 checked={transportation === value}

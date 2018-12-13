@@ -12,10 +12,11 @@ import LocaleString from '../../components/LocaleString';
 // Actions
 import * as stepActions from '../../actions/steps';
 import * as stepOneActions from '../../actions/step.one';
+import * as trainingActions from '../../actions/training';
 // Helpers
 import { stepOneFormValueSelector, weekly_camp } from '../StepOne';
 // Selectors
-import { stepTreeSelectedIdSelector } from '../StepThree/selector';
+import { stepTreeSelectedIdSelector, stepThreeSelectedCardWithSecondaryProgramsIdSelector } from '../StepThree/selector';
 import { totalPriceSelector, currentStepSelector } from './selectors';
 import {
   stepOneGroupSelector, stepOneSecondaryGroupSelector, weeksCounterSelector, isWeeklyCampSelector,
@@ -34,6 +35,9 @@ class WizardForm extends React.Component {
     }),
     stepOneActions: PropTypes.shape({
       stepOnePutCartCartIdParticipantParticipantIdRequest: PropTypes.func.isRequired,
+    }),
+    trainingActions: PropTypes.shape({
+      getCatalogCampCampIdRequest: PropTypes.func.isRequired,
     }),
     participantId: PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
     sleepaway: PropTypes.string,
@@ -75,7 +79,10 @@ class WizardForm extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { age, gender, group, step, startDate, endDate, stepTreeSelectedId, secondaryGroup, weeksCounter } = this.props;
+    const {
+      age, gender, group, step, startDate, endDate, stepTreeSelectedId, secondaryGroup, weeksCounter,
+      stepThreeSelectedCardWithSecondaryProgramsId,
+    } = this.props;
     const isStepOneGroupChanged = (group !== prevProps.group);
     const isStepOneSecondaryGroupChanged = (secondaryGroup !== prevProps.secondaryGroup);
     const isDateChanged = (prevProps.startDate !== startDate) || (prevProps.endDate !== endDate);
@@ -122,6 +129,14 @@ class WizardForm extends React.Component {
 
     if ((step === stepsEnum.three) && stepTreeSelectedId) {
       this.goingToStepFour();
+    }
+
+    if ((step === stepsEnum.three) && !stepTreeSelectedId && (typeof stepThreeSelectedCardWithSecondaryProgramsId === 'number')) {
+      this.goingToStepByStepNymber(stepsEnum.four);
+    }
+
+    if ((step > stepsEnum.three) && (stepThreeSelectedCardWithSecondaryProgramsId !== prevProps.stepThreeSelectedCardWithSecondaryProgramsId)) {
+      this.goingToStepByStepNymber(stepsEnum.three);
     }
 
     if ((step > stepsEnum.three) && (startDate && endDate) && isStepTreeSelectedIdChanged) {
@@ -238,15 +253,17 @@ class WizardForm extends React.Component {
   goingToStepFour = () => {
     const { stepTreeSelectedId } = this.props;
     if (stepTreeSelectedId) {
+      this.props.trainingActions.getCatalogCampCampIdRequest(stepTreeSelectedId);
       this.goingToStepByStepNymber(stepsEnum.four);
     }
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     stepActions: bindActionCreators(stepActions, dispatch),
     stepOneActions: bindActionCreators(stepOneActions, dispatch),
+    trainingActions: bindActionCreators(trainingActions, dispatch),
   };
 };
 
@@ -266,6 +283,7 @@ function mapStateToProps(state) {
     stepTreeSelectedId: stepTreeSelectedIdSelector(state),
     totalPrice: totalPriceSelector(state),
     isWeeklyCamp: isWeeklyCampSelector(state),
+    stepThreeSelectedCardWithSecondaryProgramsId: stepThreeSelectedCardWithSecondaryProgramsIdSelector(state),
   };
 };
 
