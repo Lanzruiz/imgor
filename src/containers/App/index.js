@@ -78,7 +78,10 @@ class App extends React.Component {
         businessType={props.businessType}
       />,
       <StepSix key="5" />,
-      <StepFinal key="6" />,
+      <StepFinal
+        sport={props.sport}
+        key="6"
+      />,
     ];
   }
 

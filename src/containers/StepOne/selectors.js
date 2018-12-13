@@ -8,7 +8,7 @@ import { daysInWeek } from '../../constants/weeks';
 // Selectors
 import { stepTwoCampDaysLengthSelector, stepTwoStartDateSelector } from '../StepTwo/selectors';
 
-function stateSelector(state) {
+export function stateSelector(state) {
   return state;
 }
 
@@ -99,12 +99,12 @@ export const isWeeklyCampSelector = createSelector(
   },
 );
 
-function stepOneFormValueSelector(state, name, prefix) {
+export function stepOneFormValueSelector(state, name, prefix) {
   const selector = formValueSelector('wizard');
   return selector(state, `${name}_${prefix}`);
 }
 
-const stepOneFormValuesName = createSelector(
+export const stepOneFormValuesName = createSelector(
   isWeeklyCampSelector,
   stepOneGroupSelector,
   stepOneSecondaryGroupSelector,
@@ -191,5 +191,12 @@ export const participantIdSelector = createSelector(
   participantSelector,
   function(participant) {
     return participant.id;
+  }
+);
+
+export const stepOneAgeNumberSelector = createSelector(
+  stepOneAgeSelector,
+  function(age) {
+    return parseInt(age);
   }
 );

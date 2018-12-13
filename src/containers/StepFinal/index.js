@@ -3,28 +3,66 @@ import React from 'react';
 import { Container, Row, Col } from 'react-grid-system';
 import { Form, Field, reduxForm } from 'redux-form';
 import scrollToComponent from 'react-scroll-to-component';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
 // Components
 import Header from '../../components/Header';
 import Card, { CardContent, CardContentRow, CardContentCol } from '../../components/Card';
 import LocaleString from '../../components/LocaleString';
 import Input from '../../components/Input';
 import Radio from '../../components/Radio';
+// Actions
+import * as finalStepActions from '../../actions/final.step';
+// Selectors
+import { finalStepPositionsSelector, finalStepSelectedPositionSelector, finalStepShirtSizeSelector } from './selectors';
+import { stepOneFormValuesName } from '../StepOne/selectors';
+// Constants
+import { stepFinalFormFieldNames } from './selectors';
 // Helpers
 import validation from '../../helpers/validate';
 // Styles
 import './styles.scss';
 
 class StepFinal extends React.Component {
+  static propTypes = {
+    finalStepActions: PropTypes.shape({
+      finalStepGetCatalogPositionsRequest: PropTypes.func.isRequired,
+      finalStepSetDefaultState: PropTypes.func.isRequired,
+    }),
+    sport: PropTypes.string.isRequired,
+    positions: PropTypes.arrayOf(
+      PropTypes.shape({
+        position_id: PropTypes.string,
+        name: PropTypes.string,
+      }),
+    ).isRequired,
+    prefix: PropTypes.string,
+    selectedPosition: PropTypes.string,
+    shirtSize: PropTypes.string,
+  };
+
+  static defaultProps = {
+    positions: [],
+  };
+
   constructor(props) {
     super(props);
     this.stepFinal = React.createRef();
   }
 
   componentDidMount() {
+    const { sport, participant } = this.props;
+    this.finalStepGetCatalogPositions({ sport, participant });
     scrollToComponent(this.stepFinal.current);
   }
 
+  componentWillMount() {
+    this.setDefaultState();
+  }
+
   render() {
+    const { positions, prefix, selectedPosition, shirtSize } = this.props;
     return (
       <Container style={{ marginBottom: '65px' }} ref={this.stepFinal}>
         <Row>
@@ -54,28 +92,28 @@ class StepFinal extends React.Component {
                           <label className="step-final__form-control">
                             <Input
                               inputClassName="step-final__input"
-                              name="first_name"
+                              name={`${prefix}_${stepFinalFormFieldNames.firstName}`}
                               label="first name"
                             />
                           </label>
                           <label className="step-final__form-control">
                             <Input
                               inputClassName="step-final__input"
-                              name="last_name"
+                              name={`${prefix}_${stepFinalFormFieldNames.lastName}`}
                               label="last name"
                             />
                           </label>
                           <label className="step-final__form-control">
                             <Input
                               inputClassName="step-final__input"
-                              name="email"
+                              name={`${prefix}_${stepFinalFormFieldNames.email}`}
                               label="email (optional)"
                             />
                           </label>
                           <label className="step-final__form-control">
                             <Input
                               inputClassName="step-final__input"
-                              name="phone"
+                              name={`${prefix}_${stepFinalFormFieldNames.phone}`}
                               label="phone number (optional)"
                             />
                           </label>
@@ -98,37 +136,10 @@ class StepFinal extends React.Component {
                     <CardContentRow>
                       <CardContentCol>
                         <Form className="step-final__form" onSubmit={() => {}}>
-                          <Field
-                            name="position"
-                            value="wing"
-                            type="radio"
-                            component={this.renderRadio}
-                            className="step-final__radio"
-                            children={<LocaleString stringKey="step_final.position.wing" />}
-                          />
-                          <Field
-                            name="position"
-                            value="point guard"
-                            type="radio"
-                            component={this.renderRadio}
-                            className="step-final__radio"
-                            children={<LocaleString stringKey="step_final.position.point_guard" />}
-                          />
-                          <Field
-                            name="position"
-                            value="center"
-                            type="radio"
-                            component={this.renderRadio}
-                            className="step-final__radio"
-                            children={<LocaleString stringKey="step_final.position.center" />}
-                          />
-                          <Field
-                            name="position"
-                            value="power forward"
-                            type="radio"
-                            component={this.renderRadio}
-                            className="step-final__radio"
-                            children={<LocaleString stringKey="step_final.position.power_forward" />}
+                          <PositionRadioBtn
+                            options={positions}
+                            position={selectedPosition}
+                            prefix={prefix}
                           />
                         </Form>
                       </CardContentCol>
@@ -147,62 +158,10 @@ class StepFinal extends React.Component {
                 >
                   <CardContent>
                     <CardContentRow>
-                      <CardContentCol>
-                        <Form className="step-final__form" onSubmit={() => {}}>
-                          <Field
-                            name="shirt_size"
-                            value="x-small"
-                            type="radio"
-                            component={this.renderRadio}
-                            className="step-final__radio"
-                            children={<LocaleString stringKey="step_final.shirt_size.x-small" />}
-                          />
-                          <Field
-                            name="shirt_size"
-                            value="medium"
-                            type="radio"
-                            component={this.renderRadio}
-                            className="step-final__radio"
-                            children={<LocaleString stringKey="step_final.shirt_size.medium" />}
-                          />
-                          <Field
-                            name="shirt_size"
-                            value="x-large"
-                            type="radio"
-                            component={this.renderRadio}
-                            className="step-final__radio"
-                            children={<LocaleString stringKey="step_final.shirt_size.x-large" />}
-                          />
-                        </Form>
-                      </CardContentCol>
-                      <CardContentCol>
-                        <Form className="step-final__form" onSubmit={() => {}}>
-                          <Field
-                            name="shirt_size"
-                            value="small"
-                            type="radio"
-                            component={this.renderRadio}
-                            className="step-final__radio"
-                            children={<LocaleString stringKey="step_final.shirt_size.small" />}
-                          />
-                          <Field
-                            name="shirt_size"
-                            value="large"
-                            type="radio"
-                            component={this.renderRadio}
-                            className="step-final__radio"
-                            children={<LocaleString stringKey="step_final.shirt_size.large" />}
-                          />
-                          <Field
-                            name="shirt_size"
-                            value="xx-large"
-                            type="radio"
-                            component={this.renderRadio}
-                            className="step-final__radio"
-                            children={<LocaleString stringKey="step_final.shirt_size.xx-large" />}
-                          />
-                        </Form>
-                      </CardContentCol>
+                      <ShirtSizeRadioBtn
+                        prefix={prefix}
+                        shirtSize={shirtSize}
+                      />
                     </CardContentRow>
                   </CardContent>
                 </Card>
@@ -226,28 +185,28 @@ class StepFinal extends React.Component {
                       <label className="step-final__form-control">
                         <Input
                           inputClassName="step-final__input"
-                          name="guardian_information.first_name"
+                          name={`${prefix}_${stepFinalFormFieldNames.guardianInformationFirstName}`}
                           label="first name"
                         />
                       </label>
                       <label className="step-final__form-control">
                         <Input
                           inputClassName="step-final__input"
-                          name="guardian_information.last_name"
+                          name={`${prefix}_${stepFinalFormFieldNames.guardianInformationLastName}`}
                           label="last name"
                         />
                       </label>
                       <label className="step-final__form-control">
                         <Input
                           inputClassName="step-final__input"
-                          name="guardian_information.email"
+                          name={`${prefix}_${stepFinalFormFieldNames.guardianInformationEmail}`}
                           label="email"
                         />
                       </label>
                       <label className="step-final__form-control">
                         <Input
                           inputClassName="step-final__input"
-                          name="guardian_information.phone"
+                          name={`${prefix}_${stepFinalFormFieldNames.guardianInformationPhone}`}
                           label="phone number"
                         />
                       </label>
@@ -262,15 +221,109 @@ class StepFinal extends React.Component {
     );
   }
 
-  renderRadio = ({ input, className, ...rest }) => {
-    return (
-      <Radio
-        {...input}
-        {...rest}
-        className={className}
-      />
-    );
-  }
+  finalStepGetCatalogPositions = ({ sport, participant }) => {
+    this.props.finalStepActions.finalStepGetCatalogPositionsRequest({ sport, participant });
+  };
+
+  setDefaultState = () => {
+    this.props.finalStepActions.finalStepSetDefaultState();
+  };
+}
+
+function PositionRadioBtn({ options, prefix, position }) {
+  return (
+    <Field
+      name={`${prefix}_${stepFinalFormFieldNames.position}`}
+      type="radio"
+      options={options}
+      component={({ input, options }) => (
+        options.map(({ position_id, name }) => {
+          return (
+            <div key={position_id} className="step-final__radio">
+              <Radio
+                {...input}
+                value={position_id}
+                checked={position === position_id}
+                children={name}
+              />
+            </div>
+          );
+      }))}
+    />
+  );
+};
+
+function ShirtSizeRadioBtn({ prefix, shirtSize }) {
+  const options = [
+    { id: 1, value: 'xs', stringKey: 'step_final.shirt_size.x-small' },
+    { id: 2, value: 's', stringKey: 'step_final.shirt_size.small' },
+    { id: 3, value: 'm', stringKey: 'step_final.shirt_size.medium' },
+    { id: 4, value: 'l', stringKey: 'step_final.shirt_size.large' },
+    { id: 5, value: 'xl', stringKey: 'step_final.shirt_size.x-large' },
+    { id: 6, value: 'xxl', stringKey: 'step_final.shirt_size.xx-large' },
+  ];
+  return (
+    <Field
+      name={`${prefix}_${stepFinalFormFieldNames.shirtSize}`}
+      type="radio"
+      options={options}
+      component={({ input, options }) => (
+        <React.Fragment>
+          <CardContentCol>
+            <Form className="step-final__form" onSubmit={() => {}}>
+              {
+                options.map(({ id, value, stringKey }) => {
+                  return (id % 2 === 0) && (
+                    <div key={id} className="step-final__radio">
+                      <Radio
+                        {...input}
+                        value={value}
+                        checked={shirtSize === value}
+                        children={<LocaleString stringKey={stringKey} />}
+                      />
+                    </div>
+                  );
+                })
+              }
+            </Form>
+          </CardContentCol>
+          <CardContentCol>
+            <Form className="step-final__form" onSubmit={() => {}}>
+              {
+                options.map(({ id, value, stringKey }) => {
+                  return (id % 2 !== 0) && (
+                    <div key={id} className="step-final__radio">
+                      <Radio
+                        {...input}
+                        value={value}
+                        checked={shirtSize === value}
+                        children={<LocaleString stringKey={stringKey} />}
+                      />
+                    </div>
+                  );
+                })
+              }
+            </Form>
+          </CardContentCol>
+        </React.Fragment>
+      )}
+    />
+  );
+}
+
+function mapStateToProps(state) {
+  return {
+    positions: finalStepPositionsSelector(state),
+    prefix: stepOneFormValuesName(state),
+    selectedPosition: finalStepSelectedPositionSelector(state),
+    shirtSize: finalStepShirtSizeSelector(state),
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    finalStepActions: bindActionCreators(finalStepActions, dispatch),
+  };
 }
 
 export default reduxForm({
@@ -278,4 +331,6 @@ export default reduxForm({
   destroyOnUnmount: false, // <------ preserve form data
   forceUnregisterOnUnmount: true, // <------ unregister fields on unmount
   validate: validation, // <------ validation
-})(StepFinal);
+})(
+  connect(mapStateToProps, mapDispatchToProps)(StepFinal)
+);

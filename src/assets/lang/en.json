@@ -83,6 +83,7 @@
     "step_final.shirt_size.xx-large": "xx-large",
     "step_final.guardian_information": "Parent / Guardian Information",
     "enter_email": "Enter email to build a camp",
+    "choose_sleepaway": "Choose camper sleepaway option",
     "choose_sleepaway_age_and_gender": "Choose camper sleepaway option, age and gender",
     "choose_sleepaway_and_gender": "Choose camper sleepaway option and gender",
     "choose_age_and_gender": "Choose camper age and gender",
@@ -173,5 +174,13 @@
     "concentration.college_testing": "15 hours of college testing prep per week.",
     "concentration.sat_college": "For athletes getting ready to take the SAT college entrance exam, IMG Academy offers classes to prepare them for the test material and offer techniques to help them take it with confidence.",
     "quantity": "Quantity",
-    "sold_out": "sold out"
+    "sold_out": "sold out",
+    "step_final.no_first_name_message": "Please provide camper's first name",
+    "step_final.no_last_name_message": "Please provide camper's last name",
+    "step_final.no_position_message": "Please provide camper's position",
+    "step_final.no_shirt_size_message": "Please provide camper's shirt size",
+    "step_final.no_guardian_first_name_message": "Please provide parent or guardian first name",
+    "step_final.no_guardian_last_name_message": "Please provide parent or guardian last name",
+    "step_final.no_guardian_email_message": "Please provide parent or guardian valid email",
+    "step_final.no_guardian_phone_message": "Please provide parent or guardian phone number"
 }

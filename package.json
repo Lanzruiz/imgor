@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
-    "circular-dependency-plugin": "^5.0.2",
     "classnames": "^2.2.6",
     "connected-react-router": "^5.0.1",
     "cross-env": "^5.2.0",
@@ -34,7 +33,8 @@
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
-    "slick-carousel": "^1.8.1"
+    "slick-carousel": "^1.8.1",
+    "validator": "^10.9.0"
   },
   "scripts": {
     "start": "react-scripts start",

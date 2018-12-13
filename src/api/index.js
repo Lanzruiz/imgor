@@ -149,6 +149,15 @@ class Api {
         start_date,
       },
     });
+  };
+
+  async getCatalogPositions({ sport, participant }) {
+    return await instance.get('catalog/positions', {
+      params: {
+        sport,
+        participant,
+      },
+    });
   }
 }
 

@@ -15,10 +15,13 @@ import LocaleString from '../../components/LocaleString';
 import Button from '../../components/Button';
 // Actions
 import * as stepFiveActions from '../../actions/step.five';
+import * as stepsActions from '../../actions/steps';
 // Selectors
 import { stepFiveDataSelector, stepFiveSelectedGearsSelector } from './selectors';
 import { stepOneAgeSelector, stepOneBoardingBooleanSelector, stepOneGenderSelector } from '../StepOne/selectors';
 import { stepTwoStartDateSelector, stepTwoEndDateSelector } from '../StepTwo/selectors';
+// Constants
+import { stepsEnum } from '../../constants/steps';
 // Styles
 import './styles.scss';
 
@@ -37,6 +40,9 @@ class StepFive extends React.Component {
       stepFiveSetDefaultState: PropTypes.func.isRequired,
       stepFiveSelectDropdownItem: PropTypes.func.isRequired,
       getCatalogGearUpsellNewRequest: PropTypes.func.isRequired,
+    }),
+    stepsActions: PropTypes.shape({
+      setStepsCounter: PropTypes.func.isRequired,
     }),
     data: PropTypes.arrayOf(
       PropTypes.shape({
@@ -173,6 +179,7 @@ class StepFive extends React.Component {
     };
     this.getCatalogGear();
     this.getCatalogGearUpsellNew(getCatalogGearUpsellNewArgs);
+    this.goingToStepSix();
     scrollToComponent(this.stepFour.current);
   }
 
@@ -208,6 +215,10 @@ class StepFive extends React.Component {
       </Container>
     );
   }
+
+  goingToStepSix = () => {
+    this.props.stepsActions.setStepsCounter(stepsEnum.six);
+  };
 
   setGear = (id) => {
     this.props.stepFiveActions.stepFiveSetGear(id);
@@ -287,6 +298,10 @@ class StepFive extends React.Component {
     );
   };
 
+  goingToStepSix = () => {
+    this.props.stepsActions.setStepsCounter(stepsEnum.six);
+  };
+
   getCatalogGear = () => {
     this.props.stepFiveActions.getCatalogGearRequest();
   };
@@ -323,6 +338,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     stepFiveActions: bindActionCreators(stepFiveActions, dispatch),
+    stepsActions: bindActionCreators(stepsActions, dispatch),
   };
 };
 

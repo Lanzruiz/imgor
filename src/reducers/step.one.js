@@ -20,7 +20,6 @@ export default function(state = initialState, action) {
   switch(type) {
     case stepOneTypes.STEP_ONE_GET_CATALOG_GROUP: {
       const { results } = payload;
-      console.log('STEP_ONE_GET_CATALOG_GROUP ', payload); // TODO: remove that!
       if (isEqual(state.data, results)) {
         return state;
       }
