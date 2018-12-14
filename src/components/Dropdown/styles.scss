@@ -11,8 +11,8 @@
         }
 
         &__label {
-            color: #083451;
-            font-family: "Trade Gothic Bold";
+            color: $subheader-text-color;
+            font-family: $trade-gothic-bold;
             font-size: 15px;
             font-weight: 700;
         }
@@ -25,7 +25,7 @@
             color: $tab-row-bg;
             display: flex;
             font-size: 15px;
-            font-family: 'Trade Gothic Bold';
+            font-family: $trade-gothic-bold;
             padding: 6px 12px;
             transition: all ease-in-out .3s;
 
@@ -40,6 +40,7 @@
 
             &.dropdown__option--selected {
                 border: none;
+                font-family: $trade-gothic;
                 padding: 0;
                 justify-content: space-between;
 

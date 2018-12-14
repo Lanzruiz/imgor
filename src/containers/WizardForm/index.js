@@ -15,8 +15,6 @@ import LocaleString from '../../components/LocaleString';
 import * as stepActions from '../../actions/steps';
 import * as stepOneActions from '../../actions/step.one';
 import * as trainingActions from '../../actions/training';
-// Helpers
-import { weekly_camp } from '../StepOne';
 // Selectors
 import { stepTreeSelectedIdSelector, stepThreeSelectedCardWithSecondaryProgramsIdSelector } from '../StepThree/selector';
 import { totalPriceSelector, currentStepSelector } from './selectors';
@@ -32,6 +30,7 @@ import {
 } from '../StepFinal/selectors';
 // Constants
 import { stepsEnum } from '../../constants/steps';
+import { weekly_camp } from '../StepOne';
 
 class WizardForm extends React.Component {
   static propTypes = {
@@ -172,13 +171,16 @@ class WizardForm extends React.Component {
       );
     }
     const arrowPosition = true;
+    const message = this.renderMessage();
+    const hasMessage = message.props.stringKey !== '';
     return (
       <React.Fragment>
         {children().slice(startIndex, step)}
         <Footer
           arrowUp={arrowPosition}
           price={totalPrice}
-          message={this.renderMessage()}
+          message={message}
+          hasMessage={hasMessage}
         />
       </React.Fragment>
     );

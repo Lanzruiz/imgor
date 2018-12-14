@@ -4,6 +4,7 @@ import { Form, reduxForm } from 'redux-form';
 // Components
 import Input from '../Input';
 import Button from '../Button';
+import LocaleString from '../LocaleString';
 // Helpers
 import validation from '../../helpers/validate';
 // Styles
@@ -17,17 +18,17 @@ class EmailModal extends React.Component {
         <div className="email-modal__container">
           <div className="email-modal__body">
             <h2 className="email-modal__header">
-              Enter your email to build a camp
+              <LocaleString stringKey="enter_your_email_message" />
             </h2>
             <p className="email-modal__description">
-              Configured camps can be saved and shared!
+              <LocaleString stringKey="configured_camps_can_be_saved_and_shared" />
             </p>
             <div className="email-modal__input-container">
               <Input
                 name="email"
                 inputClassName="email-modal__input"
                 errorBlockClassName="email-modal__error-block"
-                label="Email"
+                label="email"
               />
             </div>
             <Button

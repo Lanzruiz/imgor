@@ -184,5 +184,11 @@
     "step_final.no_guardian_first_name_message": "Please provide parent or guardian first name",
     "step_final.no_guardian_last_name_message": "Please provide parent or guardian last name",
     "step_final.no_guardian_email_message": "Please provide parent or guardian valid email",
-    "step_final.no_guardian_phone_message": "Please provide parent or guardian phone number"
+    "step_final.no_guardian_phone_message": "Please provide parent or guardian phone number",
+    "purchase_on_shop_img": "Purchase on shop img",
+    "save_camp": "Save Camp",
+    "share_camp": "Share Camp",
+    "enter_your_email_message": "Enter your email to build a camp",
+    "configured_camps_can_be_saved_and_shared": "Configured camps can be saved and shared!",
+    "email": "Email"
 }

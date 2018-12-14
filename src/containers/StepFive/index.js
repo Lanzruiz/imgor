@@ -377,9 +377,17 @@ function CardCounter(args) {
         </span>
       </div>
       <div className="card-counter__counter">
-        <Button onClick={() => decrementHandler(selectedGearId)}>-</Button>
+        <Button
+          className="card-counter__counter--btn"
+          onClick={() => decrementHandler(selectedGearId)}
+          children="-"
+        />
         <span>{quantity}</span>
-        <Button onClick={() => incrementHandler(selectedGearId)}>+</Button>
+        <Button
+          className="card-counter__counter--btn"
+          onClick={() => incrementHandler(selectedGearId)}
+          children="+"
+        />
       </div>
     </div>
   );
