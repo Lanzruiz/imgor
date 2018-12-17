@@ -186,6 +186,7 @@ class StepFour extends React.Component {
 
   getCatalogCamp = () => {
     const { age, businessType, gender, sport, programType, startDate, endDate } = this.props;
+    console.log(startDate, endDate);
     const getCatalogCampArgs = {
       age,
       gender,

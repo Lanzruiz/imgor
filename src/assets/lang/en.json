@@ -190,5 +190,6 @@
     "share_camp": "Share Camp",
     "enter_your_email_message": "Enter your email to build a camp",
     "configured_camps_can_be_saved_and_shared": "Configured camps can be saved and shared!",
-    "email": "Email"
+    "email": "Email",
+    "step_three_choose_training_message": "Please choose your training"
 }

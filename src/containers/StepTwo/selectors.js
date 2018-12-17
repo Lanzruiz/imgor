@@ -49,11 +49,9 @@ export const stepTwoSelectedDateSelector = createSelector(
     if (isWeeklyCamp && weeksCounter > 1) {
       const { selectedDate } = stepTwo;
       const stringFormat = 'YYYY-MM-DD';
-      selectedDate.capacity_end_date = (
-        moment(selectedDate.capacity_end_date, stringFormat)
-          .add(daysInWeek * (weeksCounter - 1), 'days')
-          .format(stringFormat)
-      );
+      const momentObjStartDate = moment(selectedDate.capacity_start_date, stringFormat);
+      const daysToNeedAdd = (daysInWeek * weeksCounter) - 1;
+      selectedDate.capacity_end_date = momentObjStartDate.add(daysToNeedAdd, 'days').format(stringFormat);
     }
     return stepTwo.selectedDate;
   }

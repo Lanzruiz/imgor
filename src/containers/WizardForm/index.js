@@ -322,8 +322,13 @@ class WizardForm extends React.Component {
 
   stepThreeValidation = () => {
     // TODO: write validation
+    const { stepTreeSelectedId } = this.props;
     switch(true) {
+      case !stepTreeSelectedId: {
+        return 'step_three_choose_training_message';
+      }
       default:
+        console.log('go to next step');
         return '';
     }
   };
