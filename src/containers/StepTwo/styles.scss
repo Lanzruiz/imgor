@@ -45,7 +45,7 @@
     .questions {
         &__questions {
             color: $white;
-            font-family: "Trade-Gothic";
+            font-family: $trade-gothic;
             font-size: 14px;
             opacity: 0.8;
             margin-bottom: 5px;
@@ -53,7 +53,7 @@
 
         &__header {
             color: $white;
-            font-family: "Trade-Gothic-Bold";
+            font-family: $trade-gothic-bold;
             font-size: 18px;
             font-weight: 700;
             text-transform: uppercase;
@@ -62,7 +62,7 @@
 
         &__description {
             color: $white;
-            font-family: "Trade-Gothic";
+            font-family: $trade-gothic;
             font-size: 14px;
             line-height: 14px;
             opacity: 0.8;
@@ -91,7 +91,7 @@
 
         &__text {
             color: $white;
-            font-family: "Trade Gothic LT Std - Bold";
+            font-family: $trade-gothic-bold;
             font-size: 18px;
             font-weight: 700;
             text-transform: uppercase;
@@ -101,7 +101,7 @@
     .dates {
         &__header {
             color: $tab-row-bg;
-            font-family: "Trade Gothic LT Std - Bold";
+            font-family: $trade-gothic-bold;
             font-size: 18px;
             font-weight: 700;
             text-transform: uppercase;
@@ -110,7 +110,7 @@
         }
 
         &__container {
-            color: #083451;
+            color: $tab-row-bg;
             font-size: 0;
             line-height: 0;
             margin: 0 0 10px;
@@ -131,17 +131,19 @@
 
         &__item {
             cursor: pointer;
+            font-family: $trade-gothic;
+            font-size: 14px;
 
             &.sold-out {
-                color: #de3942;
+                color: $sold-out;
                 cursor: not-allowed;
                 text-decoration: line-through;
             }
 
             &.active {
-                background-color: #4481a3;
+                background-color: $date-block-selected-bg;
                 color: $white;
-                font-family: "Trade-Gothic-Bold";
+                font-family: $trade-gothic-bold;
                 font-size: 14px;
                 font-weight: 700;
             }
@@ -154,25 +156,24 @@
             align-items: center;
             justify-content: center;
             font-size: 24px;
-            color: #de3942;
+            color: $sold-out;
         }
 
     }
     .description {
+        font-family: $trade-gothic;
+        font-size: 12px;
         overflow: hidden;
+        line-height: 14px;
 
         &__info {
-            color: #083451;
+            color: $tab-row-bg;
             float: left;
-            font-size: 12px;
-            line-height: 14px;
         }
 
         &__sold-out {
-            color: #de3942;
-            font-size: 12px;
+            color: $sold-out;
             float: right;
-            line-height: 14px;
             text-decoration: line-through;
         }
     }
@@ -243,7 +244,7 @@
     .check-in {
         &__text {
             color: $date-block-selected-bg;
-            font-family: "Trade Gothic LT Std";
+            font-family: $trade-gothic;
             font-size: 13px;
             text-transform: uppercase;
         }
@@ -252,7 +253,7 @@
     .check-out {
         &__text {
             color: $date-block-selected-bg;
-            font-family: "Trade Gothic LT Std";
+            font-family: $trade-gothic;
             font-size: 13px;
             text-transform: uppercase;
         }
@@ -261,7 +262,7 @@
     .current-selected {
         &__header {
             color: $white;
-            font-family: "Trade Gothic LT Std - Bold";
+            font-family: $trade-gothic-bold;
             font-size: 15px;
             font-weight: 700;
             text-align: center;
@@ -274,7 +275,7 @@
             color: $white;
             display: flex;
             flex-direction: row;
-            font-family: "Trade Gothic LT Std";
+            font-family: $trade-gothic;
             font-size: 15px;
             justify-content: space-between;
             text-transform: uppercase;
@@ -285,7 +286,7 @@
             align-items: center;
             color: $white;
             display: flex;
-            font-family: "Trade Gothic LT Std - Bold";
+            font-family: $trade-gothic-bold;
             font-size: 32px;
             font-weight: 700;
             justify-content: space-between;

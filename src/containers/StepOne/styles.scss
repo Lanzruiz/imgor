@@ -1,13 +1,24 @@
 @import '../../constants/scss/variables.scss';
 
 #{$root} {
+    .step-one {
+        &__dropdown-age {
+            background-color: #f3f3f3;
+
+            & .dropdown__options {
+                overflow-y: scroll;
+                max-height: 180px;
+            }
+        }
+    }
+
     .tab-row {
         &__group-header {
             font-family: "Serifa-Bold";
         }
 
         &__secondary-group-header {
-            font-family: "Trade-Gothic-Bold";
+            font-family: $trade-gothic-bold;
         }
 
         &__section {
@@ -83,9 +94,21 @@
         &__wrapper {
             align-items: center;
             display: flex;
+            flex-direction: column;
             height: 100%;
             justify-content: center;
             width: 100%;
+
+            &.sold-out-block {
+                color: $sold-out;
+            }
+
+            & .sold-out-text {
+                font-family: $trade-gothic-bold;
+                font-size: 15px;
+                font-weight: 700;
+                text-transform: uppercase;
+            }
         }
 
         &__header {
@@ -104,8 +127,7 @@
             }
 
             &--sold {
-                color: #de5963;
-                opacity: 0.5;
+                color: #de5963!important;
             }
 
             &--through {
@@ -130,7 +152,7 @@
             }
 
             &--trade-gothic-bold {
-                font-family: 'Trade-Gothic-Bold';
+                font-family: $trade-gothic-bold;
             }
 
             &--font-18 {
@@ -202,7 +224,7 @@
 
         &__header {
             color: $tab-row-bg;
-            font-family: "Trade-Gothic-Bold";
+            font-family: $trade-gothic-bold;
             display: block;
             font-weight: 700;
             text-transform: uppercase;
@@ -267,7 +289,7 @@
 
         &__sleepaway-label {
             color: $tab-row-bg;
-            font-family: "Trade-Gothic-Bold";
+            font-family: $trade-gothic-bold;
             font-size: 16px;
             font-weight: 700;
 

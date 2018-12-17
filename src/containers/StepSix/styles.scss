@@ -5,6 +5,7 @@
         &__card-content {
             width: 100%;
             padding: 35px;
+            font-family: $trade-gothic-bold;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
@@ -15,7 +16,7 @@
         &__slide-header {
             color: $tab-row-bg;
             display: block;
-            font-family: "Trade-Gothic-Bold";
+            font-family: $trade-gothic-bold;
             font-size: 24px;
             font-weight: 700;
             text-transform: uppercase;
@@ -23,9 +24,9 @@
         }
 
         &__slide-sub-header {
-            color: #4481a3;
+            color: $date-block-selected-bg;
             display: block;
-            font-family: "Trade-Gothic-Bold";
+            font-family: $trade-gothic-bold;
             font-size: 20px;
             font-weight: 700;
             text-transform: uppercase;
@@ -44,7 +45,7 @@
         &__paragraph {
             color: $tab-row-bg;
             display: block;
-            font-family: "Trade-Gothic";
+            font-family: $proxima-nova, sans-serif;
             margin-bottom: 10px;
 
             &--small {
@@ -60,26 +61,39 @@
 
         &__radio-container {
             margin-bottom: 15px;
+            font-family: $trade-gothic-bold;
         }
 
         &__initial {
             &-header {
                 font-size: 30px;
                 line-height: 38px;
+                display: block;
                 color: $tab-row-bg;
-                font-family: "Trade-Gothic";
-                margin: 20px 0 0;
+                font-family: $trade-gothic-bold;
+                margin-bottom: 20px;
             }
 
             &-question {
-                margin: 40px auto 80px;
-                max-width: 768px;
+                margin: 40px 0 80px;
                 padding-left: 15px;
                 padding-right: 35px;
             }
 
             &-checkbox {
-                margin-left: 23px;
+                & .radio-btn__container--pointer {
+                    font-size: 24px;
+                }
+
+                & .radio-btn__btn {
+                    height: 25px;
+                    width: 25px;
+                }
+
+                & .radio-btn__container {
+                    height: inherit;
+                    padding-left: 30px;
+                }
             }
 
             &-label {

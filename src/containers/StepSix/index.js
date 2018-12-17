@@ -22,6 +22,7 @@ import DatePickerReduxForm from '../../components/DatePicker';
 import stubImage from '../../assets/img/2018-Suburban.png';
 // Actions
 import * as stepSixActions from '../../actions/step.six';
+import * as stepsActions from '../../actions/steps';
 // Selectors
 import {
   stepSixTransportationSelector, stepSixAirportPickupSelector, stepSixTransportSelector,
@@ -31,6 +32,8 @@ import {
   stepSixSelectedTransportSelector,
 } from './selectors';
 // Constants
+import { stepsEnum } from '../../constants/steps';
+// Selectors
 import { stepSixFormFieldNames } from './selectors';
 // Helpers
 import validation from '../../helpers/validate';
@@ -99,6 +102,7 @@ class StepSix extends React.Component {
     // request /api/v1/catalog/transport/unaccompanied 500 error
     this.getCatalogTransport();
     this.getCatalogAirlines();
+    this.goingToFinalStep(); // TODO: revrite that
   }
 
   componentWillUnmount() {
@@ -382,6 +386,10 @@ class StepSix extends React.Component {
 
   getCatalogAirlines = () => {
     this.props.stepSixActions.stepSixGetCatalogAirlinesRequest();
+  };
+
+  goingToFinalStep = () => {
+    this.props.stepsActions.setStepsCounter(stepsEnum.seven);
   }
 }
 
@@ -736,6 +744,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     stepSixActions: bindActionCreators(stepSixActions, dispatch),
+    stepsActions: bindActionCreators(stepsActions, dispatch),
   };
 };
 

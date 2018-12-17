@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import isString from 'lodash/isString';
 import isNumber from 'lodash/isNumber';
 import isEqual from 'lodash/isEqual';
+import isEmail from 'validator/lib/isEmail';
+import isMobilePhone from 'validator/lib/isMobilePhone';
 // Components
 import Footer from '../../components/Footer';
 import LocaleString from '../../components/LocaleString';
@@ -13,17 +15,22 @@ import LocaleString from '../../components/LocaleString';
 import * as stepActions from '../../actions/steps';
 import * as stepOneActions from '../../actions/step.one';
 import * as trainingActions from '../../actions/training';
-// Helpers
-import { stepOneFormValueSelector, weekly_camp } from '../StepOne';
 // Selectors
 import { stepTreeSelectedIdSelector, stepThreeSelectedCardWithSecondaryProgramsIdSelector } from '../StepThree/selector';
 import { totalPriceSelector, currentStepSelector } from './selectors';
 import {
+  stepOneAgeSelector, stepOneSleepawaySelector, stepOneGenderSelector, stepOneAgeNumberSelector,
   stepOneGroupSelector, stepOneSecondaryGroupSelector, weeksCounterSelector, isWeeklyCampSelector,
 } from '../StepOne/selectors';
 import { stepTwoStartDateSelector, stepTwoEndDateSelector } from '../StepTwo/selectors';
+import {
+  finalStepFirstNameSelector, finalStepLastNameSelector, finalStepPositionSelector,
+  finalStepShirtSizeSelector, finalStepGuardianFirstNameSelector, finalStepGuardianLastNameSelector,
+  finalStepGuardianEmailSelector, finalStepGuardianPhoneSelector,
+} from '../StepFinal/selectors';
 // Constants
 import { stepsEnum } from '../../constants/steps';
+import { weekly_camp } from '../StepOne';
 
 class WizardForm extends React.Component {
   static propTypes = {
@@ -52,6 +59,15 @@ class WizardForm extends React.Component {
     totalPrice: PropTypes.number,
     stepTreeSelectedId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     isWeeklyCamp: PropTypes.bool,
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    position: PropTypes.string,
+    shirtSize: PropTypes.string,
+    ageNumber: PropTypes.number,
+    guardianFirstName: PropTypes.string,
+    guardianLastName: PropTypes.string,
+    guardianEmail: PropTypes.string,
+    guardianPhone: PropTypes.string,
   };
 
   static defaultProps = {
@@ -60,6 +76,8 @@ class WizardForm extends React.Component {
     stepOnePrice: 0,
     weeksCounter: 0,
     stepThreePrice: 0,
+    guardianEmail: '',
+    guardianPhone: '',
   };
 
   componentDidMount() {
@@ -153,13 +171,16 @@ class WizardForm extends React.Component {
       );
     }
     const arrowPosition = true;
+    const message = this.renderMessage();
+    const hasMessage = message.props.stringKey !== '';
     return (
       <React.Fragment>
         {children().slice(startIndex, step)}
         <Footer
           arrowUp={arrowPosition}
           price={totalPrice}
-          message={this.renderMessage()}
+          message={message}
+          hasMessage={hasMessage}
         />
       </React.Fragment>
     );
@@ -170,44 +191,42 @@ class WizardForm extends React.Component {
   };
 
   renderMessage = () => {
-    const { age, gender, group, participantId, sleepaway, startDate, weeksCounter } = this.props;
+    const { step } = this.props;
     let stringKey;
-    switch(true) {
-      case (!isString(participantId) && !isNumber(participantId)): {
-        stringKey = 'enter_email';
+
+    switch(step) {
+      case stepsEnum.one: {
+        stringKey = this.stepOneValidation();
         break;
       }
-      case (!isString(age) && !isString(gender) && !isString(sleepaway)): {
-        stringKey = 'choose_sleepaway_age_and_gender';
+      case stepsEnum.two: {
+        stringKey = this.stepTwoValidation();
         break;
       }
-      case (isString(age) && !isString(gender) && !isString(sleepaway)): {
-        stringKey = 'choose_sleepaway_and_gender';
+      case stepsEnum.three: {
+        stringKey = this.stepThreeValidation();
         break;
       }
-      case (isString(sleepaway) && !isString(gender) && !isString(age)): {
-        stringKey = 'choose_age_and_gender';
+      case stepsEnum.four: {
+        stringKey = this.stepFourValidation();
         break;
       }
-      case (isString(sleepaway) && isString(gender) && !isString(age)): {
-        stringKey = 'choose_age';
+      case stepsEnum.five: {
+        stringKey = this.stepFiveValidation();
         break;
       }
-      case (isString(sleepaway) && !isString(gender) && isString(age)): {
-        stringKey = 'choose_gender';
+      case stepsEnum.six: {
+        stringKey = this.stepSixValidation();
         break;
       }
-      case (isString(sleepaway) && isString(gender) && isString(age)) && (weekly_camp === group) && (weeksCounter === 0): {
-        stringKey = 'choose_weeks';
-        break;
-      }
-      case (isString(sleepaway) && isString(gender) && isString(age)) && !startDate: {
-        stringKey = 'choose_date';
+      case stepsEnum.seven: {
+        stringKey = this.stepFinalValidation();
         break;
       }
       default:
-        stringKey = '';
+        break;
     }
+
     return <LocaleString stringKey={stringKey} />;
   };
 
@@ -257,6 +276,114 @@ class WizardForm extends React.Component {
       this.goingToStepByStepNymber(stepsEnum.four);
     }
   };
+
+  stepOneValidation = () => {
+    const { age, gender, group, participantId, sleepaway, weeksCounter } = this.props;
+    switch(true) {
+      case (!isString(participantId) && !isNumber(participantId)): {
+        return 'enter_email';
+      }
+      case (!isString(age) && !isString(gender) && !isString(sleepaway)): {
+        return 'choose_sleepaway_age_and_gender';
+      }
+      case (isString(age) && !isString(gender) && !isString(sleepaway)): {
+        return 'choose_sleepaway_and_gender';
+      }
+      case (isString(sleepaway) && !isString(gender) && !isString(age)): {
+        return 'choose_age_and_gender';
+      }
+      case (isString(sleepaway) && isString(gender) && !isString(age)): {
+        return 'choose_age';
+      }
+      case (!isString(sleepaway) && isString(gender) && isString(age)): {
+        return 'choose_sleepaway';
+      }
+      case (isString(sleepaway) && !isString(gender) && isString(age)): {
+        return 'choose_gender';
+      }
+      case (isString(sleepaway) && isString(gender) && isString(age)) && (weekly_camp === group) && (weeksCounter === 0): {
+        return 'choose_weeks';
+      }
+      default:
+        return '';
+    }
+  };
+
+  stepTwoValidation = () => {
+    const { startDate } = this.props;
+    switch(true) {
+      case !startDate: {
+        return 'choose_date';
+      }
+      default:
+        return '';
+    }
+  };
+
+  stepThreeValidation = () => {
+    // TODO: write validation
+    switch(true) {
+      default:
+        return '';
+    }
+  };
+
+  stepFourValidation = () => {
+    // TODO: write validation
+    switch(true) {
+      default:
+        return '';
+    }
+  };
+
+  stepFiveValidation = () => {
+    // TODO: write validation
+    switch(true) {
+      default:
+        return '';
+    }
+  };
+
+  stepSixValidation = () => {
+    // TODO: write validation
+    switch(true) {
+      default:
+        return '';
+    }
+  };
+
+  stepFinalValidation = () => {
+    const isAdult = this.props.ageNumber <= 18;
+
+    switch(true) {
+      case !this.props.firstName: {
+        return 'step_final.no_first_name_message';
+      }
+      case !this.props.lastName: {
+        return 'step_final.no_last_name_message';
+      }
+      case !this.props.position: {
+        return 'step_final.no_position_message';
+      }
+      case !this.props.shirtSize: {
+        return 'step_final.no_shirt_size_message';
+      }
+      case isAdult && !this.props.guardianFirstName: {
+        return 'step_final.no_guardian_first_name_message';
+      }
+      case isAdult && !this.props.guardianLastName: {
+        return 'step_final.no_guardian_last_name_message';
+      }
+      case isAdult && !isEmail(this.props.guardianEmail): {
+        return 'step_final.no_guardian_email_message';
+      }
+      case isAdult && !isMobilePhone(this.props.guardianPhone): {
+        return 'step_final.no_guardian_phone_message';
+      }
+      default:
+        return '';
+    }
+  }
 }
 
 function mapDispatchToProps(dispatch) {
@@ -271,9 +398,9 @@ function mapStateToProps(state) {
   return {
     step: currentStepSelector(state),
     participantId: state.participant.id,
-    sleepaway: stepOneFormValueSelector(state, 'sleepaway'),
-    age: stepOneFormValueSelector(state, 'age'),
-    gender: stepOneFormValueSelector(state, 'gender'),
+    sleepaway: stepOneSleepawaySelector(state),
+    age: stepOneAgeSelector(state),
+    gender: stepOneGenderSelector(state),
     group: stepOneGroupSelector(state),
     weeksCounter: weeksCounterSelector(state),
     cartId: state.cart.id,
@@ -284,6 +411,15 @@ function mapStateToProps(state) {
     totalPrice: totalPriceSelector(state),
     isWeeklyCamp: isWeeklyCampSelector(state),
     stepThreeSelectedCardWithSecondaryProgramsId: stepThreeSelectedCardWithSecondaryProgramsIdSelector(state),
+    firstName: finalStepFirstNameSelector(state),
+    lastName: finalStepLastNameSelector(state),
+    position: finalStepPositionSelector(state),
+    shirtSize: finalStepShirtSizeSelector(state),
+    ageNumber: stepOneAgeNumberSelector(state),
+    guardianFirstName: finalStepGuardianFirstNameSelector(state),
+    guardianLastName: finalStepGuardianLastNameSelector(state),
+    guardianEmail: finalStepGuardianEmailSelector(state),
+    guardianPhone: finalStepGuardianPhoneSelector(state),
   };
 };
 

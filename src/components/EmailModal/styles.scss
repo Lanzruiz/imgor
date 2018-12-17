@@ -25,7 +25,8 @@
         &__header {
             display: block;
             color: #60baeb;
-            font-size: 18px;
+            font-size: 24px;
+            font-family: $trade-gothic-bold;
             text-align: center;
             text-transform: uppercase;
         }
@@ -33,6 +34,7 @@
         &__description {
             color: #355971;
             display: block;
+            font-family: $proxima-nova, sans-serif;
             font-size: 14px;
             text-align: center;
             margin-bottom: 15px;
@@ -52,6 +54,7 @@
         &__input {
             display: block;
             font-size: 12px;
+            font-family: $serifa-bold;
             height: 100%;
             text-align: center;
             width: 100%;
@@ -62,7 +65,8 @@
         }
 
         &__error-block {
-            font-size: 10px;
+            font-size: 12px;
+            font-family: $trade-gothic-bold;
             display: block;
             text-align: center;
             padding: 2px 4px;
@@ -86,6 +90,7 @@
             border: none;
             border-bottom: 1px solid #a70d18;
             border-right: 1px solid #a70d18;
+            font-family: $serifa-bold, sans-serif;
 
             &:active {
                 background-color: #a70d18;

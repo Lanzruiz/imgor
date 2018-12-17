@@ -127,15 +127,13 @@ class StepTwo extends React.Component {
 
   render() {
     const { data, weeksCounter, sport, selectedDate } = this.props;
-    const firstHalfYearDate = {
+    const dates = {
       [monthEnum[0]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['jan'])),
       [monthEnum[1]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['feb'])),
       [monthEnum[2]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['mar'])),
       [monthEnum[3]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['apr'])),
       [monthEnum[4]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['may'])),
       [monthEnum[5]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['june'])),
-    };
-    const secondHalfYearData = {
       [monthEnum[6]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['july'])),
       [monthEnum[7]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['aug'])),
       [monthEnum[8]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['sept'])),
@@ -196,14 +194,9 @@ class StepTwo extends React.Component {
                 </h2>
                 {data.length
                   ? (
-                    <React.Fragment>
-                      <ul className="dates__container">
-                        {this.renderDates({...firstHalfYearDate, ...secondHalfYearData})}
-                      </ul>
-                      {/* <ul className="dates__container">
-                        {this.renderDates(secondHalfYearData)}
-                      </ul> */}
-                    </React.Fragment>
+                    <ul className="dates__container">
+                      {this.renderDates(dates)}
+                    </ul>
                   ) : (
                     <div className="dates__no-data">
                       <LocaleString stringKey="step_two.dates.no-data" />
@@ -229,7 +222,7 @@ class StepTwo extends React.Component {
 
   renderDates = (dataObject) => {
     const result = [];
-    const { boarding, selectedDate } = this.props;
+    const { boarding, selectedDate, isWeeklyCamp } = this.props;
     for (let key in dataObject) {
       if (dataObject[key].length) {
         result.push(
@@ -244,12 +237,14 @@ class StepTwo extends React.Component {
                   isAvailable
                     ?
                       () => {
-                        const weeksCounter = length_days / daysInWeek;
-                        const weeksLength = (weeksCounter > 1) ? weeksCounter : 1;
+                        if (!isWeeklyCamp) {
+                          const weeksCounter = length_days / daysInWeek;
+                          const weeksLength = (weeksCounter > 1) ? weeksCounter : 1;
+                          this.selectCampLength(length);
+                          this.setCampDaysLength(length_days);
+                          this.setOnlyWeeks(weeksLength);
+                        }
                         this.selectDate({ capacity_start_date, capacity_end_date });
-                        this.selectCampLength(length);
-                        this.setCampDaysLength(length_days);
-                        this.setOnlyWeeks(weeksLength);
                       }
                     : null
                 );

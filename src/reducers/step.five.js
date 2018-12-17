@@ -4,6 +4,8 @@ import * as stepFiveTypes from '../constants/step.five';
 const initialState = {
   data: [],
   selectedGear: {},
+  itemsPerPage: 6,
+  itemsStepCounter: 6,
 };
 
 export default function(state = initialState, action) {
@@ -127,8 +129,16 @@ export default function(state = initialState, action) {
     }
 
     case stepFiveTypes.STEP_SIX_GET_CATALOG_GEAR_UPSELL_NEW: {
-      console.log('STEP_SIX_GET_CATALOG_GEAR_UPSELL_NEW ', payload);
       return state;
+    }
+
+    case stepFiveTypes.STEP_FIVE_INCREASE_ITEMS_PER_PAGE: {
+      const itemsPerPage = state.itemsStepCounter + state.itemsPerPage;
+      const maxItemsCount = state.data.length;
+      return {
+        ...state,
+        itemsPerPage: itemsPerPage <= maxItemsCount ? itemsPerPage : maxItemsCount,
+      };
     }
 
     default:

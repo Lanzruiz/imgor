@@ -2,13 +2,19 @@
 import { createSelector } from 'reselect';
 import { formValueSelector } from 'redux-form';
 import moment from 'moment';
+// Selectors
+import { stepTwoCampDaysLengthSelector, stepTwoStartDateSelector } from '../StepTwo/selectors';
 // Constants
 import { weekly_camp } from './index';
 import { daysInWeek } from '../../constants/weeks';
-// Selectors
-import { stepTwoCampDaysLengthSelector, stepTwoStartDateSelector } from '../StepTwo/selectors';
 
-function stateSelector(state) {
+export const stepOneFormFieldsName = {
+  age: 'age',
+  gender: 'gender',
+  sleepaway: 'sleepaway',
+};
+
+export function stateSelector(state) {
   return state;
 }
 
@@ -99,12 +105,12 @@ export const isWeeklyCampSelector = createSelector(
   },
 );
 
-function stepOneFormValueSelector(state, name, prefix) {
+export function stepOneFormValueSelector(state, name, prefix) {
   const selector = formValueSelector('wizard');
   return selector(state, `${name}_${prefix}`);
 }
 
-const stepOneFormValuesName = createSelector(
+export const stepOneFormValuesName = createSelector(
   isWeeklyCampSelector,
   stepOneGroupSelector,
   stepOneSecondaryGroupSelector,
@@ -122,7 +128,7 @@ export const stepOneAgeSelector = createSelector(
   stateSelector,
   stepOneFormValuesName,
   function(state, name) {
-    return stepOneFormValueSelector(state, name, 'age');
+    return stepOneFormValueSelector(state, name, stepOneFormFieldsName.age);
   }
 );
 
@@ -130,7 +136,7 @@ export const stepOneGenderSelector = createSelector(
   stateSelector,
   stepOneFormValuesName,
   function(state, name) {
-    return stepOneFormValueSelector(state, name, 'gender');
+    return stepOneFormValueSelector(state, name, stepOneFormFieldsName.gender);
   }
 );
 
@@ -138,7 +144,7 @@ export const stepOneSleepawaySelector = createSelector(
   stateSelector,
   stepOneFormValuesName,
   function(state, name) {
-    return stepOneFormValueSelector(state, name, 'sleepaway');
+    return stepOneFormValueSelector(state, name, stepOneFormFieldsName.sleepaway);
   }
 );
 
@@ -191,5 +197,12 @@ export const participantIdSelector = createSelector(
   participantSelector,
   function(participant) {
     return participant.id;
+  }
+);
+
+export const stepOneAgeNumberSelector = createSelector(
+  stepOneAgeSelector,
+  function(age) {
+    return parseInt(age);
   }
 );

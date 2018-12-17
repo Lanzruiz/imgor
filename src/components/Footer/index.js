@@ -3,8 +3,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Container, Row, Col } from 'react-grid-system';
 import Img from 'react-image';
+import cx from 'classnames';
 // Components
 import LocaleString from '../LocaleString';
+import Button from '../Button';
 // Images
 import shopImg from '../../assets/img/shop-img-logo.png';
 import arrowUpSmall from '../../assets/img/arrow-up-small.png';
@@ -13,7 +15,7 @@ import arrowDownSmall from '../../assets/img/arrow-down-small.png';
 import './styles.scss';
 
 const Footer = (props) => {
-  const { price, message, arrowUp } = props;
+  const { price, message, arrowUp, hasMessage } = props;
   const arrowPositinon = arrowUp ? arrowUpSmall : arrowDownSmall;
   return (
     <div className="footer__container footer__container--fixed">
@@ -32,12 +34,22 @@ const Footer = (props) => {
                   <LocaleString stringKey="camp_subtotal" />
                 </span>
               </div>
-              <div className="footer__text">
-                <span>{message}</span>{' '}
-                <span>
-                  <Img src={arrowPositinon} />
-                </span>
-              </div>
+              {hasMessage
+                ? (
+                  <div className="footer__text">
+                    <span>{message}</span>{' '}
+                    <span>
+                      <Img src={arrowPositinon} />
+                    </span>
+                  </div>
+                ) : (
+                  <div className="footer__btn-container">
+                    <FooterButton purchase stringKey="purchase_on_shop_img" />
+                    <FooterButton save stringKey="save_camp" />
+                    <FooterButton share stringKey="share_camp" />
+                  </div>
+                )
+              }
             </footer>
           </Col>
         </Row>
@@ -64,14 +76,32 @@ function formatMoney(amount, decimalCount = 2, decimal = ".", thousands = ",") {
   }
 };
 
+function FooterButton(args) {
+  const { stringKey = '', onClick, share = false, save = false, purchase = false } = args;
+  const computedClassNames = cx('footer__btn', {
+    'footer__btn--share-camp': share,
+    'footer__btn footer__btn--save-camp': save,
+    'footer__btn footer__btn--purchase': purchase,
+  });
+  return (
+    <div className={computedClassNames}>
+      <Button onClick={onClick}>
+        <LocaleString stringKey={stringKey} />
+      </Button>
+    </div>
+  );
+}
+
 Footer.propTypes = {
   price: PropTypes.number,
   arrowUp: PropTypes.bool,
+  hasMessage: PropTypes.bool,
 };
 
 Footer.defaultProps = {
   price: 0,
   arrowUp: false,
+  hasMessage: true,
 };
 
 export default Footer;

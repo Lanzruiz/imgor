@@ -91,3 +91,9 @@ export function getCatalogGearUpsellNewRequest({ business_type, package_type, sp
     });
   }
 }
+
+export function stepFiveIncreaseItemsPerPage() {
+  return {
+    type: stepFiveTypes.STEP_FIVE_INCREASE_ITEMS_PER_PAGE,
+  };
+}

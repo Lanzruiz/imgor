@@ -15,6 +15,7 @@ import stepThree from './step.three';
 import stepFour from './step.four';
 import initialSettings from './initialSettings';
 import stepSix from './step.six';
+import finalStep from './final.step';
 
 export default (history) => combineReducers({
   router: connectRouter(history),
@@ -30,5 +31,6 @@ export default (history) => combineReducers({
   participant,
   initialSettings,
   stepSix,
+  finalStep,
   form: formReducer,
 });

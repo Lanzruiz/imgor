@@ -19,7 +19,7 @@
         }
 
         &__secondary-programs {
-            border: 2px solid #4481a3;
+            border: 2px solid $date-block-selected-bg;
             box-sizing: border-box;
             padding: 20px;
         }
@@ -89,7 +89,7 @@
                 &-item {
                     box-sizing: border-box;
                     display: block;
-                    font-family: "Trade-Gothic";
+                    font-family: $trade-gothic;
                     font-size: 12px;
                     width: 100%;
 
@@ -127,42 +127,42 @@
         }
 
         &__fifteen-hours {
-            font-family: "Serifa-Bold";
+            font-family: $serifa-bold;
             font-size: 19px;
             font-weight: 700;
             text-transform: uppercase;
         }
 
         &__education {
-            font-family: "Serifa-Roman";
+            font-family: $serifa-roman;
             font-size: 15px;
             font-weight: 400;
             text-transform: uppercase;
         }
 
         &__per-week {
-            font-family: "Serifa-Bold";
+            font-family: $serifa-bold;
             font-size: 17px;
             font-weight: 700;
             text-transform: uppercase;
         }
 
         &__one-hour {
-            font-family: "Serifa-Bold";
+            font-family: $serifa-bold;
             font-size: 23px;
             font-weight: 700;
             text-transform: uppercase;
         }
 
         &__training {
-            font-family: "Serifa-Roman";
+            font-family: $serifa-roman;
             font-size: 17px;
             font-weight: 400;
             text-transform: uppercase;
         }
 
         &__daily-sessions {
-            font-family: "Trade-Gothic-Bold";
+            font-family: $trade-gothic-bold;
             font-size: 15px;
             font-weight: 700;
         }
@@ -179,7 +179,7 @@
             color: $date-block-selected-bg;
             cursor: pointer;
             display: flex;
-            font-family: "Trade Gothic LT Std - Bold";
+            font-family: $trade-gothic-bold;
             font-size: 26px;
             font-weight: 700;
             justify-content: center;

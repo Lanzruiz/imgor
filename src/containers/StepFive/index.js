@@ -13,12 +13,18 @@ import Card, { CardContent, CardContentRow, CardContentCol, CardContentText } fr
 import Dropdown from '../../components/Dropdown';
 import LocaleString from '../../components/LocaleString';
 import Button from '../../components/Button';
+import AnimateHeightComponent from '../../components/AnimateHeightComponent';
 // Actions
 import * as stepFiveActions from '../../actions/step.five';
+import * as stepsActions from '../../actions/steps';
 // Selectors
-import { stepFiveDataSelector, stepFiveSelectedGearsSelector } from './selectors';
+import {
+  stepFiveSelectedGearsSelector, stepFiveDataPerPageSelector, stepFiveShouldRenderLoadMoreButtonSelector,
+} from './selectors';
 import { stepOneAgeSelector, stepOneBoardingBooleanSelector, stepOneGenderSelector } from '../StepOne/selectors';
 import { stepTwoStartDateSelector, stepTwoEndDateSelector } from '../StepTwo/selectors';
+// Constants
+import { stepsEnum } from '../../constants/steps';
 // Styles
 import './styles.scss';
 
@@ -37,7 +43,12 @@ class StepFive extends React.Component {
       stepFiveSetDefaultState: PropTypes.func.isRequired,
       stepFiveSelectDropdownItem: PropTypes.func.isRequired,
       getCatalogGearUpsellNewRequest: PropTypes.func.isRequired,
+      stepFiveIncreaseItemsPerPage: PropTypes.func.isRequired,
     }),
+    stepsActions: PropTypes.shape({
+      setStepsCounter: PropTypes.func.isRequired,
+    }),
+    shouldRenderLoadMoreButton: PropTypes.bool,
     data: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
@@ -173,6 +184,7 @@ class StepFive extends React.Component {
     };
     this.getCatalogGear();
     this.getCatalogGearUpsellNew(getCatalogGearUpsellNewArgs);
+    this.goingToStepSix();
     scrollToComponent(this.stepFour.current);
   }
 
@@ -181,7 +193,7 @@ class StepFive extends React.Component {
   }
 
   render() {
-    const { data } = this.props;
+    const { data, shouldRenderLoadMoreButton } = this.props;
     return (
       <Container style={{ marginBottom: '65px' }} ref={this.stepFive}>
         <Row>
@@ -205,9 +217,26 @@ class StepFive extends React.Component {
               )
           }
         </Row>
+        {shouldRenderLoadMoreButton && (
+          <Row>
+            <Col />
+            <Col>
+              <Button
+                className="step-five__load-more-bth"
+                onClick={this.increaseItemsPerPage}
+                children={<LocaleString stringKey="load_more" />}
+              />
+            </Col>
+            <Col />
+          </Row>
+        )}
       </Container>
     );
   }
+
+  goingToStepSix = () => {
+    this.props.stepsActions.setStepsCounter(stepsEnum.six);
+  };
 
   setGear = (id) => {
     this.props.stepFiveActions.stepFiveSetGear(id);
@@ -223,6 +252,10 @@ class StepFive extends React.Component {
     this.props.stepFiveActions.stepFiveSelectDropdownItem({ selectedOptionId, selectedGearId });
   };
 
+  increaseItemsPerPage = () => {
+    this.props.stepFiveActions.stepFiveIncreaseItemsPerPage();
+  };
+
   renderCardItem = (card) => {
     const { height } = this.state;
     const { selectedGear } = this.props;
@@ -234,39 +267,41 @@ class StepFive extends React.Component {
     const selectedOptionId = selectedGearId ? selectedGear[id].selected_option_id : null;
     return (
       <Col sm={6} md={4} key={id}>
-        <Card
-          id={id}
-          cardHeader={display_name}
-          color="dark"
-          header={header.display_name}
-          label={label.display_name}
-          price={price}
-          selectedId={selectedGearId}
-          headerSize="extra-small"
-          onClick={this.setGear}
-        >
-          <CardContent>
-            <CardContentRow>
-              <CardContentCol>
-                <Img className="card-content__img" src={image_url} />
-              </CardContentCol>
-              <CardContentCol className="center-center">
-                {attributes.map((attribute) => this.renderCardAttributes(attribute, id, selectedOptionId))}
-                {selectedGearId && (
-                  <CardCounter
-                    selectedGearId={selectedGearId}
-                    quantity={selectedQuantity}
-                    incrementHandler={this.incrementSelectedGearCounter}
-                    decrementHandler={this.decrementSelectedGearCounter}
-                  />
-                )}
-              </CardContentCol>
-            </CardContentRow>
-            <CardContentText style={cardContentTextStyles}>
-              <ReactHeight onHeightReady={this.setMinHeight} children={description} />
-            </CardContentText>
-          </CardContent>
-        </Card>
+        <AnimateHeightComponent>
+          <Card
+            id={id}
+            cardHeader={display_name}
+            color="dark"
+            header={header.display_name}
+            label={label.display_name}
+            price={price}
+            selectedId={selectedGearId}
+            headerSize="extra-small"
+            onClick={this.setGear}
+          >
+            <CardContent>
+              <CardContentRow>
+                <CardContentCol>
+                  <Img className="card-content__img" src={image_url} />
+                </CardContentCol>
+                <CardContentCol className="center-center">
+                  {attributes.map((attribute) => this.renderCardAttributes(attribute, id, selectedOptionId))}
+                  {selectedGearId && (
+                    <CardCounter
+                      selectedGearId={selectedGearId}
+                      quantity={selectedQuantity}
+                      incrementHandler={this.incrementSelectedGearCounter}
+                      decrementHandler={this.decrementSelectedGearCounter}
+                    />
+                  )}
+                </CardContentCol>
+              </CardContentRow>
+              <CardContentText style={cardContentTextStyles}>
+                <ReactHeight onHeightReady={this.setMinHeight} children={description} />
+              </CardContentText>
+            </CardContent>
+          </Card>
+        </AnimateHeightComponent>
       </Col>
     );
   };
@@ -285,6 +320,10 @@ class StepFive extends React.Component {
         />
       </div>
     );
+  };
+
+  goingToStepSix = () => {
+    this.props.stepsActions.setStepsCounter(stepsEnum.six);
   };
 
   getCatalogGear = () => {
@@ -310,19 +349,21 @@ class StepFive extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    data: stepFiveDataSelector(state),
+    data: stepFiveDataPerPageSelector(state),
     gender: stepOneGenderSelector(state),
     startDate: stepTwoStartDateSelector(state),
     endDate: stepTwoEndDateSelector(state),
     selectedGear: stepFiveSelectedGearsSelector(state),
     boarding: stepOneBoardingBooleanSelector(state),
     age: stepOneAgeSelector(state),
+    shouldRenderLoadMoreButton: stepFiveShouldRenderLoadMoreButtonSelector(state),
   };
 };
 
 function mapDispatchToProps(dispatch) {
   return {
     stepFiveActions: bindActionCreators(stepFiveActions, dispatch),
+    stepsActions: bindActionCreators(stepsActions, dispatch),
   };
 };
 
@@ -336,9 +377,17 @@ function CardCounter(args) {
         </span>
       </div>
       <div className="card-counter__counter">
-        <Button onClick={() => decrementHandler(selectedGearId)}>-</Button>
+        <Button
+          className="card-counter__counter--btn"
+          onClick={() => decrementHandler(selectedGearId)}
+          children="-"
+        />
         <span>{quantity}</span>
-        <Button onClick={() => incrementHandler(selectedGearId)}>+</Button>
+        <Button
+          className="card-counter__counter--btn"
+          onClick={() => incrementHandler(selectedGearId)}
+          children="+"
+        />
       </div>
     </div>
   );
