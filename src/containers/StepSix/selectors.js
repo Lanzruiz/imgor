@@ -1,6 +1,8 @@
 // Modules
 import { createSelector } from 'reselect';
 import { formValueSelector } from 'redux-form';
+// Helpers
+import stringToNumber from '../../helpers/stringToNumber';
 // Constants
 export const stepSixFormFieldNames = {
   airportPickup: 'airport_pickup',
@@ -16,6 +18,18 @@ export const stepSixFormFieldNames = {
   arrivalFlightNumber: 'arrival_flight_number',
   departingDateTime: 'departing_date_time',
   arrivalDateTime: 'arrival_date_time',
+};
+
+export const airportPickupInformation = {
+  both: 'both',
+  arrival: 'arrival',
+  departing: 'departing',
+};
+
+export const departingFormFieldNames = {
+  imgaCampusCenter: 'imga campus center',
+  imgaClubPouse: 'imga сlub рouse',
+  other: 'other',
 };
 
 const selector = formValueSelector('wizard');
@@ -127,5 +141,54 @@ export const stepSixSelectedDepartingAirlineSelector = createSelector(
     return airlines.find(function(airlineItem) {
       return airlineItem.id === id;
     });
+  }
+);
+
+export const stepSixTransportUnaccompaniedSelector = createSelector(
+  stepSixSelector,
+  function(stepSix) {
+    return stepSix.unaccompanied;
+  }
+);
+
+const stepSixArrivalPriceSelector = createSelector(
+  stepSixTransportSelector,
+  stepSixSelectedTransportSelector,
+  function(transport, selectedTransport) {
+    const transportObject = transport.find(({ id }) => stringToNumber(selectedTransport) === stringToNumber(id));
+    if (transportObject) {
+      return transportObject.price;
+    }
+    return 0;
+  }
+);
+
+const stepSixDepartingPriceSelector = createSelector(
+  stepSixTransportSelector,
+  stepSixDepartingTransportSelector,
+  function(transport, selectedTransport) {
+    const transportObject = transport.find(({ id }) => stringToNumber(selectedTransport) === stringToNumber(id));
+    if (transportObject) {
+      return transportObject.price;
+    }
+    return 0;
+  }
+);
+
+export const stepSixPriceSelector = createSelector(
+  stepSixTransportUnaccompaniedSelector,
+  stepSixUnaccompaniedSelector,
+  stepSixArrivalPriceSelector,
+  stepSixDepartingPriceSelector,
+  function(transportUnaccompanied, unaccompanied, arrivalPrice, departingPrice) {
+    const free = 0;
+    const unaccompaniedPrice = (
+      unaccompanied === 'true'
+        ? transportUnaccompanied
+          ? transportUnaccompanied.price
+          : 0
+        : free
+    );
+    return unaccompaniedPrice + arrivalPrice + departingPrice;
   }
 );

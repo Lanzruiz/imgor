@@ -6,6 +6,7 @@ import * as stepSixTypes from '../constants/step.six';
 const initialState = {
   airlines: [],
   transport: [],
+  unaccompanied: null,
   selectedArrivalAirline: null,
   selectedDepartingAirline: null,
 };
@@ -13,6 +14,16 @@ const initialState = {
 export default function(state = initialState, action) {
   const { type, payload } = action;
   switch(type) {
+    case stepSixTypes.STEP_SIX_GET_CATALOG_TRANSPORT_UNACCOMPANIED: {
+      if (isEqual(initialState.unaccompanied, payload)) {
+        return state;
+      }
+      return {
+        ...state,
+        unaccompanied: payload,
+      };
+    }
+
     case stepSixTypes.STEP_SIX_GET_CATALOG_AIRLINES: {
       const { airlines } = payload;
       if (isEqual(state.airlines, airlines)) {

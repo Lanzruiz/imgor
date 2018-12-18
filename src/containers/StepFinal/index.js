@@ -6,6 +6,7 @@ import scrollToComponent from 'react-scroll-to-component';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
+import find from 'lodash/find';
 // Components
 import Header from '../../components/Header';
 import Card, { CardContent, CardContentRow, CardContentCol } from '../../components/Card';
@@ -16,7 +17,7 @@ import Radio from '../../components/Radio';
 import * as finalStepActions from '../../actions/final.step';
 // Selectors
 import { finalStepPositionsSelector, finalStepSelectedPositionSelector, finalStepShirtSizeSelector } from './selectors';
-import { stepOneFormValuesName } from '../StepOne/selectors';
+import { stepOneFormValuesName, formMetaSelector } from '../StepOne/selectors';
 // Constants
 import { stepFinalFormFieldNames } from './selectors';
 // Helpers
@@ -54,7 +55,11 @@ class StepFinal extends React.Component {
   componentDidMount() {
     const { sport, participant } = this.props;
     this.finalStepGetCatalogPositions({ sport, participant });
-    scrollToComponent(this.stepFinal.current);
+    this.scrollToComponentIfFormFieldDoesNotActive();
+  }
+
+  componentDidUpdate() {
+    this.scrollToComponentIfFormFieldDoesNotActive();
   }
 
   componentWillMount() {
@@ -228,6 +233,15 @@ class StepFinal extends React.Component {
   setDefaultState = () => {
     this.props.finalStepActions.finalStepSetDefaultState();
   };
+
+  scrollToComponentIfFormFieldDoesNotActive = () => {
+    const { formMeta } = this.props;
+    const isActive = find(formMeta, 'active');
+    console.log(isActive);
+    if (!isActive) {
+      scrollToComponent(this.stepFinal.current);
+    }
+  }
 }
 
 function PositionRadioBtn({ options, prefix, position }) {
@@ -317,6 +331,7 @@ function mapStateToProps(state) {
     prefix: stepOneFormValuesName(state),
     selectedPosition: finalStepSelectedPositionSelector(state),
     shirtSize: finalStepShirtSizeSelector(state),
+    formMeta: formMetaSelector(state),
   };
 }
 

@@ -1,6 +1,6 @@
 // Modules
 import { createSelector } from 'reselect';
-import { formValueSelector } from 'redux-form';
+import { formValueSelector, getFormMeta } from 'redux-form';
 import moment from 'moment';
 // Selectors
 import { stepTwoCampDaysLengthSelector, stepTwoStartDateSelector } from '../StepTwo/selectors';
@@ -206,3 +206,8 @@ export const stepOneAgeNumberSelector = createSelector(
     return parseInt(age);
   }
 );
+
+export function formMetaSelector(state) {
+  const formMetaSelector = getFormMeta('wizard');
+  return formMetaSelector(state);
+}

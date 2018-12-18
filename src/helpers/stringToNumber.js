@@ -4,5 +4,8 @@ export default function stringToNumber(str, radix = 10) {
   if (typeof str === 'string') {
     result = str.replace(regExp,'')
   }
+  if (typeof str === 'number') {
+    return str;
+  }
   return parseInt(result, radix);
 }

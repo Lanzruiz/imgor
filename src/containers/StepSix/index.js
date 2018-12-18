@@ -29,12 +29,12 @@ import {
   stepSixUnaccompaniedSelector, stepSixAirlinesSelector, stepSixDropoffSelector,
   stepSixDepartingSelector, stepSixDepartingTransportSelector, stepSixPickUpOtherLocationSelector,
   stepSixSelectedArrivalAirlineSelector, stepSixSelectedDepartingAirlineSelector,
-  stepSixSelectedTransportSelector,
+  stepSixSelectedTransportSelector, stepSixTransportUnaccompaniedSelector,
 } from './selectors';
+import { stepFiveDataPerPageSelector } from '../StepFive/selectors';
 // Constants
 import { stepsEnum } from '../../constants/steps';
-// Selectors
-import { stepSixFormFieldNames } from './selectors';
+import { stepSixFormFieldNames, airportPickupInformation, departingFormFieldNames } from './selectors';
 // Helpers
 import validation from '../../helpers/validate';
 // Styles
@@ -57,6 +57,7 @@ class StepSix extends React.Component {
       stepSixGetCatalogAirlinesRequest: PropTypes.func.isRequired,
       stepSixSetArrivalAirlines: PropTypes.func.isRequired,
       stepSixSetDepartingAirlines: PropTypes.func.isRequired,
+      stepSixGetCatalogTransportUnaccompaniedRequest: PropTypes.func.isRequired,
     }),
     transport: PropTypes.arrayOf(
       PropTypes.shape({
@@ -98,11 +99,13 @@ class StepSix extends React.Component {
   }
 
   componentDidMount() {
-    scrollToComponent(this.stepSix.current);
-    // request /api/v1/catalog/transport/unaccompanied 500 error
+    const { stepFiveDataPerPage } = this.props;
+    if (stepFiveDataPerPage.length === 0) {
+      scrollToComponent(this.stepSix.current);
+    }
+    this.stepSixGetCatalogTransportUnaccompanied();
     this.getCatalogTransport();
     this.getCatalogAirlines();
-    this.goingToFinalStep(); // TODO: revrite that
   }
 
   componentWillUnmount() {
@@ -111,12 +114,14 @@ class StepSix extends React.Component {
 
   render() {
     const {
-      airlines, transportation, airportPickup, transport, unaccompanied, dropoff, departing,
+      airlines, transportation, airportPickup, transport, unaccompanied, dropoff, departing, transportUnaccompanied,
       departingTransport, selectedArrivalAirline, selectedDepartingAirline, selectedTransportValue,
     } = this.props;
-    const airportPickupArrivalAndDeparting = airportPickup === 'both';
-    const airportPickupArrivalOnly = airportPickup === 'arrival';
-    const airportPickupDepartingOnly = airportPickup === 'departing';
+
+    const airportPickupArrivalAndDeparting = airportPickup === airportPickupInformation.both;
+    const airportPickupArrivalOnly = airportPickup === airportPickupInformation.arrival;
+    const airportPickupDepartingOnly = airportPickup === airportPickupInformation.departing;
+
     const maxStepCount = (
       airportPickupArrivalAndDeparting
         ? 5
@@ -124,6 +129,7 @@ class StepSix extends React.Component {
           ? 3
           : 1
     );
+
     return (
       <Container style={{ marginBottom: '65px' }} ref={this.stepSix}>
         <Row>
@@ -154,7 +160,7 @@ class StepSix extends React.Component {
                     color="dark"
                     header={<LocaleString stringKey="step_six.airport_pickup" />}
                     label={<LocaleString stringKey="step_five.popular_item" />}
-                    price="99"
+                    price="99"// TODO: rewrite that!
                     selectedId={null}
                     headerSize="extra-small"
                     priceDescription={<LocaleString stringKey="step_six.starting_at" />}
@@ -196,7 +202,10 @@ class StepSix extends React.Component {
                       <SliderSubHeader>
                         <LocaleString stringKey="step_six.unaccompanied" />
                       </SliderSubHeader>
-                      <UnaccompaniedCheckboxContainer unaccompanied={unaccompanied} />
+                      <UnaccompaniedCheckboxContainer
+                        unaccompanied={unaccompanied}
+                        transportUnaccompanied={transportUnaccompanied}
+                      />
                       <GreenBlock className="step-six__text-container">
                         <Paragraph>
                           <LocaleString stringKey="step_six.airlines_service" />
@@ -223,7 +232,10 @@ class StepSix extends React.Component {
                             <SliderSubHeader>
                               <LocaleString stringKey="step_six.arrival_flight_information" />
                             </SliderSubHeader>
-                            <TransportRadioContainer options={transport} value={selectedTransportValue} />
+                            <TransportRadioContainer
+                              options={transport}
+                              value={selectedTransportValue}
+                            />
                           </Col>
                           <Col>
                             <AirlinesDropdownContainer
@@ -299,7 +311,10 @@ class StepSix extends React.Component {
                             <SliderSubHeader>
                               <LocaleString stringKey="step_six.departing_airport_location" />
                             </SliderSubHeader>
-                            <DepartingTransportRadioContainer options={transport} value={departingTransport} />
+                            <DepartingTransportRadioContainer
+                              options={transport}
+                              value={departingTransport}
+                            />
                           </Col>
                           <Col>
                             <AirlinesDepartingDropdownContainer
@@ -390,15 +405,20 @@ class StepSix extends React.Component {
 
   goingToFinalStep = () => {
     this.props.stepsActions.setStepsCounter(stepsEnum.seven);
+  };
+
+  stepSixGetCatalogTransportUnaccompanied = () => {
+    this.props.stepSixActions.stepSixGetCatalogTransportUnaccompaniedRequest();
   }
 }
 
 function AirportPickupCheckboxContainer(args) {
   const { airportPickup } = args;
+  const { both, arrival, departing } = airportPickupInformation;
   const options = [
-    { value: 'both', stringKey: 'step_six.roundtrip' },
-    { value: 'arrival', stringKey: 'step_six.pickup' },
-    { value: 'departing', stringKey: 'step_six.dropoff' },
+    { value: both, stringKey: 'step_six.roundtrip' },
+    { value: arrival, stringKey: 'step_six.pickup' },
+    { value: departing, stringKey: 'step_six.dropoff' },
   ];
   return (
     <div className="step-six__card-content">
@@ -427,7 +447,7 @@ function AirportPickupCheckboxContainer(args) {
 
 function DropoffLocationTextField(args) {
   const { dropoff } = args;
-  const isDisabled = dropoff !== 'other';
+  const isDisabled = dropoff !== departingFormFieldNames.other;
   return (
     <div className="step-six__text-input step-six__form-field">
       <Input
@@ -441,7 +461,7 @@ function DropoffLocationTextField(args) {
 
 function PickUpLocationTextField(args) {
   const { departing } = args;
-  const isDisabled = departing !== 'other';
+  const isDisabled = departing !== departingFormFieldNames.other;
   return (
     <div className="step-six__text-input step-six__form-field">
       <Input
@@ -455,10 +475,11 @@ function PickUpLocationTextField(args) {
 
 function DepartingCheckboxContainer(args) {
   const { departing } = args;
+  const { imgaCampusCenter, imgaClubPouse, other } = departingFormFieldNames;
   const options = [
-    { value: 'imga campus center', stringKey: 'step_six.campus_center' },
-    { value: 'imga сlub рouse', stringKey: 'step_six.club_house' },
-    { value: 'other', stringKey: 'step_six.other' },
+    { value: imgaCampusCenter, stringKey: 'step_six.campus_center' },
+    { value: imgaClubPouse, stringKey: 'step_six.club_house' },
+    { value: other, stringKey: 'step_six.other' },
   ];
   return (
     <ul className="step-six__radio-list">
@@ -489,10 +510,11 @@ function DepartingCheckboxContainer(args) {
 
 function DropoffCheckboxContainer(args) {
   const { dropoff } = args;
+  const { imgaCampusCenter, imgaClubPouse, other } = departingFormFieldNames;
   const options = [
-    { value: 'imga campus center', stringKey: 'step_six.campus_center' },
-    { value: 'imga сlub рouse', stringKey: 'step_six.club_house' },
-    { value: 'other', stringKey: 'step_six.other' },
+    { value: imgaCampusCenter, stringKey: 'step_six.campus_center' },
+    { value: imgaClubPouse, stringKey: 'step_six.club_house' },
+    { value: other, stringKey: 'step_six.other' },
   ];
   return (
     <ul className="step-six__radio-list">
@@ -602,9 +624,9 @@ function AirlinesDepartingDropdownContainer(args) {
 }
 
 function UnaccompaniedCheckboxContainer(args) {
-  const { unaccompanied } = args;
+  const { unaccompanied, transportUnaccompanied } = args;
   const options = [
-    { value: 'true', stringKey: 'step_six.yes', price: 50 },
+    { value: 'true', stringKey: 'step_six.yes', price: transportUnaccompanied && transportUnaccompanied.price },
     { value: 'false', stringKey: 'step_six.no', price: 0 },
   ];
   return (
@@ -723,7 +745,6 @@ function DepartingTransportRadioContainer(args) {
   );
 };
 
-
 function mapStateToProps(state) {
   return {
     airportPickup: stepSixAirportPickupSelector(state),
@@ -738,6 +759,8 @@ function mapStateToProps(state) {
     selectedArrivalAirline: stepSixSelectedArrivalAirlineSelector(state),
     selectedDepartingAirline: stepSixSelectedDepartingAirlineSelector(state),
     selectedTransportValue: stepSixSelectedTransportSelector(state),
+    stepFiveDataPerPage: stepFiveDataPerPageSelector(state),
+    transportUnaccompanied: stepSixTransportUnaccompaniedSelector(state),
   };
 };
 

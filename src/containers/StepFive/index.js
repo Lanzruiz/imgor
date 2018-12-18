@@ -23,8 +23,6 @@ import {
 } from './selectors';
 import { stepOneAgeSelector, stepOneBoardingBooleanSelector, stepOneGenderSelector } from '../StepOne/selectors';
 import { stepTwoStartDateSelector, stepTwoEndDateSelector } from '../StepTwo/selectors';
-// Constants
-import { stepsEnum } from '../../constants/steps';
 // Styles
 import './styles.scss';
 
@@ -184,7 +182,6 @@ class StepFive extends React.Component {
     };
     this.getCatalogGear();
     this.getCatalogGearUpsellNew(getCatalogGearUpsellNewArgs);
-    this.goingToStepSix();
     scrollToComponent(this.stepFour.current);
   }
 
@@ -233,10 +230,6 @@ class StepFive extends React.Component {
       </Container>
     );
   }
-
-  goingToStepSix = () => {
-    this.props.stepsActions.setStepsCounter(stepsEnum.six);
-  };
 
   setGear = (id) => {
     this.props.stepFiveActions.stepFiveSetGear(id);
@@ -320,10 +313,6 @@ class StepFive extends React.Component {
         />
       </div>
     );
-  };
-
-  goingToStepSix = () => {
-    this.props.stepsActions.setStepsCounter(stepsEnum.six);
   };
 
   getCatalogGear = () => {

@@ -14,15 +14,27 @@ import LocaleString from '../../components/LocaleString';
 // Actions
 import * as stepActions from '../../actions/steps';
 import * as stepOneActions from '../../actions/step.one';
+import * as stepThreeActions from '../../actions/step.three';
 import * as trainingActions from '../../actions/training';
 // Selectors
-import { stepTreeSelectedIdSelector, stepThreeSelectedCardWithSecondaryProgramsIdSelector } from '../StepThree/selector';
+import {
+  stepTreeSelectedIdSelector, stepThreeSelectedCardWithSecondaryProgramsIdSelector, stepThreeHasSecondaryProgram,
+  stepThreeSelectedProductSelector,
+} from '../StepThree/selector';
 import { totalPriceSelector, currentStepSelector } from './selectors';
 import {
-  stepOneAgeSelector, stepOneSleepawaySelector, stepOneGenderSelector, stepOneAgeNumberSelector,
+  stepOneAgeSelector, stepOneSleepawaySelector, stepOneGenderSelector, stepOneAgeNumberSelector, weeksItemsSelector,
   stepOneGroupSelector, stepOneSecondaryGroupSelector, weeksCounterSelector, isWeeklyCampSelector,
 } from '../StepOne/selectors';
 import { stepTwoStartDateSelector, stepTwoEndDateSelector } from '../StepTwo/selectors';
+import { stepFourSecondaryProgramIdSelector } from '../StepFour/selectors';
+import {
+  stepSixTransportationSelector, stepSixAirportPickupSelector, stepSixUnaccompaniedSelector, stepSixSelectedTransportSelector,
+  stepSixArrivalFlightNumberSelector, stepSixArrivalDateTimeSelector, stepSixSelectedArrivalAirlineSelector, stepSixDropoffSelector,
+  stepSixDropoffOtherLocationSelector, stepSixDepartingTransportSelector, stepSixPickUpOtherLocationSelector,
+  stepSixSelectedDepartingAirlineSelector, stepSixDepartingFlightNumberSelector, stepSixDepartingDateTimeSelector,
+  stepSixDepartingSelector,
+} from '../StepSix/selectors';
 import {
   finalStepFirstNameSelector, finalStepLastNameSelector, finalStepPositionSelector,
   finalStepShirtSizeSelector, finalStepGuardianFirstNameSelector, finalStepGuardianLastNameSelector,
@@ -31,6 +43,7 @@ import {
 // Constants
 import { stepsEnum } from '../../constants/steps';
 import { weekly_camp } from '../StepOne';
+import { airportPickupInformation, departingFormFieldNames } from '../StepSix/selectors';
 
 class WizardForm extends React.Component {
   static propTypes = {
@@ -99,8 +112,9 @@ class WizardForm extends React.Component {
   componentDidUpdate(prevProps) {
     const {
       age, gender, group, step, startDate, endDate, stepTreeSelectedId, secondaryGroup, weeksCounter,
-      stepThreeSelectedCardWithSecondaryProgramsId,
+      stepThreeSelectedCardWithSecondaryProgramsId, stepFourSecondaryProgramId, participantId, cartId, product,
     } = this.props;
+
     const isStepOneGroupChanged = (group !== prevProps.group);
     const isStepOneSecondaryGroupChanged = (secondaryGroup !== prevProps.secondaryGroup);
     const isDateChanged = (prevProps.startDate !== startDate) || (prevProps.endDate !== endDate);
@@ -147,6 +161,7 @@ class WizardForm extends React.Component {
 
     if ((step === stepsEnum.three) && stepTreeSelectedId) {
       this.goingToStepFour();
+      this.postCartCartIdParticipantIdProduct();
     }
 
     if ((step === stepsEnum.three) && !stepTreeSelectedId && (typeof stepThreeSelectedCardWithSecondaryProgramsId === 'number')) {
@@ -159,6 +174,29 @@ class WizardForm extends React.Component {
 
     if ((step > stepsEnum.three) && (startDate && endDate) && isStepTreeSelectedIdChanged) {
       this.goingToStepByStepNymber(stepsEnum.three);
+    }
+
+    if (step === stepsEnum.four) {
+      this.goingToStepFive();
+    }
+
+    if ((step === stepsEnum.five) && stepFourSecondaryProgramId) {
+      this.props.trainingActions.getCatalogCampCampIdRequest(stepFourSecondaryProgramId);
+      const postCartCartIdParticipantIdProductRequestArgs = {
+        cartId,
+        product,
+        id: stepFourSecondaryProgramId,
+        participant_id: participantId,
+      };
+      this.props.stepThreeActions.postCartCartIdParticipantIdProductRequest(postCartCartIdParticipantIdProductRequestArgs);
+    }
+
+    if (step === stepsEnum.five) {
+      this.goingToStepSix();
+    }
+
+    if ((step === stepsEnum.six) || step === stepsEnum.seven) {
+      this.goingToFinalStep();
     }
   }
 
@@ -277,6 +315,89 @@ class WizardForm extends React.Component {
     }
   };
 
+  goingToStepFive = () => {
+    const { stepTreeSelectedId, stepFourSecondaryProgramId, weeksItems, hasSecondaryProgram } = this.props;
+    const unselectedWeek = weeksItems.find(({ customize_id }) => customize_id === null);
+    if ((!stepTreeSelectedId && (typeof stepFourSecondaryProgramId === 'number')) || !unselectedWeek || (!hasSecondaryProgram && stepTreeSelectedId)) {
+      this.goingToStepByStepNymber(stepsEnum.five);
+    }
+  };
+
+  goingToStepSix = () => {
+    this.goingToStepByStepNymber(stepsEnum.six);
+  };
+
+  goingToFinalStep = () => {
+    const {
+      stepSixTransportation, stepSixAirportPickup, stepSixUnaccompanied, stepSixSelectedTransport, stepSixArrivalFlightNumber,
+      stepSixArrivalDateTime, stepSixSelectedArrivalAirline, stepSixDropoff, stepSixDropoffOtherLocation, stepSixDepartingTransport,
+      stepSixPickUpOtherLocation, stepSixSelectedDepartingAirline, stepSixDepartingFlightNumber, stepSixDepartingDateTime,
+      stepSixDeparting, step,
+    } = this.props;
+
+    if (!stepSixTransportation) {
+      this.goingToStepByStepNymber(stepsEnum.six);
+      return;
+    }
+
+    const isCurrentStepFinal = step === stepsEnum.seven;
+
+    if (!stepSixAirportPickup && isCurrentStepFinal) {
+      this.goingToStepByStepNymber(stepsEnum.six);
+    }
+
+    const { other } = departingFormFieldNames;
+    const { both, arrival, departing } = airportPickupInformation;
+
+    const airportPickupArrivalAndDeparting = stepSixAirportPickup === both;
+    const airportPickupArrivalOnly = stepSixAirportPickup === arrival;
+    const airportPickupDepartingOnly = stepSixAirportPickup === departing;
+
+    if (airportPickupArrivalAndDeparting) {
+      const partOne = !!stepSixUnaccompanied;
+      const partTwo = stepSixSelectedTransport && stepSixSelectedArrivalAirline && stepSixArrivalFlightNumber && stepSixArrivalDateTime;
+      const partThree = stepSixDropoff !== other ? true : !!stepSixPickUpOtherLocation;
+      const stepFour = stepSixDepartingTransport && stepSixSelectedDepartingAirline && stepSixDepartingFlightNumber && stepSixDepartingDateTime;
+      const stepFive = stepSixDeparting !== other ? true : !!stepSixDropoffOtherLocation;
+      if (partOne && partTwo && partThree && stepFour && stepFive) {
+        this.goingToStepByStepNymber(stepsEnum.seven);
+        return;
+      }
+      if (isCurrentStepFinal) {
+        this.goingToStepByStepNymber(stepsEnum.six);
+      }
+      return;
+    }
+
+    if (airportPickupArrivalOnly) {
+      const partOne = !!stepSixUnaccompanied;
+      const partTwo = stepSixSelectedTransport && stepSixSelectedArrivalAirline && stepSixArrivalFlightNumber && stepSixArrivalDateTime;
+      const partThree = stepSixDropoff !== other ? true : !!stepSixDropoffOtherLocation;
+      if (partOne && partTwo && partThree) {
+        this.goingToStepByStepNymber(stepsEnum.seven);
+        return;
+      }
+      if (isCurrentStepFinal) {
+        this.goingToStepByStepNymber(stepsEnum.six);
+      }
+      return;
+    }
+
+    if (airportPickupDepartingOnly) {
+      const partOne = !!stepSixUnaccompanied;
+      const partTwo = stepSixDepartingTransport && stepSixSelectedDepartingAirline && stepSixDepartingFlightNumber && stepSixDepartingDateTime;
+      const partThree = stepSixDeparting !== other ? true : !!stepSixDropoffOtherLocation;
+      if (partOne && partTwo && partThree) {
+        this.goingToStepByStepNymber(stepsEnum.seven);
+        return;
+      }
+      if (isCurrentStepFinal) {
+        this.goingToStepByStepNymber(stepsEnum.six);
+      }
+      return;
+    }
+  };
+
   stepOneValidation = () => {
     const { age, gender, group, participantId, sleepaway, weeksCounter } = this.props;
     switch(true) {
@@ -321,28 +442,64 @@ class WizardForm extends React.Component {
   };
 
   stepThreeValidation = () => {
-    // TODO: write validation
     const { stepTreeSelectedId } = this.props;
     switch(true) {
       case !stepTreeSelectedId: {
         return 'step_three_choose_training_message';
       }
       default:
-        console.log('go to next step');
         return '';
     }
   };
 
   stepFourValidation = () => {
-    // TODO: write validation
+    const { stepTreeSelectedId, stepFourSecondaryProgramId, weeksItems, hasSecondaryProgram } = this.props;
     switch(true) {
+      case hasSecondaryProgram && !stepTreeSelectedId && (typeof stepFourSecondaryProgramId !== 'number'): {
+        return 'step_four_make_selection_for_entire_camp_stay';
+      }
+      case !hasSecondaryProgram && weeksItems[0] && weeksItems[0].customize_id === null: {
+        return 'step_four_week_one_message';
+      }
+      case !hasSecondaryProgram && weeksItems[1] && weeksItems[1].customize_id === null: {
+        return 'step_four_week_two_message';
+      }
+      case !hasSecondaryProgram && weeksItems[2] && weeksItems[2].customize_id === null: {
+        return 'step_four_week_three_message';
+      }
+      case !hasSecondaryProgram && weeksItems[3] && weeksItems[3].customize_id === null: {
+        return 'step_four_week_four_message';
+      }
+      case !hasSecondaryProgram && weeksItems[4] && weeksItems[4].customize_id === null: {
+        return 'step_four_week_five_message';
+      }
+      case !hasSecondaryProgram && weeksItems[5] && weeksItems[5].customize_id === null: {
+        return 'step_four_week_six_message';
+      }
+      case !hasSecondaryProgram && weeksItems[6] && weeksItems[6].customize_id === null: {
+        return 'step_four_week_seven_message';
+      }
+      case !hasSecondaryProgram && weeksItems[7] && weeksItems[7].customize_id === null: {
+        return 'step_four_week_eight_message';
+      }
+      case !hasSecondaryProgram && weeksItems[8] && weeksItems[8].customize_id === null: {
+        return 'step_four_week_nine_message';
+      }
+      case !hasSecondaryProgram && weeksItems[9] && weeksItems[9].customize_id === null: {
+        return 'step_four_week_ten_message';
+      }
+      case !hasSecondaryProgram && weeksItems[10] && weeksItems[10].customize_id === null: {
+        return 'step_four_week_eleven_message';
+      }
+      case !hasSecondaryProgram && weeksItems[11] && weeksItems[11].customize_id === null: {
+        return 'step_four_week_twelve_message';
+      }
       default:
         return '';
     }
   };
 
   stepFiveValidation = () => {
-    // TODO: write validation
     switch(true) {
       default:
         return '';
@@ -350,11 +507,65 @@ class WizardForm extends React.Component {
   };
 
   stepSixValidation = () => {
-    // TODO: write validation
-    switch(true) {
-      default:
-        return '';
+    const {
+      stepSixTransportation, stepSixAirportPickup, stepSixUnaccompanied, stepSixSelectedTransport, stepSixArrivalFlightNumber,
+      stepSixArrivalDateTime, stepSixSelectedArrivalAirline, stepSixDropoff, stepSixDropoffOtherLocation, stepSixDepartingTransport,
+      stepSixPickUpOtherLocation, stepSixSelectedDepartingAirline, stepSixDepartingFlightNumber, stepSixDepartingDateTime,
+      stepSixDeparting,
+    } = this.props;
+
+    const { both, arrival, departing } = airportPickupInformation;
+    const { other } = departingFormFieldNames;
+
+    const airportPickupArrivalAndDeparting = stepSixAirportPickup === both;
+    const airportPickupArrivalOnly = stepSixAirportPickup === arrival;
+    const airportPickupDepartingOnly = stepSixAirportPickup === departing;
+
+    if (stepSixTransportation) {
+      switch(true) {
+        case !stepSixAirportPickup: {
+          return 'step_six_airport_transportation_message';
+        }
+        case !stepSixUnaccompanied: {
+          return 'step_six_unaccompanied_message';
+        }
+        case (airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && !stepSixSelectedTransport: {
+          return 'step_six_arrival_flight_information_message';
+        }
+        case (airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && !stepSixSelectedArrivalAirline: {
+          return 'step_six_airlines_message';
+        }
+        case (airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && !stepSixArrivalFlightNumber: {
+          return 'step_six_arrival_flight_number_message';
+        }
+        case (airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && !stepSixArrivalDateTime: {
+          return 'step_six_arrival_flight_date_and_time_message';
+        }
+        case (airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && !stepSixDropoff:
+        case (airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && (stepSixDropoff === other) && !stepSixDropoffOtherLocation: {
+          return 'step_six_dropoff_location_message';
+        }
+        case (airportPickupArrivalAndDeparting || airportPickupDepartingOnly) && !stepSixDepartingTransport: {
+          return 'step_six_departing_location_message';
+        }
+        case (airportPickupArrivalAndDeparting || airportPickupDepartingOnly) && !stepSixSelectedDepartingAirline: {
+          return 'step_six_departing_airline_message';
+        }
+        case (airportPickupArrivalAndDeparting || airportPickupDepartingOnly) && !stepSixDepartingFlightNumber: {
+          return 'step_six_departing_flight_number_message';
+        }
+        case (airportPickupArrivalAndDeparting || airportPickupDepartingOnly) && !stepSixDepartingDateTime: {
+          return 'step_six_departing_date_time_message';
+        }
+        case (airportPickupArrivalAndDeparting || airportPickupDepartingOnly) && !stepSixDeparting:
+        case (airportPickupArrivalAndDeparting || airportPickupDepartingOnly) && (stepSixDeparting === other) && !stepSixPickUpOtherLocation: {
+          return 'step_six_departing_pick_up_location_message';
+        }
+        default:
+          return '';
+      }
     }
+    return '';
   };
 
   stepFinalValidation = () => {
@@ -388,6 +599,19 @@ class WizardForm extends React.Component {
       default:
         return '';
     }
+  };
+
+  postCartCartIdParticipantIdProduct = () => {
+    const { product, selectedId, cartId, participantId } = this.props;
+    if (product && selectedId && cartId && participantId) {
+      const postCartCartIdParticipantIdProductRequestArgs = {
+        cartId,
+        product,
+        id: selectedId,
+        participant_id: participantId,
+      };
+      this.props.stepThreeActions.postCartCartIdParticipantIdProductRequest(postCartCartIdParticipantIdProductRequestArgs);
+    }
   }
 }
 
@@ -395,6 +619,7 @@ function mapDispatchToProps(dispatch) {
   return {
     stepActions: bindActionCreators(stepActions, dispatch),
     stepOneActions: bindActionCreators(stepOneActions, dispatch),
+    stepThreeActions: bindActionCreators(stepThreeActions, dispatch),
     trainingActions: bindActionCreators(trainingActions, dispatch),
   };
 };
@@ -416,6 +641,9 @@ function mapStateToProps(state) {
     totalPrice: totalPriceSelector(state),
     isWeeklyCamp: isWeeklyCampSelector(state),
     stepThreeSelectedCardWithSecondaryProgramsId: stepThreeSelectedCardWithSecondaryProgramsIdSelector(state),
+    hasSecondaryProgram: stepThreeHasSecondaryProgram(state),
+    stepFourSecondaryProgramId: stepFourSecondaryProgramIdSelector(state),
+    weeksItems: weeksItemsSelector(state),
     firstName: finalStepFirstNameSelector(state),
     lastName: finalStepLastNameSelector(state),
     position: finalStepPositionSelector(state),
@@ -425,6 +653,22 @@ function mapStateToProps(state) {
     guardianLastName: finalStepGuardianLastNameSelector(state),
     guardianEmail: finalStepGuardianEmailSelector(state),
     guardianPhone: finalStepGuardianPhoneSelector(state),
+    stepSixTransportation: stepSixTransportationSelector(state),
+    stepSixAirportPickup: stepSixAirportPickupSelector(state),
+    stepSixUnaccompanied: stepSixUnaccompaniedSelector(state),
+    stepSixSelectedTransport: stepSixSelectedTransportSelector(state),
+    stepSixArrivalFlightNumber: stepSixArrivalFlightNumberSelector(state),
+    stepSixArrivalDateTime: stepSixArrivalDateTimeSelector(state),
+    stepSixSelectedArrivalAirline: stepSixSelectedArrivalAirlineSelector(state),
+    stepSixDropoff: stepSixDropoffSelector(state),
+    stepSixDropoffOtherLocation: stepSixDropoffOtherLocationSelector(state),
+    stepSixDepartingTransport: stepSixDepartingTransportSelector(state),
+    stepSixPickUpOtherLocation: stepSixPickUpOtherLocationSelector(state),
+    stepSixSelectedDepartingAirline: stepSixSelectedDepartingAirlineSelector(state),
+    stepSixDepartingFlightNumber: stepSixDepartingFlightNumberSelector(state),
+    stepSixDepartingDateTime: stepSixDepartingDateTimeSelector(state),
+    stepSixDeparting: stepSixDepartingSelector(state),
+    product: stepThreeSelectedProductSelector(state),
   };
 };
 

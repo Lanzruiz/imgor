@@ -58,19 +58,8 @@ class StepFour extends React.Component {
   };
 
   componentDidMount() {
-    const { hasSecondaryProgram, currentStep } = this.props;
-    if (!hasSecondaryProgram && (currentStep === 4)) {
-      this.nextStep();
-    }
     this.getCatalogCamp();
     scrollToComponent(this.stepFour.current);
-  }
-
-  componentDidUpdate(prevProps) {
-    const { hasSecondaryProgram, currentStep } = this.props;
-    if ((hasSecondaryProgram !== prevProps.hasSecondaryProgram) && !hasSecondaryProgram && (currentStep === 4)) {
-      this.nextStep();
-    }
   }
 
   componentWillUnmount() {
@@ -186,7 +175,6 @@ class StepFour extends React.Component {
 
   getCatalogCamp = () => {
     const { age, businessType, gender, sport, programType, startDate, endDate } = this.props;
-    console.log(startDate, endDate);
     const getCatalogCampArgs = {
       age,
       gender,

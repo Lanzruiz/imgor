@@ -93,13 +93,10 @@ class StepThree extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { selectedId, product } = this.props;
+    const { selectedId } = this.props;
     if (selectedId && (selectedId !== prevProps.selectedId)) {
       this.getCatalogCampsLevels();
       scrollToComponent(this.stepThree.current, { offset: 0, align: 'middle' });
-    }
-    if ((prevProps.product === null) && (product && product.length)) {
-      this.postCartCartIdParticipantIdProduct();
     }
   }
 

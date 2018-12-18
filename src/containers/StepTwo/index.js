@@ -6,7 +6,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import scrollToComponent from 'react-scroll-to-component';
 import moment from 'moment';
 // Components
 import Header from '../../components/Header';
@@ -118,7 +117,6 @@ class StepTwo extends React.Component {
     }
 
     this.getCatalogCampsCalendar(getCatalogCampsCalendarArgs);
-    scrollToComponent(this.stepTwo.current, { offset: 0, align: 'middle' });
   }
 
   componentWillUnmount() {

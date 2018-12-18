@@ -26,21 +26,22 @@ const emptyConcentration = {
   display_description: '',
   display_gender: 'All',
   display_length: '1 Week',
-  display_length_program: 'No Daily Sesssion',
-  display_name: 'No Daily Sesssion',
+  display_length_program: 'No Daily Session',
+  display_name: 'No Daily Session',
   display_package_type: 'Sport',
   display_program_type: 'Concentration',
-  length_program: 'No Daily Sesssion',
-  name: 'No Daily Sesssion',
+  length_program: 'No Daily Session',
+  name: 'No Daily Session',
   program_type: 'Concentration',
-  raw_name: 'No Daily Sesssion',
-  secondary_program_type: 'No Daily Sesssion',
+  raw_name: 'No Daily Session',
+  secondary_program_type: 'No Daily Session',
 };
 
 export default function(state = initialState, action) {
   const { type, payload } = action;
   switch(type) {
     case stepFourTypes.STEP_FOUR_SET_DEFAULT_STATE: {
+      console.log('default state');
       return {
         ...state,
         ...initialState,

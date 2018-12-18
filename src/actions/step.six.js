@@ -58,3 +58,21 @@ export function stepSixSetDepartingAirlines(id) {
     payload: id,
   };
 };
+
+function stepSixGetCatalogTransportUnaccompanied(data) {
+  return {
+    type: stepSixTypes.STEP_SIX_GET_CATALOG_TRANSPORT_UNACCOMPANIED,
+    payload: data,
+  };
+}
+
+export function stepSixGetCatalogTransportUnaccompaniedRequest() {
+  return function(dispatch) {
+    Api.req({
+      apiCall: Api.getCatalogTransportUnaccompanied,
+      res200: data => dispatch(stepSixGetCatalogTransportUnaccompanied(data)),
+      res404: () => console.log('Api.getCatalogTransportUnaccompanied => 404'), // TODO: Add error handler
+      reject: err => console.log(err), // TODO: Add error handler
+    });
+  }
+}
