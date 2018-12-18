@@ -2,6 +2,7 @@
 import { createSelector } from 'reselect';
 import { formValueSelector, getFormMeta } from 'redux-form';
 import moment from 'moment';
+import find from 'lodash/find';
 // Selectors
 import { stepTwoCampDaysLengthSelector, stepTwoStartDateSelector } from '../StepTwo/selectors';
 // Constants
@@ -211,3 +212,11 @@ export function formMetaSelector(state) {
   const formMetaSelector = getFormMeta('wizard');
   return formMetaSelector(state);
 }
+
+export const hasActiveFieldSelector = createSelector(
+  formMetaSelector,
+  function(formMeta) {
+    const isActive = find(formMeta, 'active');
+    return !!isActive;
+  }
+);

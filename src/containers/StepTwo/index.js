@@ -33,11 +33,6 @@ import { daysInWeek } from '../../constants/weeks';
 import './styles.scss';
 
 class StepTwo extends React.Component {
-  constructor(props) {
-    super(props);
-    this.stepTwo = React.createRef();
-  }
-
   static propTypes = {
     boarding: PropTypes.bool,
     stepOneActions: PropTypes.shape({
@@ -140,7 +135,7 @@ class StepTwo extends React.Component {
       [monthEnum[11]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['dec'])),
     }
     return (
-      <Container style={{ marginBottom: '130px' }} ref={this.stepTwo}>
+      <Container style={{ marginBottom: '130px' }}>
         <Row>
           <Col>
             <Header

@@ -6,7 +6,6 @@ import scrollToComponent from 'react-scroll-to-component';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import find from 'lodash/find';
 // Components
 import Header from '../../components/Header';
 import Card, { CardContent, CardContentRow, CardContentCol } from '../../components/Card';
@@ -17,7 +16,7 @@ import Radio from '../../components/Radio';
 import * as finalStepActions from '../../actions/final.step';
 // Selectors
 import { finalStepPositionsSelector, finalStepSelectedPositionSelector, finalStepShirtSizeSelector } from './selectors';
-import { stepOneFormValuesName, formMetaSelector } from '../StepOne/selectors';
+import { stepOneFormValuesName, hasActiveFieldSelector } from '../StepOne/selectors';
 // Constants
 import { stepFinalFormFieldNames } from './selectors';
 // Helpers
@@ -140,13 +139,11 @@ class StepFinal extends React.Component {
                   <CardContent>
                     <CardContentRow>
                       <CardContentCol>
-                        <Form className="step-final__form" onSubmit={() => {}}>
-                          <PositionRadioBtn
-                            options={positions}
-                            position={selectedPosition}
-                            prefix={prefix}
-                          />
-                        </Form>
+                        <PositionRadioBtn
+                          options={positions}
+                          position={selectedPosition}
+                          prefix={prefix}
+                        />
                       </CardContentCol>
                     </CardContentRow>
                   </CardContent>
@@ -235,10 +232,8 @@ class StepFinal extends React.Component {
   };
 
   scrollToComponentIfFormFieldDoesNotActive = () => {
-    const { formMeta } = this.props;
-    const isActive = find(formMeta, 'active');
-    console.log(isActive);
-    if (!isActive) {
+    const { hasActiveField } = this.props;
+    if (!hasActiveField) {
       scrollToComponent(this.stepFinal.current);
     }
   }
@@ -246,24 +241,27 @@ class StepFinal extends React.Component {
 
 function PositionRadioBtn({ options, prefix, position }) {
   return (
-    <Field
-      name={`${prefix}_${stepFinalFormFieldNames.position}`}
-      type="radio"
-      options={options}
-      component={({ input, options }) => (
-        options.map(({ position_id, name }) => {
-          return (
-            <div key={position_id} className="step-final__radio">
-              <Radio
-                {...input}
-                value={position_id}
-                checked={position === position_id}
-                children={name}
-              />
-            </div>
-          );
-      }))}
-    />
+    <ul className="step-final__form">
+      <Field
+        name={`${prefix}_${stepFinalFormFieldNames.position}`}
+        type="radio"
+        options={options}
+        component={({ input, options }) => (
+          options.map(({ position_id, name }) => {
+            return (
+              <li className="step-final__radio" key={position_id}>
+                <Radio
+                  {...input}
+                  value={position_id}
+                  checked={position === position_id}
+                  children={name}
+                />
+              </li>
+            );
+          })
+        )}
+      />
+    </ul>
   );
 };
 
@@ -284,40 +282,40 @@ function ShirtSizeRadioBtn({ prefix, shirtSize }) {
       component={({ input, options }) => (
         <React.Fragment>
           <CardContentCol>
-            <Form className="step-final__form" onSubmit={() => {}}>
+            <ul className="step-final__form">
               {
                 options.map(({ id, value, stringKey }) => {
                   return (id % 2 === 0) && (
-                    <div key={id} className="step-final__radio">
+                    <li key={id} className="step-final__radio">
                       <Radio
                         {...input}
                         value={value}
                         checked={shirtSize === value}
                         children={<LocaleString stringKey={stringKey} />}
                       />
-                    </div>
+                    </li>
                   );
                 })
               }
-            </Form>
+            </ul>
           </CardContentCol>
           <CardContentCol>
-            <Form className="step-final__form" onSubmit={() => {}}>
+            <ul className="step-final__form">
               {
                 options.map(({ id, value, stringKey }) => {
                   return (id % 2 !== 0) && (
-                    <div key={id} className="step-final__radio">
+                    <li key={id} className="step-final__radio">
                       <Radio
                         {...input}
                         value={value}
                         checked={shirtSize === value}
                         children={<LocaleString stringKey={stringKey} />}
                       />
-                    </div>
+                    </li>
                   );
                 })
               }
-            </Form>
+            </ul>
           </CardContentCol>
         </React.Fragment>
       )}
@@ -331,7 +329,7 @@ function mapStateToProps(state) {
     prefix: stepOneFormValuesName(state),
     selectedPosition: finalStepSelectedPositionSelector(state),
     shirtSize: finalStepShirtSizeSelector(state),
-    formMeta: formMetaSelector(state),
+    hasActiveField: hasActiveFieldSelector(state),
   };
 }
 

@@ -59,7 +59,7 @@ class StepFour extends React.Component {
 
   componentDidMount() {
     this.getCatalogCamp();
-    scrollToComponent(this.stepFour.current);
+    this.sctollToCurrentComponent();
   }
 
   componentWillUnmount() {
@@ -223,6 +223,13 @@ class StepFour extends React.Component {
       }
       default:
         return false;
+    }
+  };
+
+  sctollToCurrentComponent = () => {
+    const { hasSecondaryProgram, data } = this.props;
+    if (hasSecondaryProgram || data.length > 0) {
+      scrollToComponent(this.stepFour.current);
     }
   }
 }

@@ -89,14 +89,16 @@ class StepThree extends React.Component {
 
   componentDidMount() {
     this.getCatalogCampsLevels();
-    scrollToComponent(this.stepThree.current, { offset: 0, align: 'middle' });
+    this.scrollToCurrentComponent();
   }
 
   componentDidUpdate(prevProps) {
-    const { selectedId } = this.props;
+    const { selectedId, startDate } = this.props;
     if (selectedId && (selectedId !== prevProps.selectedId)) {
       this.getCatalogCampsLevels();
-      scrollToComponent(this.stepThree.current, { offset: 0, align: 'middle' });
+    }
+    if (startDate !== prevProps.startDate) {
+      this.scrollToCurrentComponent();
     }
   }
 
@@ -107,35 +109,37 @@ class StepThree extends React.Component {
   render() {
     const { selectedId, data, selectedCardWithSecondaryProgramsId } = this.props;
     return (
-      <Container style={{ marginBottom: '65px' }} ref={this.stepThree}>
-        <Row>
-          <Col>
-            <Header
-              header="step_three.header"
-              subHeader="step_three.sub_header"
-            />
-          </Col>
-        </Row>
-        <Row>
-          {data.map(({ age_range, display_name, price, id, name, sold_out, has_secondary_program, secondary_programs, starting_price }, idx) => {
-            return (
-              <Col xl={6} key={idx}>
-                {this.renderCurrentCard({
-                  age_range,
-                  display_name,
-                  name,
-                  has_secondary_program,
-                  price: price || starting_price,
-                  selectedId: selectedId || selectedCardWithSecondaryProgramsId,
-                  id: has_secondary_program ? idx : id,
-                  secondaryPrograms: secondary_programs,
-                  soldOut: sold_out,
-                })}
-              </Col>
-            );
-          })}
-        </Row>
-      </Container>
+      <div ref={this.stepThree}>
+        <Container style={{ marginBottom: '65px' }}>
+          <Row>
+            <Col>
+              <Header
+                header="step_three.header"
+                subHeader="step_three.sub_header"
+              />
+            </Col>
+          </Row>
+          <Row>
+            {data.map(({ age_range, display_name, price, id, name, sold_out, has_secondary_program, secondary_programs, starting_price }, idx) => {
+              return (
+                <Col xl={6} key={idx}>
+                  {this.renderCurrentCard({
+                    age_range,
+                    display_name,
+                    name,
+                    has_secondary_program,
+                    price: price || starting_price,
+                    selectedId: selectedId || selectedCardWithSecondaryProgramsId,
+                    id: has_secondary_program ? idx : id,
+                    secondaryPrograms: secondary_programs,
+                    soldOut: sold_out,
+                  })}
+                </Col>
+              );
+            })}
+          </Row>
+        </Container>
+      </div>
     );
   }
 
@@ -238,6 +242,10 @@ class StepThree extends React.Component {
 
   goToNextStep = ({ id: cardId, secondaryPrograms }) => {
     this.setSecondaryPrograms({ id: cardId, secondaryPrograms });
+  };
+
+  scrollToCurrentComponent = () => {
+    scrollToComponent(this.stepThree.current);
   }
 }
 
