@@ -117,6 +117,10 @@ class Api {
     return await instance.delete(`cart/${cartId}/participant/${participantId}/product/${productId}`);
   };
 
+  async putCartCartIdParticipantParticipantIdProductId({ cartId, participantId, productId }) {
+    return await instance.put(`cart/${cartId}/participant/${participantId}/product/${productId}`);
+  }
+
   async getCatalogCampsHistogram({ sport, gender, boarding, days, age }) {
     return await instance.get('catalog/camps/histogram', {
       params: {

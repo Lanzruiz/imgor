@@ -49,7 +49,6 @@ class StepThree extends React.Component {
     stepThreeActions: PropTypes.shape({
       getCatalogCampsLevelsRequest: PropTypes.func.isRequired,
       stepThreeSetDefaultState: PropTypes.func.isRequired,
-      postCartCartIdParticipantIdProductRequest: PropTypes.func.isRequired,
       stepThreeSetSecondaryPrograms: PropTypes.func.isRequired,
     }),
     stepsActions: PropTypes.shape({
@@ -233,11 +232,6 @@ class StepThree extends React.Component {
   setDefaultState = () => {
     this.props.stepThreeActions.stepThreeSetDefaultState();
     this.props.trainingActions.setDefaultState();
-  };
-
-  postCartCartIdParticipantIdProduct = () => {
-    const { product, selectedId, cartId, participantId } = this.props;
-    this.props.stepThreeActions.postCartCartIdParticipantIdProductRequest({ cartId, id: selectedId, product, participant_id: participantId });
   };
 
   goToNextStep = ({ id: cardId, secondaryPrograms }) => {

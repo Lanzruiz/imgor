@@ -44,6 +44,7 @@ import {
 import { stepsEnum } from '../../constants/steps';
 import { weekly_camp } from '../StepOne';
 import { airportPickupInformation, departingFormFieldNames } from '../StepSix/selectors';
+import { productTypesEnum } from '../../constants/cart';
 
 class WizardForm extends React.Component {
   static propTypes = {
@@ -182,13 +183,15 @@ class WizardForm extends React.Component {
 
     if ((step === stepsEnum.five) && stepFourSecondaryProgramId) {
       this.props.trainingActions.getCatalogCampCampIdRequest(stepFourSecondaryProgramId);
-      const postCartCartIdParticipantIdProductRequestArgs = {
+      const args = {
+        participantId,
         cartId,
         product,
-        id: stepFourSecondaryProgramId,
-        participant_id: participantId,
+        productId: stepTreeSelectedId,
+        type: productTypesEnum.camp,
+        quantity: 1,
       };
-      this.props.stepThreeActions.postCartCartIdParticipantIdProductRequest(postCartCartIdParticipantIdProductRequestArgs);
+      this.props.stepThreeActions.postCartCartIdParticipantIdProductRequest(args);
     }
 
     if (step === stepsEnum.five) {
@@ -602,15 +605,17 @@ class WizardForm extends React.Component {
   };
 
   postCartCartIdParticipantIdProduct = () => {
+    //TODO: rewrite that
     const { product, selectedId, cartId, participantId } = this.props;
     if (product && selectedId && cartId && participantId) {
-      const postCartCartIdParticipantIdProductRequestArgs = {
+      const args = {
         cartId,
+        participantId,
         product,
-        id: selectedId,
-        participant_id: participantId,
+        quantity: 1,
+        type: productTypesEnum,
       };
-      this.props.stepThreeActions.postCartCartIdParticipantIdProductRequest(postCartCartIdParticipantIdProductRequestArgs);
+      this.props.stepThreeActions.postCartCartIdParticipantIdProductRequest(args);
     }
   }
 }

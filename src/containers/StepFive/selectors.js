@@ -54,3 +54,10 @@ export const stepFiveShouldRenderLoadMoreButtonSelector = createSelector(
     return maxItemsCount > perPage;
   }
 );
+
+export const stepFiveProductsSelector = createSelector(
+  stepFiveSelector,
+  function(stepFive) {
+    return stepFive.products;
+  }
+);

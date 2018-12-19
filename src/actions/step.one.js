@@ -1,5 +1,6 @@
 // Constants
 import * as stepOneTypes from '../constants/step.one';
+import { stepsEnum } from '../constants/steps';
 // Api
 import Api from '../api';
 // Actions
@@ -27,7 +28,7 @@ export function stepOnePutCartCartIdParticipantParticipantIdRequest({ cartId, pa
       res200: (data) => {
         console.log(data);
         dispatch(addParticipant(data));
-        dispatch(setStepsCounter(2));
+        dispatch(setStepsCounter(stepsEnum.two));
       },
       res404: () => console.log('Api.putCartCartIdParticipantParticipantId() => Error 404'), // TODO: Add error handler
       reject: err => console.log(err), // TODO: Add error handler
@@ -75,5 +76,3 @@ export function stepOneSetCampLength(length) {
     payload: length,
   };
 }
-
-// TODO: write action to set default business_type

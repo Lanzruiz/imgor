@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import scrollToComponent from 'react-scroll-to-component';
+import isEqual from 'lodash/isEqual';
 // Components
 import Header from '../../components/Header';
 import Card, { CardContent, CardContentRow, CardContentCol, CardContentText } from '../../components/Card';
@@ -19,12 +20,14 @@ import * as stepFiveActions from '../../actions/step.five';
 import * as stepsActions from '../../actions/steps';
 // Selectors
 import {
-  stepFiveSelectedGearsSelector, stepFiveDataPerPageSelector, stepFiveShouldRenderLoadMoreButtonSelector,
+  stepFiveSelectedGearsSelector, stepFiveDataPerPageSelector, stepFiveShouldRenderLoadMoreButtonSelector, stepFiveProductsSelector,
 } from './selectors';
 import {
   stepOneAgeSelector, stepOneBoardingBooleanSelector, stepOneGenderSelector, cartIdSelector, participantIdSelector,
 } from '../StepOne/selectors';
 import { stepTwoStartDateSelector, stepTwoEndDateSelector } from '../StepTwo/selectors';
+// Constants
+import { productTypesEnum } from '../../constants/cart';
 // Styles
 import './styles.scss';
 
@@ -46,6 +49,7 @@ class StepFive extends React.Component {
       stepFiveIncreaseItemsPerPage: PropTypes.func.isRequired,
       postCartCartIdParticipantParticipantIdProductRequest: PropTypes.func.isRequired,
       deleteCartCartIdParticipantParticipantIdProductIdRequest: PropTypes.func.isRequired,
+      putCartCartIdParticipantParticipantIdProductIdRequest: PropTypes.func.isRequired,
     }),
     stepsActions: PropTypes.shape({
       setStepsCounter: PropTypes.func.isRequired,
@@ -236,17 +240,25 @@ class StepFive extends React.Component {
   }
 
   setGear = (productId) => {
-    const { cartId, participantId, data } = this.props;
+    const { cartId, participantId, data, stepFiveProducts } = this.props;
     const gearItem = data.find(({ id }) => id === productId);
+    const currentProduct = stepFiveProducts[productId];
     if (gearItem) {
       const args = {
         cartId,
         participantId,
         productId,
-        type: 'gear',
-        attributes: [{ name: 'size', value: gearItem.selected_option_id }],
+        product: currentProduct,
+        type: productTypesEnum.gear,
+        attributes: [{
+          name: isEqual(gearItem.attributes.length, 1) ? gearItem.attributes[0].name : '',
+          value: gearItem.selected_option_id,
+        }],
         quantity: gearItem.quantity,
       };
+      if (isEqual(gearItem.attributes.length, 0)) {
+        delete args.attributes;
+      }
       this.props.stepFiveActions.postCartCartIdParticipantParticipantIdProductRequest(args);
     }
   };
@@ -376,9 +388,29 @@ class StepFive extends React.Component {
     this.props.stepFiveActions.getCatalogGearUpsellNewRequest({ business_type, package_type, sport, gender, boarding, age, start_date });
   };
 
-  updateGearItem = (id) => {
-    this.props.stepFiveActions.stepFiveUpdateGearItem(id);
-    // TODO: upgrade handler here
+  updateGearItem = (productId) => {
+    const { cartId, participantId, data, stepFiveProducts, selectedGear } = this.props;
+    const gearItem = data.find(({ id }) => id === productId);
+    const currentProduct = stepFiveProducts[productId];
+    if (gearItem) {
+      const args = {
+        cartId,
+        participantId,
+        productId,
+        product: currentProduct,
+        type: productTypesEnum.gear,
+        attributes: [{
+          name: isEqual(gearItem.attributes.length, 1) ? gearItem.attributes[0].name : '',
+          value: gearItem.selected_option_id,
+        }],
+        quantity: gearItem.quantity,
+        participantProductId: selectedGear[productId].participantProductId,
+      };
+      if (isEqual(gearItem.attributes.length, 0)) {
+        delete args.attributes;
+      }
+      this.props.stepFiveActions.putCartCartIdParticipantParticipantIdProductIdRequest(args);
+    }
   };
 
   removeGear = (productId) => {
@@ -405,6 +437,7 @@ function mapStateToProps(state) {
     shouldRenderLoadMoreButton: stepFiveShouldRenderLoadMoreButtonSelector(state),
     cartId: cartIdSelector(state),
     participantId: participantIdSelector(state),
+    stepFiveProducts: stepFiveProductsSelector(state),
   };
 };
 

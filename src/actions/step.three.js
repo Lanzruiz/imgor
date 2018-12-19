@@ -25,7 +25,7 @@ export function getCatalogCampsLevelsRequest(args) {
   }
 }
 
-export function postCartCartIdParticipantIdProductRequest({ cartId, id, product, participant_id }) {
+export function postCartCartIdParticipantIdProductRequest({ cartId, quantity, product, participantId, type }) {
   return function(dispatch) {
     Api.req({
       apiCall: Api.postCartCartIdParticipantIdProduct,
@@ -34,15 +34,17 @@ export function postCartCartIdParticipantIdProductRequest({ cartId, id, product,
       reject: err => console.log(err),
       apiCallParams: {
         cartId,
-        id,
+        participantId,
         product,
-        participant_id,
+        quantity,
+        type,
       },
     });
   }
 }
 
 function postCartCartIdParticipantIdProduct(data) {
+  console.log('Запостил!');
   return {
     type: stepThreeTypes.STEP_THREE_POST_CART_CART_ID_PARTICIPANT_ID_PRODUCT,
     payload: data,

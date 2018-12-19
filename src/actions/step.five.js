@@ -50,27 +50,27 @@ export function stepFiveDecrementSelectedGearQuantity(selectedGearId) {
     type: stepFiveTypes.STEP_FIVE_DECREMENT_SELECTED_GEAR_QUANTITY,
     payload: selectedGearId,
   };
-}
+};
 
 export function stepFiveSetDefaultState() {
   return {
     type: stepFiveTypes.STEP_FIVE_SET_DEFAULT_STATE,
   };
-}
+};
 
 export function stepFiveSelectDropdownItem(selectedOptionIdSelectedGearId) {
   return {
     type: stepFiveTypes.STEP_FIVE_SELECT_DROPDOWN_OPTION,
     payload: selectedOptionIdSelectedGearId,
   };
-}
+};
 
 function getCatalogGearUpsellNew(data) {
   return {
     type: stepFiveTypes.STEP_SIX_GET_CATALOG_GEAR_UPSELL_NEW,
     payload: data,
   };
-}
+};
 
 export function getCatalogGearUpsellNewRequest({ business_type, package_type, sport, gender, boarding, age, start_date }) {
   return function(dispatch) {
@@ -90,46 +90,38 @@ export function getCatalogGearUpsellNewRequest({ business_type, package_type, sp
       },
     });
   }
-}
+};
 
 export function stepFiveIncreaseItemsPerPage() {
   return {
     type: stepFiveTypes.STEP_FIVE_INCREASE_ITEMS_PER_PAGE,
   };
-}
+};
 
 export function stepFiveRemoveGearItem(id) {
   return {
     type: stepFiveTypes.STEP_FIVE_REMOVE_GEAR_ITEM,
     payload: id,
   };
-}
+};
 
 export function stepFiveUpdateGearItem(id) {
   return {
     type: stepFiveTypes.STEP_FIVE_UPDATE_GEAR_ITEM,
     payload: id,
   };
-}
+};
 
 export function stepFiveSetParticipantProductId({ participantProductId, productId }) {
   return {
     type: stepFiveTypes.STEP_FIVE_SET_PARTICIPANT_PRODUCT_ID,
     payload: { participantProductId, productId },
   };
-}
+};
 
-export function postCartCartIdParticipantParticipantIdProductRequest({ attributes, quantity, cartId, participantId, productId, type }) {
+export function postCartCartIdParticipantParticipantIdProductRequest({ attributes, quantity, cartId, participantId, productId, type, product }) {
   return function(dispatch) {
-    Api.getCatalogGear()
-      .then(data => data.data)
-      .then(data => data.results)
-      .then(data => data.find(item => productId === item.id))
-      .then((productItem) => {
-        if (productItem) {
-          return Api.postCartCartIdParticipantIdProduct({ attributes, cartId, quantity, participantId, product: productItem, productId, type });
-        }
-      })
+    Api.postCartCartIdParticipantIdProduct({ attributes, cartId, quantity, participantId, product, productId, type })
       .then((res) => {
         if (res.status === 200) {
           const { participant_product_id } = res.data;
@@ -141,7 +133,7 @@ export function postCartCartIdParticipantParticipantIdProductRequest({ attribute
         console.log(err);
       });
   }
-}
+};
 
 export function deleteCartCartIdParticipantParticipantIdProductIdRequest({ cartId, participantId, productId, participantProductId }) {
   return function(dispatch) {
@@ -153,4 +145,16 @@ export function deleteCartCartIdParticipantParticipantIdProductIdRequest({ cartI
       reject: console.log,
     });
   }
-}
+};
+
+export function putCartCartIdParticipantParticipantIdProductIdRequest({ cartId, participantId, productId, participantProductId }) {
+  return function(dispatch) {
+    Api.req({
+      apiCall: Api.putCartCartIdParticipantParticipantIdProductId,
+      apiCallParams: { cartId, participantId, productId: participantProductId },
+      res200: () => dispatch(stepFiveUpdateGearItem(productId)),
+      res404: () => console.log('Api.putCartCartIdParticipantParticipantIdProductId() => 404'),
+      reject: console.log,
+    });
+  }
+};
