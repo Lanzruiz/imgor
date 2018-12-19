@@ -102,11 +102,19 @@ class Api {
     });
   };
 
-  async postCartCartIdParticipantIdProduct({ cartId, id, product, participant_id }) {
-    return await instance.post(`cart/${cartId}/participant/${participant_id}/product`, {
+  // TODO: rewrite actions
+  async postCartCartIdParticipantIdProduct({ attributes, cartId, participantId, product, quantity, productId, type }) {
+    return await instance.post(`cart/${cartId}/participant/${participantId}/product`, {
+      attributes,
       product,
-      product_id: id,
+      type,
+      quantity,
+      product_id: productId,
     });
+  };
+
+  async deleteCartCartIdParticipantParticipantIdProductId({ cartId, participantId, productId }) {
+    return await instance.delete(`cart/${cartId}/participant/${participantId}/product/${productId}`);
   };
 
   async getCatalogCampsHistogram({ sport, gender, boarding, days, age }) {

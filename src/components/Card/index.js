@@ -75,6 +75,8 @@ class Card extends React.Component {
     priceBlock: PropTypes.bool,
     cardHeaderCapitalize: PropTypes.bool,
     soldOut: PropTypes.bool,
+    customButtonTitle: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+    onRemove: PropTypes.func,
   };
 
   static defaultProps = {
@@ -87,12 +89,14 @@ class Card extends React.Component {
     price: '0',
     imgSrc: '',
     onClick: () => {},
+    onRemove: () => {},
     selectedId: null,
     priceDescription: '',
     buttonBlock: true,
     priceBlock: true,
     cardHeaderCapitalize: false,
     soldOut: false,
+    customButtonTitle: '',
   };
 
   render() {
@@ -157,8 +161,12 @@ class Card extends React.Component {
     });
     return via && (
       <span className="card-label__via">
-        <span className={cardLabelViaClassName}>via</span>
-        <span className="card-label__text card-label__text--small card-label__text--serifa-roman">approved</span>
+        <span className={cardLabelViaClassName}>
+          <LocaleString stringKey="via" />
+        </span>
+        <span className="card-label__text card-label__text--small card-label__text--serifa-roman">
+          <LocaleString stringKey="approved" />
+        </span>
       </span>
     );
   };
@@ -207,8 +215,8 @@ class Card extends React.Component {
   };
 
   renderButtonBlock = (buttonClassNames, isCurrentCardSelected) => {
-    const { buttonBlock, onClick, id, soldOut } = this.props;
-    const onClickHandler = soldOut ? null : () => onClick(id);
+    const { buttonBlock, soldOut, customButtonTitle } = this.props;
+    const onClickHandler = soldOut ? null : this.onClickHandler;
     return buttonBlock && (
       <div className="card-body__footer">
         <Button className={buttonClassNames} onClick={onClickHandler}>
@@ -219,7 +227,11 @@ class Card extends React.Component {
                 )
               : (
                   isCurrentCardSelected
-                    ? <LocaleString stringKey="card.selected" />
+                    ? (
+                        customButtonTitle
+                          ? customButtonTitle
+                          : <LocaleString stringKey="card.selected" />
+                      )
                     : <LocaleString stringKey="card.select" />
                 )
           }
@@ -251,6 +263,12 @@ class Card extends React.Component {
         {this.renderLabel(label)}
       </div>
     );
+  };
+
+  onClickHandler = () => {
+    const { id, onClick, onRemove, selectedId } = this.props;
+    const isCurrentCardSelected = id === selectedId;
+    isCurrentCardSelected ? onRemove(id) : onClick(id);
   }
 }
 

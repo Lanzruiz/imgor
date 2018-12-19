@@ -21,7 +21,9 @@ import * as stepsActions from '../../actions/steps';
 import {
   stepFiveSelectedGearsSelector, stepFiveDataPerPageSelector, stepFiveShouldRenderLoadMoreButtonSelector,
 } from './selectors';
-import { stepOneAgeSelector, stepOneBoardingBooleanSelector, stepOneGenderSelector } from '../StepOne/selectors';
+import {
+  stepOneAgeSelector, stepOneBoardingBooleanSelector, stepOneGenderSelector, cartIdSelector, participantIdSelector,
+} from '../StepOne/selectors';
 import { stepTwoStartDateSelector, stepTwoEndDateSelector } from '../StepTwo/selectors';
 // Styles
 import './styles.scss';
@@ -42,6 +44,8 @@ class StepFive extends React.Component {
       stepFiveSelectDropdownItem: PropTypes.func.isRequired,
       getCatalogGearUpsellNewRequest: PropTypes.func.isRequired,
       stepFiveIncreaseItemsPerPage: PropTypes.func.isRequired,
+      postCartCartIdParticipantParticipantIdProductRequest: PropTypes.func.isRequired,
+      deleteCartCartIdParticipantParticipantIdProductIdRequest: PropTypes.func.isRequired,
     }),
     stepsActions: PropTypes.shape({
       setStepsCounter: PropTypes.func.isRequired,
@@ -231,8 +235,20 @@ class StepFive extends React.Component {
     );
   }
 
-  setGear = (id) => {
-    this.props.stepFiveActions.stepFiveSetGear(id);
+  setGear = (productId) => {
+    const { cartId, participantId, data } = this.props;
+    const gearItem = data.find(({ id }) => id === productId);
+    if (gearItem) {
+      const args = {
+        cartId,
+        participantId,
+        productId,
+        type: 'gear',
+        attributes: [{ name: 'size', value: gearItem.selected_option_id }],
+        quantity: gearItem.quantity,
+      };
+      this.props.stepFiveActions.postCartCartIdParticipantParticipantIdProductRequest(args);
+    }
   };
 
   setMinHeight = (height) => {
@@ -253,11 +269,34 @@ class StepFive extends React.Component {
     const { height } = this.state;
     const { selectedGear } = this.props;
     const cardContentTextStyles = { minHeight: `${height}px` };
-    const { price, image_url, id, categories = [], description, display_name, attributes } = card;
+    const { price, image_url, id, categories = [], description, display_name, attributes, could_be_selected, selected_option_id, quantity, need_to_update } = card;
     const [ label = {}, header = {} ] = categories;
     const selectedGearId = selectedGear[id] ? selectedGear[id].id : null;
-    const selectedQuantity = selectedGearId ? selectedGear[id].quantity : 0;
-    const selectedOptionId = selectedGearId ? selectedGear[id].selected_option_id : null;
+
+    const onClickHandler = (
+      (could_be_selected && (quantity > 0))
+        ? this.setGear
+        : () => {}
+    );
+
+    const customButtonTitle = (
+      need_to_update
+        ? (quantity > 0)
+          ? <LocaleString stringKey="update" />
+          : <LocaleString stringKey="remove" />
+        : selectedGearId
+          ? <LocaleString stringKey="remove" />
+          : <LocaleString stringKey="selected" />
+    );
+
+    const onRemoveHandler = (
+      need_to_update
+        ? (quantity > 0)
+          ? this.updateGearItem
+          : this.removeGear
+        : this.removeGear
+    );
+
     return (
       <Col sm={6} md={4} key={id}>
         <AnimateHeightComponent>
@@ -270,7 +309,9 @@ class StepFive extends React.Component {
             price={price}
             selectedId={selectedGearId}
             headerSize="extra-small"
-            onClick={this.setGear}
+            onClick={onClickHandler}
+            customButtonTitle={customButtonTitle}
+            onRemove={onRemoveHandler}
           >
             <CardContent>
               <CardContentRow>
@@ -278,11 +319,11 @@ class StepFive extends React.Component {
                   <Img className="card-content__img" src={image_url} />
                 </CardContentCol>
                 <CardContentCol className="center-center">
-                  {attributes.map((attribute) => this.renderCardAttributes(attribute, id, selectedOptionId))}
-                  {selectedGearId && (
+                  {attributes.map(attribute => this.renderCardAttributes(attribute, id, selected_option_id))}
+                  {(selected_option_id || !attributes.length) && (
                     <CardCounter
-                      selectedGearId={selectedGearId}
-                      quantity={selectedQuantity}
+                      selectedGearId={id}
+                      quantity={quantity}
                       incrementHandler={this.incrementSelectedGearCounter}
                       decrementHandler={this.decrementSelectedGearCounter}
                     />
@@ -333,6 +374,22 @@ class StepFive extends React.Component {
 
   getCatalogGearUpsellNew = ({ business_type, package_type, sport, gender, boarding, age, start_date }) => {
     this.props.stepFiveActions.getCatalogGearUpsellNewRequest({ business_type, package_type, sport, gender, boarding, age, start_date });
+  };
+
+  updateGearItem = (id) => {
+    this.props.stepFiveActions.stepFiveUpdateGearItem(id);
+    // TODO: upgrade handler here
+  };
+
+  removeGear = (productId) => {
+    const { cartId, participantId, selectedGear } = this.props;
+    const args = {
+      cartId,
+      participantId,
+      productId,
+      participantProductId: selectedGear[productId].participantProductId,
+    };
+    this.props.stepFiveActions.deleteCartCartIdParticipantParticipantIdProductIdRequest(args);
   }
 }
 
@@ -346,6 +403,8 @@ function mapStateToProps(state) {
     boarding: stepOneBoardingBooleanSelector(state),
     age: stepOneAgeSelector(state),
     shouldRenderLoadMoreButton: stepFiveShouldRenderLoadMoreButtonSelector(state),
+    cartId: cartIdSelector(state),
+    participantId: participantIdSelector(state),
   };
 };
 

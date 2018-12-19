@@ -1,9 +1,15 @@
+// Modules
+import assign from 'lodash/assign';
+import map from 'lodash/map';
+import isEqual from 'lodash/isEqual';
+import find from 'lodash/find';
 // Constants
 import * as stepFiveTypes from '../constants/step.five';
 
 const initialState = {
   data: [],
   selectedGear: {},
+  products: {},
   itemsPerPage: 6,
   itemsStepCounter: 6,
 };
@@ -11,12 +17,29 @@ const initialState = {
 export default function(state = initialState, action) {
   const { type, payload } = action;
   switch(type) {
+    case stepFiveTypes.STEP_FIVE_SET_PARTICIPANT_PRODUCT_ID: {
+      const { participantProductId, productId } = payload;
+      const selectedGear = assign({}, state.selectedGear);
+      selectedGear[productId].participantProductId = participantProductId;
+      return assign({}, state, { selectedGear });
+    }
+
     case stepFiveTypes.GET_CATALOG_GEAR: {
       const { results } = payload;
-      return {
-        ...state,
-        data: results,
-      };
+      const products = {};
+      const data = map(results, (item) => {
+        products[item.id] = assign({}, item);
+        item.quantity = 0;
+        item.need_to_update = false;
+        if (isEqual(item.attributes.length, 0)) {
+          item.could_be_selected = true;
+          item.selected_option_id = null;
+          return item;
+        }
+        item.could_be_selected = false;
+        return item;
+      });
+      return assign({}, state, { data }, { products });
     }
 
     case stepFiveTypes.STEP_FIVE_SET_GEAR: {
@@ -24,108 +47,56 @@ export default function(state = initialState, action) {
       if (isGearItemSelected) {
         return state;
       }
-      const gearItem = state.data.find(({ id }) => (id === payload));
-      const selectedGear = {
-        ...state.selectedGear,
-        [payload]: {
-          ...gearItem,
-          quantity: 1,
-          selected_option_id: null,
-        },
-      };
-      return {
-        ...state,
-        selectedGear,
-      };
+      const gearItem = find(state.data, ['id', payload]);
+      const selectedGear = assign({}, state.selectedGear);
+      selectedGear[payload] = assign({}, gearItem);
+      return assign({}, state, { selectedGear });
     }
 
     case stepFiveTypes.STEP_FIVE_INCREMENT_SELECTED_GEAR_QUANTITY: {
-      const selectedGear = state.selectedGear[payload];
-      if (selectedGear) {
-        const counter = selectedGear.quantity + 1;
-        return {
-          ...state,
-          selectedGear: {
-            ...state.selectedGear,
-            [payload]: {
-              ...selectedGear,
-              quantity: counter,
-            },
-          },
-        };
-      }
-      return state;
+      const isCurrentItemSelected = state.selectedGear[payload];
+      const data = map(state.data, (item) => {
+        if (isEqual(item.id, payload)) {
+          item.quantity = item.quantity + 1;
+          item.need_to_update = isCurrentItemSelected ? true : false;
+        }
+        return item;
+      });
+      return assign({}, state, { data });
     }
 
     case stepFiveTypes.STEP_FIVE_DECREMENT_SELECTED_GEAR_QUANTITY: {
-      const selectedGear = state.selectedGear[payload];
-      if (selectedGear) {
-        const counter = selectedGear.quantity - 1;
-        if (counter <= 0) {
-          const { selectedGear } = state;
-          delete selectedGear[payload];
-          return {
-            ...state,
-            selectedGear: {
-              ...selectedGear,
-            },
-          };
+      const data = map(state.data, (item) => {
+        if (isEqual(item.id, payload)) {
+          const isCurrentItemSelected = state.selectedGear[payload];
+          const counter = item.quantity - 1
+          item.quantity = counter >= 0 ? counter : 0;
+          item.need_to_update = (
+            (counter >= 0) && isCurrentItemSelected
+              ? true
+              : false
+          );
         }
-        return {
-          ...state,
-          selectedGear: {
-            ...state.selectedGear,
-            [payload]: {
-              ...selectedGear,
-              quantity: counter,
-            },
-          },
-        };
-      }
-      return state;
+        return item;
+      });
+      return assign({}, state, { data });
     }
 
     case stepFiveTypes.STEP_FIVE_SET_DEFAULT_STATE: {
-      return {
-        ...state,
-        ...initialState,
-      };
+      return assign({}, state, initialState);
     }
 
     case stepFiveTypes.STEP_FIVE_SELECT_DROPDOWN_OPTION: {
       const { selectedOptionId, selectedGearId } = payload;
-      const selectedGear = state.selectedGear[selectedGearId];
-      if (selectedGear) {
-        if (selectedGear.selected_option_id === selectedOptionId) {
-          return state;
+      const data = map(state.data, item => {
+        if (isEqual(item.id, selectedGearId)) {
+          item.could_be_selected = true;
+          item.need_to_update = true;
+          item.selected_option_id = selectedOptionId;
         }
-        selectedGear.selected_option_id = selectedOptionId;
-        return {
-          ...state,
-          selectedGear: {
-            ...state.selectedGear,
-            [selectedGearId]: {
-              ...selectedGear,
-            },
-          },
-        };
-      }
-      const gearItem = state.data.find(({ id }) => (id === selectedGearId));
-      if (gearItem) {
-        const selectedGear = {
-          ...state.selectedGear,
-          [selectedGearId]: {
-            ...gearItem,
-            quantity: 1,
-            selected_option_id: selectedOptionId,
-          },
-        };
-        return {
-          ...state,
-          selectedGear,
-        };
-      }
-      return state;
+        return item;
+      });
+      return assign({}, state, { data });
     }
 
     case stepFiveTypes.STEP_SIX_GET_CATALOG_GEAR_UPSELL_NEW: {
@@ -135,10 +106,23 @@ export default function(state = initialState, action) {
     case stepFiveTypes.STEP_FIVE_INCREASE_ITEMS_PER_PAGE: {
       const itemsPerPage = state.itemsStepCounter + state.itemsPerPage;
       const maxItemsCount = state.data.length;
-      return {
-        ...state,
-        itemsPerPage: itemsPerPage <= maxItemsCount ? itemsPerPage : maxItemsCount,
-      };
+      return assign({}, state, { itemsPerPage: (itemsPerPage <= maxItemsCount) ? itemsPerPage : maxItemsCount });
+    }
+
+    case stepFiveTypes.STEP_FIVE_REMOVE_GEAR_ITEM: {
+      const selectedGear = assign({}, state.selectedGear);
+      delete selectedGear[payload];
+      return assign({}, state, { selectedGear });
+    }
+
+    case stepFiveTypes.STEP_FIVE_UPDATE_GEAR_ITEM: {
+      const data = map(state.data, (item) => {
+        if (isEqual(item.id, payload)) {
+          item.need_to_update = false;
+        }
+        return item;
+      });
+      return assign({}, state, { data });
     }
 
     default:

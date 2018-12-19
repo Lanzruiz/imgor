@@ -17,35 +17,35 @@ export const stepOneFormFieldsName = {
 
 export function stateSelector(state) {
   return state;
-}
+};
 
 function stepOneSelector(state) {
   return state.stepOne;
-}
+};
 
 function weeksSelector(state) {
   return state.weeks;
-}
+};
 
 export const stepOneGroupSelector = createSelector(
   stepOneSelector,
   function(stepOne) {
     return stepOne.group;
-  }
+  },
 );
 
 export const stepOneDataSelector = createSelector(
   stepOneSelector,
   function(stepOne) {
     return stepOne.data;
-  }
+  },
 );
 
 export const stepOneTabIndexSelector = createSelector(
   stepOneSelector,
   function(stepOne) {
     return stepOne.tabIndex;
-  }
+  },
 );
 
 export const weeksCounterSelector = createSelector(
@@ -59,14 +59,14 @@ export const stepOneSecondaryGroupSelector = createSelector(
   stepOneSelector,
   function(stepOne) {
     return stepOne.secondary_group;
-  }
+  },
 );
 
 export const stepOnePriceSelector = createSelector(
   stepOneSelector,
   function(stepOne) {
     return stepOne.stepOnePrice;
-  }
+  },
 );
 
 export const weeksLengthSelector = createSelector(
@@ -74,14 +74,14 @@ export const weeksLengthSelector = createSelector(
   function(campDaysLength) {
     const daysLength = campDaysLength / daysInWeek;
     return daysLength > 1 ? daysLength : 1;
-  }
+  },
 );
 
 export const weeksWeeksSelector = createSelector(
   weeksSelector,
   function(weeks) {
     return weeks.weeks;
-  }
+  },
 );
 
 export const weeksItemsSelector = createSelector(
@@ -96,7 +96,7 @@ export const weeksItemsSelector = createSelector(
       const endDate = moment(startDate, stringFormat).add(7, days).subtract(1, days).format(stringFormat);
       return Object.assign({}, week, { start_date: startDate, end_date: endDate });
     });
-  }
+  },
 );
 
 export const isWeeklyCampSelector = createSelector(
@@ -109,7 +109,7 @@ export const isWeeklyCampSelector = createSelector(
 export function stepOneFormValueSelector(state, name, prefix) {
   const selector = formValueSelector('wizard');
   return selector(state, `${name}_${prefix}`);
-}
+};
 
 export const stepOneFormValuesName = createSelector(
   isWeeklyCampSelector,
@@ -122,7 +122,7 @@ export const stepOneFormValuesName = createSelector(
       name = name.toLowerCase().replace(regExp, '_');
     }
     return name;
-  }
+  },
 );
 
 export const stepOneAgeSelector = createSelector(
@@ -130,7 +130,7 @@ export const stepOneAgeSelector = createSelector(
   stepOneFormValuesName,
   function(state, name) {
     return stepOneFormValueSelector(state, name, stepOneFormFieldsName.age);
-  }
+  },
 );
 
 export const stepOneGenderSelector = createSelector(
@@ -138,7 +138,7 @@ export const stepOneGenderSelector = createSelector(
   stepOneFormValuesName,
   function(state, name) {
     return stepOneFormValueSelector(state, name, stepOneFormFieldsName.gender);
-  }
+  },
 );
 
 export const stepOneSleepawaySelector = createSelector(
@@ -146,7 +146,7 @@ export const stepOneSleepawaySelector = createSelector(
   stepOneFormValuesName,
   function(state, name) {
     return stepOneFormValueSelector(state, name, stepOneFormFieldsName.sleepaway);
-  }
+  },
 );
 
 export const stepOneBoardingSelector = createSelector(
@@ -161,7 +161,7 @@ export const stepOneBoardingSelector = createSelector(
         console.warn('something wrong with string boarding value!');
         return sleepaway;
     }
-  }
+  },
 );
 
 export const stepOneBoardingBooleanSelector = createSelector(
@@ -176,7 +176,7 @@ export const stepOneBoardingBooleanSelector = createSelector(
         console.warn('something wrong with boolean boarding value!');
         return false;
     }
-  }
+  },
 );
 
 export function cartSelector(state) {
@@ -185,38 +185,38 @@ export function cartSelector(state) {
 
 export function participantSelector(state) {
   return state.participant;
-}
+};
 
 export const cartIdSelector = createSelector(
   cartSelector,
   function(cart) {
     return cart.id;
-  }
+  },
 );
 
 export const participantIdSelector = createSelector(
   participantSelector,
   function(participant) {
     return participant.id;
-  }
+  },
 );
 
 export const stepOneAgeNumberSelector = createSelector(
   stepOneAgeSelector,
   function(age) {
     return parseInt(age);
-  }
+  },
 );
 
 export function formMetaSelector(state) {
   const formMetaSelector = getFormMeta('wizard');
   return formMetaSelector(state);
-}
+};
 
 export const hasActiveFieldSelector = createSelector(
   formMetaSelector,
   function(formMeta) {
     const isActive = find(formMeta, 'active');
     return !!isActive;
-  }
+  },
 );
