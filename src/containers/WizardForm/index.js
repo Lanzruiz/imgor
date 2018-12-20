@@ -8,6 +8,7 @@ import isNumber from 'lodash/isNumber';
 import isEqual from 'lodash/isEqual';
 import isEmail from 'validator/lib/isEmail';
 import isMobilePhone from 'validator/lib/isMobilePhone';
+import find from 'lodash/find';
 // Components
 import Footer from '../../components/Footer';
 import LocaleString from '../../components/LocaleString';
@@ -96,17 +97,33 @@ class WizardForm extends React.Component {
 
   componentDidMount() {
     const { step } = this.props;
-
-    if (step === stepsEnum.one) {
-      this.goingToStepTwo();
-    }
-
-    if (step === stepsEnum.two) {
-      this.goingToStepThree();
-    }
-
-    if (step === stepsEnum.three) {
-      this.goingToStepFour();
+    switch(step) {
+      case stepsEnum.one: {
+        this.goingToStepTwo();
+        break;
+      }
+      case stepsEnum.two: {
+        this.goingToStepThree();
+        break;
+      }
+      case stepsEnum.three: {
+        this.goingToStepFour();
+        break;
+      }
+      case stepsEnum.four: {
+        break;
+      }
+      case stepsEnum.five: {
+        break;
+      }
+      case stepsEnum.six: {
+        break;
+      }
+      case stepsEnum.seven: {
+        break;
+      }
+      default:
+        return;
     }
   }
 
@@ -129,77 +146,94 @@ class WizardForm extends React.Component {
         (isStepOneGroupChanged || isStepOneSecondaryGroupChanged) || isWeeksCounterChanged || isAgeChanged || isGenderChanged)
     );
 
-    if (step === stepsEnum.one) {
-      this.goingToStepTwo({
-        group: prevProps.group,
-        sleepaway: prevProps.sleepaway,
-        gender: prevProps.gender,
-        age: prevProps.age,
-        weeks: prevProps.weeksCounter,
-        secondaryGroup: prevProps.secondaryGroup,
-      });
-    }
+    switch(true) {
+      case isEqual(step, stepsEnum.one): {
+        this.goingToStepTwo({
+          group: prevProps.group,
+          sleepaway: prevProps.sleepaway,
+          gender: prevProps.gender,
+          age: prevProps.age,
+          weeks: prevProps.weeksCounter,
+          secondaryGroup: prevProps.secondaryGroup,
+        });
+        break;
+      }
 
-    if (shouldGoingToStepTwo) {
-      this.goingToStepByStepNymber(stepsEnum.one);
-      this.goingToStepTwo({
-        group: prevProps.group,
-        sleepaway: prevProps.sleepaway,
-        gender: prevProps.gender,
-        age: prevProps.age,
-        weeks: prevProps.weeksCounter,
-        secondaryGroup: prevProps.secondaryGroup,
-      });
-    }
+      case !!(shouldGoingToStepTwo): {
+        this.goingToStepByStepNymber(stepsEnum.one);
+        this.goingToStepTwo({
+          group: prevProps.group,
+          sleepaway: prevProps.sleepaway,
+          gender: prevProps.gender,
+          age: prevProps.age,
+          weeks: prevProps.weeksCounter,
+          secondaryGroup: prevProps.secondaryGroup,
+        });
+        break;
+      }
 
-    if ((step > stepsEnum.two) && isDateChanged) {
-      this.goingToStepByStepNymber(stepsEnum.two);
-    }
+      case !!((step > stepsEnum.two) && isDateChanged): {
+        this.goingToStepByStepNymber(stepsEnum.two);
+        break;
+      }
 
-    if ((step === stepsEnum.two) && startDate) {
-      this.goingToStepThree();
-    }
+      case !!(isEqual(step, stepsEnum.two) && startDate): {
+        this.goingToStepThree();
+        break;
+      }
 
-    if ((step === stepsEnum.three) && stepTreeSelectedId) {
-      this.goingToStepFour();
-      this.postCartCartIdParticipantIdProduct();
-    }
+      case !!(isEqual(step, stepsEnum.three) && stepTreeSelectedId): {
+        this.goingToStepFour();
+        this.postCartCartIdParticipantIdProduct();
+        break;
+      }
 
-    if ((step === stepsEnum.three) && !stepTreeSelectedId && (typeof stepThreeSelectedCardWithSecondaryProgramsId === 'number')) {
-      this.goingToStepByStepNymber(stepsEnum.four);
-    }
+      case !!(isEqual(step, stepsEnum.three) && !stepTreeSelectedId && isNumber(stepThreeSelectedCardWithSecondaryProgramsId)): {
+        this.goingToStepByStepNymber(stepsEnum.four);
+        break;
+      }
 
-    if ((step > stepsEnum.three) && (stepThreeSelectedCardWithSecondaryProgramsId !== prevProps.stepThreeSelectedCardWithSecondaryProgramsId)) {
-      this.goingToStepByStepNymber(stepsEnum.three);
-    }
+      case !!((step > stepsEnum.three) && !isEqual(stepThreeSelectedCardWithSecondaryProgramsId, prevProps.stepThreeSelectedCardWithSecondaryProgramsId)): {
+        this.goingToStepByStepNymber(stepsEnum.three);
+        break;
+      }
 
-    if ((step > stepsEnum.three) && (startDate && endDate) && isStepTreeSelectedIdChanged) {
-      this.goingToStepByStepNymber(stepsEnum.three);
-    }
+      case !!((step > stepsEnum.three) && (startDate && endDate) && isStepTreeSelectedIdChanged): {
+        this.goingToStepByStepNymber(stepsEnum.three);
+        break;
+      }
 
-    if (step === stepsEnum.four) {
-      this.goingToStepFive();
-    }
+      case isEqual(step, stepsEnum.four): {
+        this.goingToStepFive();
+        break;
+      }
 
-    if ((step === stepsEnum.five) && stepFourSecondaryProgramId) {
-      this.props.trainingActions.getCatalogCampCampIdRequest(stepFourSecondaryProgramId);
-      const args = {
-        participantId,
-        cartId,
-        product,
-        productId: stepTreeSelectedId,
-        type: productTypesEnum.camp,
-        quantity: 1,
-      };
-      this.props.stepThreeActions.postCartCartIdParticipantIdProductRequest(args);
-    }
+      case !!(isEqual(step, stepsEnum.five) && stepFourSecondaryProgramId): {
+        this.props.trainingActions.getCatalogCampCampIdRequest(stepFourSecondaryProgramId);
+        const args = {
+          participantId,
+          cartId,
+          product,
+          productId: stepTreeSelectedId,
+          type: productTypesEnum.camp,
+          quantity: 1,
+        };
+        this.props.stepThreeActions.postCartCartIdParticipantIdProductRequest(args);
+        break;
+      }
 
-    if (step === stepsEnum.five) {
-      this.goingToStepSix();
-    }
+      case isEqual(step, stepsEnum.five): {
+        this.goingToStepSix();
+        break;
+      }
 
-    if ((step === stepsEnum.six) || step === stepsEnum.seven) {
-      this.goingToFinalStep();
+      case (isEqual(step, stepsEnum.six) || isEqual(step, stepsEnum.seven)): {
+        this.goingToFinalStep();
+        break;
+      }
+
+      default:
+        return;
     }
   }
 
@@ -213,7 +247,7 @@ class WizardForm extends React.Component {
     }
     const arrowPosition = true;
     const message = this.renderMessage();
-    const hasMessage = message.props.stringKey !== '';
+    const hasMessage = !isEqual(message.props.stringKey, '');
     return (
       <React.Fragment>
         {children().slice(startIndex, step)}
@@ -320,8 +354,8 @@ class WizardForm extends React.Component {
 
   goingToStepFive = () => {
     const { stepTreeSelectedId, stepFourSecondaryProgramId, weeksItems, hasSecondaryProgram } = this.props;
-    const unselectedWeek = weeksItems.find(({ customize_id }) => customize_id === null);
-    if ((!stepTreeSelectedId && (typeof stepFourSecondaryProgramId === 'number')) || !unselectedWeek || (!hasSecondaryProgram && stepTreeSelectedId)) {
+    const unselectedWeek = find(weeksItems, ['customize_id', null]);
+    if ((!stepTreeSelectedId && isNumber(stepFourSecondaryProgramId)) || !unselectedWeek || (!hasSecondaryProgram && stepTreeSelectedId)) {
       this.goingToStepByStepNymber(stepsEnum.five);
     }
   };

@@ -28,8 +28,10 @@ export default function(state = initialState, action) {
       const { results } = payload;
       const products = {};
       const data = map(results, (item) => {
+        const isCurrentItemSelected = state.selectedGear[item.id];
         products[item.id] = assign({}, item);
-        item.quantity = 0;
+        item.selected_option_id = isCurrentItemSelected ? isCurrentItemSelected.selected_option_id : null;
+        item.quantity = isCurrentItemSelected ? isCurrentItemSelected.quantity : 0;
         item.need_to_update = false;
         if (isEqual(item.attributes.length, 0)) {
           item.could_be_selected = true;
@@ -57,8 +59,12 @@ export default function(state = initialState, action) {
       const isCurrentItemSelected = state.selectedGear[payload];
       const data = map(state.data, (item) => {
         if (isEqual(item.id, payload)) {
-          item.quantity = item.quantity + 1;
+          const quantity = item.quantity + 1
+          item.quantity = quantity;
           item.need_to_update = isCurrentItemSelected ? true : false;
+          if (isCurrentItemSelected) {
+            isCurrentItemSelected.quantity = quantity;
+          }
         }
         return item;
       });
@@ -76,6 +82,9 @@ export default function(state = initialState, action) {
               ? true
               : false
           );
+          if (isCurrentItemSelected) {
+            isCurrentItemSelected.quantity = counter;
+          }
         }
         return item;
       });
@@ -90,9 +99,13 @@ export default function(state = initialState, action) {
       const { selectedOptionId, selectedGearId } = payload;
       const data = map(state.data, item => {
         if (isEqual(item.id, selectedGearId)) {
+          const isCurrentItemSelected = state.selectedGear[selectedGearId];
           item.could_be_selected = true;
           item.need_to_update = true;
           item.selected_option_id = selectedOptionId;
+          if (isCurrentItemSelected) {
+            isCurrentItemSelected.selected_option_id = selectedOptionId;
+          }
         }
         return item;
       });
@@ -116,13 +129,15 @@ export default function(state = initialState, action) {
     }
 
     case stepFiveTypes.STEP_FIVE_UPDATE_GEAR_ITEM: {
+      const selectedGear = assign({}, state.selectedGear);
       const data = map(state.data, (item) => {
         if (isEqual(item.id, payload)) {
           item.need_to_update = false;
+          selectedGear[payload] = assign(selectedGear[payload], item);
         }
         return item;
       });
-      return assign({}, state, { data });
+      return assign({}, state, { data }, { selectedGear });
     }
 
     default:
