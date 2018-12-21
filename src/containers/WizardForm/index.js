@@ -111,12 +111,15 @@ class WizardForm extends React.Component {
         break;
       }
       case stepsEnum.four: {
+        this.goingToStepFive();
         break;
       }
       case stepsEnum.five: {
+        this.goingToStepSix();
         break;
       }
       case stepsEnum.six: {
+        this.goingToFinalStep();
         break;
       }
       case stepsEnum.seven: {
@@ -129,7 +132,7 @@ class WizardForm extends React.Component {
 
   componentDidUpdate(prevProps) {
     const {
-      age, gender, group, step, startDate, endDate, stepTreeSelectedId, secondaryGroup, weeksCounter,
+      age, gender, group, step, startDate, endDate, stepTreeSelectedId, secondaryGroup, weeksCounter, weeksItems,
       stepThreeSelectedCardWithSecondaryProgramsId, stepFourSecondaryProgramId, participantId, cartId, product,
     } = this.props;
 
@@ -208,6 +211,11 @@ class WizardForm extends React.Component {
         break;
       }
 
+      case !!((step > stepsEnum.four) && find(weeksItems, ['customize_id', null])): {
+        this.goingToStepByStepNymber(stepsEnum.four);
+        break;
+      }
+
       case !!(isEqual(step, stepsEnum.five) && stepFourSecondaryProgramId): {
         this.props.trainingActions.getCatalogCampCampIdRequest(stepFourSecondaryProgramId);
         const args = {
@@ -256,10 +264,29 @@ class WizardForm extends React.Component {
           price={totalPrice}
           message={message}
           hasMessage={hasMessage}
+          purchaseOnClickHandler={this.purchaseHandler}
+          saveCampOnClickHandler={this.saveCampHandler}
+          shareOnClickHandler={this.shareHandler}
         />
       </React.Fragment>
     );
   }
+
+  purchaseHandler = () => {
+    const { cartId } = this.props;
+    const shopifyUrl = process.env.REACT_APP_REDIRECT_URL_SHOPIFY;
+    if (window && cartId) {
+      window.location = `${shopifyUrl}?order=${cartId}`;
+    }
+  };
+
+  saveCampHandler = () => {
+    console.warn('Need handler to save');
+  };
+
+  shareHandler = () => {
+    console.warn('Need handler to share');
+  };
 
   goingToStepByStepNymber = (stepNumber) => {
     this.props.stepActions.setStepsCounter(stepNumber);
@@ -355,7 +382,7 @@ class WizardForm extends React.Component {
   goingToStepFive = () => {
     const { stepTreeSelectedId, stepFourSecondaryProgramId, weeksItems, hasSecondaryProgram } = this.props;
     const unselectedWeek = find(weeksItems, ['customize_id', null]);
-    if ((!stepTreeSelectedId && isNumber(stepFourSecondaryProgramId)) || !unselectedWeek || (!hasSecondaryProgram && stepTreeSelectedId)) {
+    if ((!stepTreeSelectedId && isNumber(stepFourSecondaryProgramId)) || !unselectedWeek || ((!hasSecondaryProgram && stepTreeSelectedId) && !unselectedWeek)) {
       this.goingToStepByStepNymber(stepsEnum.five);
     }
   };
@@ -373,7 +400,7 @@ class WizardForm extends React.Component {
     } = this.props;
 
     if (!stepSixTransportation) {
-      this.goingToStepByStepNymber(stepsEnum.six);
+      this.goingToStepByStepNymber(stepsEnum.seven);
       return;
     }
 

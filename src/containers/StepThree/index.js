@@ -6,6 +6,9 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { reduxForm } from 'redux-form';
 import scrollToComponent from 'react-scroll-to-component';
+import isNumber from 'lodash/isNumber';
+import isEqual from 'lodash/isEqual';
+import toLower from 'lodash/toLower';
 // Components
 import Header from '../../components/Header';
 import BreakthroughCard from '../../components/BreakthroughCard';
@@ -93,10 +96,10 @@ class StepThree extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { selectedId, startDate } = this.props;
-    if (selectedId && (selectedId !== prevProps.selectedId)) {
+    if (selectedId && !isEqual(selectedId, prevProps.selectedId)) {
       this.getCatalogCampsLevels();
     }
-    if (startDate !== prevProps.startDate) {
+    if (!isEqual(startDate, prevProps.startDate)) {
       this.scrollToCurrentComponent();
     }
   }
@@ -119,7 +122,7 @@ class StepThree extends React.Component {
             </Col>
           </Row>
           <Row>
-            {data.map(({ age_range, display_name, price, id, name, sold_out, has_secondary_program, secondary_programs, starting_price }, idx) => {
+            {data.map(({ age_range, display_name, price, id, name, sold_out, has_secondary_program, secondary_programs, starting_price, display_via_label }, idx) => {
               return (
                 <Col xl={6} key={idx}>
                   {this.renderCurrentCard({
@@ -132,6 +135,7 @@ class StepThree extends React.Component {
                     id: has_secondary_program ? idx : id,
                     secondaryPrograms: secondary_programs,
                     soldOut: sold_out,
+                    displayViaLabel: display_via_label,
                   })}
                 </Col>
               );
@@ -143,14 +147,15 @@ class StepThree extends React.Component {
   }
 
   renderCurrentCard = (args) => {
-    const { age_range, display_name, name = '', price, id, selectedId, soldOut, has_secondary_program, secondaryPrograms } = args;
+    const { age_range, display_name, name = '', price, id, selectedId, soldOut, has_secondary_program, secondaryPrograms, displayViaLabel } = args;
     const computedLabel = age_range ? `ages ${age_range}` : '';
-    const nameLowerCase = name.toLowerCase();
+    const nameLowerCase = toLower(name);
 
     const cardProps = {
       id,
       selectedId,
       price,
+      displayViaLabel,
       header: display_name,
       key: id,
       onClick: has_secondary_program ? cardId => this.goToNextStep({ id: cardId, secondaryPrograms }) : this.selectCard,
@@ -198,7 +203,7 @@ class StepThree extends React.Component {
   };
 
   setSecondaryPrograms = ({ id, secondaryPrograms }) => {
-    if (typeof id === 'number') {
+    if (isNumber(id)) {
       this.saveTrainingId(null);
     }
     this.props.stepThreeActions.stepThreeSetSecondaryPrograms({ id, secondary_programs: secondaryPrograms });

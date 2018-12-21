@@ -102,7 +102,6 @@ class Api {
     });
   };
 
-  // TODO: rewrite actions
   async postCartCartIdParticipantIdProduct({ attributes, cartId, participantId, product, quantity, productId, type }) {
     return await instance.post(`cart/${cartId}/participant/${participantId}/product`, {
       attributes,

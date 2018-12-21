@@ -3,6 +3,8 @@ import { createSelector } from 'reselect';
 import { formValueSelector, getFormMeta } from 'redux-form';
 import moment from 'moment';
 import find from 'lodash/find';
+import assign from 'lodash/assign';
+import isEqual from 'lodash/isEqual';
 // Selectors
 import { stepTwoCampDaysLengthSelector, stepTwoStartDateSelector } from '../StepTwo/selectors';
 // Constants
@@ -55,6 +57,13 @@ export const weeksCounterSelector = createSelector(
   },
 );
 
+export const weeksSelectedWeekIdSelector = createSelector(
+  weeksSelector,
+  function(weeks) {
+    return weeks.selectedWeekId;
+  }
+);
+
 export const stepOneSecondaryGroupSelector = createSelector(
   stepOneSelector,
   function(stepOne) {
@@ -94,7 +103,7 @@ export const weeksItemsSelector = createSelector(
       const startDateAddDays = idx * daysInWeek;
       const startDate = moment(start, stringFormat).add(startDateAddDays, days).format(stringFormat);
       const endDate = moment(startDate, stringFormat).add(7, days).subtract(1, days).format(stringFormat);
-      return Object.assign({}, week, { start_date: startDate, end_date: endDate });
+      return assign({}, week, { start_date: startDate, end_date: endDate });
     });
   },
 );
@@ -102,13 +111,13 @@ export const weeksItemsSelector = createSelector(
 export const isWeeklyCampSelector = createSelector(
   stepOneGroupSelector,
   function(group) {
-    return group === weekly_camp;
+    return isEqual(group, weekly_camp);
   },
 );
 
-export function stepOneFormValueSelector(state, name, prefix) {
+export function stepOneFormValueSelector(state, name) {
   const selector = formValueSelector('wizard');
-  return selector(state, `${name}_${prefix}`);
+  return selector(state, name);
 };
 
 export const stepOneFormValuesName = createSelector(
@@ -127,25 +136,22 @@ export const stepOneFormValuesName = createSelector(
 
 export const stepOneAgeSelector = createSelector(
   stateSelector,
-  stepOneFormValuesName,
-  function(state, name) {
-    return stepOneFormValueSelector(state, name, stepOneFormFieldsName.age);
+  function(state) {
+    return stepOneFormValueSelector(state, stepOneFormFieldsName.age);
   },
 );
 
 export const stepOneGenderSelector = createSelector(
   stateSelector,
-  stepOneFormValuesName,
-  function(state, name) {
-    return stepOneFormValueSelector(state, name, stepOneFormFieldsName.gender);
+  function(state) {
+    return stepOneFormValueSelector(state, stepOneFormFieldsName.gender);
   },
 );
 
 export const stepOneSleepawaySelector = createSelector(
   stateSelector,
-  stepOneFormValuesName,
-  function(state, name) {
-    return stepOneFormValueSelector(state, name, stepOneFormFieldsName.sleepaway);
+  function(state) {
+    return stepOneFormValueSelector(state, stepOneFormFieldsName.sleepaway);
   },
 );
 
@@ -158,7 +164,7 @@ export const stepOneBoardingSelector = createSelector(
       case 'Non-Boarding':
         return 'no';
       default:
-        console.warn('something wrong with string boarding value!');
+        console.warn('Something wrong with string boarding value!');
         return sleepaway;
     }
   },
@@ -173,7 +179,7 @@ export const stepOneBoardingBooleanSelector = createSelector(
       case 'Non-Boarding':
         return false;
       default:
-        console.warn('something wrong with boolean boarding value!');
+        console.warn('Something wrong with boolean boarding value!');
         return false;
     }
   },

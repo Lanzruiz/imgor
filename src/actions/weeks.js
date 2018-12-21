@@ -47,3 +47,10 @@ export function setWeekPrice(price) {
     payload: price,
   };
 }
+
+export function removeCustomizedWeek(id) {
+  return {
+    type: weeksTypes.REMOVE_CUSTOMIZED_WEEK,
+    payload: id,
+  };
+}

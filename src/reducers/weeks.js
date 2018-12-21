@@ -1,3 +1,7 @@
+// Modules
+import isEqual from 'lodash/isEqual';
+import assign from 'lodash/assign';
+import concat from 'lodash/concat';
 // Constants
 import * as weeksTypes from '../constants/weeks';
 
@@ -13,11 +17,8 @@ export default function(state = initialState, action) {
     case weeksTypes.INCREMENT_WEEKS_COUNTER: {
       const counter = state.weeksCounter + 1;
       if (counter <= weeksTypes.maxWeekCount) {
-        return {
-          ...state,
-          weeks: createWeeksArray(counter),
-          weeksCounter: counter,
-        };
+        const weeks = createWeeksArray(counter);
+        return assign({}, state, { weeks }, { weeksCounter: counter });
       }
       return state;
     }
@@ -27,64 +28,48 @@ export default function(state = initialState, action) {
       if (counter < 0) {
         return state;
       }
-      return {
-        ...state,
-        weeks: createWeeksArray(counter),
-        weeksCounter: counter,
-        selectedWeekId: (state.selectedWeekId > counter) ? 0 : state.selectedWeekId,
-      };
+      const selectedWeekId = (state.selectedWeekId > counter) ? 0 : state.selectedWeekId;
+      const weeks = createWeeksArray(counter);
+      return assign({}, state, { weeks }, { weeksCounter: counter }, { selectedWeekId });
     }
 
     case weeksTypes.SET_WEEKS_COUNTER: {
-      if (state.weeksCounter === payload) {
+      if (isEqual(state.weeksCounter, payload)) {
         return state;
       }
-      if (payload === 0) {
-        return {
-          ...state,
-          ...initialState,
-        };
+      if (isEqual(payload, 0)) {
+        return assign({}, state, { initialState });
       }
-      return {
-        ...state,
-        weeks: createWeeksArray(payload),
-        weeksCounter: payload,
-      };
+      return assign({}, state, { weeks: createWeeksArray(payload) }, { weeksCounter: payload } );
     }
 
     case weeksTypes.SET_ONLY_WEEKS: {
-      if (state.weeksCounter === payload) {
+      if (isEqual(state.weeksCounter, payload)) {
         return state;
       }
-      return {
-        ...state,
-        weeks: createWeeksArray(payload),
-      };
+      return assign({}, state, { weeks: createWeeksArray(payload) });
     }
 
     case weeksTypes.SELECT_WEEK: {
-      return {
-        ...state,
-        selectedWeekId: payload,
-      };
+      return assign({}, state, { selectedWeekId: payload });
     }
 
     case weeksTypes.CUSTOMIZE_WEEK: {
-      const weeks = [...state.weeks];
+      const weeks = concat(state.weeks);
       weeks[state.selectedWeekId].customize_id = payload;
-      return {
-        ...state,
-        weeks,
-      };
+      return assign({}, state, { weeks });
+    }
+
+    case weeksTypes.REMOVE_CUSTOMIZED_WEEK: {
+      const weeks = concat(state.weeks);
+      weeks[state.selectedWeekId].customize_id = null;
+      return assign({}, state, { weeks });
     }
 
     case weeksTypes.SET_WEEK_PRICE: {
-      const weeks = [...state.weeks];
+      const weeks = concat(state.weeks);
       weeks[state.selectedWeekId].price = payload;
-      return {
-        ...state,
-        weeks,
-      };
+      return assign({}, state, { weeks });
     }
 
     default: {

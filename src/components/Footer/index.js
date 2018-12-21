@@ -15,7 +15,7 @@ import arrowDownSmall from '../../assets/img/arrow-down-small.png';
 import './styles.scss';
 
 const Footer = (props) => {
-  const { price, message, arrowUp, hasMessage } = props;
+  const { price, message, arrowUp, hasMessage, purchaseOnClickHandler, saveCampOnClickHandler, shareOnClickHandler } = props;
   const arrowPositinon = arrowUp ? arrowUpSmall : arrowDownSmall;
   return (
     <div className="footer__container footer__container--fixed">
@@ -44,9 +44,21 @@ const Footer = (props) => {
                   </div>
                 ) : (
                   <div className="footer__btn-container">
-                    <FooterButton purchase stringKey="purchase_on_shop_img" />
-                    <FooterButton save stringKey="save_camp" />
-                    <FooterButton share stringKey="share_camp" />
+                    <FooterButton
+                      purchase
+                      stringKey="purchase_on_shop_img"
+                      onClick={purchaseOnClickHandler}
+                    />
+                    <FooterButton
+                      save
+                      stringKey="save_camp"
+                      onClick={saveCampOnClickHandler}
+                    />
+                    <FooterButton
+                      share
+                      stringKey="share_camp"
+                      onClick={shareOnClickHandler}
+                    />
                   </div>
                 )
               }
@@ -96,12 +108,18 @@ Footer.propTypes = {
   price: PropTypes.number,
   arrowUp: PropTypes.bool,
   hasMessage: PropTypes.bool,
+  purchaseOnClickHandler: PropTypes.func.isRequired,
+  saveCampOnClickHandler: PropTypes.func.isRequired,
+  shareOnClickHandler: PropTypes.func.isRequired
 };
 
 Footer.defaultProps = {
   price: 0,
   arrowUp: false,
   hasMessage: true,
+  purchaseOnClickHandler: () => { console.warn('Where is your purchaseOnClickHandler?'); },
+  saveCampOnClickHandler: () => { console.log('Where is your saveCampOnClickHandler?'); },
+  shareOnClickHandler: () => { console.log('Where is your shareOnClickHandler?'); }
 };
 
 export default Footer;

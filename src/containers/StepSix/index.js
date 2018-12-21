@@ -100,6 +100,7 @@ class StepSix extends React.Component {
 
   componentDidMount() {
     const { stepFiveDataPerPage } = this.props;
+    console.log('stepFiveDataPerPage ', stepFiveDataPerPage);
     if (stepFiveDataPerPage.length === 0) {
       scrollToComponent(this.stepSix.current);
     }

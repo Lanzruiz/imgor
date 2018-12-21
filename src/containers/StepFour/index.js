@@ -19,7 +19,7 @@ import * as stepFourActions from '../../actions/step.four';
 // Selectors
 import { stepThreeHasSecondaryProgram, stepThreeSecondaryProgramsSelector } from '../StepThree/selector';
 import { stepTwoStartDateSelector, stepTwoEndDateSelector } from '../StepTwo/selectors';
-import { weeksItemsSelector, stepOneAgeSelector, stepOneGenderSelector } from '../StepOne/selectors';
+import { weeksItemsSelector, stepOneAgeSelector, stepOneGenderSelector, weeksSelectedWeekIdSelector } from '../StepOne/selectors';
 import { stepFourDataSelector, stepFourSecondaryProgramIdSelector } from './selectors';
 // Styles
 import './styles.scss';
@@ -127,6 +127,7 @@ class StepFour extends React.Component {
             sport={sport}
             programType={programType}
             weekId={id}
+            maxWeekCounter={weeks.length}
           />
         </TabPanel>
       );
@@ -237,7 +238,7 @@ class StepFour extends React.Component {
 function mapStateToProps(state) {
   return {
     weeks: weeksItemsSelector(state),
-    selectedWeekId: state.weeks.selectedWeekId,
+    selectedWeekId: weeksSelectedWeekIdSelector(state),
     age: stepOneAgeSelector(state),
     gender: stepOneGenderSelector(state),
     startDate: stepTwoStartDateSelector(state),
@@ -396,7 +397,7 @@ function StepFourSatSecondaryProgram(args) {
   );
 }
 
-function FifteenHoursSentence() {
+export function FifteenHoursSentence() {
   return (
     <span className="step-four__fifteen-hours">
       <LocaleString stringKey="step_four.15_hours" />
@@ -404,7 +405,7 @@ function FifteenHoursSentence() {
   );
 };
 
-function EducationSentence() {
+export function EducationSentence() {
   return (
     <span className="step-four__education">
       <LocaleString stringKey="step_four.education" />
@@ -412,7 +413,7 @@ function EducationSentence() {
   );
 };
 
-function PerWeekSentence() {
+export function PerWeekSentence() {
   return (
     <span className="step-four__per-week">
       <LocaleString stringKey="step_four.per_week" />
@@ -420,7 +421,7 @@ function PerWeekSentence() {
   );
 };
 
-function OneHourSentence() {
+export function OneHourSentence() {
   return (
     <span className="step-four__one-hour">
       <LocaleString stringKey="step_four.1_hour" />
@@ -428,7 +429,7 @@ function OneHourSentence() {
   );
 }
 
-function TrainingSentence() {
+export function TrainingSentence() {
   return (
     <span className="step-four__training">
       <LocaleString stringKey="training" />
@@ -436,7 +437,7 @@ function TrainingSentence() {
   );
 }
 
-function DailySessionsSentence() {
+export function DailySessionsSentence() {
   return (
     <span className="step-four__daily-sessions">
       <LocaleString stringKey="step_four.daily_sessions" />

@@ -4,23 +4,39 @@ import PropTypes from 'prop-types';
 import { Row, Col } from 'react-grid-system';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import cx from 'classnames';
+import assign from 'lodash/assign';
+import find from 'lodash/find';
+import { ReactHeight } from 'react-height';
 // Components
-import Card from '../Card';
+import Card, { CardContent, CardContentRow, CardContentCol, ImagePlus } from '../../components/Card';
+import { EducationSentence, FifteenHoursSentence, OneHourSentence, PerWeekSentence, TrainingSentence } from '../../containers/StepFour';
 import LocaleString from '../LocaleString';
 // Actions
 import * as weeksActions from '../../actions/weeks';
 import * as stepFourActions from '../../actions/step.four';
 // Selectors
+import { cartIdSelector, participantIdSelector } from '../../containers/StepOne/selectors';
 import {
   stepFourWeekOneDataSelector, stepFourWeekTwoDataSelector, stepFourWeekThreeDataSelector,
   stepFourWeekFourDataSelector, stepFourWeekFiveDataSelector, stepFourWeekSixDataSelector,
   stepFourWeekSevenDataSelector, stepFourWeekEightDataSelector, stepFourWeekNineDataSelector,
   stepFourWeekTenDataSelector, stepFourWeekElevenDataSelector, stepFourWeekTwelveDataSelector,
 } from '../../containers/StepFour/selectors';
+// Constants
+import { productTypesEnum } from '../../constants/cart';
 // Styles
 import './styles.scss';
 
 class StepFourWeekConcentrationComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.stepFour = React.createRef();
+    this.state = {
+      height: 100,
+    };
+  }
+
   static propTypes = {
     week_1_data: PropTypes.arrayOf(
       PropTypes.shape({}),
@@ -75,7 +91,9 @@ class StepFourWeekConcentrationComponent extends React.Component {
       getCatalogCampWeekTenRequest: PropTypes.func.isRequired,
       getCatalogCampWeekElevenRequest: PropTypes.func.isRequired,
       getCatalogCampWeekTwelveRequest: PropTypes.func.isRequired,
+      stepFourCustomizeWeekRequest: PropTypes.func.isRequired,
     }),
+    maxWeekCounter: PropTypes.number.isRequired,
   };
 
   componentDidMount() {
@@ -87,8 +105,14 @@ class StepFourWeekConcentrationComponent extends React.Component {
     const data = this.props[`week_${weekId}_data`];
     return (
       <Row>
-        {data.map(({ id, price, length_program, age_range, secondary_program_type }) => {
+        {data.map(({ id, price, age_range, secondary_program_type, sold_out }) => {
           const computedLabel = age_range ? `ages ${age_range}` : '';
+          const cardContentProps = assign({}, { sold_out, secondary_program_type });
+          const customButtonTitle = (
+            customizeId
+              ? <LocaleString stringKey="remove" />
+              : <LocaleString stringKey="select" />
+          );
           return (
             <Col md={4} key={id}>
               <Card
@@ -99,9 +123,11 @@ class StepFourWeekConcentrationComponent extends React.Component {
                 label={computedLabel}
                 price={price}
                 onClick={this.customizeWeek}
+                onRemove={this.deleteSelectedConcentration}
                 selectedId={customizeId}
+                customButtonTitle={customButtonTitle}
               >
-                {this.renderCardContent(secondary_program_type)}
+                {this.renderCardContent(cardContentProps)}
               </Card>
             </Col>
           );
@@ -111,102 +137,78 @@ class StepFourWeekConcentrationComponent extends React.Component {
   }
 
   renderCardContent = (secondaryProgramType) => {
-    switch(secondaryProgramType) {
+    const { secondary_program_type, sold_out } = secondaryProgramType;
+    const { height } = this.state;
+
+    switch(secondary_program_type) {
+      case 'Strength/Power':
+      case 'Speed':
+      case 'Nutrition':
+      case 'Mental/Vision':
       case 'Leadership': {
+        const contentClassNames = cx('step-four__esl-secondary-program', {
+          'step-four__secondary-program--available': !sold_out,
+          'step-four__secondary-program--sold-out': sold_out,
+        });
         return (
-          <Content>
-            <Paragraph stringKey="concentration.leadership_training_focusing" />
-            <List>
-              <ListItem stringKey="concentration.effective_communication" />
-              <ListItem stringKey="concentration.authentic_leadership" />
-              <ListItem stringKey="concentration.interview_skills" />
-              <ListItem stringKey="concentration.developing_identity" />
-              <ListItem stringKey="concentration.media_training" />
-              <ListItem stringKey="concentration.power_of_collaboration" />
-              <ListItem stringKey="concentration.building_team_culture" />
-            </List>
-          </Content>
+          <CardContent>
+            <CardContentRow>
+              <CardContentCol>
+                <ReactHeight onHeightReady={this.setMinHeight} style={{ height: `${this.props.height}px` }}>
+                  <div className={contentClassNames}>
+                    <div className="step-four__esl-image-container">
+                      <ImagePlus soldOut={sold_out} />
+                    </div>
+                    <div className="step-four__esl-content-container">
+                      <OneHourSentence />
+                      <TrainingSentence />
+                      <PerWeekSentence />
+                    </div>
+                  </div>
+                </ReactHeight>
+              </CardContentCol>
+            </CardContentRow>
+          </CardContent>
         );
       }
 
-      case 'Mental/Vision': {
-        return (
-          <Content>
-            <Paragraph stringKey="concentration.mental_vision_conditioning" />
-            <List>
-              <ListItem stringKey="concentration.mental_toughness" />
-              <ListItem stringKey="concentration.awareness" />
-              <ListItem stringKey="concentration.energy_thought_management" />
-              <ListItem stringKey="concentration.teamwork" />
-              <ListItem stringKey="concentration.hand_eye_coordination" />
-              <ListItem stringKey="concentration.peripheral_vision" />
-              <ListItem stringKey="concentration.reaction_time" />
-            </List>
-          </Content>
-        );
-      }
-
-      case 'Nutrition': {
-        return (
-          <Content>
-            <Paragraph stringKey="concentration.nutrition_education_focusing" />
-            <List>
-              <ListItem stringKey="concentration.optimal_everyday_nutrition" />
-              <ListItem stringKey="concentration.athlete_eating_plans" />
-              <ListItem stringKey="concentration.nutrient_intake_and_timing" />
-              <ListItem stringKey="concentration.dietary_supplements" />
-              <ListItem stringKey="concentration.body_composition_and_framework" />
-              <ListItem stringKey="concentration.body_weight_issues" />
-              <ListItem stringKey="concentration.energy_balance" />
-            </List>
-          </Content>
-        );
-      }
-
-      case 'Speed': {
-        return (
-          <Content>
-            <Paragraph stringKey="concentration.speed_training_focusing" />
-            <List>
-              <ListItem stringKey="concentration.agility_and_movement" />
-              <ListItem stringKey="concentration.explosiveness" />
-              <ListItem stringKey="concentration.sport_specific_techniques" />
-              <ListItem stringKey="concentration.proper_mechanics" />
-            </List>
-          </Content>
-        );
-      }
-
-      case 'Strength/Power': {
-        return (
-          <Content>
-            <Paragraph stringKey="concentration.strength_power_training_focusing" />
-            <List>
-              <ListItem stringKey="concentration.endurance_conditioning" />
-              <ListItem stringKey="concentration.strength_and_power" />
-              <ListItem stringKey="concentration.flexibility" />
-              <ListItem stringKey="concentration.balance" />
-              <ListItem stringKey="concentration.core" />
-            </List>
-          </Content>
-        );
-      }
-
+      case 'SAT':
       case 'ESL': {
+        const contentClassNames = cx('step-four__esl-secondary-program', {
+          'step-four__secondary-program--available': !sold_out,
+          'step-four__secondary-program--sold-out': sold_out,
+        });
         return (
-          <Content>
-            <Paragraph stringKey="concentration.english_language_learning" />
-            <Paragraph stringKey="concentration.toefl_test_site" />
-          </Content>
+          <CardContent>
+            <CardContentRow>
+              <CardContentCol>
+                <ReactHeight onHeightReady={this.setMinHeight} style={{ height }}>
+                  <div className={contentClassNames}>
+                    <div className="step-four__esl-image-container">
+                      <ImagePlus soldOut={sold_out} />
+                    </div>
+                    <div className="step-four__esl-content-container">
+                      <FifteenHoursSentence />
+                      <EducationSentence />
+                      <PerWeekSentence />
+                    </div>
+                  </div>
+                </ReactHeight>
+              </CardContentCol>
+            </CardContentRow>
+          </CardContent>
         );
       }
 
-      case 'SAT': {
+      case 'Skip this week': {
         return (
-          <Content>
-            <Paragraph stringKey="concentration.college_testing" />
-            <Paragraph stringKey="concentration.sat_college" />
-          </Content>
+          <CardContent>
+            <CardContentRow>
+              <CardContentCol>
+                <div style={{ height }} />
+              </CardContentCol>
+            </CardContentRow>
+          </CardContent>
         );
       }
 
@@ -281,12 +283,33 @@ class StepFourWeekConcentrationComponent extends React.Component {
   };
 
   customizeWeek = (id) => {
-    const { weekId } = this.props;
+    const { weekId, cartId, participantId, maxWeekCounter } = this.props;
     const data = this.props[`week_${weekId}_data`];
-    const selectedItem = data.find((item) => item.id === id);
+    const selectedItem = find(data, ['id', id]);
     const price = selectedItem && selectedItem.price;
-    this.props.weeksActions.customizeWeek(id);
     this.props.weeksActions.setWeekPrice(price);
+    const args = {
+      cartId,
+      participantId,
+      product: selectedItem,
+      quantity: 1,
+      productId: id,
+      type: productTypesEnum.concentration,
+      nextWeekId: weekId >= maxWeekCounter ? null : weekId,
+    };
+    this.props.stepFourActions.stepFourCustomizeWeekRequest(args);
+  };
+
+  setMinHeight = (height) => {
+    if (this.state.height < height) {
+      this.setState(() => ({ height }));
+    }
+  };
+
+  deleteSelectedConcentration = (id) => {
+    // TODO: write handler!
+    console.warn(`Need handler to delete concentration by ${id} :(`);
+    this.props.weeksActions.removeCustomizedWeek(id);
   }
 }
 
@@ -304,6 +327,8 @@ function mapStateToProps(state) {
     week_10_data: stepFourWeekTenDataSelector(state),
     week_11_data: stepFourWeekElevenDataSelector(state),
     week_12_data: stepFourWeekTwelveDataSelector(state),
+    cartId: cartIdSelector(state),
+    participantId: participantIdSelector(state),
   };
 };
 
@@ -313,37 +338,5 @@ function mapDispatchToProps(dispatch) {
     stepFourActions: bindActionCreators(stepFourActions, dispatch),
   };
 };
-
-function Paragraph({ stringKey }) {
-  return (
-    <p className="week-concentration-component__paragraph">
-      <LocaleString stringKey={stringKey} />
-    </p>
-  );
-};
-
-function List({ children }) {
-  return (
-    <ul className="week-concentration-component__list">
-      {children}
-    </ul>
-  );
-};
-
-function ListItem({ stringKey }) {
-  return (
-    <li className="week-concentration-component__list-item">
-      <LocaleString stringKey={stringKey} />
-    </li>
-  );
-}
-
-function Content({ children }) {
-  return (
-    <div className="week-concentration-component__content">
-      {children}
-    </div>
-  );
-}
 
 export default connect(mapStateToProps, mapDispatchToProps)(StepFourWeekConcentrationComponent);

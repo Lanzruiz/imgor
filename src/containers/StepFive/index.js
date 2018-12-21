@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import scrollToComponent from 'react-scroll-to-component';
 import isEqual from 'lodash/isEqual';
+import find from 'lodash/find';
 // Components
 import Header from '../../components/Header';
 import Card, { CardContent, CardContentRow, CardContentCol, CardContentText } from '../../components/Card';
@@ -35,6 +36,9 @@ class StepFive extends React.Component {
   constructor(props) {
     super(props);
     this.stepFour = React.createRef();
+    this.state = {
+      height: 100,
+    };
   }
 
   static propTypes = {
@@ -173,10 +177,6 @@ class StepFive extends React.Component {
     ),
   };
 
-  state = {
-    height: 100,
-  };
-
   componentDidMount() {
     const { businessType, packageType, sport, startDate, gender, boarding, age } = this.props;
     const getCatalogGearUpsellNewArgs = {
@@ -241,7 +241,7 @@ class StepFive extends React.Component {
 
   setGear = (productId) => {
     const { cartId, participantId, data, stepFiveProducts } = this.props;
-    const gearItem = data.find(({ id }) => id === productId);
+    const gearItem = find(data, ['id', productId]);
     const currentProduct = stepFiveProducts[productId];
     if (gearItem) {
       const args = {
@@ -354,7 +354,7 @@ class StepFive extends React.Component {
 
   renderCardAttributes = (attribute, selectedGearId, selectedOptionId) => {
     const { display_name, key, options } = attribute;
-    const selectedOption = options.find(({ id }) => selectedOptionId === id);
+    const selectedOption = find(options, ['id', selectedOptionId]);
     const selectedOptionValue = selectedOption ? selectedOption.display_name : undefined;
     return (
       <div key={key} className="step-five__card-attributes">
@@ -390,7 +390,7 @@ class StepFive extends React.Component {
 
   updateGearItem = (productId) => {
     const { cartId, participantId, data, stepFiveProducts, selectedGear } = this.props;
-    const gearItem = data.find(({ id }) => id === productId);
+    const gearItem = find(data, ['id', productId]);
     const currentProduct = stepFiveProducts[productId];
     if (gearItem) {
       const args = {

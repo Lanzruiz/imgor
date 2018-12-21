@@ -135,7 +135,7 @@ class StepTwo extends React.Component {
       [monthEnum[11]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['dec'])),
     }
     return (
-      <Container style={{ marginBottom: '130px' }}>
+      <Container style={{ marginBottom: `${(!selectedDate.capacity_start_date && !selectedDate.capacity_end_date) ? 130 : 30}px` }}>
         <Row>
           <Col>
             <Header

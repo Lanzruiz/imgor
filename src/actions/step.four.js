@@ -1,7 +1,13 @@
+// Modules
+import isEqual from 'lodash/isEqual';
+import isNumber from 'lodash/isNumber';
 // Constants
 import * as stepFourTypes from '../constants/step.four';
+import { emptyConcentrationId } from '../reducers/step.four';
 // Api
 import Api from '../api';
+// Actions
+import { selectWeek, customizeWeek } from './weeks';
 
 function getCatalogCamps(data) {
   return {
@@ -365,4 +371,26 @@ export function stepFourSetSecondaryProgramId(id) {
     type: stepFourTypes.STEP_FOUR_SET_SECONDARY_PROGRAM_ID,
     payload: id,
   };
+}
+
+export function stepFourCustomizeWeekRequest({ cartId, product, participantId, quantity, productId, type, nextWeekId }) {
+  // TODO: need to be fixed!
+  return function(dispatch) {
+    // TODO: rewrite that when api call status === 200
+    dispatch(customizeWeek(productId));
+    if (isEqual(productId, emptyConcentrationId)) {
+      if (isNumber(nextWeekId)) {
+        dispatch(selectWeek(nextWeekId));
+      }
+      return;
+    }
+    // TODO: write select week after request status === 200
+    Api.req({
+      apiCall: Api.postCartCartIdParticipantIdProduct,
+      apiCallParams: { cartId, participantId, product, quantity, productId, type },
+      res200: (data) => { console.log('data ', data) },
+      res404: err => console.log('Api.postCartCartIdParticipantIdProduct() => 404'),
+      reject: err => console.error(err),
+    });
+  }
 }

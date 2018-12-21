@@ -322,7 +322,6 @@ class StepOne extends React.Component {
                         ? (
                             <TabPanel>
                               {this.renderTabPanel({
-                                name: row.name,
                                 range: createNumbersArray({ from: 8, to: 18 }),
                                 boardingOptions: ['Boarding', 'Non-Boarding'],
                                 genderOptions: ['Male', 'Female'],
@@ -331,11 +330,11 @@ class StepOne extends React.Component {
                         ) : (
                           row.options && (
                             row.options.map((option, idx) => {
-                              const { age_from, age_to, name, boarding_options, gender_options } = option;
+                              const { age_from, age_to, boarding_options, gender_options } = option;
                               const range = createNumbersArray({ from: age_from, to: age_to });
                               return (
                                 <TabPanel key={idx}>
-                                  {this.renderTabPanel({ name, range, boardingOptions: boarding_options, genderOptions: gender_options })}
+                                  {this.renderTabPanel({ range, boardingOptions: boarding_options, genderOptions: gender_options })}
                                 </TabPanel>
                               );
                             })
@@ -371,9 +370,7 @@ class StepOne extends React.Component {
     this.props.weeksActions.setWeeksCounter(count);
   };
 
-  renderTabPanel = ({ name = '', range = [], boardingOptions = [], genderOptions = [] }) => {
-    const regExp = /\s/g;
-    const prefix = name.toLowerCase().replace(regExp, '_');
+  renderTabPanel = ({ range = [], boardingOptions = [], genderOptions = [] }) => {
     const { sleepaway, age, gender } = this.props;
     return (
       <div className="tab-content__container tab-row__container content">
@@ -413,7 +410,6 @@ class StepOne extends React.Component {
                 <LocaleString stringKey="step_one.choose_sleepaway" />
               </H3>
               <SleepawayRadioBtn
-                prefix={prefix}
                 options={[{ value: 'Boarding', stringKey: 'yes' },{ value: 'Non-Boarding', stringKey: 'no' }]}
                 sleepaway={sleepaway}
                 possibleValues={boardingOptions}
@@ -427,13 +423,12 @@ class StepOne extends React.Component {
                 ? (
                     <AgeRadioBtnContainer
                       age={age}
-                      prefix={prefix}
                       range={range}
                     />
                   )
                 : (
                   <Field
-                    name={`${prefix}_${stepOneFormFieldsName.age}`}
+                    name={stepOneFormFieldsName.age}
                     component={args => <StepOneAgeDropdown {...args} range={range} />}
                   />
                 )
@@ -444,7 +439,6 @@ class StepOne extends React.Component {
                 <LocaleString stringKey="step_one.gender" />
               </H3>
               <GenderRadioBtnContainer
-                prefix={prefix}
                 options={['Male', 'Female']}
                 value={gender}
                 possibleValues={genderOptions}
@@ -517,11 +511,11 @@ function Paragraph({ children }) {
   );
 }
 
-function SleepawayRadioBtn({ options, prefix, sleepaway, possibleValues }) {
+function SleepawayRadioBtn({ options, sleepaway, possibleValues }) {
   return (
     <Field
       className="content__radio-btn"
-      name={`${prefix}_${stepOneFormFieldsName.sleepaway}`}
+      name={stepOneFormFieldsName.sleepaway}
       type="radio"
       options={options}
       component={({ input, options }) => (
@@ -547,11 +541,11 @@ function SleepawayRadioBtn({ options, prefix, sleepaway, possibleValues }) {
   );
 }
 
-function AgeRadioBtnContainer ({ prefix, range, age }) {
+function AgeRadioBtnContainer ({ range, age }) {
   return (
     <div className="content__age--block">
       <Field
-        name={`${prefix}_${stepOneFormFieldsName.age}`}
+        name={stepOneFormFieldsName.age}
         type="radio"
         options={range}
         component={({ input, options }) => (
@@ -572,14 +566,14 @@ function AgeRadioBtnContainer ({ prefix, range, age }) {
   );
 }
 
-function GenderRadioBtnContainer ({ prefix, options, value, possibleValues }) {
+function GenderRadioBtnContainer ({ options, value, possibleValues }) {
   const defaultPossibleValues = ['Male', 'Female'];
   const computedPossibleValues = include(possibleValues, 'All') ? defaultPossibleValues : possibleValues;
   return (
     <div className="content__radio-container">
       <Field
         className="content__radio-btn"
-        name={`${prefix}_${stepOneFormFieldsName.gender}`}
+        name={stepOneFormFieldsName.gender}
         type="radio"
         options={options}
         component={({ input, options }) => (
