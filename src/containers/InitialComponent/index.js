@@ -2,12 +2,14 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { reduxForm, change } from 'redux-form';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 // Components
 import Preloader from '../../components/Preloader';
 // Actions
 import * as initialSettingsActions from '../../actions/initialSettings';
+import * as stepOneActions from '../../actions/step.one';
 // Styles
 import './styles.scss';
 
@@ -19,9 +21,17 @@ class InitialComponent extends React.Component {
   };
 
   componentDidMount() {
-    const { location: { search } } = this.props;
+    const { location: { search }, sport, gender, group, secondaryGroup, businessType } = this.props;
     const initialParams = queryString.parse(search);
-    this.setInitialSettings(initialParams);
+    const computedSettings = {
+      sport: sport || initialParams.sport,
+      gender: gender || initialParams.gender,
+      group: group || initialParams.group,
+      secondaryGroup: secondaryGroup || initialParams.secondary_group,
+      businessType: businessType || initialParams.business_type,
+      lang: initialParams.lang || 'en',
+    };
+    this.setInitialSettings(computedSettings);
   }
 
   render() {
@@ -33,21 +43,39 @@ class InitialComponent extends React.Component {
   }
 
   setInitialSettings = (initialSettings) => {
-    const { sport, lang = 'en', business_type, package_type } = initialSettings;
-    const computedSettings = {
-      sport,
-      lang,
-      businessType: business_type,
-      packageType: package_type,
-    };
-    this.props.initialSettingsActions.redirectToMainPage(computedSettings);
-  }
+    const { gender, group, secondaryGroup } = initialSettings;
+    if (gender) {
+      this.props.dispatch(
+        change('wizard', 'gender', gender),
+      );
+    }
+    if (group || secondaryGroup) {
+      this.selectGroup({ group, secondary_group: secondaryGroup });
+    }
+    this.props.initialSettingsActions.redirectToMainPage(initialSettings);
+  };
+
+  selectGroup = ({ group, secondary_group }) => {
+    this.props.stepOneActions.selectGroup({ group, secondary_group });
+  };
+}
+
+function mapStateToProps(state) {
+  return {
+    initialValues: { gender: state.initialSettings.gender },
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     initialSettingsActions: bindActionCreators(initialSettingsActions, dispatch),
+    stepOneActions: bindActionCreators(stepOneActions, dispatch),
   };
 }
 
-export default connect(null, mapDispatchToProps)(InitialComponent);
+export default reduxForm({
+  form: 'wizard', // <------ same form name
+  destroyOnUnmount: false, // <------ preserve form data
+})(
+  connect(mapStateToProps, mapDispatchToProps)(InitialComponent)
+);

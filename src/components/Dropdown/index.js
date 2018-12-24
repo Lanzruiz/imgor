@@ -5,6 +5,7 @@ import Img from 'react-image';
 import OutsideClickHandler from 'react-outside-click-handler';
 // Components
 import AnimatedHeightComponent from '../AnimateHeightComponent';
+import LocaleString from '../LocaleString';
 // Images
 import arrowDownSmall from '../../assets/img/arrow-down-small.png';
 import arrowDownSmallWhite from '../../assets/img/arrow-down-white.png';
@@ -15,13 +16,13 @@ export default class Dropdown extends React.Component {
   static propTypes = {
     options: PropTypes.arrayOf(
       PropTypes.shape({
-        id: PropTypes.string,
+        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         display_name: PropTypes.string,
         name: PropTypes.string,
       }),
     ).isRequired,
     handleChange: PropTypes.func,
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(LocaleString)]),
     whiteArrow: PropTypes.bool,
   };
 
@@ -39,7 +40,6 @@ export default class Dropdown extends React.Component {
     const { whiteArrow, options, selectedOption, handleChange, label } = this.props;
     const { isOpen } = this.state;
     const image = whiteArrow ? arrowDownSmallWhite : arrowDownSmall;
-    // TODO: Write handler to select option
     return (
       <OutsideClickHandler onOutsideClick={this.closeDropdown}>
         <div className="dropdown__label" onClick={this.toggleDropdown}>{label}</div>

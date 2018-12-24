@@ -3,10 +3,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Img from 'react-image';
+import { ReactHeight } from 'react-height';
 // Components
 import Button from '../Button';
 import GreenBlock from '../GreenBlock';
 import LocaleString from '../LocaleString';
+import Tooltip from '../Tooltip';
+import Image from '../Image';
 // Images
 import plus from '../../assets/img/plus.png';
 import plusSoldOut from '../../assets/img/sold-out-plus.png';
@@ -77,6 +80,11 @@ class Card extends React.Component {
     soldOut: PropTypes.bool,
     customButtonTitle: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     onRemove: PropTypes.func,
+    onCardBodyHeadHeightReady: PropTypes.func.isRequired,
+    onCardBodyHeightReady: PropTypes.func.isRequired,
+    cardBobyHeadStyles: PropTypes.object.isRequired,
+    cardBodyStyles: PropTypes.object.isRequired,
+    tooltipMessage: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
   };
 
   static defaultProps = {
@@ -97,12 +105,17 @@ class Card extends React.Component {
     cardHeaderCapitalize: false,
     soldOut: false,
     customButtonTitle: '',
+    onCardBodyHeadHeightReady: () => {},
+    onCardBodyHeightReady: () => {},
+    cardBobyHeadStyles: {},
+    cardBodyStyles: {},
   };
 
   render() {
     const {
       children, header, label, headerSize, color, cardHeader, imgSrc, id, soldOut,
       selectedId, priceDescription, cardHeaderCapitalize, style, className,
+      onCardBodyHeadHeightReady, onCardBodyHeightReady, cardBobyHeadStyles, cardBodyStyles,
     } = this.props;
 
     const isSelectedIdExists = (typeof selectedId === 'number' || typeof selectedId === 'string');
@@ -137,16 +150,24 @@ class Card extends React.Component {
       <div className={cardContainerClassNames} style={style}>
         {this.renderCardHead({ header, label, headerSize, color })}
         <div className="card__body card-body">
-          <div className={cardBodyHeadClassNames}>
+          <ReactHeight
+            onHeightReady={onCardBodyHeadHeightReady}
+            className={cardBodyHeadClassNames}
+            style={cardBobyHeadStyles}
+          >
             <h4 className={cardHeaderClassNames}>{cardHeader}</h4>
             {this.renderPriceBlock(priceDescription)}
-          </div>
-          <div className="card-body__body">
+          </ReactHeight>
+          <ReactHeight
+            onHeightReady={onCardBodyHeightReady}
+            className="card-body__body"
+            style={cardBodyStyles}
+          >
             {this.renderImage(imgSrc)}
             <div className={contentBlockClassNames}>
               {children}
             </div>
-          </div>
+          </ReactHeight>
           {this.renderButtonBlock(buttonClassNames, isCurrentCardSelected)}
         </div>
       </div>
@@ -188,10 +209,7 @@ class Card extends React.Component {
 
   renderImage = (src) => src && (
     <div className="card-body__image">
-      <Img
-        className="card-body__image-item"
-        src={src}
-      />
+      <Image className="card-body__image-item" src={src} />
     </div>
   );
 
@@ -215,25 +233,23 @@ class Card extends React.Component {
   };
 
   renderButtonBlock = (buttonClassNames, isCurrentCardSelected) => {
-    const { buttonBlock, soldOut, customButtonTitle } = this.props;
+    const { buttonBlock, soldOut, customButtonTitle, tooltipMessage } = this.props;
     const onClickHandler = soldOut ? null : this.onClickHandler;
+    const buttonTitle = (
+      soldOut
+        ? <LocaleString stringKey="sold_out" />
+        : isCurrentCardSelected
+          ? customButtonTitle
+            ? customButtonTitle
+            : <LocaleString stringKey="card.selected" />
+          : <LocaleString stringKey="card.select" />
+    );
     return buttonBlock && (
       <div className="card-body__footer">
         <Button className={buttonClassNames} onClick={onClickHandler}>
-          {
-            soldOut
-              ? (
-                  <LocaleString stringKey="sold_out" />
-                )
-              : (
-                  isCurrentCardSelected
-                    ? (
-                        customButtonTitle
-                          ? customButtonTitle
-                          : <LocaleString stringKey="card.selected" />
-                      )
-                    : <LocaleString stringKey="card.select" />
-                )
+          {tooltipMessage
+            ? <Tooltip message={tooltipMessage} children={buttonTitle} />
+            : buttonTitle
           }
         </Button>
       </div>

@@ -269,9 +269,18 @@
             &--disabled {
                 text-decoration: line-through;
             }
+
+            & .radio-btn__container--regular {
+                font-family: $trade-gothic;
+                font-weight: normal;
+            }
         }
 
         &__age {
+            display: block;
+            float: left;
+            width: 33%;
+
             &--block {
                 display: block;
 
@@ -282,9 +291,10 @@
                 }
             }
 
-            display: block;
-            float: left;
-            width: 33%;
+            & .radio-btn__container--regular {
+                font-weight: normal;
+                font-family: $trade-gothic;
+            }
         }
 
         &__sleepaway-label {

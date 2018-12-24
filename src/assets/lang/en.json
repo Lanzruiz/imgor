@@ -83,6 +83,7 @@
     "step_final.shirt_size.xx-large": "xx-large",
     "step_final.guardian_information": "Parent / Guardian Information",
     "enter_email": "Enter email to build a camp",
+    "choose_age_sleepaway": "Choose camper age and sleepaway",
     "choose_sleepaway": "Choose camper sleepaway option",
     "choose_sleepaway_age_and_gender": "Choose camper sleepaway option, age and gender",
     "choose_sleepaway_and_gender": "Choose camper sleepaway option and gender",
@@ -195,6 +196,7 @@
     "via": "via",
     "remove": "remove",
     "update": "update",
+    "date": "Date",
     "step_three_choose_training_message": "Please choose your training",
     "step_four_make_selection_for_entire_camp_stay": "Make selection for entire camp stay",
     "step_four_week_one_message": "Make a selection for week one",
@@ -220,5 +222,8 @@
     "step_six_departing_airline_message": "Please choose departing airline",
     "step_six_departing_flight_number_message": "Please choose departing flight number",
     "step_six_departing_date_time_message": "Please choose departing date and time",
-    "step_six_departing_pick_up_location_message": "Please choose pick up location"
+    "step_six_departing_pick_up_location_message": "Please choose pick up location",
+    "please_first_choose_size": "Please first choose size",
+    "please_choose_quantity": "Please choose quantity",
+    "please_choose_date": "Please first choose date"
 }

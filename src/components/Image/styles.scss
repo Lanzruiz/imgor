@@ -1,0 +1,24 @@
+@import '../../constants/scss/variables.scss';
+
+#{$root} {
+    .image {
+        &__container {
+            display: block;
+
+            &--landscape {
+                height: auto;
+                width: 100%;
+            }
+
+            &--portrait {
+                height: 100%;
+                width: auto;
+            }
+
+            &--square {
+                height: 100%;
+                width: 100%;
+            }
+        }
+    }
+}

@@ -9,6 +9,7 @@ import isEqual from 'lodash/isEqual';
 import isEmail from 'validator/lib/isEmail';
 import isMobilePhone from 'validator/lib/isMobilePhone';
 import find from 'lodash/find';
+import isArray from 'lodash/isArray';
 // Components
 import Footer from '../../components/Footer';
 import LocaleString from '../../components/LocaleString';
@@ -20,7 +21,7 @@ import * as trainingActions from '../../actions/training';
 // Selectors
 import {
   stepTreeSelectedIdSelector, stepThreeSelectedCardWithSecondaryProgramsIdSelector, stepThreeHasSecondaryProgram,
-  stepThreeSelectedProductSelector,
+  stepThreeSelectedProductSelector, stepThreeParticipantProductIdSelector,
 } from '../StepThree/selector';
 import { totalPriceSelector, currentStepSelector } from './selectors';
 import {
@@ -372,9 +373,11 @@ class WizardForm extends React.Component {
   };
 
   goingToStepFour = () => {
-    const { stepTreeSelectedId } = this.props;
-    if (stepTreeSelectedId) {
+    const { stepTreeSelectedId, participantProductId } = this.props;
+    if (stepTreeSelectedId && !participantProductId) {
       this.props.trainingActions.getCatalogCampCampIdRequest(stepTreeSelectedId);
+    }
+    if (participantProductId) {
       this.goingToStepByStepNymber(stepsEnum.four);
     }
   };
@@ -471,6 +474,9 @@ class WizardForm extends React.Component {
       case (!isString(age) && !isString(gender) && !isString(sleepaway)): {
         return 'choose_sleepaway_age_and_gender';
       }
+      case (!isString(age) && !isString(sleepaway)): {
+        return 'choose_age_sleepaway';
+      }
       case (isString(age) && !isString(gender) && !isString(sleepaway)): {
         return 'choose_sleepaway_and_gender';
       }
@@ -506,9 +512,9 @@ class WizardForm extends React.Component {
   };
 
   stepThreeValidation = () => {
-    const { stepTreeSelectedId } = this.props;
+    const { participantProductId } = this.props;
     switch(true) {
-      case !stepTreeSelectedId: {
+      case !participantProductId: {
         return 'step_three_choose_training_message';
       }
       default:
@@ -666,17 +672,25 @@ class WizardForm extends React.Component {
   };
 
   postCartCartIdParticipantIdProduct = () => {
-    //TODO: rewrite that
-    const { product, selectedId, cartId, participantId } = this.props;
-    if (product && selectedId && cartId && participantId) {
+    // TODO: rewrite that!
+    const { product, stepTreeSelectedId, cartId, participantId, participantProductId } = this.props;
+    if (product && stepTreeSelectedId && cartId && participantId && !participantProductId) {
+      const productId = (
+        isArray(product)
+          ? product[0].id
+          : product.id
+      );
       const args = {
         cartId,
         participantId,
-        product,
+        product: isArray(product) ? product[0]: product,
+        productId,
         quantity: 1,
-        type: productTypesEnum,
+        type: productTypesEnum.camp,
       };
       this.props.stepThreeActions.postCartCartIdParticipantIdProductRequest(args);
+    } else {
+      console.warn('We dont send request!');
     }
   }
 }
@@ -735,6 +749,7 @@ function mapStateToProps(state) {
     stepSixDepartingDateTime: stepSixDepartingDateTimeSelector(state),
     stepSixDeparting: stepSixDepartingSelector(state),
     product: stepThreeSelectedProductSelector(state),
+    participantProductId: stepThreeParticipantProductIdSelector(state),
   };
 };
 

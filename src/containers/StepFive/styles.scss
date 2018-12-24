@@ -17,6 +17,11 @@
             margin-bottom: 10px;
             width: 100%;
 
+            & .dropdown__options {
+                max-height: 175px;
+                overflow: auto;
+            }
+
             & > div {
                 width: 100%;
             }

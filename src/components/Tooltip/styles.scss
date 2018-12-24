@@ -1,0 +1,15 @@
+@import '../../constants/scss/variables.scss';
+
+#{$root} {
+    @import '~rc-tooltip/assets/bootstrap.css';
+
+    .tooltip {
+        &__container {
+            height: 100%;
+            padding: 5px;
+            text-align: center;
+            margin: -5px;
+            width: 100%;
+        }
+    }
+}

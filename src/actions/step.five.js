@@ -6,10 +6,11 @@ import { setStepsCounter } from './steps';
 // Api
 import Api from '../api';
 
-export function getCatalogGearRequest() {
+export function getCatalogGearRequest({ gender }) {
   return function(dispatch) {
     Api.req({
       apiCall: Api.getCatalogGear,
+      apiCallParams: { gender },
       res200: (data) => {
         dispatch(getCatalogGear(data));
         if (data.results && (data.results.length === 0)) {
@@ -72,7 +73,7 @@ function getCatalogGearUpsellNew(data) {
   };
 };
 
-export function getCatalogGearUpsellNewRequest({ business_type, package_type, sport, gender, boarding, age, start_date }) {
+export function getCatalogGearUpsellNewRequest({ business_type, package_type, sport, gender, boarding, age, start_date, end_date }) {
   return function(dispatch) {
     Api.req({
       apiCall: Api.getCatalogGearUpsellNew,
@@ -87,6 +88,7 @@ export function getCatalogGearUpsellNewRequest({ business_type, package_type, sp
         boarding,
         age,
         start_date,
+        end_date,
       },
     });
   }
@@ -158,3 +160,36 @@ export function putCartCartIdParticipantParticipantIdProductIdRequest({ cartId, 
     });
   }
 };
+
+export function stepFiveSetUpsellGearItemDate(id) {
+  return {
+    type: stepFiveTypes.STEP_FIVE_SET_UPSELL_GEAR_ITEM_DATE,
+    payload: id,
+  };
+}
+
+export function stepFiveSetUpsellGearItem(id) {
+  return {
+    type: stepFiveTypes.STEP_FIVE_SET_UPSELL_GEAR_ITEM,
+    payload: id,
+  };
+}
+
+function stepFiveGetCatalogExcursionsNew(data) {
+  return {
+    type: stepFiveTypes.STEP_FIVE_GET_CATALOG_EXCURSIONS_NEW,
+    payload: data,
+  };
+}
+
+export function stepFiveGetCatalogExcursionsNewRequest({ startDate, endDate }) {
+  return function(dispatch) {
+    Api.req({
+      apiCall: Api.getCatalogExcursionsNew,
+      apiCallParams: { startDate, endDate },
+      res200: data => dispatch(stepFiveGetCatalogExcursionsNew(data)),
+      res404: console.log,
+      reject: console.error,
+    });
+  }
+}

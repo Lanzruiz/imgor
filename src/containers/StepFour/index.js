@@ -81,7 +81,7 @@ class StepFour extends React.Component {
 
     if (hasSecondaryProgram) {
       return (
-        <Container style={{ marginBottom: '65px' }} ref={this.stepFour}>
+        <Container style={{ marginBottom: '100px' }} ref={this.stepFour}>
           <Row>
             <Col>
               <Header
@@ -95,7 +95,7 @@ class StepFour extends React.Component {
               <div className="step-four__secondary-programs">
                 <Row>
                   {stepThreeSecondaryPrograms.map((item, idx) => (
-                    <Col md={4} key={idx}>
+                    <Col md={6} lg={4} key={idx}>
                       {this.renderSecondaryPrograms({ ...item, selectedId: stepFourSecondaryProgramId })}
                     </Col>
                   ))}

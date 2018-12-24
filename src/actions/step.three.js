@@ -23,9 +23,9 @@ export function getCatalogCampsLevelsRequest(args) {
       },
     });
   }
-}
+};
 
-export function postCartCartIdParticipantIdProductRequest({ cartId, quantity, product, participantId, type }) {
+export function postCartCartIdParticipantIdProductRequest({ cartId, quantity, product, participantId, type, productId }) {
   return function(dispatch) {
     Api.req({
       apiCall: Api.postCartCartIdParticipantIdProduct,
@@ -37,36 +37,45 @@ export function postCartCartIdParticipantIdProductRequest({ cartId, quantity, pr
         participantId,
         product,
         quantity,
+        productId,
         type,
       },
     });
   }
-}
+};
 
 function postCartCartIdParticipantIdProduct(data) {
-  console.log('Запостил!');
   return {
     type: stepThreeTypes.STEP_THREE_POST_CART_CART_ID_PARTICIPANT_ID_PRODUCT,
     payload: data,
   };
-}
+};
 
 function getCatalogCampsLevels(data) {
   return {
     type: stepThreeTypes.STEP_THREE_GET_CATALOG_CAMPS_LEVELS,
     payload: data,
   };
-}
+};
 
 export function stepThreeSetDefaultState() {
   return {
     type: stepThreeTypes.STEP_THREE_SET_DEFAULT_STATE,
   };
-}
+};
 
 export function stepThreeSetSecondaryPrograms(secondaryPrograms) {
   return {
     type: stepThreeTypes.STEP_THREE_SET_SECONDARY_PROGRAMS,
     payload: secondaryPrograms,
   };
-}
+};
+
+export function stepThreeDeleteProductAndSetProduct({ campId }) {
+  return function(dispatch) {
+    Api.getCatalogCampCampId(campId)
+    .then(data => data.data.results[0])
+      .then((data) => { console.log(data); })
+      .catch((err) => { console.log(err); })
+  }
+};

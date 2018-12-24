@@ -51,3 +51,10 @@ export const stepThreeSelectedProductSelector = createSelector(
     return training.product;
   },
 );
+
+export const stepThreeParticipantProductIdSelector = createSelector(
+  stepThreeSelector,
+  function(stepThree) {
+    return stepThree.participantProductId;
+  }
+);

@@ -24,7 +24,7 @@ import * as stepsActions from '../../actions/steps';
 // Selectors
 import {
   stepThreeDataSelector, stepTreeSelectedIdSelector, stepThreeSelectedProductSelector,
-  stepThreeSelectedCardWithSecondaryProgramsIdSelector,
+  stepThreeSelectedCardWithSecondaryProgramsIdSelector, stepThreeParticipantProductIdSelector,
 } from './selector';
 import {
   isWeeklyCampSelector, stepOneAgeSelector, stepOneGenderSelector, cartIdSelector, participantIdSelector,
@@ -111,8 +111,8 @@ class StepThree extends React.Component {
   render() {
     const { selectedId, data, selectedCardWithSecondaryProgramsId } = this.props;
     return (
-      <div ref={this.stepThree}>
-        <Container style={{ marginBottom: '65px' }}>
+      <div ref={this.stepThree} className="step-three">
+        <Container style={{ marginBottom: '100px' }}>
           <Row>
             <Col>
               <Header
@@ -194,8 +194,14 @@ class StepThree extends React.Component {
   };
 
   selectCard = (id) => {
-    this.saveTrainingId(id);
-    this.setSecondaryPrograms({ id: null, secondary_programs: [] });
+    const { participantProductId } = this.props;
+    if (!participantProductId) {
+      this.saveTrainingId(id);
+      this.setSecondaryPrograms({ id: null, secondary_programs: [] });
+    } else {
+      console.log('remove item?');
+      this.props.stepThreeActions.stepThreeDeleteProductAndSetProduct({ campId: id })
+    }
   };
 
   saveTrainingId = (id) => {
@@ -263,6 +269,7 @@ function mapStateToProps(state) {
     cartId: cartIdSelector(state),
     participantId: participantIdSelector(state),
     selectedCardWithSecondaryProgramsId: stepThreeSelectedCardWithSecondaryProgramsIdSelector(state),
+    participantProductId: stepThreeParticipantProductIdSelector(state),
   };
 };
 

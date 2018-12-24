@@ -17,6 +17,7 @@ import * as weeksActions from '../../actions/weeks';
 import * as stepFourActions from '../../actions/step.four';
 // Selectors
 import { cartIdSelector, participantIdSelector } from '../../containers/StepOne/selectors';
+import { stepThreeParticipantProductIdSelector } from '../../containers/StepThree/selector';
 import {
   stepFourWeekOneDataSelector, stepFourWeekTwoDataSelector, stepFourWeekThreeDataSelector,
   stepFourWeekFourDataSelector, stepFourWeekFiveDataSelector, stepFourWeekSixDataSelector,
@@ -114,7 +115,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
               : <LocaleString stringKey="select" />
           );
           return (
-            <Col md={4} key={id}>
+            <Col md={6} lg={4} key={id}>
               <Card
                 id={id}
                 cardHeader="training"
@@ -283,7 +284,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
   };
 
   customizeWeek = (id) => {
-    const { weekId, cartId, participantId, maxWeekCounter } = this.props;
+    const { weekId, cartId, participantId, maxWeekCounter, stepThreeParticipantProductIdSelector } = this.props;
     const data = this.props[`week_${weekId}_data`];
     const selectedItem = find(data, ['id', id]);
     const price = selectedItem && selectedItem.price;
@@ -291,6 +292,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
     const args = {
       cartId,
       participantId,
+      stepThreeParticipantProductIdSelector,
       product: selectedItem,
       quantity: 1,
       productId: id,
@@ -329,6 +331,7 @@ function mapStateToProps(state) {
     week_12_data: stepFourWeekTwelveDataSelector(state),
     cartId: cartIdSelector(state),
     participantId: participantIdSelector(state),
+    stepThreeParticipantProductId: stepThreeParticipantProductIdSelector(state),
   };
 };
 

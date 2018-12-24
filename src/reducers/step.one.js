@@ -1,9 +1,12 @@
 // Modules
 import isEqual from 'lodash/isEqual';
+import assign from 'lodash/assign';
+import findIndex from 'lodash/findIndex';
+import isNumber from 'lodash/isNumber';
 // Constants
 import * as stepOneTypes from '../constants/step.one';
 // Helpers
-import stringToNumber from '../helpers/stringToNumber';
+import isStringsEqual from '../helpers/isStringsEqual';
 
 const initialState = {
   lengthProgram: '',
@@ -12,7 +15,6 @@ const initialState = {
   secondary_group: null,
   tabIndex: 0,
   stepOnePrice: 0,
-  weeksLengthNumber: 0,
 };
 
 export default function(state = initialState, action) {
@@ -23,54 +25,42 @@ export default function(state = initialState, action) {
       if (isEqual(state.data, results)) {
         return state;
       }
-      return {
-        ...state,
-        data: results,
-      };
+      return assign({}, state, { data: results });
     }
 
     case stepOneTypes.STEP_ONE_SELECT_GROUP: {
       const { group, secondary_group } = payload;
-      if (isEqual({ group: state.group, secondary_group: state.secondary_group, payload })) {
-        return state;
+      const { data } = state;
+      const groupIndex = findIndex(data, groupItem => isStringsEqual(groupItem.name, group));
+      const groupItemByIndex = data[groupIndex];
+      let secondaryGroupIndex;
+      let tabIndex;
+      if (groupItemByIndex) {
+        secondaryGroupIndex = findIndex(groupItemByIndex.options, option => isStringsEqual(option.name, secondary_group));
       }
-      return {
-        ...state,
-        group,
-        secondary_group,
-        weeksLengthNumber: stringToNumber(payload.secondary_group),
-      };
+      tabIndex = isNumber(secondaryGroupIndex) && (secondaryGroupIndex >=0) ? secondaryGroupIndex + 1 : 0;
+      return assign({}, state, { group, secondary_group, tabIndex });
     }
 
     case stepOneTypes.STEP_ONE_SET_TAB_INDEX: {
-      if (state.tabIndex === payload) {
+      if (isEqual(state.tabIndex, payload)) {
         return state;
       }
-      return {
-        ...state,
-        tabIndex: payload,
-      };
+      return assign({}, state, { tabIndex: payload });
     }
 
     case stepOneTypes.STEP_ONE_SET_PRICE: {
-      if (state.stepOnePrice === payload) {
+      if (isEqual(state.stepOnePrice, payload)) {
         return state;
       }
-      return {
-        ...state,
-        stepOnePrice: payload,
-      };
+      return assign({}, state, { stepOnePrice: payload });
     }
 
     case stepOneTypes.STEP_ONE_SET_CAMP_LENGTH: {
-      if (state.lengthProgram === payload) {
+      if (isEqual(state.lengthProgram, payload)) {
         return state;
       }
-      return {
-        ...state,
-        lengthProgram: payload,
-        weeksLengthNumber: stringToNumber(payload),
-      };
+      return assign({}, state, { lengthProgram: payload });
     }
 
     default:

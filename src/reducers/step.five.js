@@ -12,6 +12,9 @@ const initialState = {
   products: {},
   itemsPerPage: 6,
   itemsStepCounter: 6,
+  gearUpsellNew: [],
+  upsellNewProducts: {},
+  excursions: [],
 };
 
 export default function(state = initialState, action) {
@@ -31,17 +34,17 @@ export default function(state = initialState, action) {
         const isCurrentItemSelected = state.selectedGear[item.id];
         products[item.id] = assign({}, item);
         item.selected_option_id = isCurrentItemSelected ? isCurrentItemSelected.selected_option_id : null;
-        item.quantity = isCurrentItemSelected ? isCurrentItemSelected.quantity : 0;
+        item.quantity = isCurrentItemSelected ? isCurrentItemSelected.quantity : 1;
         item.need_to_update = false;
         if (isEqual(item.attributes.length, 0)) {
           item.could_be_selected = true;
           item.selected_option_id = null;
           return item;
         }
-        item.could_be_selected = false;
+        item.could_be_selected = !!item.selected_option_id;
         return item;
       });
-      return assign({}, state, { data }, { products });
+      return assign({}, state, { data, products });
     }
 
     case stepFiveTypes.STEP_FIVE_SET_GEAR: {
@@ -61,8 +64,8 @@ export default function(state = initialState, action) {
         if (isEqual(item.id, payload)) {
           const quantity = item.quantity + 1
           item.quantity = quantity;
-          item.need_to_update = isCurrentItemSelected ? true : false;
-          if (isCurrentItemSelected) {
+          item.need_to_update = !!isCurrentItemSelected;
+          if (item.need_to_update) {
             isCurrentItemSelected.quantity = quantity;
           }
         }
@@ -77,12 +80,8 @@ export default function(state = initialState, action) {
           const isCurrentItemSelected = state.selectedGear[payload];
           const counter = item.quantity - 1
           item.quantity = counter >= 0 ? counter : 0;
-          item.need_to_update = (
-            (counter >= 0) && isCurrentItemSelected
-              ? true
-              : false
-          );
-          if (isCurrentItemSelected) {
+          item.need_to_update = (counter >= 0) && !!isCurrentItemSelected;
+          if (item.need_to_update) {
             isCurrentItemSelected.quantity = counter;
           }
         }
@@ -113,7 +112,18 @@ export default function(state = initialState, action) {
     }
 
     case stepFiveTypes.STEP_SIX_GET_CATALOG_GEAR_UPSELL_NEW: {
-      return state;
+      const { results } = payload;
+      const upsellNewProducts = {};
+      const gearUpsellNew = map(results, (item) => {
+        const isCurrentItemSelected = state.selectedGear[item.id];
+        upsellNewProducts[item.id] = assign({}, item);
+        item.selected_option_id = isCurrentItemSelected ? isCurrentItemSelected.selected_option_id : null;
+        item.quantity = 1;
+        item.need_to_update = false;
+        item.could_be_selected = false;
+        return item;
+      });
+      return assign({}, state, { gearUpsellNew, upsellNewProducts });
     }
 
     case stepFiveTypes.STEP_FIVE_INCREASE_ITEMS_PER_PAGE: {
@@ -137,7 +147,29 @@ export default function(state = initialState, action) {
         }
         return item;
       });
-      return assign({}, state, { data }, { selectedGear });
+      return assign({}, state, { data, selectedGear });
+    }
+
+    case stepFiveTypes.STEP_FIVE_SET_UPSELL_GEAR_ITEM: {
+      const isGearItemSelected = state.selectedGear[payload];
+      if (isGearItemSelected) {
+        return state;
+      }
+      const gearItem = find(state.gearUpsellNew, ['id', payload]);
+      const selectedGear = assign({}, state.selectedGear);
+      selectedGear[payload] = assign({}, gearItem);
+      return assign({}, state, { selectedGear });
+    }
+
+    case stepFiveTypes.STEP_FIVE_SET_UPSELL_GEAR_ITEM_DATE: {
+      console.log(payload);
+      return state;
+    }
+
+    case stepFiveTypes.STEP_FIVE_GET_CATALOG_EXCURSIONS_NEW: {
+      const { results } = payload;
+      if (isEqual(state.excursions, results)) return state;
+      return assign({}, state, { excursions: results });
     }
 
     default:

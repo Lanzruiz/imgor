@@ -1,6 +1,7 @@
 // Modules
 import React from 'react';
 import { Container, Row, Col } from 'react-grid-system';
+import VisibilitySensor from 'react-visibility-sensor';
 import Img from 'react-image';
 import { ReactHeight } from 'react-height';
 import { bindActionCreators } from 'redux';
@@ -9,24 +10,28 @@ import PropTypes from 'prop-types';
 import scrollToComponent from 'react-scroll-to-component';
 import isEqual from 'lodash/isEqual';
 import find from 'lodash/find';
+// Containers
+import StepFiveCatalogExcursionsNew from '../StepFiveCatalogExcursionsNew';
 // Components
 import Header from '../../components/Header';
 import Card, { CardContent, CardContentRow, CardContentCol, CardContentText } from '../../components/Card';
 import Dropdown from '../../components/Dropdown';
 import LocaleString from '../../components/LocaleString';
 import Button from '../../components/Button';
-import AnimateHeightComponent from '../../components/AnimateHeightComponent';
 // Actions
 import * as stepFiveActions from '../../actions/step.five';
 import * as stepsActions from '../../actions/steps';
 // Selectors
 import {
   stepFiveSelectedGearsSelector, stepFiveDataPerPageSelector, stepFiveShouldRenderLoadMoreButtonSelector, stepFiveProductsSelector,
+  stepFiveGearUpsellNewSelector,
 } from './selectors';
 import {
   stepOneAgeSelector, stepOneBoardingBooleanSelector, stepOneGenderSelector, cartIdSelector, participantIdSelector,
 } from '../StepOne/selectors';
 import { stepTwoStartDateSelector, stepTwoEndDateSelector } from '../StepTwo/selectors';
+// Helpers
+import dateFormat from '../../helpers/dateFormat';
 // Constants
 import { productTypesEnum } from '../../constants/cart';
 // Styles
@@ -37,7 +42,9 @@ class StepFive extends React.Component {
     super(props);
     this.stepFour = React.createRef();
     this.state = {
-      height: 100,
+      cardHeadHeight: 44,
+      contentHeight: 40,
+      cardBodyHeight: 40,
     };
   }
 
@@ -54,6 +61,7 @@ class StepFive extends React.Component {
       postCartCartIdParticipantParticipantIdProductRequest: PropTypes.func.isRequired,
       deleteCartCartIdParticipantParticipantIdProductIdRequest: PropTypes.func.isRequired,
       putCartCartIdParticipantParticipantIdProductIdRequest: PropTypes.func.isRequired,
+      stepFiveGetCatalogExcursionsNewRequest: PropTypes.func.isRequired,
     }),
     stepsActions: PropTypes.shape({
       setStepsCounter: PropTypes.func.isRequired,
@@ -186,9 +194,10 @@ class StepFive extends React.Component {
       age,
       business_type: businessType,
       package_type: packageType,
-      start_date: startDate,
+      start_date: '2017-10-10' || startDate, // TODO: remove that
+      end_date: '2019-10-10', // TODO: remove that
     };
-    this.getCatalogGear();
+    this.getCatalogGear({ sport, gender });
     this.getCatalogGearUpsellNew(getCatalogGearUpsellNewArgs);
     scrollToComponent(this.stepFour.current);
   }
@@ -198,7 +207,7 @@ class StepFive extends React.Component {
   }
 
   render() {
-    const { data, shouldRenderLoadMoreButton } = this.props;
+    const { data, shouldRenderLoadMoreButton, stepFiveGearUpsellNew } = this.props;
     return (
       <Container style={{ marginBottom: '65px' }} ref={this.stepFive}>
         <Row>
@@ -235,6 +244,12 @@ class StepFive extends React.Component {
             <Col />
           </Row>
         )}
+        {(stepFiveGearUpsellNew.length > 0) && (
+          <Row>
+            {stepFiveGearUpsellNew.map(this.renderUpsellNew)}
+          </Row>
+        )}
+        <StepFiveCatalogExcursionsNew />
       </Container>
     );
   }
@@ -264,8 +279,20 @@ class StepFive extends React.Component {
   };
 
   setMinHeight = (height) => {
-    if (this.state.height < height) {
-      this.setState(() => ({ height }));
+    if (this.state.contentHeight < height) {
+      this.setState(() => ({ contentHeight: height }));
+    }
+  };
+
+  setCatdHeadHeight = (height) => {
+    if (this.state.cardHeadHeight < height) {
+      this.setState(() => ({ cardHeadHeight: height }));
+    }
+  };
+
+  setCardBodyHeight = (height) => {
+    if (this.state.cardBodyHeight < height) {
+      this.setState(() => ({ cardBodyHeight: height }));
     }
   };
 
@@ -278,9 +305,11 @@ class StepFive extends React.Component {
   };
 
   renderCardItem = (card) => {
-    const { height } = this.state;
+    const { cardHeadHeight, cardBodyHeight, contentHeight } = this.state;
     const { selectedGear } = this.props;
-    const cardContentTextStyles = { minHeight: `${height}px` };
+    const cardBodyStyles = { minHeight: cardBodyHeight };
+    const cardBobyHeadStyles = { minHeight: cardHeadHeight };
+    const cardContentTextStyles = { minHeight: contentHeight };
     const { price, image_url, id, categories = [], description, display_name, attributes, could_be_selected, selected_option_id, quantity, need_to_update } = card;
     const [ label = {}, header = {} ] = categories;
     const selectedGearId = selectedGear[id] ? selectedGear[id].id : null;
@@ -303,51 +332,71 @@ class StepFive extends React.Component {
 
     const onRemoveHandler = (
       need_to_update
-        ? (quantity > 0)
+        ? (quantity > 1)
           ? this.updateGearItem
           : this.removeGear
         : this.removeGear
     );
 
+    let tooltipMessage;
+    if (attributes.length && !selected_option_id) {
+      tooltipMessage =  <LocaleString stringKey="please_first_choose_size" />;
+    } else if (!quantity && !selectedGearId) {
+      tooltipMessage = <LocaleString stringKey="please_choose_quantity" />;
+    } else {
+      tooltipMessage = null;
+    }
+
     return (
-      <Col sm={6} md={4} key={id}>
-        <AnimateHeightComponent>
-          <Card
-            id={id}
-            cardHeader={display_name}
-            color="dark"
-            header={header.display_name}
-            label={label.display_name}
-            price={price}
-            selectedId={selectedGearId}
-            headerSize="extra-small"
-            onClick={onClickHandler}
-            customButtonTitle={customButtonTitle}
-            onRemove={onRemoveHandler}
-          >
-            <CardContent>
-              <CardContentRow>
-                <CardContentCol>
+      <Col md={6} lg={4} key={id}>
+        <Card
+          id={id}
+          cardHeader={display_name}
+          color="dark"
+          header={header.display_name}
+          label={label.display_name}
+          price={price}
+          selectedId={selectedGearId}
+          headerSize="extra-small"
+          onClick={onClickHandler}
+          customButtonTitle={customButtonTitle}
+          onRemove={onRemoveHandler}
+          onCardBodyHeadHeightReady={this.setCatdHeadHeight}
+          cardBobyHeadStyles={cardBobyHeadStyles}
+          cardBodyStyles={cardBodyStyles}
+          onCardBodyHeightReady={this.setCardBodyHeight}
+          tooltipMessage={tooltipMessage}
+        >
+          <CardContent>
+            <CardContentRow>
+              <CardContentCol className="card-content__img-container">
+                <VisibilitySensor>
                   <Img className="card-content__img" src={image_url} />
-                </CardContentCol>
-                <CardContentCol className="center-center">
-                  {attributes.map(attribute => this.renderCardAttributes(attribute, id, selected_option_id))}
-                  {(selected_option_id || !attributes.length) && (
-                    <CardCounter
-                      selectedGearId={id}
-                      quantity={quantity}
-                      incrementHandler={this.incrementSelectedGearCounter}
-                      decrementHandler={this.decrementSelectedGearCounter}
-                    />
-                  )}
-                </CardContentCol>
-              </CardContentRow>
-              <CardContentText style={cardContentTextStyles}>
-                <ReactHeight onHeightReady={this.setMinHeight} children={description} />
-              </CardContentText>
-            </CardContent>
-          </Card>
-        </AnimateHeightComponent>
+                </VisibilitySensor>
+              </CardContentCol>
+              <CardContentCol className="center-center flex-1">
+                {attributes.map(attribute => this.renderCardAttributes(attribute, id, selected_option_id))}
+                {(selected_option_id || !attributes.length) && (
+                  <CardCounter
+                    selectedGearId={id}
+                    quantity={quantity}
+                    incrementHandler={this.incrementSelectedGearCounter}
+                    decrementHandler={this.decrementSelectedGearCounter}
+                  />
+                )}
+              </CardContentCol>
+            </CardContentRow>
+            <CardContentText>
+              <VisibilitySensor>
+                <ReactHeight
+                  onHeightReady={this.setMinHeight}
+                  children={description}
+                  style={cardContentTextStyles}
+                />
+              </VisibilitySensor>
+            </CardContentText>
+          </CardContent>
+        </Card>
       </Col>
     );
   };
@@ -368,8 +417,70 @@ class StepFive extends React.Component {
     );
   };
 
-  getCatalogGear = () => {
-    this.props.stepFiveActions.getCatalogGearRequest();
+  renderUpsellNew = (upsellNewItem) => {
+    const { contentHeight } = this.state;
+    const { id, categories, name, image_url, description, dates } = upsellNewItem;
+    const [ header ] = categories;
+    const cardContentTextStyles = { minHeight: contentHeight };
+    const price = dates.length && dates[0].capacity_price;
+    let tooltipMessage = <LocaleString stringKey="please_choose_date" />;
+    return (
+      <Col md={6} lg={4} key={id}>
+        <Card
+          id={id}
+          cardHeader={name}
+          color="dark"
+          header={header.display_name}
+          price={price}
+          selectedId={null} // TODO: selected id from store
+          headerSize="extra-small"
+          onClick={() => {}} // TODO: on click handler
+          customButtonTitle={null} // TODO: custom button title
+          onRemove={() => {}} // TODO: on remove handler
+          tooltipMessage={tooltipMessage}
+        >
+          <CardContent>
+            <CardContentRow>
+              <CardContentCol className="card-content__img-container">
+                <VisibilitySensor>
+                  <Img className="card-content__img" src={image_url} />
+                </VisibilitySensor>
+              </CardContentCol>
+              <CardContentCol className="center-center flex-1">
+                {this.renderDates(dates)}
+              </CardContentCol>
+            </CardContentRow>
+            <CardContentText style={cardContentTextStyles}>
+              <ReactHeight onHeightReady={this.setMinHeight} children={description} />
+            </CardContentText>
+          </CardContent>
+        </Card>
+      </Col>
+    );
+  };
+
+  renderDates = (dates) => {
+    const options = dates.map(({ id, capacity_start_date }) => {
+      return {
+        id,
+        name: capacity_start_date,
+        display_name: dateFormat({ date: capacity_start_date, dateFormat: 'YYYY-MM-DD', resultFormat: 'MMM, DD YYYY' })
+      };
+    });
+    return (
+      <div className="step-five__card-attributes">
+        <Dropdown
+          selectedOption={'Date'}// TODO: from redux
+          options={options}
+          label={<LocaleString stringKey="date" />}
+          handleChange={this.setUpsellGearItemDate}
+        />
+      </div>
+    );
+  };
+
+  getCatalogGear = ({ gender }) => {
+    this.props.stepFiveActions.getCatalogGearRequest({ gender });
   };
 
   incrementSelectedGearCounter = (selectedGearId) => {
@@ -384,8 +495,20 @@ class StepFive extends React.Component {
     this.props.stepFiveActions.stepFiveSetDefaultState();
   };
 
-  getCatalogGearUpsellNew = ({ business_type, package_type, sport, gender, boarding, age, start_date }) => {
-    this.props.stepFiveActions.getCatalogGearUpsellNewRequest({ business_type, package_type, sport, gender, boarding, age, start_date });
+  getCatalogGearUpsellNew = ({ business_type, package_type, sport, gender, boarding, age, start_date, end_date }) => {
+    // TODO: rewrite that!
+    // { business_type, package_type, sport, gender, boarding, age, start_date, end_date }
+    this.props.stepFiveActions.getCatalogGearUpsellNewRequest({ sport, gender, start_date, end_date });
+  };
+
+  setUpsellGearItem = (id) => {
+    // TODO: api call is required
+    this.props.stepFiveActions.stepFiveSetUpsellGearItem(id);
+  };
+
+  setUpsellGearItemDate = (id) => {
+    // TODO: api call is required
+    this.props.stepFiveActions.stepFiveSetUpsellGearItemDate(id);
   };
 
   updateGearItem = (productId) => {
@@ -438,6 +561,7 @@ function mapStateToProps(state) {
     cartId: cartIdSelector(state),
     participantId: participantIdSelector(state),
     stepFiveProducts: stepFiveProductsSelector(state),
+    stepFiveGearUpsellNew: stepFiveGearUpsellNewSelector(state),
   };
 };
 

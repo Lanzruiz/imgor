@@ -48,10 +48,12 @@ export const stepTwoSelectedDateSelector = createSelector(
   function(stepTwo, weeksCounter, isWeeklyCamp) {
     if (isWeeklyCamp && weeksCounter > 1) {
       const { selectedDate } = stepTwo;
-      const stringFormat = 'YYYY-MM-DD';
-      const momentObjStartDate = moment(selectedDate.capacity_start_date, stringFormat);
-      const daysToNeedAdd = (daysInWeek * weeksCounter) - 1;
-      selectedDate.capacity_end_date = momentObjStartDate.add(daysToNeedAdd, 'days').format(stringFormat);
+      if (selectedDate.capacity_start_date && selectedDate.capacity_end_date) {
+        const stringFormat = 'YYYY-MM-DD';
+        const momentObjStartDate = moment(selectedDate.capacity_start_date, stringFormat);
+        const daysToNeedAdd = (daysInWeek * weeksCounter) - 1;
+        selectedDate.capacity_end_date = momentObjStartDate.add(daysToNeedAdd, 'days').format(stringFormat);
+      }
     }
     return stepTwo.selectedDate;
   }

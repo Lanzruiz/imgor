@@ -56,9 +56,22 @@ class Api {
     });
   };
 
-  async getCatalogGear() {
-    return await instance.get('catalog/gear');
+  async getCatalogGear({ gender }) {
+    return await instance.get('catalog/gear', {
+      params: {
+        gender,
+      },
+    });
   };
+
+  async getCatalogExcursionsNew({ startDate, endDate }) {
+    return await instance.get('catalog/excursions-new', {
+      params: {
+        start_date: startDate,
+        end_date: endDate,
+      },
+    });
+  }
 
   async getCatalogCampsCalendar({ age, boarding, business_type, gender, package_type, sport, group, secondary_group, length, }) {
     return await instance.get('catalog/camps/calendar', {
@@ -102,12 +115,13 @@ class Api {
     });
   };
 
-  async postCartCartIdParticipantIdProduct({ attributes, cartId, participantId, product, quantity, productId, type }) {
+  async postCartCartIdParticipantIdProduct({ attributes, cartId, participantId, product, quantity, productId, type, refundable = false }) {
     return await instance.post(`cart/${cartId}/participant/${participantId}/product`, {
       attributes,
       product,
       type,
       quantity,
+      refundable,
       product_id: productId,
     });
   };
@@ -148,7 +162,7 @@ class Api {
     return await instance.get(`catalog/camp/${selectedCampId}`);
   };
 
-  async getCatalogGearUpsellNew({ business_type, package_type, sport, gender, boarding, age, start_date }) {
+  async getCatalogGearUpsellNew({ business_type, package_type, sport, gender, boarding, age, start_date, end_date }) {
     return await instance.get('catalog/gear/upsell-new', {
       params: {
         business_type,
@@ -158,6 +172,7 @@ class Api {
         boarding,
         age,
         start_date,
+        end_date,
       },
     });
   };

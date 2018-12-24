@@ -8,6 +8,8 @@ import { Field, Form, reduxForm, formValueSelector } from 'redux-form';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import include from 'lodash/includes';
+import toLower from 'lodash/toLower';
+import isEqual from 'lodash/isEqual'
 import scrollToComponent from 'react-scroll-to-component';
 // Components
 import EmailModal from '../../components/EmailModal';
@@ -26,6 +28,7 @@ import * as stepsActions from '../../actions/steps';
 // Helpers
 import validation from '../../helpers/validate';
 import createNumbersArray from '../../helpers/createNumbersArray';
+import isStringsEqual from '../../helpers/isStringsEqual';
 // Constants
 import { minWeekCount, maxWeekCount } from '../../constants/weeks';
 import { stepOneFormFieldsName } from './selectors';
@@ -158,16 +161,12 @@ class StepOne extends React.Component {
           </TabRow>
           {data.map((row, idx) => {
             const selectedIndex = (
-              (row.name === group)
-                ? (
-                    (row.name === weekly_camp)
-                      ? (
-                          (weeksCounter > 0)
-                            ? tabIndex
-                            : 0
-                        )
-                      : tabIndex
-                    )
+              isStringsEqual(row.name, group)
+                ? isStringsEqual(row.name, weekly_camp)
+                  ? (weeksCounter > 0)
+                    ? tabIndex
+                    : 0
+                  : tabIndex
                 : 0
             );
             return (
@@ -179,7 +178,7 @@ class StepOne extends React.Component {
                   onSelect={this.setTabIndex}
                 >
                   <TabRow className={cx('tab-row__container align-initial', {
-                    'tab-row__container--disabled': (tabIndex > 0) && (group !== row.name),
+                    'tab-row__container--disabled': (tabIndex > 0) && !isStringsEqual(group, row.name),
                   })}>
                     <TabList className="tab-row__tab-list">
                       <Tab
@@ -202,7 +201,7 @@ class StepOne extends React.Component {
                         </div>
                       </Tab>
                       {
-                        (row.name === weekly_camp)
+                        isStringsEqual(row.name, weekly_camp)
                           ? (
                             <Tab
                               onClick={() => this.selectGroup({ group: row.name, secondary_group: null })}
@@ -293,7 +292,7 @@ class StepOne extends React.Component {
                                       )}
                                     >
                                       <div className={cx('tab-row__wrapper', {
-                                        'tab-row__container--disabled': ((tabIndex > 0) && ((idx + 1 !== tabIndex) && (group !== row.group))) || option.sold_out,
+                                        'tab-row__container--disabled': ((tabIndex > 0) && ((idx + 1 !== tabIndex) && !isStringsEqual(group, row.name))) || option.sold_out,
                                         'sold-out-block': option.sold_out,
                                       })}>
                                         <span className={cx('tab-row__header tab-row__header--medium', {
@@ -318,7 +317,7 @@ class StepOne extends React.Component {
                   <React.Fragment>
                     <TabPanel />
                     {
-                      (row.name === weekly_camp)
+                      isStringsEqual(row.name, weekly_camp)
                         ? (
                             <TabPanel>
                               {this.renderTabPanel({
@@ -530,7 +529,7 @@ function SleepawayRadioBtn({ options, sleepaway, possibleValues }) {
                 {...input}
                 className="content__radio-btn--font-16"
                 value={value}
-                checked={sleepaway === value}
+                checked={isEqual(sleepaway, value)}
                 disabled={isDisabled}
                 children={<LocaleString stringKey={`step_one.sleepaway_${stringKey}`} />}
               />
@@ -578,19 +577,18 @@ function GenderRadioBtnContainer ({ options, value, possibleValues }) {
         options={options}
         component={({ input, options }) => (
           options.map((gender) => {
-            const isDisabled = !include(computedPossibleValues, gender);
-            const radioBtnClassNames = cx('content__label', {
-              'content__label--disabled': isDisabled,
-            });
+            const lowerCaseOptionValue = toLower(gender);
+            const isDisabled = !include(computedPossibleValues.map(toLower), lowerCaseOptionValue);
+            const radioBtnClassNames = cx('content__label', { 'content__label--disabled': isDisabled });
             return (
-              <div key={gender} className={radioBtnClassNames}>
+              <div key={lowerCaseOptionValue} className={radioBtnClassNames}>
                 <Radio
                   {...input}
                   className="content__radio-btn--font-16"
-                  value={gender}
-                  checked={gender === value}
+                  value={lowerCaseOptionValue}
+                  checked={isEqual(lowerCaseOptionValue, toLower(value))}
                   disabled={isDisabled}
-                  children={<LocaleString stringKey={gender.toLowerCase()} />}
+                  children={<LocaleString stringKey={lowerCaseOptionValue} />}
                 />
               </div>
             );

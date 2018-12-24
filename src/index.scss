@@ -171,4 +171,10 @@
   .hidden {
     display: none!important;
   }
+
+  .flex {
+    &-1 {
+      flex: 1;
+    }
+  }
 }

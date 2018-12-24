@@ -61,3 +61,17 @@ export const stepFiveProductsSelector = createSelector(
     return stepFive.products;
   }
 );
+
+export const stepFiveGearUpsellNewSelector = createSelector(
+  stepFiveSelector,
+  function(stepFive) {
+    return stepFive.gearUpsellNew;
+  }
+);
+
+export const stepFiveCatalogExcursionsNewSelector = createSelector(
+  stepFiveSelector,
+  function(stepFive) {
+    return stepFive.excursions;
+  }
+);

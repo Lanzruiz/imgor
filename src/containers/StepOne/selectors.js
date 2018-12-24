@@ -4,9 +4,10 @@ import { formValueSelector, getFormMeta } from 'redux-form';
 import moment from 'moment';
 import find from 'lodash/find';
 import assign from 'lodash/assign';
-import isEqual from 'lodash/isEqual';
 // Selectors
 import { stepTwoCampDaysLengthSelector, stepTwoStartDateSelector } from '../StepTwo/selectors';
+// Helpers
+import isStringsEqual from '../../helpers/isStringsEqual';
 // Constants
 import { weekly_camp } from './index';
 import { daysInWeek } from '../../constants/weeks';
@@ -111,7 +112,7 @@ export const weeksItemsSelector = createSelector(
 export const isWeeklyCampSelector = createSelector(
   stepOneGroupSelector,
   function(group) {
-    return isEqual(group, weekly_camp);
+    return isStringsEqual(group, weekly_camp);
   },
 );
 
