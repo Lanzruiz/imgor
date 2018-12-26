@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import isEqual from 'lodash/isEqual';
 // Providers
 import ReactLocalization from '../../providers/ReactLocalization';
 // Components
@@ -88,13 +89,14 @@ class App extends React.Component {
   componentDidMount() {
     const { maxStepValue, cartId } = this.props;
     const currentMaxStepValue = this.wizardFormChildren.length;
-    if (maxStepValue !== currentMaxStepValue) {
+    if (!isEqual(maxStepValue, currentMaxStepValue)) {
       this.props.stepActions.setMaxStepValue(currentMaxStepValue);
     }
     if (!cartId) {
       this.props.cartActions.createCartRequest();
     }
-    console.log('href', window.top.location.href);
+    // TODO: add handler
+    // console.log('href', window.top.location.href);
   }
 
   render() {

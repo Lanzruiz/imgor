@@ -26,7 +26,6 @@ export function stepOnePutCartCartIdParticipantParticipantIdRequest({ cartId, pa
     Api.req({
       apiCall: Api.putCartCartIdParticipantParticipantId,
       res200: (data) => {
-        console.log(data);
         dispatch(addParticipant(data));
         dispatch(setStepsCounter(stepsEnum.two));
       },

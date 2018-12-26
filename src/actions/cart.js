@@ -3,12 +3,17 @@ import * as cartTypes from '../constants/cart';
 // Api
 import Api from '../api';
 
-export function updateCart() {
-  return { type: cartTypes.UPDATE_CART };
+export function updateCart(cart) {
+  return {
+    type: cartTypes.UPDATE_CART,
+    payload: cart,
+  };
 };
 
 export function deleteCart() {
-  return { type: cartTypes.DELETE_CART };
+  return {
+    type: cartTypes.DELETE_CART,
+  };
 };
 
 export function createCartRequest() {

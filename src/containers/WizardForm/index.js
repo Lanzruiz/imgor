@@ -1,6 +1,7 @@
 // Modules
 import React from 'react';
 import PropTypes from 'prop-types';
+import { CSSTransitionGroup } from 'react-transition-group';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import isString from 'lodash/isString';
@@ -10,6 +11,7 @@ import isEmail from 'validator/lib/isEmail';
 import isMobilePhone from 'validator/lib/isMobilePhone';
 import find from 'lodash/find';
 import isArray from 'lodash/isArray';
+import moment from 'moment';
 // Components
 import Footer from '../../components/Footer';
 import LocaleString from '../../components/LocaleString';
@@ -17,6 +19,7 @@ import LocaleString from '../../components/LocaleString';
 import * as stepActions from '../../actions/steps';
 import * as stepOneActions from '../../actions/step.one';
 import * as stepThreeActions from '../../actions/step.three';
+import * as stepSixActions from '../../actions/step.six';
 import * as trainingActions from '../../actions/training';
 // Selectors
 import {
@@ -35,13 +38,17 @@ import {
   stepSixArrivalFlightNumberSelector, stepSixArrivalDateTimeSelector, stepSixSelectedArrivalAirlineSelector, stepSixDropoffSelector,
   stepSixDropoffOtherLocationSelector, stepSixDepartingTransportSelector, stepSixPickUpOtherLocationSelector,
   stepSixSelectedDepartingAirlineSelector, stepSixDepartingFlightNumberSelector, stepSixDepartingDateTimeSelector,
-  stepSixDepartingSelector,
+  stepSixDepartingSelector, stepSixTransportUnaccompaniedSelector, stepSixDepartingTransportObjectSelector,
+  stepSixArrivalTransportObjectSelector,
 } from '../StepSix/selectors';
 import {
   finalStepFirstNameSelector, finalStepLastNameSelector, finalStepPositionSelector,
   finalStepShirtSizeSelector, finalStepGuardianFirstNameSelector, finalStepGuardianLastNameSelector,
   finalStepGuardianEmailSelector, finalStepGuardianPhoneSelector,
 } from '../StepFinal/selectors';
+// Helpers
+import isStringsEqual from '../../helpers/isStringsEqual';
+import stringToNumber from '../../helpers/stringToNumber';
 // Constants
 import { stepsEnum } from '../../constants/steps';
 import { weekly_camp } from '../StepOne';
@@ -236,8 +243,13 @@ class WizardForm extends React.Component {
         break;
       }
 
-      case (isEqual(step, stepsEnum.six) || isEqual(step, stepsEnum.seven)): {
-        this.goingToFinalStep();
+      case (isEqual(step, stepsEnum.six)): {
+        this.goingToFinalStep(prevProps);
+        break;
+      }
+
+      case (isEqual(step, stepsEnum.seven)): {
+        this.goingToStepSixFromFinalStep(prevProps);
         break;
       }
 
@@ -259,9 +271,18 @@ class WizardForm extends React.Component {
     const hasMessage = !isEqual(message.props.stringKey, '');
     return (
       <React.Fragment>
-        {children().slice(startIndex, step)}
+        <CSSTransitionGroup
+          component="div"
+          className="wizard-form"
+          transitionName="slide"
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={300}
+        >
+          {children().slice(startIndex, step)}
+        </CSSTransitionGroup>
         <Footer
           arrowUp={arrowPosition}
+          step={step}
           price={totalPrice}
           message={message}
           hasMessage={hasMessage}
@@ -365,7 +386,7 @@ class WizardForm extends React.Component {
     }
   };
 
-  goingToStepThree = () => {
+  goingToStepThree = (prevProps = {}) => {
     const { startDate } = this.props;
     if (startDate) {
       this.goingToStepByStepNymber(stepsEnum.three);
@@ -394,12 +415,12 @@ class WizardForm extends React.Component {
     this.goingToStepByStepNymber(stepsEnum.six);
   };
 
-  goingToFinalStep = () => {
+  goingToFinalStep = (prevProps = {}) => {
     const {
       stepSixTransportation, stepSixAirportPickup, stepSixUnaccompanied, stepSixSelectedTransport, stepSixArrivalFlightNumber,
       stepSixArrivalDateTime, stepSixSelectedArrivalAirline, stepSixDropoff, stepSixDropoffOtherLocation, stepSixDepartingTransport,
       stepSixPickUpOtherLocation, stepSixSelectedDepartingAirline, stepSixDepartingFlightNumber, stepSixDepartingDateTime,
-      stepSixDeparting, step,
+      stepSixDeparting, stepSixTransportUnaccompanied, stepSixDepartingTransportObject, stepSixArrivalTransportObject,
     } = this.props;
 
     if (!stepSixTransportation) {
@@ -407,31 +428,89 @@ class WizardForm extends React.Component {
       return;
     }
 
-    const isCurrentStepFinal = step === stepsEnum.seven;
-
-    if (!stepSixAirportPickup && isCurrentStepFinal) {
-      this.goingToStepByStepNymber(stepsEnum.six);
-    }
-
     const { other } = departingFormFieldNames;
-    const { both, arrival, departing } = airportPickupInformation;
 
-    const airportPickupArrivalAndDeparting = stepSixAirportPickup === both;
-    const airportPickupArrivalOnly = stepSixAirportPickup === arrival;
-    const airportPickupDepartingOnly = stepSixAirportPickup === departing;
+    // Dropoff location for partThree
+    const isDropoffLocationEqualToOther = isEqual(stepSixDropoff, other);
+    // Pickup location for partFive
+    const isPickupLocationEqualToOther = isEqual(stepSixDeparting, other);
 
+    const { both, arrival, departing, noPickup } = airportPickupInformation;
+
+    // If step six data changed need send the request to the server
+    const isStepSixDataChanged = this.isStepSixDataChanged(prevProps);
+console.log('isStepSixDataChanged ', isStepSixDataChanged);
+    const airportPickupArrivalAndDeparting = isEqual(stepSixAirportPickup, both);
+    const airportPickupArrivalOnly = isEqual(stepSixAirportPickup, arrival);
+    const airportPickupDepartingOnly = isEqual(stepSixAirportPickup, departing);
+    const airportPickupNoPickup = isEqual(stepSixAirportPickup, noPickup);
+
+    const isUnacompanniedSelected = isEqual(stepSixUnaccompanied, 'true');
+
+    // Arrival and departing data
     if (airportPickupArrivalAndDeparting) {
       const partOne = !!stepSixUnaccompanied;
-      const partTwo = stepSixSelectedTransport && stepSixSelectedArrivalAirline && stepSixArrivalFlightNumber && stepSixArrivalDateTime;
-      const partThree = stepSixDropoff !== other ? true : !!stepSixPickUpOtherLocation;
-      const stepFour = stepSixDepartingTransport && stepSixSelectedDepartingAirline && stepSixDepartingFlightNumber && stepSixDepartingDateTime;
-      const stepFive = stepSixDeparting !== other ? true : !!stepSixDropoffOtherLocation;
-      if (partOne && partTwo && partThree && stepFour && stepFive) {
-        this.goingToStepByStepNymber(stepsEnum.seven);
-        return;
-      }
-      if (isCurrentStepFinal) {
-        this.goingToStepByStepNymber(stepsEnum.six);
+      const partTwo = !!(stepSixSelectedTransport && stepSixSelectedArrivalAirline && stepSixArrivalFlightNumber && stepSixArrivalDateTime);
+      const partThree = !isEqual(stepSixDropoff, other) ? true : !!stepSixDropoffOtherLocation;
+      const partFour = !!(stepSixDepartingTransport && stepSixSelectedDepartingAirline && stepSixDepartingFlightNumber && stepSixDepartingDateTime);
+      const partFive = !isEqual(stepSixDeparting, other) ? true : !!stepSixPickUpOtherLocation;
+
+      if (partOne && partTwo && partThree && partFour && partFive) {
+        // Unaccompanied data
+        const unaccompaniedData = {
+          attributes: { type: 'unacompannied' },
+          product: isUnacompanniedSelected ? stepSixTransportUnaccompanied : null,
+          productId: isUnacompanniedSelected ? stepSixTransportUnaccompanied.id : null,
+          quantity: 1,
+          refundable: false,
+          type: productTypesEnum.transport,
+        };
+
+        // Arrival data
+        const arrivalData = {
+          attributes: {
+            flight: {
+              airline: stepSixSelectedArrivalAirline.name,
+              booked: false,
+              date: moment(stepSixArrivalDateTime, 'YYYY-MM-DD HH:mm').format(),
+              location: isDropoffLocationEqualToOther ? null : stepSixDropoff,
+              location_other: isDropoffLocationEqualToOther ? stepSixDropoffOtherLocation : null,
+              number: stepSixArrivalFlightNumber,
+            },
+            type: 'arrival_transport',
+          },
+          product: stepSixArrivalTransportObject,
+          productId: stringToNumber(stepSixSelectedTransport),
+          quantity: 1,
+          refundable: false,
+          type: productTypesEnum.transport,
+        };
+
+        // Departing data object
+        const departingData = {
+          attributes: {
+            flight: {
+              airline: stepSixSelectedDepartingAirline.name,
+              booked: false,
+              date: moment(stepSixDepartingDateTime, 'YYYY-MM-DD HH:mm').format(),
+              location: isPickupLocationEqualToOther ? null : stepSixPickUpOtherLocation,
+              location_other: isPickupLocationEqualToOther ? stepSixPickUpOtherLocation : null,
+              number: stepSixDepartingFlightNumber,
+            },
+            type: 'departing_transport',
+          },
+          product: stepSixDepartingTransportObject,
+          productId: stringToNumber(stepSixDepartingTransport),
+          quantity: 1,
+          refundable: false,
+          type: productTypesEnum.transport,
+        };
+
+        if (isStepSixDataChanged) {
+          this.props.stepSixActions.stepSixSetUnnacompaniedData(unaccompaniedData.productId ? unaccompaniedData : null); // Set unnacompanied data here
+          this.props.stepSixActions.stepSixSetDepartingData(departingData); // Set departing data here
+          this.props.stepSixActions.stepSixSetArrivalData(arrivalData); // Set arrival data here
+        }
       }
       return;
     }
@@ -439,13 +518,44 @@ class WizardForm extends React.Component {
     if (airportPickupArrivalOnly) {
       const partOne = !!stepSixUnaccompanied;
       const partTwo = stepSixSelectedTransport && stepSixSelectedArrivalAirline && stepSixArrivalFlightNumber && stepSixArrivalDateTime;
-      const partThree = stepSixDropoff !== other ? true : !!stepSixDropoffOtherLocation;
+      const partThree = !isEqual(stepSixDropoff, other) ? true : !!stepSixDropoffOtherLocation;
+
       if (partOne && partTwo && partThree) {
-        this.goingToStepByStepNymber(stepsEnum.seven);
-        return;
-      }
-      if (isCurrentStepFinal) {
-        this.goingToStepByStepNymber(stepsEnum.six);
+        // Unaccompanied data
+        const unaccompaniedData = {
+          attributes: { type: 'unacompannied' },
+          product: isUnacompanniedSelected ? stepSixTransportUnaccompanied : null,
+          productId: isUnacompanniedSelected ? stepSixTransportUnaccompanied.id : null,
+          quantity: 1,
+          refundable: false,
+          type: productTypesEnum.transport,
+        };
+
+        // Arrival data
+        const arrivalData = {
+          attributes: {
+            flight: {
+              airline: stepSixSelectedArrivalAirline.name,
+              booked: false,
+              date: moment(stepSixArrivalDateTime, 'YYYY-MM-DD HH:mm').format(),
+              location: isDropoffLocationEqualToOther ? null : stepSixDropoff,
+              location_other: isDropoffLocationEqualToOther ? stepSixDropoffOtherLocation : null,
+              number: stepSixArrivalFlightNumber,
+            },
+            type: 'arrival_transport',
+          },
+          product: stepSixArrivalTransportObject,
+          productId: stringToNumber(stepSixSelectedTransport),
+          quantity: 1,
+          refundable: false,
+          type: productTypesEnum.transport,
+        };
+
+        if (isStepSixDataChanged) {
+          this.props.stepSixActions.stepSixSetUnnacompaniedData(unaccompaniedData.productId ? unaccompaniedData : null); // Set unnacompanied data here
+          this.props.stepSixActions.stepSixSetDepartingData(null); // Set departing data here
+          this.props.stepSixActions.stepSixSetArrivalData(arrivalData); // Set arrival data here
+        }
       }
       return;
     }
@@ -453,15 +563,62 @@ class WizardForm extends React.Component {
     if (airportPickupDepartingOnly) {
       const partOne = !!stepSixUnaccompanied;
       const partTwo = stepSixDepartingTransport && stepSixSelectedDepartingAirline && stepSixDepartingFlightNumber && stepSixDepartingDateTime;
-      const partThree = stepSixDeparting !== other ? true : !!stepSixDropoffOtherLocation;
+      const partThree = !isEqual(stepSixDeparting, other) ? true : !!stepSixDropoffOtherLocation;
+
       if (partOne && partTwo && partThree) {
-        this.goingToStepByStepNymber(stepsEnum.seven);
-        return;
-      }
-      if (isCurrentStepFinal) {
-        this.goingToStepByStepNymber(stepsEnum.six);
+        // Unaccompanied data
+        const unaccompaniedData = {
+          attributes: { type: 'unacompannied' },
+          product: isUnacompanniedSelected ? stepSixTransportUnaccompanied : null,
+          productId: isUnacompanniedSelected ? stepSixTransportUnaccompanied.id : null,
+          quantity: 1,
+          refundable: false,
+          type: productTypesEnum.transport,
+        };
+
+        // Departing data object
+        const departingData = {
+          attributes: {
+            flight: {
+              airline: stepSixSelectedDepartingAirline.name,
+              booked: false,
+              date: moment(stepSixDepartingDateTime, 'YYYY-MM-DD HH:mm').format(),
+              location: isPickupLocationEqualToOther ? null : stepSixPickUpOtherLocation,
+              location_other: isEqual(stepSixDeparting, other) ? stepSixPickUpOtherLocation : null,
+              number: stepSixDepartingFlightNumber,
+            },
+            type: 'departing_transport',
+          },
+          product: stepSixDepartingTransportObject,
+          productId: stringToNumber(stepSixDepartingTransport),
+          quantity: 1,
+          refundable: false,
+          type: productTypesEnum.transport,
+        };
+
+        if (isStepSixDataChanged) {
+          this.props.stepSixActions.stepSixSetUnnacompaniedData(unaccompaniedData.productId ? unaccompaniedData : null); // Set unnacompanied data here
+          this.props.stepSixActions.stepSixSetDepartingData(departingData); // Set departing data here
+          this.props.stepSixActions.stepSixSetArrivalData(null); // Set arrival data here
+        }
       }
       return;
+    }
+
+    if (airportPickupNoPickup) {
+      this.props.stepSixActions.stepSixSetUnnacompaniedData(null); // Set unnacompanied data here
+      this.props.stepSixActions.stepSixSetDepartingData(null); // Set departing data here
+      this.props.stepSixActions.stepSixSetArrivalData(null); // Set arrival data here
+      return;
+    }
+  };
+
+  goingToStepSixFromFinalStep = (prevProps = {}) => {
+    const isStepSixDataChanged = this.isStepSixDataChanged(prevProps);
+
+    if (isStepSixDataChanged) {
+      this.goingToFinalStep(prevProps);
+      this.goingToStepByStepNymber(stepsEnum.six);
     }
   };
 
@@ -492,7 +649,7 @@ class WizardForm extends React.Component {
       case (isString(sleepaway) && !isString(gender) && isString(age)): {
         return 'choose_gender';
       }
-      case (isString(sleepaway) && isString(gender) && isString(age)) && (weekly_camp === group) && (weeksCounter === 0): {
+      case (isString(sleepaway) && isString(gender) && isString(age)) && isStringsEqual(weekly_camp, group) && isEqual(weeksCounter, 0): {
         return 'choose_weeks';
       }
       default:
@@ -528,40 +685,40 @@ class WizardForm extends React.Component {
       case hasSecondaryProgram && !stepTreeSelectedId && (typeof stepFourSecondaryProgramId !== 'number'): {
         return 'step_four_make_selection_for_entire_camp_stay';
       }
-      case !hasSecondaryProgram && weeksItems[0] && weeksItems[0].customize_id === null: {
+      case !hasSecondaryProgram && weeksItems[0] && isEqual(weeksItems[0].customize_id, null): {
         return 'step_four_week_one_message';
       }
-      case !hasSecondaryProgram && weeksItems[1] && weeksItems[1].customize_id === null: {
+      case !hasSecondaryProgram && weeksItems[1] && isEqual(weeksItems[1].customize_id, null): {
         return 'step_four_week_two_message';
       }
-      case !hasSecondaryProgram && weeksItems[2] && weeksItems[2].customize_id === null: {
+      case !hasSecondaryProgram && weeksItems[2] && isEqual(weeksItems[2].customize_id, null): {
         return 'step_four_week_three_message';
       }
-      case !hasSecondaryProgram && weeksItems[3] && weeksItems[3].customize_id === null: {
+      case !hasSecondaryProgram && weeksItems[3] && isEqual(weeksItems[3].customize_id, null): {
         return 'step_four_week_four_message';
       }
-      case !hasSecondaryProgram && weeksItems[4] && weeksItems[4].customize_id === null: {
+      case !hasSecondaryProgram && weeksItems[4] && isEqual(weeksItems[4].customize_id, null): {
         return 'step_four_week_five_message';
       }
-      case !hasSecondaryProgram && weeksItems[5] && weeksItems[5].customize_id === null: {
+      case !hasSecondaryProgram && weeksItems[5] && isEqual(weeksItems[5].customize_id, null): {
         return 'step_four_week_six_message';
       }
-      case !hasSecondaryProgram && weeksItems[6] && weeksItems[6].customize_id === null: {
+      case !hasSecondaryProgram && weeksItems[6] && isEqual(weeksItems[6].customize_id, null): {
         return 'step_four_week_seven_message';
       }
-      case !hasSecondaryProgram && weeksItems[7] && weeksItems[7].customize_id === null: {
+      case !hasSecondaryProgram && weeksItems[7] && isEqual(weeksItems[7].customize_id, null): {
         return 'step_four_week_eight_message';
       }
-      case !hasSecondaryProgram && weeksItems[8] && weeksItems[8].customize_id === null: {
+      case !hasSecondaryProgram && weeksItems[8] && isEqual(weeksItems[8].customize_id, null): {
         return 'step_four_week_nine_message';
       }
-      case !hasSecondaryProgram && weeksItems[9] && weeksItems[9].customize_id === null: {
+      case !hasSecondaryProgram && weeksItems[9] && isEqual(weeksItems[9].customize_id, null): {
         return 'step_four_week_ten_message';
       }
-      case !hasSecondaryProgram && weeksItems[10] && weeksItems[10].customize_id === null: {
+      case !hasSecondaryProgram && weeksItems[10] && isEqual(weeksItems[10].customize_id, null): {
         return 'step_four_week_eleven_message';
       }
-      case !hasSecondaryProgram && weeksItems[11] && weeksItems[11].customize_id === null: {
+      case !hasSecondaryProgram && weeksItems[11] && isEqual(weeksItems[11].customize_id, null): {
         return 'step_four_week_twelve_message';
       }
       default:
@@ -584,17 +741,21 @@ class WizardForm extends React.Component {
       stepSixDeparting,
     } = this.props;
 
-    const { both, arrival, departing } = airportPickupInformation;
+    const { both, arrival, departing, noPickup } = airportPickupInformation;
     const { other } = departingFormFieldNames;
 
-    const airportPickupArrivalAndDeparting = stepSixAirportPickup === both;
-    const airportPickupArrivalOnly = stepSixAirportPickup === arrival;
-    const airportPickupDepartingOnly = stepSixAirportPickup === departing;
+    const airportPickupArrivalAndDeparting = isEqual(stepSixAirportPickup, both);
+    const airportPickupArrivalOnly = isEqual(stepSixAirportPickup, arrival);
+    const airportPickupDepartingOnly = isEqual(stepSixAirportPickup, departing);
+    const airportPickupNoPickup = isEqual(stepSixAirportPickup, noPickup);
 
     if (stepSixTransportation) {
       switch(true) {
         case !stepSixAirportPickup: {
           return 'step_six_airport_transportation_message';
+        }
+        case airportPickupNoPickup: {
+          return '';
         }
         case !stepSixUnaccompanied: {
           return 'step_six_unaccompanied_message';
@@ -692,6 +853,68 @@ class WizardForm extends React.Component {
     } else {
       console.warn('We dont send request!');
     }
+  };
+
+  isStepSixDataChanged = (prevProps) => {
+    const {
+      stepSixUnaccompanied, stepSixSelectedTransport, stepSixSelectedArrivalAirline,
+      stepSixArrivalDateTime, stepSixDropoff, stepSixDeparting, stepSixDropoffOtherLocation,
+      stepSixDepartingTransport, stepSixSelectedDepartingAirline, stepSixDepartingFlightNumber,
+      stepSixDepartingDateTime, stepSixArrivalFlightNumber, stepSixAirportPickup, stepSixPickUpOtherLocation,
+    } = this.props;
+
+    const { other } = departingFormFieldNames;
+
+    // Dropoff location for partThree
+    const isDropoffLocationEqualToOther = isEqual(stepSixDropoff, other);
+    // Pickup location for partFive
+    const isPickupLocationEqualToOther = isEqual(stepSixDeparting, other);
+
+    // Unaccompanied for partOne
+    const isUnaccompaniedChanged = !isEqual(stepSixUnaccompanied, prevProps.stepSixUnaccompanied);
+
+    // Arrival
+    const isArrivalTransportChanged = !isEqual(stepSixSelectedTransport, prevProps.stepSixSelectedTransport);
+    const isSelectedArrivalAirlineChanged = !isEqual(stepSixSelectedArrivalAirline, prevProps.stepSixSelectedArrivalAirline);
+    const isArrivalFlightNumberChanged = !isEqual(stepSixArrivalFlightNumber, prevProps.stepSixArrivalFlightNumber);
+    const isArrivalDateTimeChanged = !isEqual(stepSixArrivalDateTime, prevProps.stepSixArrivalDateTime);
+
+    const isArrivalDropoffLocationChanged = (
+      isDropoffLocationEqualToOther
+        ? !isEqual(stepSixDropoffOtherLocation, prevProps.stepSixDropoffOtherLocation)
+        : !isEqual(stepSixDropoff, prevProps.stepSixDropoff)
+    );
+
+    // Dropoff
+    const isDepartingTransportChanged = !isEqual(stepSixDepartingTransport, prevProps.stepSixDepartingTransport);
+    const isSelectedDepartingAirlineChanged = !isEqual(stepSixSelectedDepartingAirline, prevProps.stepSixSelectedDepartingAirline);
+    const isDepartingFlightNumberChanged = !isEqual(stepSixDepartingFlightNumber, prevProps.stepSixDepartingFlightNumber);
+    const isDepartingDateTimeChanged = !isEqual(stepSixDepartingDateTime, prevProps.stepSixDepartingDateTime);
+
+    const isDepartingLocationChanged = (
+      isPickupLocationEqualToOther
+        ? !isEqual(stepSixPickUpOtherLocation, prevProps.stepSixPickUpOtherLocation)
+        : !isEqual(stepSixDeparting, prevProps.stepSixDeparting)
+    );
+    // Airport pickup
+    const isAirportPickupChanged = !isEqual(stepSixAirportPickup, prevProps.stepSixAirportPickup);
+
+    const isStepSixDataChanged = (
+         isAirportPickupChanged
+      || isUnaccompaniedChanged
+      || isArrivalTransportChanged
+      || isSelectedArrivalAirlineChanged
+      || isArrivalFlightNumberChanged
+      || isArrivalDateTimeChanged
+      || isArrivalDropoffLocationChanged
+      || isDepartingTransportChanged
+      || isSelectedDepartingAirlineChanged
+      || isDepartingFlightNumberChanged
+      || isDepartingDateTimeChanged
+      || isDepartingLocationChanged
+    );
+
+    return isStepSixDataChanged;
   }
 }
 
@@ -700,6 +923,7 @@ function mapDispatchToProps(dispatch) {
     stepActions: bindActionCreators(stepActions, dispatch),
     stepOneActions: bindActionCreators(stepOneActions, dispatch),
     stepThreeActions: bindActionCreators(stepThreeActions, dispatch),
+    stepSixActions: bindActionCreators(stepSixActions, dispatch),
     trainingActions: bindActionCreators(trainingActions, dispatch),
   };
 };
@@ -750,6 +974,9 @@ function mapStateToProps(state) {
     stepSixDeparting: stepSixDepartingSelector(state),
     product: stepThreeSelectedProductSelector(state),
     participantProductId: stepThreeParticipantProductIdSelector(state),
+    stepSixTransportUnaccompanied: stepSixTransportUnaccompaniedSelector(state),
+    stepSixDepartingTransportObject: stepSixDepartingTransportObjectSelector(state),
+    stepSixArrivalTransportObject: stepSixArrivalTransportObjectSelector(state),
   };
 };
 

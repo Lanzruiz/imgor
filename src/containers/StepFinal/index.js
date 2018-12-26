@@ -6,6 +6,7 @@ import scrollToComponent from 'react-scroll-to-component';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
+import isEqual from 'lodash/isEqual';
 // Components
 import Header from '../../components/Header';
 import Card, { CardContent, CardContentRow, CardContentCol } from '../../components/Card';
@@ -16,7 +17,7 @@ import Radio from '../../components/Radio';
 import * as finalStepActions from '../../actions/final.step';
 // Selectors
 import { finalStepPositionsSelector, finalStepSelectedPositionSelector, finalStepShirtSizeSelector } from './selectors';
-import { stepOneFormValuesName, hasActiveFieldSelector } from '../StepOne/selectors';
+import { stepOneFormValuesName } from '../StepOne/selectors';
 // Constants
 import { stepFinalFormFieldNames } from './selectors';
 // Helpers
@@ -54,11 +55,7 @@ class StepFinal extends React.Component {
   componentDidMount() {
     const { sport, participant } = this.props;
     this.finalStepGetCatalogPositions({ sport, participant });
-    this.scrollToComponentIfFormFieldDoesNotActive();
-  }
-
-  componentDidUpdate() {
-    this.scrollToComponentIfFormFieldDoesNotActive();
+    this.scrollToComponent();
   }
 
   componentWillMount() {
@@ -68,158 +65,160 @@ class StepFinal extends React.Component {
   render() {
     const { positions, prefix, selectedPosition, shirtSize } = this.props;
     return (
-      <Container style={{ marginBottom: '65px' }} ref={this.stepFinal}>
-        <Row>
-          <Col>
-            <Header
-              header="step_final.header"
-              subHeader="step_final.subHeader"
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Row>
-              <Col style={{ padding: 0, margin: '0 1px' }}>
-                <Card
-                  buttonBlock={false}
-                  cardHeader={<LocaleString stringKey="step_final.camper_information" />}
-                  cardHeaderCapitalize={true}
-                  id={0}
-                  priceBlock={false}
-                  style={{ marginBottom: 0 }}
-                >
-                  <CardContent>
-                    <CardContentRow>
-                      <CardContentCol>
-                        <Form className="step-final__form" onSubmit={() => {}}>
-                          <label className="step-final__form-control">
-                            <Input
-                              inputClassName="step-final__input"
-                              name={`${prefix}_${stepFinalFormFieldNames.firstName}`}
-                              label="first name"
-                            />
-                          </label>
-                          <label className="step-final__form-control">
-                            <Input
-                              inputClassName="step-final__input"
-                              name={`${prefix}_${stepFinalFormFieldNames.lastName}`}
-                              label="last name"
-                            />
-                          </label>
-                          <label className="step-final__form-control">
-                            <Input
-                              inputClassName="step-final__input"
-                              name={`${prefix}_${stepFinalFormFieldNames.email}`}
-                              label="email (optional)"
-                            />
-                          </label>
-                          <label className="step-final__form-control">
-                            <Input
-                              inputClassName="step-final__input"
-                              name={`${prefix}_${stepFinalFormFieldNames.phone}`}
-                              label="phone number (optional)"
-                            />
-                          </label>
-                        </Form>
-                      </CardContentCol>
-                    </CardContentRow>
-                  </CardContent>
-                </Card>
-              </Col>
-              <Col style={{ padding: 0, margin: '0 1px' }}>
-                <Card
-                  buttonBlock={false}
-                  cardHeader={<LocaleString stringKey="step_final.position" />}
-                  cardHeaderCapitalize={true}
-                  id={1}
-                  priceBlock={false}
-                  style={{ marginBottom: 0 }}
-                >
-                  <CardContent>
-                    <CardContentRow>
-                      <CardContentCol>
-                        <PositionRadioBtn
-                          options={positions}
-                          position={selectedPosition}
+      <div ref={this.stepFinal} className="step-final">
+        <Container style={{ marginBottom: '65px' }}>
+          <Row>
+            <Col>
+              <Header
+                header="step_final.header"
+                subHeader="step_final.subHeader"
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Row>
+                <Col style={{ padding: 0, margin: '0 1px' }}>
+                  <Card
+                    buttonBlock={false}
+                    cardHeader={<LocaleString stringKey="step_final.camper_information" />}
+                    cardHeaderCapitalize={true}
+                    id={0}
+                    priceBlock={false}
+                    style={{ marginBottom: 0 }}
+                  >
+                    <CardContent>
+                      <CardContentRow>
+                        <CardContentCol>
+                          <Form className="step-final__form" onSubmit={() => {}}>
+                            <label className="step-final__form-control">
+                              <Input
+                                inputClassName="step-final__input"
+                                name={`${prefix}_${stepFinalFormFieldNames.firstName}`}
+                                label="first name"
+                              />
+                            </label>
+                            <label className="step-final__form-control">
+                              <Input
+                                inputClassName="step-final__input"
+                                name={`${prefix}_${stepFinalFormFieldNames.lastName}`}
+                                label="last name"
+                              />
+                            </label>
+                            <label className="step-final__form-control">
+                              <Input
+                                inputClassName="step-final__input"
+                                name={`${prefix}_${stepFinalFormFieldNames.email}`}
+                                label="email (optional)"
+                              />
+                            </label>
+                            <label className="step-final__form-control">
+                              <Input
+                                inputClassName="step-final__input"
+                                name={`${prefix}_${stepFinalFormFieldNames.phone}`}
+                                label="phone number (optional)"
+                              />
+                            </label>
+                          </Form>
+                        </CardContentCol>
+                      </CardContentRow>
+                    </CardContent>
+                  </Card>
+                </Col>
+                <Col style={{ padding: 0, margin: '0 1px' }}>
+                  <Card
+                    buttonBlock={false}
+                    cardHeader={<LocaleString stringKey="step_final.position" />}
+                    cardHeaderCapitalize={true}
+                    id={1}
+                    priceBlock={false}
+                    style={{ marginBottom: 0 }}
+                  >
+                    <CardContent>
+                      <CardContentRow>
+                        <CardContentCol>
+                          <PositionRadioBtn
+                            options={positions}
+                            position={selectedPosition}
+                            prefix={prefix}
+                          />
+                        </CardContentCol>
+                      </CardContentRow>
+                    </CardContent>
+                  </Card>
+                </Col>
+                <Col style={{ padding: 0, margin: '0 1px' }}>
+                  <Card
+                    buttonBlock={false}
+                    cardHeader={<LocaleString stringKey="step_final.shirt_size" />}
+                    cardHeaderCapitalize={true}
+                    id={2}
+                    priceBlock={false}
+                    style={{ marginBottom: 0 }}
+                  >
+                    <CardContent>
+                      <CardContentRow>
+                        <ShirtSizeRadioBtn
                           prefix={prefix}
+                          shirtSize={shirtSize}
                         />
-                      </CardContentCol>
-                    </CardContentRow>
-                  </CardContent>
-                </Card>
-              </Col>
-              <Col style={{ padding: 0, margin: '0 1px' }}>
-                <Card
-                  buttonBlock={false}
-                  cardHeader={<LocaleString stringKey="step_final.shirt_size" />}
-                  cardHeaderCapitalize={true}
-                  id={2}
-                  priceBlock={false}
-                  style={{ marginBottom: 0 }}
-                >
-                  <CardContent>
-                    <CardContentRow>
-                      <ShirtSizeRadioBtn
-                        prefix={prefix}
-                        shirtSize={shirtSize}
-                      />
-                    </CardContentRow>
-                  </CardContent>
-                </Card>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-        <Row>
-          <Col style={{ padding: 0, margin: '0 1px' }}>
-            <Card
-              buttonBlock={false}
-              cardHeader={<LocaleString stringKey="step_final.guardian_information" />}
-              cardHeaderCapitalize={true}
-              id={3}
-              priceBlock={false}
-            >
-              <CardContent>
-                <CardContentRow>
-                  <CardContentCol>
-                    <Form className="step-final__form" style={{ maxWidth: 'calc(100%/3)', marginRight: 'auto' }} onSubmit={() => {}}>
-                      <label className="step-final__form-control">
-                        <Input
-                          inputClassName="step-final__input"
-                          name={`${prefix}_${stepFinalFormFieldNames.guardianInformationFirstName}`}
-                          label="first name"
-                        />
-                      </label>
-                      <label className="step-final__form-control">
-                        <Input
-                          inputClassName="step-final__input"
-                          name={`${prefix}_${stepFinalFormFieldNames.guardianInformationLastName}`}
-                          label="last name"
-                        />
-                      </label>
-                      <label className="step-final__form-control">
-                        <Input
-                          inputClassName="step-final__input"
-                          name={`${prefix}_${stepFinalFormFieldNames.guardianInformationEmail}`}
-                          label="email"
-                        />
-                      </label>
-                      <label className="step-final__form-control">
-                        <Input
-                          inputClassName="step-final__input"
-                          name={`${prefix}_${stepFinalFormFieldNames.guardianInformationPhone}`}
-                          label="phone number"
-                        />
-                      </label>
-                    </Form>
-                  </CardContentCol>
-                </CardContentRow>
-              </CardContent>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
+                      </CardContentRow>
+                    </CardContent>
+                  </Card>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+          <Row>
+            <Col style={{ padding: 0, margin: '0 1px' }}>
+              <Card
+                buttonBlock={false}
+                cardHeader={<LocaleString stringKey="step_final.guardian_information" />}
+                cardHeaderCapitalize={true}
+                id={3}
+                priceBlock={false}
+              >
+                <CardContent>
+                  <CardContentRow>
+                    <CardContentCol>
+                      <Form className="step-final__form" style={{ maxWidth: 'calc(100%/3)', marginRight: 'auto' }} onSubmit={() => {}}>
+                        <label className="step-final__form-control">
+                          <Input
+                            inputClassName="step-final__input"
+                            name={`${prefix}_${stepFinalFormFieldNames.guardianInformationFirstName}`}
+                            label="first name"
+                          />
+                        </label>
+                        <label className="step-final__form-control">
+                          <Input
+                            inputClassName="step-final__input"
+                            name={`${prefix}_${stepFinalFormFieldNames.guardianInformationLastName}`}
+                            label="last name"
+                          />
+                        </label>
+                        <label className="step-final__form-control">
+                          <Input
+                            inputClassName="step-final__input"
+                            name={`${prefix}_${stepFinalFormFieldNames.guardianInformationEmail}`}
+                            label="email"
+                          />
+                        </label>
+                        <label className="step-final__form-control">
+                          <Input
+                            inputClassName="step-final__input"
+                            name={`${prefix}_${stepFinalFormFieldNames.guardianInformationPhone}`}
+                            label="phone number"
+                          />
+                        </label>
+                      </Form>
+                    </CardContentCol>
+                  </CardContentRow>
+                </CardContent>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+      </div>
     );
   }
 
@@ -231,11 +230,8 @@ class StepFinal extends React.Component {
     this.props.finalStepActions.finalStepSetDefaultState();
   };
 
-  scrollToComponentIfFormFieldDoesNotActive = () => {
-    const { hasActiveField } = this.props;
-    if (!hasActiveField) {
-      scrollToComponent(this.stepFinal.current);
-    }
+  scrollToComponent = () => {
+    scrollToComponent(this.stepFinal.current);
   }
 }
 
@@ -253,7 +249,7 @@ function PositionRadioBtn({ options, prefix, position }) {
                 <Radio
                   {...input}
                   value={position_id}
-                  checked={position === position_id}
+                  checked={isEqual(position, position_id)}
                   children={name}
                 />
               </li>
@@ -285,12 +281,12 @@ function ShirtSizeRadioBtn({ prefix, shirtSize }) {
             <ul className="step-final__form">
               {
                 options.map(({ id, value, stringKey }) => {
-                  return (id % 2 === 0) && (
+                  return isEqual(id % 2, 0) && (
                     <li key={id} className="step-final__radio">
                       <Radio
                         {...input}
                         value={value}
-                        checked={shirtSize === value}
+                        checked={isEqual(shirtSize, value)}
                         children={<LocaleString stringKey={stringKey} />}
                       />
                     </li>
@@ -303,12 +299,12 @@ function ShirtSizeRadioBtn({ prefix, shirtSize }) {
             <ul className="step-final__form">
               {
                 options.map(({ id, value, stringKey }) => {
-                  return (id % 2 !== 0) && (
+                  return !isEqual(id % 2, 0) && (
                     <li key={id} className="step-final__radio">
                       <Radio
                         {...input}
                         value={value}
-                        checked={shirtSize === value}
+                        checked={isEqual(shirtSize, value)}
                         children={<LocaleString stringKey={stringKey} />}
                       />
                     </li>
@@ -329,7 +325,6 @@ function mapStateToProps(state) {
     prefix: stepOneFormValuesName(state),
     selectedPosition: finalStepSelectedPositionSelector(state),
     shirtSize: finalStepShirtSizeSelector(state),
-    hasActiveField: hasActiveFieldSelector(state),
   };
 }
 

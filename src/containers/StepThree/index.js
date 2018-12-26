@@ -95,12 +95,9 @@ class StepThree extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { selectedId, startDate } = this.props;
+    const { selectedId } = this.props;
     if (selectedId && !isEqual(selectedId, prevProps.selectedId)) {
       this.getCatalogCampsLevels();
-    }
-    if (!isEqual(startDate, prevProps.startDate)) {
-      this.scrollToCurrentComponent();
     }
   }
 
@@ -121,10 +118,10 @@ class StepThree extends React.Component {
               />
             </Col>
           </Row>
-          <Row>
+          <Row className="align-items-stretch">
             {data.map(({ age_range, display_name, price, id, name, sold_out, has_secondary_program, secondary_programs, starting_price, display_via_label }, idx) => {
               return (
-                <Col xl={6} key={idx}>
+                <Col xl={6} key={idx} className="card-column">
                   {this.renderCurrentCard({
                     age_range,
                     display_name,

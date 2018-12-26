@@ -135,81 +135,83 @@ class StepTwo extends React.Component {
       [monthEnum[11]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['dec'])),
     }
     return (
-      <Container style={{ marginBottom: `${(!selectedDate.capacity_start_date && !selectedDate.capacity_end_date) ? 130 : 30}px` }}>
-        <Row>
-          <Col>
-            <Header
-              header="step_two.header"
-              subHeader="step_two.sub_header"
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <div className="step-two__container">
-              <div className="step-two__questions questions">
-                <span className="questions__questions">
-                  <LocaleString stringKey="step_two.questions.questions" />
-                </span>
-                <h2 className="questions__header">
-                  <LocaleString stringKey="step_two.questions.header" />
-                </h2>
-                <p className="questions__description">
-                  <LocaleString stringKey="step_two.questions.description" />
-                </p>
-                <div className="questions__icons icons">
-                  <span className="icons__container">
-                    <Img src={call} alt="call" />
-                    <span className="icons__text">
-                      <LocaleString stringKey="step_two.questions.call" />
-                    </span>
+      <div className="step-two">
+        <Container style={{ marginBottom: `${(!selectedDate.capacity_start_date && !selectedDate.capacity_end_date) ? 130 : 30}px` }}>
+          <Row>
+            <Col>
+              <Header
+                header="step_two.header"
+                subHeader="step_two.sub_header"
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <div className="step-two__container">
+                <div className="step-two__questions questions">
+                  <span className="questions__questions">
+                    <LocaleString stringKey="step_two.questions.questions" />
                   </span>
-                  <span className="icons__container">
-                    <Img src={email} alt="email" />
-                    <span className="icons__text">
-                      <LocaleString stringKey="step_two.questions.email" />
+                  <h2 className="questions__header">
+                    <LocaleString stringKey="step_two.questions.header" />
+                  </h2>
+                  <p className="questions__description">
+                    <LocaleString stringKey="step_two.questions.description" />
+                  </p>
+                  <div className="questions__icons icons">
+                    <span className="icons__container">
+                      <Img src={call} alt="call" />
+                      <span className="icons__text">
+                        <LocaleString stringKey="step_two.questions.call" />
+                      </span>
                     </span>
-                  </span>
-                  <span className="icons__container">
-                    <Img src={chat} alt="chat" />
-                    <span className="icons__text">
-                      <LocaleString stringKey="step_two.questions.chat" />
+                    <span className="icons__container">
+                      <Img src={email} alt="email" />
+                      <span className="icons__text">
+                        <LocaleString stringKey="step_two.questions.email" />
+                      </span>
                     </span>
-                  </span>
+                    <span className="icons__container">
+                      <Img src={chat} alt="chat" />
+                      <span className="icons__text">
+                        <LocaleString stringKey="step_two.questions.chat" />
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <div className="step-two__dates dates">
+                  <h2 className="dates__header">
+                    <LocaleString
+                      stringKey="step_two.dates.header"
+                      formatString={{ sport, length_program: weeksCounter ? `${weeksCounter} week` : '' }}
+                    />&#42;
+                  </h2>
+                  {data.length
+                    ? (
+                      <ul className="dates__container">
+                        {this.renderDates(dates)}
+                      </ul>
+                    ) : (
+                      <div className="dates__no-data">
+                        <LocaleString stringKey="step_two.dates.no-data" />
+                      </div>
+                    )
+                  }
+                  <div className="step-two__description description">
+                    <span className="description__info">
+                      &#42;<LocaleString stringKey="step_two.dates.header_descripion" />
+                    </span>
+                    <span className="description__sold-out sold-out">
+                      <LocaleString stringKey="step_two.dates.sold_out" />
+                    </span>
+                  </div>
                 </div>
               </div>
-              <div className="step-two__dates dates">
-                <h2 className="dates__header">
-                  <LocaleString
-                    stringKey="step_two.dates.header"
-                    formatString={{ sport, length_program: weeksCounter ? `${weeksCounter} week` : '' }}
-                  />&#42;
-                </h2>
-                {data.length
-                  ? (
-                    <ul className="dates__container">
-                      {this.renderDates(dates)}
-                    </ul>
-                  ) : (
-                    <div className="dates__no-data">
-                      <LocaleString stringKey="step_two.dates.no-data" />
-                    </div>
-                  )
-                }
-                <div className="step-two__description description">
-                  <span className="description__info">
-                    &#42;<LocaleString stringKey="step_two.dates.header_descripion" />
-                  </span>
-                  <span className="description__sold-out sold-out">
-                    <LocaleString stringKey="step_two.dates.sold_out" />
-                  </span>
-                </div>
-              </div>
-            </div>
-          </Col>
-        </Row>
-        {this.renderSelectedDate(selectedDate)}
-      </Container>
+            </Col>
+          </Row>
+          {this.renderSelectedDate(selectedDate)}
+        </Container>
+      </div>
     );
   }
 

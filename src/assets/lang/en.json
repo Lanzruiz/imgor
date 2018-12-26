@@ -118,6 +118,7 @@
     "step_six.roundtrip": "Roundtrip",
     "step_six.pickup": "Pickup only",
     "step_six.dropoff": "Dropoff only",
+    "step_six.no_pickup": "No pickup",
     "step_six.campus_center": "IMGA Campus Center",
     "step_six.club_house": "IMGA Club House",
     "step_six.other": "Other",

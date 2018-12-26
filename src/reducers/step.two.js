@@ -17,7 +17,6 @@ export default function(state = initialState, action) {
   const { type, payload } = action;
   switch(type) {
     case stepTwoTypes.GET_CATALOG_CAMPS_CALENDAR: {
-      console.log('GET_CATALOG_CAMPS_CALENDAR ', payload);
       const { results, starting_price } = payload;
       return {
         ...state,

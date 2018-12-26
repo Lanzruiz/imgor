@@ -1,6 +1,7 @@
 // Modules
 import { createSelector } from 'reselect';
 import { formValueSelector } from 'redux-form';
+import isEqual from 'lodash/isEqual';
 // Helpers
 import stringToNumber from '../../helpers/stringToNumber';
 // Constants
@@ -24,11 +25,12 @@ export const airportPickupInformation = {
   both: 'both',
   arrival: 'arrival',
   departing: 'departing',
+  noPickup: 'no-pickup',
 };
 
 export const departingFormFieldNames = {
-  imgaCampusCenter: 'imga campus center',
-  imgaClubPouse: 'imga сlub рouse',
+  imgaCampusCenter: 'IMGACampusCenter',
+  imgaClubHouse: 'IMGAClubHouse',
   other: 'other',
 };
 
@@ -129,7 +131,7 @@ export const stepSixSelectedArrivalAirlineSelector = createSelector(
   stepSixSelectedArrivalAirlineId,
   function(airlines, id) {
     return airlines.find(function(airlineItem) {
-      return airlineItem.id === id;
+      return isEqual(airlineItem.id, id);
     });
   }
 );
@@ -139,7 +141,7 @@ export const stepSixSelectedDepartingAirlineSelector = createSelector(
   stepSixSelectedDepartingAirlineId,
   function(airlines, id) {
     return airlines.find(function(airlineItem) {
-      return airlineItem.id === id;
+      return isEqual(airlineItem.id, id);
     });
   }
 );
@@ -155,7 +157,9 @@ const stepSixArrivalPriceSelector = createSelector(
   stepSixTransportSelector,
   stepSixSelectedTransportSelector,
   function(transport, selectedTransport) {
-    const transportObject = transport.find(({ id }) => stringToNumber(selectedTransport) === stringToNumber(id));
+    const transportObject = transport.find(({ id }) => {
+      return isEqual( stringToNumber(selectedTransport), stringToNumber(id) );
+    });
     if (transportObject) {
       return transportObject.price;
     }
@@ -167,7 +171,9 @@ const stepSixDepartingPriceSelector = createSelector(
   stepSixTransportSelector,
   stepSixDepartingTransportSelector,
   function(transport, selectedTransport) {
-    const transportObject = transport.find(({ id }) => stringToNumber(selectedTransport) === stringToNumber(id));
+    const transportObject = transport.find(({ id }) => {
+      return isEqual( stringToNumber(selectedTransport), stringToNumber(id) );
+    });
     if (transportObject) {
       return transportObject.price;
     }
@@ -183,12 +189,55 @@ export const stepSixPriceSelector = createSelector(
   function(transportUnaccompanied, unaccompanied, arrivalPrice, departingPrice) {
     const free = 0;
     const unaccompaniedPrice = (
-      unaccompanied === 'true'
+      isEqual(unaccompanied, 'true')
         ? transportUnaccompanied
           ? transportUnaccompanied.price
           : 0
         : free
     );
     return unaccompaniedPrice + arrivalPrice + departingPrice;
+  }
+);
+
+export const stepSixDepartingTransportObjectSelector = createSelector(
+  stepSixTransportSelector,
+  stepSixDepartingTransportSelector,
+  function(transport, selectedTransport) {
+    const transportObject = transport.find(({ id }) => {
+      return isEqual( stringToNumber(selectedTransport), stringToNumber(id) );
+    });
+    return transportObject;
+  }
+);
+
+export const stepSixArrivalTransportObjectSelector = createSelector(
+  stepSixTransportSelector,
+  stepSixSelectedTransportSelector,
+  function(transport, selectedTransport) {
+    const transportObject = transport.find(({ id }) => {
+      return isEqual( stringToNumber(selectedTransport), stringToNumber(id) );
+    });
+    return transportObject;
+  }
+);
+
+export const stepSixDepartingDataSelector = createSelector(
+  stepSixSelector,
+  function(stepSix) {
+    return stepSix.departingData;
+  }
+);
+
+export const stepSixArrivalDataSelector = createSelector(
+  stepSixSelector,
+  function(stepSix) {
+    return stepSix.arrivalData;
+  }
+);
+
+export const stepSixUnaccompaniedDataSelector = createSelector(
+  stepSixSelector,
+  function(stepSix) {
+    return stepSix.unnacompaniedData;
   }
 );

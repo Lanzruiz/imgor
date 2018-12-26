@@ -227,3 +227,24 @@ export const hasActiveFieldSelector = createSelector(
     return !!isActive;
   },
 );
+
+export const cartStepSixUnnacompaniedProductIdSelector = createSelector(
+  cartSelector,
+  function(cart) {
+    return cart.stepSixUnnacompaniedProductId;
+  }
+);
+
+export const cartStepSixDepartingProductIdSelector = createSelector(
+  cartSelector,
+  function(cart) {
+    return cart.stepSixDepartingProductId;
+  }
+);
+
+export const cartStepSixArrivalProductIdSelector = createSelector(
+  cartSelector,
+  function(cart) {
+    return cart.stepSixArrivalProductId;
+  }
+);

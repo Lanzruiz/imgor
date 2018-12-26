@@ -3,7 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Img from 'react-image';
-import { ReactHeight } from 'react-height';
 // Components
 import Button from '../Button';
 import GreenBlock from '../GreenBlock';
@@ -80,10 +79,6 @@ class Card extends React.Component {
     soldOut: PropTypes.bool,
     customButtonTitle: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     onRemove: PropTypes.func,
-    onCardBodyHeadHeightReady: PropTypes.func.isRequired,
-    onCardBodyHeightReady: PropTypes.func.isRequired,
-    cardBobyHeadStyles: PropTypes.object.isRequired,
-    cardBodyStyles: PropTypes.object.isRequired,
     tooltipMessage: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
   };
 
@@ -105,17 +100,12 @@ class Card extends React.Component {
     cardHeaderCapitalize: false,
     soldOut: false,
     customButtonTitle: '',
-    onCardBodyHeadHeightReady: () => {},
-    onCardBodyHeightReady: () => {},
-    cardBobyHeadStyles: {},
-    cardBodyStyles: {},
   };
 
   render() {
     const {
       children, header, label, headerSize, color, cardHeader, imgSrc, id, soldOut,
       selectedId, priceDescription, cardHeaderCapitalize, style, className,
-      onCardBodyHeadHeightReady, onCardBodyHeightReady, cardBobyHeadStyles, cardBodyStyles,
     } = this.props;
 
     const isSelectedIdExists = (typeof selectedId === 'number' || typeof selectedId === 'string');
@@ -150,24 +140,16 @@ class Card extends React.Component {
       <div className={cardContainerClassNames} style={style}>
         {this.renderCardHead({ header, label, headerSize, color })}
         <div className="card__body card-body">
-          <ReactHeight
-            onHeightReady={onCardBodyHeadHeightReady}
-            className={cardBodyHeadClassNames}
-            style={cardBobyHeadStyles}
-          >
+          <div className={cardBodyHeadClassNames}>
             <h4 className={cardHeaderClassNames}>{cardHeader}</h4>
             {this.renderPriceBlock(priceDescription)}
-          </ReactHeight>
-          <ReactHeight
-            onHeightReady={onCardBodyHeightReady}
-            className="card-body__body"
-            style={cardBodyStyles}
-          >
+          </div>
+          <div className="card-body__body">
             {this.renderImage(imgSrc)}
             <div className={contentBlockClassNames}>
               {children}
             </div>
-          </ReactHeight>
+          </div>
           {this.renderButtonBlock(buttonClassNames, isCurrentCardSelected)}
         </div>
       </div>

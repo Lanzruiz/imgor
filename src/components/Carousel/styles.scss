@@ -3,6 +3,7 @@
 #{$root} {
     .carousel {
         &__container {
+            border: 1px solid $header-text-color;
             box-sizing: border-box;
             padding: 40px;
             background-color: #f3f3f3;
@@ -113,16 +114,18 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         display: block;
-        height: 63px;
-        width: 50px;
+        width: 41px;
+        height: 41px;
+        overflow: hidden;
+        border-radius: 50%;
     }
 
     .slick-prev {
-        left: -40px;
+        left: -35px;
     }
 
     [dir='rtl'] .slick-prev {
-        right: -40px;
+        right: -35px;
         left: auto;
     }
 
@@ -332,5 +335,24 @@
 
     .slick-arrow.slick-hidden {
         display: none;
+    }
+
+    // Animation
+    .slide-enter {
+        transform: translate3d(-100%, 0, 0);
+    }
+
+    .slide-enter.slide-enter-active {
+        transition: transform 500ms ease;
+        transform: translate3d(0, 0, 0);
+    }
+
+    .slide-leave {
+        transform: translate3d(0, 0, 0);
+    }
+
+    .slide-leave.slide-leave-active {
+        transition: transform 300ms ease;
+        transform: translate3d(-100%, 0, 0);
     }
 }

@@ -115,7 +115,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
               : <LocaleString stringKey="select" />
           );
           return (
-            <Col md={6} lg={4} key={id}>
+            <Col md={6} lg={4} key={id} className="card-column">
               <Card
                 id={id}
                 cardHeader="training"

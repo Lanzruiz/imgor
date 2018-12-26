@@ -1,5 +1,6 @@
 // Modules
 import isEqual from 'lodash/isEqual';
+import assign from 'lodash/assign';
 // Constants
 import * as stepSixTypes from '../constants/step.six';
 
@@ -9,6 +10,9 @@ const initialState = {
   unaccompanied: null,
   selectedArrivalAirline: null,
   selectedDepartingAirline: null,
+  departingData: null,
+  arrivalData: null,
+  unnacompaniedData: null,
 };
 
 export default function(state = initialState, action) {
@@ -18,10 +22,7 @@ export default function(state = initialState, action) {
       if (isEqual(initialState.unaccompanied, payload)) {
         return state;
       }
-      return {
-        ...state,
-        unaccompanied: payload,
-      };
+      return assign({}, state, { unaccompanied: payload });
     }
 
     case stepSixTypes.STEP_SIX_GET_CATALOG_AIRLINES: {
@@ -29,10 +30,7 @@ export default function(state = initialState, action) {
       if (isEqual(state.airlines, airlines)) {
         return state;
       }
-      return {
-        ...state,
-        airlines,
-      };
+      return assign({}, state, { airlines });
     }
 
     case stepSixTypes.STEP_SIX_GET_CATALOG_TRANSPORT: {
@@ -40,40 +38,50 @@ export default function(state = initialState, action) {
       if (isEqual(state.airlines, results)) {
         return state;
       }
-      return {
-        ...state,
-        transport: results,
-      };
+      return assign({}, state, { transport: results });
     }
 
     case stepSixTypes.STEP_SIX_SET_DEFAULT_STATE: {
-      if (isEqual(initialState, { airlines: state.airlines, transport: state.transport })) {
+      const { airlines, transport } = state;
+      if (isEqual(initialState, { airlines, transport })) {
         return state;
       }
-      return {
-        ...state,
-        ...initialState,
-      };
+      return assign({}, state, initialState);
     }
 
     case stepSixTypes.STEP_SIX_SET_ARRIVAL_AIRLINES: {
-      if (state.selectedArrivalAirline === payload) {
+      if (isEqual(state.selectedArrivalAirline, payload)) {
         return state;
       }
-      return {
-        ...state,
-        selectedArrivalAirline: payload,
-      };
+      return assign({}, state, { selectedArrivalAirline: payload });
     }
 
     case stepSixTypes.STEP_SIX_SET_DEPARTING_AIRLINES: {
-      if (state.selectedDepartingAirline === payload) {
+      if (isEqual(state.selectedDepartingAirline, payload)) {
         return state;
       }
-      return {
-        ...state,
-        selectedDepartingAirline: payload,
-      };
+      return assign({}, state, { selectedDepartingAirline: payload });
+    }
+
+    case stepSixTypes.STEP_SIX_SET_DEPARTING_DATA: {
+      if (isEqual(state.departingData, payload)) {
+        return state;
+      }
+      return assign({}, state, { departingData: payload });
+    }
+
+    case stepSixTypes.STEP_SIX_SET_ARRIVAL_DATA: {
+      if (isEqual(state.arrivalData, payload)) {
+        return state
+      }
+      return assign({}, state, { arrivalData: payload });
+    }
+
+    case stepSixTypes.STEP_SIX_SET_UNNACOMPANIED_DATA: {
+      if (isEqual(state.unnacompaniedData, payload)) {
+        return state;
+      }
+      return assign({}, state, { unnacompaniedData: payload });
     }
 
     default:

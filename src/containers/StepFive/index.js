@@ -3,7 +3,6 @@ import React from 'react';
 import { Container, Row, Col } from 'react-grid-system';
 import VisibilitySensor from 'react-visibility-sensor';
 import Img from 'react-image';
-import { ReactHeight } from 'react-height';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -41,11 +40,6 @@ class StepFive extends React.Component {
   constructor(props) {
     super(props);
     this.stepFour = React.createRef();
-    this.state = {
-      cardHeadHeight: 44,
-      contentHeight: 40,
-      cardBodyHeight: 40,
-    };
   }
 
   static propTypes = {
@@ -209,48 +203,50 @@ class StepFive extends React.Component {
   render() {
     const { data, shouldRenderLoadMoreButton, stepFiveGearUpsellNew } = this.props;
     return (
-      <Container style={{ marginBottom: '65px' }} ref={this.stepFive}>
-        <Row>
-          <Col>
-            <Header
-              header="step_five.header"
-              subHeader="step_five.sub_header"
-            />
-          </Col>
-        </Row>
-        <Row>
-          {
-            (data.length > 0)
-              ? data.map(this.renderCardItem)
-              : (
-                <Col>
-                  <div className="step-five__no-items">
-                    <LocaleString stringKey="no_gear_available" />!
-                  </div>
-                </Col>
-              )
-          }
-        </Row>
-        {shouldRenderLoadMoreButton && (
+      <div className="step-five">
+        <Container style={{ marginBottom: '65px' }} ref={this.stepFive}>
           <Row>
-            <Col />
             <Col>
-              <Button
-                className="step-five__load-more-bth"
-                onClick={this.increaseItemsPerPage}
-                children={<LocaleString stringKey="load_more" />}
+              <Header
+                header="step_five.header"
+                subHeader="step_five.sub_header"
               />
             </Col>
-            <Col />
           </Row>
-        )}
-        {(stepFiveGearUpsellNew.length > 0) && (
-          <Row>
-            {stepFiveGearUpsellNew.map(this.renderUpsellNew)}
+          <Row className="align-items-stretch">
+            {
+              (data.length > 0)
+                ? data.map(this.renderCardItem)
+                : (
+                  <Col>
+                    <div className="step-five__no-items">
+                      <LocaleString stringKey="no_gear_available" />!
+                    </div>
+                  </Col>
+                )
+            }
           </Row>
-        )}
-        <StepFiveCatalogExcursionsNew />
-      </Container>
+          {shouldRenderLoadMoreButton && (
+            <Row>
+              <Col />
+              <Col>
+                <Button
+                  className="step-five__load-more-bth"
+                  onClick={this.increaseItemsPerPage}
+                  children={<LocaleString stringKey="load_more" />}
+                />
+              </Col>
+              <Col />
+            </Row>
+          )}
+          {(stepFiveGearUpsellNew.length > 0) && (
+            <Row className="align-items-stretch">
+              {stepFiveGearUpsellNew.map(this.renderUpsellNew)}
+            </Row>
+          )}
+          <StepFiveCatalogExcursionsNew />
+        </Container>
+      </div>
     );
   }
 
@@ -278,24 +274,6 @@ class StepFive extends React.Component {
     }
   };
 
-  setMinHeight = (height) => {
-    if (this.state.contentHeight < height) {
-      this.setState(() => ({ contentHeight: height }));
-    }
-  };
-
-  setCatdHeadHeight = (height) => {
-    if (this.state.cardHeadHeight < height) {
-      this.setState(() => ({ cardHeadHeight: height }));
-    }
-  };
-
-  setCardBodyHeight = (height) => {
-    if (this.state.cardBodyHeight < height) {
-      this.setState(() => ({ cardBodyHeight: height }));
-    }
-  };
-
   selectDropdownItem = ({ selectedOptionId, selectedGearId }) => {
     this.props.stepFiveActions.stepFiveSelectDropdownItem({ selectedOptionId, selectedGearId });
   };
@@ -305,11 +283,7 @@ class StepFive extends React.Component {
   };
 
   renderCardItem = (card) => {
-    const { cardHeadHeight, cardBodyHeight, contentHeight } = this.state;
     const { selectedGear } = this.props;
-    const cardBodyStyles = { minHeight: cardBodyHeight };
-    const cardBobyHeadStyles = { minHeight: cardHeadHeight };
-    const cardContentTextStyles = { minHeight: contentHeight };
     const { price, image_url, id, categories = [], description, display_name, attributes, could_be_selected, selected_option_id, quantity, need_to_update } = card;
     const [ label = {}, header = {} ] = categories;
     const selectedGearId = selectedGear[id] ? selectedGear[id].id : null;
@@ -348,7 +322,7 @@ class StepFive extends React.Component {
     }
 
     return (
-      <Col md={6} lg={4} key={id}>
+      <Col md={6} lg={4} key={id} className="card-column">
         <Card
           id={id}
           cardHeader={display_name}
@@ -361,10 +335,6 @@ class StepFive extends React.Component {
           onClick={onClickHandler}
           customButtonTitle={customButtonTitle}
           onRemove={onRemoveHandler}
-          onCardBodyHeadHeightReady={this.setCatdHeadHeight}
-          cardBobyHeadStyles={cardBobyHeadStyles}
-          cardBodyStyles={cardBodyStyles}
-          onCardBodyHeightReady={this.setCardBodyHeight}
           tooltipMessage={tooltipMessage}
         >
           <CardContent>
@@ -386,15 +356,9 @@ class StepFive extends React.Component {
                 )}
               </CardContentCol>
             </CardContentRow>
-            <CardContentText>
-              <VisibilitySensor>
-                <ReactHeight
-                  onHeightReady={this.setMinHeight}
-                  children={description}
-                  style={cardContentTextStyles}
-                />
-              </VisibilitySensor>
-            </CardContentText>
+              <CardContentText>
+                {description}
+              </CardContentText>
           </CardContent>
         </Card>
       </Col>
@@ -418,14 +382,12 @@ class StepFive extends React.Component {
   };
 
   renderUpsellNew = (upsellNewItem) => {
-    const { contentHeight } = this.state;
     const { id, categories, name, image_url, description, dates } = upsellNewItem;
     const [ header ] = categories;
-    const cardContentTextStyles = { minHeight: contentHeight };
     const price = dates.length && dates[0].capacity_price;
     let tooltipMessage = <LocaleString stringKey="please_choose_date" />;
     return (
-      <Col md={6} lg={4} key={id}>
+      <Col md={6} lg={4} key={id} className="card-column">
         <Card
           id={id}
           cardHeader={name}
@@ -450,8 +412,8 @@ class StepFive extends React.Component {
                 {this.renderDates(dates)}
               </CardContentCol>
             </CardContentRow>
-            <CardContentText style={cardContentTextStyles}>
-              <ReactHeight onHeightReady={this.setMinHeight} children={description} />
+            <CardContentText>
+              {description}
             </CardContentText>
           </CardContent>
         </Card>

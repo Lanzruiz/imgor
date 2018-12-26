@@ -1,3 +1,6 @@
+// Modules
+import isEqual from 'lodash/isEqual';
+import assign from 'lodash/assign';
 // Constants
 import * as stepsTypes from '../constants/steps';
 
@@ -16,34 +19,22 @@ export default function(state = initialState, action) {
           ? state.currentStep + 1
           : state.currentStep
       );
-      return {
-        ...state,
-        currentStep: counter,
-      };
+      return assign({}, state, { currentStep: counter });
     }
 
     case stepsTypes.SET_MAX_STEP_VALUE: {
-      return {
-        ...state,
-        maxStepValue: payload,
-      };
+      return assign({}, state, { maxStepValue: payload });
     }
 
     case stepsTypes.CLOSE_EMAIL_MODAL: {
-      return {
-        ...state,
-        shouldShowEmailModal: false,
-      };
+      return assign({}, state, { shouldShowEmailModal: false });
     }
 
     case stepsTypes.SET_STEPS_COUNTER: {
-      if (state.currentStep === payload) {
+      if (isEqual(state.currentStep, payload)) {
         return state;
       }
-      return {
-        ...state,
-        currentStep: payload,
-      };
+      return assign({}, state, { currentStep: payload });
     }
 
     default:

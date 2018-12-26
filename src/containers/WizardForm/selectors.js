@@ -7,6 +7,8 @@ import { stepFourPriceSelector } from '../StepFour/selectors';
 import { stepFivePriceSelector } from '../StepFive/selectors';
 // Constants
 import { weekly_camp } from '../StepOne';
+// Helpers
+import isStringsEqual from '../../helpers/isStringsEqual';
 
 export const totalPriceSelector = createSelector(
   stepOnePriceSelector,
@@ -17,7 +19,7 @@ export const totalPriceSelector = createSelector(
   stepSixPriceSelector,
   function(stepOnePrice, weeksCounter, stepOneGroup, stepFourPrice, stepFivePrice, stepSixPrice) {
     const stepOneComputedPrice = (
-      (stepOneGroup === weekly_camp)
+      isStringsEqual(stepOneGroup, weekly_camp)
         ? stepOnePrice * weeksCounter
         : stepOnePrice
     );

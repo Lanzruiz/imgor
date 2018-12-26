@@ -116,7 +116,7 @@ class StepOne extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { sport } = this.props;
-    if (prevProps.sport !== sport) {
+    if (!isEqual(prevProps.sport, sport)) {
       this.props.stepOneActions.getCatalogCampsGroup({ sport });
     }
   }
@@ -124,7 +124,7 @@ class StepOne extends React.Component {
   render() {
     const { weeksCounter, participantId, data, tabIndex, group } = this.props;
     return (
-      <React.Fragment>
+      <div className="step-one">
         <EmailModal
           onSubmit={this.closeEmailModal}
           shouldShowEmailModal={!participantId}
@@ -346,7 +346,7 @@ class StepOne extends React.Component {
             );
           })}
         </Container>
-      </React.Fragment>
+      </div>
     );
   }
 

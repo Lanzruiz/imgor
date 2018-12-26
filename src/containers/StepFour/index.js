@@ -81,29 +81,31 @@ class StepFour extends React.Component {
 
     if (hasSecondaryProgram) {
       return (
-        <Container style={{ marginBottom: '100px' }} ref={this.stepFour}>
-          <Row>
-            <Col>
-              <Header
-                header="step_four.header"
-                subHeader="step_four.secondary_programs.sub_header"
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <div className="step-four__secondary-programs">
-                <Row>
-                  {stepThreeSecondaryPrograms.map((item, idx) => (
-                    <Col md={6} lg={4} key={idx}>
-                      {this.renderSecondaryPrograms({ ...item, selectedId: stepFourSecondaryProgramId })}
-                    </Col>
-                  ))}
-                </Row>
-              </div>
-            </Col>
-          </Row>
-        </Container>
+        <div className="step-four">
+          <Container style={{ marginBottom: '100px' }} ref={this.stepFour}>
+            <Row>
+              <Col>
+                <Header
+                  header="step_four.header"
+                  subHeader="step_four.secondary_programs.sub_header"
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <div className="step-four__secondary-programs">
+                  <Row className="align-items-stretch">
+                    {stepThreeSecondaryPrograms.map((item, idx) => (
+                      <Col md={6} lg={4} key={idx} className="card-column">
+                        {this.renderSecondaryPrograms({ ...item, selectedId: stepFourSecondaryProgramId })}
+                      </Col>
+                    ))}
+                  </Row>
+                </div>
+              </Col>
+            </Row>
+          </Container>
+        </div>
       );
     }
 
@@ -133,32 +135,34 @@ class StepFour extends React.Component {
       );
     });
     return (
-      <Container style={{ marginBottom: '65px' }} ref={this.stepFour}>
-        <Row>
-          <Col>
-            <Header
-              header="step_four.header"
-              subHeader="step_four.sub_header"
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Tabs
-              className="step-four__tabs step-four-tabs"
-              selectedTabClassName="step-four-tabs__tab--selected"
-              selectedTabPanelClassName="step-four-tabs__tab-tanel--selected"
-              selectedIndex={selectedWeekId}
-              onSelect={this.selectWeek}
-            >
-              <TabList className={tabListClassName}>
-                {tabsList}
-              </TabList>
-              {tabPanels}
-            </Tabs>
-          </Col>
-        </Row>
-      </Container>
+      <div className="step-four">
+        <Container style={{ marginBottom: '65px' }} ref={this.stepFour}>
+          <Row>
+            <Col>
+              <Header
+                header="step_four.header"
+                subHeader="step_four.sub_header"
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Tabs
+                className="step-four__tabs step-four-tabs"
+                selectedTabClassName="step-four-tabs__tab--selected"
+                selectedTabPanelClassName="step-four-tabs__tab-tanel--selected"
+                selectedIndex={selectedWeekId}
+                onSelect={this.selectWeek}
+              >
+                <TabList className={tabListClassName}>
+                  {tabsList}
+                </TabList>
+                {tabPanels}
+              </Tabs>
+            </Col>
+          </Row>
+        </Container>
+      </div>
     );
   }
 

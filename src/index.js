@@ -21,7 +21,7 @@ const { sport, gender, group, secondary_group, business_type } = imgorRootContai
 
 ReactDOM.render(
   <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
+    <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
       <ConnectedRouter history={history}>
         <React.Fragment>
           <Switch>
