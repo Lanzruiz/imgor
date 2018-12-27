@@ -5,6 +5,12 @@
         &__container {
             display: block;
             margin-bottom: 20px;
+            padding: 20px 0 0;
+
+            @include breakpoint($mobile){
+                font-size: 30px;
+                padding-top: 15px;
+            }
         }
 
         &__h2 {
@@ -12,8 +18,13 @@
             color: $header-text-color;
             font-size: 40px;
             font-weight: 700;
-            font-family: "Trade-Gothic-Bold";
+            font-family: $trade-gothic-bold;
             text-transform: uppercase;
+
+            @include breakpoint($mobile){
+                font-size: 30px;
+                margin-bottom: 5px;
+            }
         }
 
         &__h6 {
@@ -22,7 +33,11 @@
             font-size: 20px;
             font-weight: 700;
             text-transform: uppercase;
-            font-family: "Trade-Gothic-Bold";
+            font-family: $trade-gothic-bold;
+
+            @include breakpoint($mobile){
+                font-size: 18px;
+            }
         }
     }
 }

@@ -8,10 +8,18 @@
             height: 100%;
             justify-content: center;
             width: 100%;
+
+            @include breakpoint($mobile){
+                flex-direction: column;
+            }
         }
 
         &__image {
             margin-left: auto;
+
+            @include breakpoint($mobile){
+                margin-right: auto;
+            }
         }
 
         &__sessions {
@@ -23,6 +31,10 @@
             text-transform: uppercase;
             margin: auto;
 
+            @include breakpoint($mobile){
+                max-width: 100%;
+            }
+
             &--center {
                 text-align: center;
             }
@@ -31,7 +43,7 @@
         &__physical {
             max-width: 126px;
             color: $subheader-text-color;
-            font-family: "Serifa-Bold";
+            font-family: $serifa-bold;
             font-weight: 700;
             text-transform: uppercase;
 
@@ -44,13 +56,13 @@
             display: block;
 
             &--bold {
-                font-family: "Serifa-Bold";
+                font-family: $serifa-bold;
                 font-weight: 700;
                 text-transform: uppercase;
             }
 
             &--or {
-                font-family: "Serifa-Roman";
+                font-family: $serifa-roman;
                 font-size: 13px;
                 font-weight: 400;
             }

@@ -129,7 +129,7 @@ class StepOne extends React.Component {
           onSubmit={this.closeEmailModal}
           shouldShowEmailModal={!participantId}
         />
-        <Container style={{ marginBottom: '65px' }} ref={this.stepOne}>
+        <Container style={{ marginBottom: '71px' }} ref={this.stepOne}>
           <Row>
             <Col>
               <Header
@@ -139,7 +139,7 @@ class StepOne extends React.Component {
             </Col>
           </Row>
           <TabRow transparent>
-            <TabRowSection />
+            <TabRowSection className="mb-hidden" />
             <TabRowSection tabIndex={tabIndex} index={1}>
               <GreenBlock className="tab-row__green-block">
                 <TabRowHeaderGreenBlock localeKey="step_one.tabs.our_most" />
@@ -182,23 +182,21 @@ class StepOne extends React.Component {
                   })}>
                     <TabList className="tab-row__tab-list">
                       <Tab
-                        className="tab-row__section tab-row__section--bg-transparent center-left"
+                        className="tab-row__section tab-row__section--bg-transparent center-left mb-w100"
                         onClick={() => {
                           this.selectGroup({ group: null, secondary_group: null });
                           this.setWeeksCounter(0);
                           this.setPrice(0);
                         }}
                       >
-                        <div style={{ marginBottom: '3px' }}>
-                          <span children={row.name} className={cx(`
+                        <span children={row.name} className={cx(`
                             tab-row__group-header
                             tab-row__header
                             tab-row__header--regular
                             tab-row__header--mw-initial
                             text-left
                             white`)}
-                          />
-                        </div>
+                        />
                       </Tab>
                       {
                         isStringsEqual(row.name, weekly_camp)
@@ -211,6 +209,7 @@ class StepOne extends React.Component {
                                 tab-row__section--center
                                 w-75
                                 d-flex
+                                d-flex--mb-column
                                 align-center
                                 justify-evenly`
                               )}
@@ -462,10 +461,11 @@ class StepOne extends React.Component {
   }
 }
 
-function TabRowSection({ index = 0, children, tabIndex = 0 }) {
+function TabRowSection({ index = 0, children, tabIndex = 0, className }) {
   return (
     <div children={children} className={cx('tab-row__section tab-row__section--center mb-0', {
       'tab-row__section--disabled': (tabIndex > 0) && (tabIndex !== index),
+      [className]: className,
     })} />
   );
 }

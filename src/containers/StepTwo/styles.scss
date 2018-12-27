@@ -5,6 +5,12 @@
         &__container {
             display: flex;
             flex-direction: row;
+
+            @include breakpoint($mobile){
+                margin-left: -15px;
+                margin-right: -15px;
+                flex-direction: column;
+            }
         }
 
         &__questions {
@@ -16,6 +22,11 @@
             padding: 15px;
             text-align: center;
             width: 25%;
+
+            @include breakpoint($mobile){
+                width: 100%;
+                box-sizing: border-box;
+            }
         }
 
         &__dates {
@@ -24,6 +35,11 @@
             flex-direction: column;
             padding: 15px;
             width: 75%;
+
+            @include breakpoint($mobile){
+                width: 100%;
+                box-sizing: border-box;
+            }
         }
 
         &__selected-date {
@@ -39,6 +55,10 @@
             display: flex;
             justify-content: space-between;
             margin-top: auto;
+
+            @include breakpoint($mobile){
+                flex-direction: column;
+            }
         }
     }
 
@@ -95,6 +115,10 @@
             font-size: 18px;
             font-weight: 700;
             text-transform: uppercase;
+
+            @include breakpoint($mobile){
+                font-size: 14px;
+            }
         }
     }
 
@@ -122,10 +146,18 @@
                 text-align: center;
                 vertical-align: top;
                 width: calc(100%/6);
+
+                @include breakpoint($tablet){
+                    width: calc(100%/2);
+                }
             }
             & > li li {
                 margin: 0 0 3px;
                 display: block;
+
+                @include breakpoint($tablet){
+                    padding: 5px 0;
+                }
             }
         }
 
@@ -168,6 +200,10 @@
         &__info {
             color: $tab-row-bg;
             float: left;
+
+            @include breakpoint($mobile){
+                margin-bottom: 5px;
+            }
         }
 
         &__sold-out {
@@ -184,6 +220,15 @@
             justify-content: center;
             position: relative;
             width: 75%;
+
+            @include breakpoint($tablet){
+                width: 100%;
+            }
+
+            @include breakpoint($mobile){
+                width: calc(100% + 30px);
+                margin: 0 -15px;
+            }
 
             &:before {
                 content: '';
@@ -207,6 +252,10 @@
             flex-direction: row;
             justify-content: space-between;
             width: 66%;
+
+            @include breakpoint($tablet){
+                width: 100%;
+            }
         }
 
         &__check-in {
@@ -279,6 +328,10 @@
             justify-content: space-between;
             text-transform: uppercase;
             width: 100%;
+
+            @include breakpoint($mobile){
+                font-size: 12px;
+            }
         }
 
         &__dates {
@@ -291,6 +344,10 @@
             justify-content: space-between;
             text-transform: uppercase;
             width: 100%;
+
+            @include breakpoint($mobile){
+                font-size: 20px;
+            }
         }
     }
 }

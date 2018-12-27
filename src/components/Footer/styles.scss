@@ -8,9 +8,20 @@
         justify-content: flex-start;
         width: 100%;
 
+        @include breakpoint($mobile){
+            flex-wrap: wrap;
+            align-content: center;
+        }
+
         &__container {
             background-color: $green-block-bg;
             height: 71px;
+
+            @include breakpoint($mobile){
+                height: auto;
+                min-height: 71px;
+                padding: 3px 0;
+            }
 
             &--fixed {
                 position: fixed;
@@ -31,11 +42,20 @@
             padding: 15px 20px;
             box-sizing: content-box;
 
+            @include breakpoint($mobile){
+                padding: 3px 20px 3px 0;
+            }
+
             &-container {
                 align-items: center;
                 display: flex;
                 height: 71px;
                 justify-content: center;
+
+                @include breakpoint($mobile){
+                    height: auto;
+                    flex: 0;
+                }
             }
         }
 
@@ -50,10 +70,16 @@
                 font-size: 36px;
                 font-weight: 700;
                 text-transform: uppercase;
+                min-width: 100px;
+
+                @include breakpoint($mobile){
+                    font-size: 25px;
+                    flex: 1;
+                }
             }
 
             &-total {
-                font-size: 11px;
+                font-size: 10px;
             }
         }
 
@@ -65,12 +91,27 @@
             font-weight: 700;
             text-transform: uppercase;
             padding: 15px 20px;
+
+            @include breakpoint($mobile){
+                padding: 3px 0 0;
+                font-size: 12px;
+                width: 100%;
+                flex:1 1 auto;
+                text-align: center;
+                img {
+                    width: 11px;
+                }
+            }
         }
 
         &__btn-container {
             display: flex;
             flex-direction: row;
             margin: auto;
+
+            @include breakpoint($mobile){
+                margin: 3px -20px -3px;
+            }
         }
 
         &__btn {
@@ -79,26 +120,33 @@
             box-sizing: border-box;
             border: 1px solid #4481a3;
             color: #4481a3;
-            font-family: "Serifa-Bold";
+            font-family: $serifa-bold;
             font-size: 14px;
             font-weight: 700;
             display: flex;
             height: 38px;
             justify-content: center;
+            text-align: center;
             text-transform: uppercase;
-            line-height: 21px;
+            line-height: 16px;
             margin: 0 5px;
+            padding: 0 15px;
+
+            @include breakpoint($mobile){
+                font-size: 12px;
+                line-height: 15px;
+            }
 
             &--purchase {
-                width: 307px;
+               width: 307px;
             }
 
             &--save-camp {
-                width: 142px;
+               width: 142px;
             }
 
             &--share-camp {
-                width: 142px;
+               width: 142px;
             }
         }
     }

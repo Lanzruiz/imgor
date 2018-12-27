@@ -20,6 +20,11 @@
             padding-top: 48px;
             padding-bottom: 32px;
             width: 60%;
+
+            @include breakpoint($mobile){
+                width: 100%;
+                padding: 10px;
+            }
         }
 
         &__header {

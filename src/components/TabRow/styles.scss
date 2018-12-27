@@ -2,14 +2,31 @@
 
 #{$root} {
     .tab-row {
-        align-items: center;
+        align-items: stretch;
         background-color: $tab-row-bg;
         display: flex;
         justify-content: center;
-        padding: 0 15px;
+        padding: 0;
+
+        @include breakpoint($mobile){
+            margin: 0 -15px;
+        }
 
         &--transparent {
             background-color: transparent;
+
+            @include breakpoint($mobile){
+                .tab-row__section{
+                    width: auto;
+                    flex: 1;
+                }
+            }
+        }
+    }
+
+    .mb-hidden{
+        @include breakpoint($mobile){
+            display: none;
         }
     }
 }

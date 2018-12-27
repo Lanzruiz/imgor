@@ -20,10 +20,24 @@
         &__secondary-group-header {
             font-family: $trade-gothic-bold;
         }
-
         &__section {
-            margin: 1px;
+            margin: 1px 0 1px 1px;
             width: 25%;
+            padding: 5px 15px;
+            box-sizing: border-box;
+
+            &:last-child{
+                margin-right: 1px;
+            }
+
+            @include breakpoint($mobile){
+                flex: 1;
+                &.mb-w100{
+                    flex: 1 1 auto;
+                    width: 100%;
+                    flex-direction: row;
+                }
+            }
 
             &--center {
                 text-align: center;
@@ -122,8 +136,12 @@
             &--green-block {
                 color: $tab-row-bg;
                 font-size: 15px;
-                font-family: "Serifa-Bold";
+                font-family: $serifa-bold;
                 margin: auto;
+
+                @include breakpoint($mobile){
+                    font-size: 13px;
+                }
             }
 
             &--sold {
@@ -141,10 +159,18 @@
 
             &--regular {
                 font-size: 24px;
+
+                @include breakpoint($tablet){
+                    font-size: 18px;
+                }
             }
 
             &--medium {
                 font-size: 26px;
+
+                @include breakpoint($tablet){
+                    font-size: 20px;
+                }
             }
 
             &--mw-initial {
@@ -161,25 +187,45 @@
 
             &--font-50 {
                 font-size: 50px;
+
+                @include breakpoint($tablet){
+                    font-size: 40px;
+                }
             }
 
             &--font-80 {
                 font-size: 80px;
+
+                @include breakpoint($tablet){
+                    font-size: 60px;
+                }
             }
 
             &--font-100 {
                 font-size: 100px;
+
+                @include breakpoint($tablet){
+                    font-size: 80px;
+                }
             }
         }
 
         &__tab-list {
             display: flex;
             width: 100%;
+
+            @include breakpoint($mobile){
+                flex-wrap: wrap;
+            }
         }
 
         &__container {
             margin-bottom: 15px;
             min-height: $min-tab-row-height;
+
+            @include breakpoint($mobile){
+                min-height:10px;
+            }
 
             &--disabled {
                 opacity: 0.5;
@@ -187,14 +233,44 @@
         }
 
         &__green-block {
-            line-height: 12px;
-            padding: 4px 2px;
+            line-height: 16px;
+            padding: 5px;
+            display: flex;
+            flex-direction: column;
+            height: calc(100% + 10px);
+            margin: -5px -15px;
+            box-sizing: border-box;
         }
 
         &__separator {
             background-color: #d8e5eb;
             height: 1px;
             width: 110px;
+
+            @include breakpoint($tablet){
+                width: 60px;
+                margin: 0 20px;
+            }
+
+            @include breakpoint($mobile){
+                margin: 0 auto;
+                flex: 1 1 auto;
+            }
+        }
+
+        @include breakpoint($mobile){
+            .d-flex--mb-column{
+                justify-content: center;
+                align-content: center;
+                align-items: center;
+                flex-direction: column;
+
+                .d-flex{
+                    width: 100%;
+                    justify-content: center;
+                    flex-wrap: wrap;
+                }
+            }
         }
     }
 
@@ -202,6 +278,10 @@
         &__container {
             display: flex;
             flex-direction: row;
+
+            @include breakpoint($mobile){
+                flex-wrap: wrap;
+            }
         }
     }
 
@@ -211,6 +291,12 @@
             border: 1px solid #366e92;
             padding: 28px 24px;
             width: 65%;
+
+            @include breakpoint($mobile){
+                padding: 15px;
+                margin: 0 -15px -1px;
+                width: 100%;
+            }
         }
 
         &__second-col {
@@ -220,6 +306,15 @@
             padding: 43px 39px;
             max-width: 398px;
             width: 35%;
+
+            @include breakpoint($mobile){
+                padding: 15px;
+                margin: 0 -15px -1px;
+                width: 100%;
+                max-width: 100%;
+                order:-1;
+                border-left-color:#366e92;
+            }
         }
 
         &__header {
@@ -258,7 +353,7 @@
 
         &__label {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 10px;/* ? */
             position: relative;
             margin-bottom: 12px;
             font-size: 16px;
