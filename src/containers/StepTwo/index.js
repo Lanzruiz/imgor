@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import moment from 'moment';
+import isEqual from 'lodash/isEqual';
 // Components
 import Header from '../../components/Header';
 import LocaleString from '../../components/LocaleString';
@@ -26,9 +27,11 @@ import {
   stepOneGroupSelector, weeksCounterSelector, stepOneAgeSelector, stepOneGenderSelector,
   stepOneSecondaryGroupSelector, isWeeklyCampSelector, stepOneSleepawaySelector, stepOneBoardingBooleanSelector,
 } from '../StepOne/selectors';
+import { currentStepSelector } from '../WizardForm/selectors';
 // Constants
 import { monthEnum } from '../../constants/step.two';
 import { daysInWeek } from '../../constants/weeks';
+import { stepsEnum } from '../../constants/steps';
 // Styles
 import './styles.scss';
 
@@ -112,6 +115,63 @@ class StepTwo extends React.Component {
     }
 
     this.getCatalogCampsCalendar(getCatalogCampsCalendarArgs);
+  }
+
+  componentDidUpdate(prevProps) {
+    const {
+      age, businessType, boarding, packageType, sport, step,
+      group, secondary_group, gender, weeksCounter, isWeeklyCamp,
+    } = this.props;
+
+    const isStepChanged = !isEqual(step, prevProps.step);
+
+    if (isStepChanged && step < stepsEnum.two) {
+      this.setDefaultState();
+      return;
+    }
+
+    const isAgeChanged = !isEqual(age, prevProps.age);
+    const isBusinessTypeChanged = !isEqual(businessType, prevProps.businessType);
+    const isBoardingChanged = !isEqual(boarding, prevProps.boarding);
+    const isPackageTypeChanged = !isEqual(packageType, prevProps.packageType);
+    const isSportChanged = !isEqual(sport, prevProps.sport);
+    const isGroupChanged = !isEqual(group, prevProps.group);
+    const isSecondaryGroupChanged = !isEqual(secondary_group, prevProps.secondary_group);
+    const isGenderChanged = !isEqual(gender, prevProps.gender);
+    const isWeeksCounterChanged = !isEqual(weeksCounter, prevProps.weeksCounter);
+    const isWeeklyCampChanged = !isEqual(isWeeklyCamp, prevProps.isWeeklyCamp);
+
+    const isDataChanged = (
+         isAgeChanged
+      || isBusinessTypeChanged
+      || isBoardingChanged
+      || isPackageTypeChanged
+      || isSportChanged
+      || isGroupChanged
+      || isSecondaryGroupChanged
+      || isGenderChanged
+      || isWeeksCounterChanged
+      || isWeeklyCampChanged
+    );
+
+    if (isDataChanged) {
+      const getCatalogCampsCalendarArgs = {
+        age,
+        sport,
+        gender,
+        group,
+        secondary_group,
+        boarding,
+        business_type: businessType,
+        package_type: packageType,
+      };
+
+      if (isWeeklyCamp && weeksCounter) {
+        delete getCatalogCampsCalendarArgs.secondary_group;
+      }
+
+      this.getCatalogCampsCalendar(getCatalogCampsCalendarArgs);
+    }
   }
 
   componentWillUnmount() {
@@ -354,6 +414,7 @@ function mapStateToProps(state) {
     secondary_group: stepOneSecondaryGroupSelector(state),
     weeksCounter: weeksCounterSelector(state),
     isWeeklyCamp: isWeeklyCampSelector(state),
+    step: currentStepSelector(state),
   };
 }
 

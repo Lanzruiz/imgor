@@ -248,3 +248,10 @@ export const cartStepSixArrivalProductIdSelector = createSelector(
     return cart.stepSixArrivalProductId;
   }
 );
+
+export const cartStepThreeProductIdSelector = createSelector(
+  cartSelector,
+  function(cart) {
+    return cart.stepThreeProductId;
+  }
+);

@@ -29,8 +29,9 @@ import {
 import {
   isWeeklyCampSelector, stepOneAgeSelector, stepOneGenderSelector, cartIdSelector, participantIdSelector,
   stepOneBoardingBooleanSelector, stepOneGroupSelector, stepOneSecondaryGroupSelector,
+  cartStepThreeProductIdSelector,
 } from '../StepOne/selectors';
-import { stepTwoStartDateSelector } from '../StepTwo/selectors';
+import { stepTwoStartDateSelector, stepTwoSelectedDateSelector } from '../StepTwo/selectors';
 // Styles
 import './styles.scss';
 
@@ -95,10 +96,18 @@ class StepThree extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { selectedId } = this.props;
+    const { selectedId, stepTwoSelectedDate, cartStepThreeProductId } = this.props;
     // TODO: rewrite that!
     if (selectedId && !isEqual(selectedId, prevProps.selectedId)) {
       this.getCatalogCampsLevels();
+    }
+    if (!isEqual(stepTwoSelectedDate, prevProps.stepTwoSelectedDate)) {
+      if (stepTwoSelectedDate.capacity_start_date && stepTwoSelectedDate.capacity_end_date) {
+        this.getCatalogCampsLevels();
+        console.log('cartStepThreeProductId ', cartStepThreeProductId);
+      } else {
+        // TODO: should delete project from the cart?
+      }
     }
   }
 
@@ -273,6 +282,8 @@ function mapStateToProps(state) {
     participantId: participantIdSelector(state),
     selectedCardWithSecondaryProgramsId: stepThreeSelectedCardWithSecondaryProgramsIdSelector(state),
     participantProductId: stepThreeParticipantProductIdSelector(state),
+    stepTwoSelectedDate: stepTwoSelectedDateSelector(state),
+    cartStepThreeProductId: cartStepThreeProductIdSelector(state),
   };
 };
 

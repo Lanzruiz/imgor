@@ -154,7 +154,11 @@ class WizardForm extends React.Component {
 
     const shouldGoingToStepTwo = (
       (step > stepsEnum.one) && (
-        (isStepOneGroupChanged || isStepOneSecondaryGroupChanged) || isWeeksCounterChanged || isAgeChanged || isGenderChanged)
+        (isStepOneGroupChanged || isStepOneSecondaryGroupChanged)
+        || isWeeksCounterChanged
+        || isAgeChanged
+        || isGenderChanged
+      )
     );
 
     switch(true) {
@@ -172,14 +176,6 @@ class WizardForm extends React.Component {
 
       case !!(shouldGoingToStepTwo): {
         this.goingToStepByStepNymber(stepsEnum.one);
-        this.goingToStepTwo({
-          group: prevProps.group,
-          sleepaway: prevProps.sleepaway,
-          gender: prevProps.gender,
-          age: prevProps.age,
-          weeks: prevProps.weeksCounter,
-          secondaryGroup: prevProps.secondaryGroup,
-        });
         break;
       }
 
@@ -441,7 +437,7 @@ class WizardForm extends React.Component {
 
     // If step six data changed need send the request to the server
     const isStepSixDataChanged = this.isStepSixDataChanged(prevProps);
-console.log('isStepSixDataChanged ', isStepSixDataChanged);
+
     const airportPickupArrivalAndDeparting = isEqual(stepSixAirportPickup, both);
     const airportPickupArrivalOnly = isEqual(stepSixAirportPickup, arrival);
     const airportPickupDepartingOnly = isEqual(stepSixAirportPickup, departing);
@@ -653,6 +649,9 @@ console.log('isStepSixDataChanged ', isStepSixDataChanged);
       }
       case (isString(sleepaway) && isString(gender) && isString(age)) && isStringsEqual(weekly_camp, group) && isEqual(weeksCounter, 0): {
         return 'choose_weeks';
+      }
+      case !group: {
+        return 'choose_group';
       }
       default:
         return '';
