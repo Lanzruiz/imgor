@@ -96,6 +96,7 @@ class StepThree extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { selectedId } = this.props;
+    // TODO: rewrite that!
     if (selectedId && !isEqual(selectedId, prevProps.selectedId)) {
       this.getCatalogCampsLevels();
     }
@@ -191,14 +192,19 @@ class StepThree extends React.Component {
   };
 
   selectCard = (id) => {
-    const { participantProductId } = this.props;
-    if (!participantProductId) {
-      this.saveTrainingId(id);
-      this.setSecondaryPrograms({ id: null, secondary_programs: [] });
-    } else {
-      console.log('remove item?');
-      this.props.stepThreeActions.stepThreeDeleteProductAndSetProduct({ campId: id })
+    const { cartId, participantId } = this.props;
+
+    if (cartId && participantId) {
+      this.props.stepThreeActions.stepThreeSetProductToTheCart({ cartId, participantId, campId: id });
     }
+
+    // const { participantProductId } = this.props;
+    // if (!participantProductId) {
+    //   this.saveTrainingId(id);
+    //   this.setSecondaryPrograms({ id: null, secondary_programs: [] });
+    // } else {
+    //   this.props.stepThreeActions.stepThreeDeleteProductAndSetProduct({ campId: id })
+    // }
   };
 
   saveTrainingId = (id) => {

@@ -1,13 +1,18 @@
+// Modules
+import assign from 'lodash/assign';
 // Constants
 import * as stepThreeTypes from '../constants/step.three';
 // Api
 import Api from '../api';
+// Actions
+import { updateCart } from './cart';
+import { saveTrainingId } from './training';
 
 export function getCatalogCampsLevelsRequest(args) {
   return function(dispatch) {
     Api.req({
       apiCall: Api.getCatalogCampsLevels,
-      res200: data => dispatch(getCatalogCampsLevels(data)),
+      res200: data => dispatch( getCatalogCampsLevels(data), ),
       res404: () => console.log('Api.getCatalogCampsLevels() => 404'),
       reject: err => console.log(err),
       apiCallParams: {
@@ -29,7 +34,7 @@ export function postCartCartIdParticipantIdProductRequest({ cartId, quantity, pr
   return function(dispatch) {
     Api.req({
       apiCall: Api.postCartCartIdParticipantIdProduct,
-      res200: (data) => dispatch(postCartCartIdParticipantIdProduct(data)),
+      res200: (data) => dispatch( postCartCartIdParticipantIdProduct(data), ),
       res404: () => console.log('Api.postCartCartIdParticipantIdProduct() => 404'),
       reject: err => console.log(err),
       apiCallParams: {
@@ -79,3 +84,17 @@ export function stepThreeDeleteProductAndSetProduct({ campId }) {
       .catch((err) => { console.log(err); })
   }
 };
+
+export function stepThreeSetProductToTheCart({ campId, cartId, participantId, type = 'camp' }) {
+  return function(dispatch) {
+    Api.getCatalogCampCampId(campId)
+      .then(data => data.data.results[0])
+      .then((product => Api.postCartCartIdParticipantIdProduct({ cartId, participantId, product, quantity: 1, productId: product.id, type })))
+      .then(data => data.data)
+      .then(({ cart, participant_product_id }) => {
+        dispatch( updateCart(assign({}, { cart, stepThreeProductId: participant_product_id })), );
+        dispatch( saveTrainingId(campId), );
+      })
+      .catch(console.error)
+  }
+}

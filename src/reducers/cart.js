@@ -6,6 +6,7 @@ import * as cartTypes from '../constants/cart';
 
 const initialState = {
   id: null,
+  stepThreeProductId: null,
   stepSixUnnacompaniedProductId: null,
   stepSixDepartingProductId: null,
   stepSixArrivalProductId: null,

@@ -193,9 +193,10 @@ class WizardForm extends React.Component {
         break;
       }
 
+      // TODO: rewrite that!
       case !!(isEqual(step, stepsEnum.three) && stepTreeSelectedId): {
-        this.goingToStepFour();
-        this.postCartCartIdParticipantIdProduct();
+        // this.goingToStepFour();
+        // this.postCartCartIdParticipantIdProduct();
         break;
       }
 
@@ -395,11 +396,12 @@ class WizardForm extends React.Component {
 
   goingToStepFour = () => {
     const { stepTreeSelectedId, participantProductId } = this.props;
+    // TODO: rewrite that!
     if (stepTreeSelectedId && !participantProductId) {
-      this.props.trainingActions.getCatalogCampCampIdRequest(stepTreeSelectedId);
+      // this.props.trainingActions.getCatalogCampCampIdRequest(stepTreeSelectedId);
     }
     if (participantProductId) {
-      this.goingToStepByStepNymber(stepsEnum.four);
+      // this.goingToStepByStepNymber(stepsEnum.four);
     }
   };
 
