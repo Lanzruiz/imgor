@@ -17,7 +17,6 @@ import Radio from '../../components/Radio';
 import * as finalStepActions from '../../actions/final.step';
 // Selectors
 import { finalStepPositionsSelector, finalStepSelectedPositionSelector, finalStepShirtSizeSelector } from './selectors';
-import { stepOneFormValuesName } from '../StepOne/selectors';
 // Constants
 import { stepFinalFormFieldNames } from './selectors';
 // Helpers
@@ -38,7 +37,6 @@ class StepFinal extends React.Component {
         name: PropTypes.string,
       }),
     ).isRequired,
-    prefix: PropTypes.string,
     selectedPosition: PropTypes.string,
     shirtSize: PropTypes.string,
   };
@@ -63,7 +61,7 @@ class StepFinal extends React.Component {
   }
 
   render() {
-    const { positions, prefix, selectedPosition, shirtSize } = this.props;
+    const { positions, selectedPosition, shirtSize } = this.props;
     return (
       <div ref={this.stepFinal} className="step-final">
         <Container style={{ marginBottom: '65px' }}>
@@ -94,28 +92,28 @@ class StepFinal extends React.Component {
                             <label className="step-final__form-control">
                               <Input
                                 inputClassName="step-final__input"
-                                name={`${prefix}_${stepFinalFormFieldNames.firstName}`}
+                                name={stepFinalFormFieldNames.firstName}
                                 label="first name"
                               />
                             </label>
                             <label className="step-final__form-control">
                               <Input
                                 inputClassName="step-final__input"
-                                name={`${prefix}_${stepFinalFormFieldNames.lastName}`}
+                                name={stepFinalFormFieldNames.lastName}
                                 label="last name"
                               />
                             </label>
                             <label className="step-final__form-control">
                               <Input
                                 inputClassName="step-final__input"
-                                name={`${prefix}_${stepFinalFormFieldNames.email}`}
+                                name={stepFinalFormFieldNames.email}
                                 label="email (optional)"
                               />
                             </label>
                             <label className="step-final__form-control">
                               <Input
                                 inputClassName="step-final__input"
-                                name={`${prefix}_${stepFinalFormFieldNames.phone}`}
+                                name={stepFinalFormFieldNames.phone}
                                 label="phone number (optional)"
                               />
                             </label>
@@ -140,7 +138,6 @@ class StepFinal extends React.Component {
                           <PositionRadioBtn
                             options={positions}
                             position={selectedPosition}
-                            prefix={prefix}
                           />
                         </CardContentCol>
                       </CardContentRow>
@@ -158,10 +155,7 @@ class StepFinal extends React.Component {
                   >
                     <CardContent>
                       <CardContentRow>
-                        <ShirtSizeRadioBtn
-                          prefix={prefix}
-                          shirtSize={shirtSize}
-                        />
+                        <ShirtSizeRadioBtn shirtSize={shirtSize} />
                       </CardContentRow>
                     </CardContent>
                   </Card>
@@ -185,28 +179,28 @@ class StepFinal extends React.Component {
                         <label className="step-final__form-control">
                           <Input
                             inputClassName="step-final__input"
-                            name={`${prefix}_${stepFinalFormFieldNames.guardianInformationFirstName}`}
+                            name={stepFinalFormFieldNames.guardianInformationFirstName}
                             label="first name"
                           />
                         </label>
                         <label className="step-final__form-control">
                           <Input
                             inputClassName="step-final__input"
-                            name={`${prefix}_${stepFinalFormFieldNames.guardianInformationLastName}`}
+                            name={stepFinalFormFieldNames.guardianInformationLastName}
                             label="last name"
                           />
                         </label>
                         <label className="step-final__form-control">
                           <Input
                             inputClassName="step-final__input"
-                            name={`${prefix}_${stepFinalFormFieldNames.guardianInformationEmail}`}
+                            name={stepFinalFormFieldNames.guardianInformationEmail}
                             label="email"
                           />
                         </label>
                         <label className="step-final__form-control">
                           <Input
                             inputClassName="step-final__input"
-                            name={`${prefix}_${stepFinalFormFieldNames.guardianInformationPhone}`}
+                            name={stepFinalFormFieldNames.guardianInformationPhone}
                             label="phone number"
                           />
                         </label>
@@ -239,7 +233,7 @@ function PositionRadioBtn({ options, prefix, position }) {
   return (
     <ul className="step-final__form">
       <Field
-        name={`${prefix}_${stepFinalFormFieldNames.position}`}
+        name={stepFinalFormFieldNames.position}
         type="radio"
         options={options}
         component={({ input, options }) => (
@@ -261,7 +255,7 @@ function PositionRadioBtn({ options, prefix, position }) {
   );
 };
 
-function ShirtSizeRadioBtn({ prefix, shirtSize }) {
+function ShirtSizeRadioBtn({ shirtSize }) {
   const options = [
     { id: 1, value: 'xs', stringKey: 'step_final.shirt_size.x-small' },
     { id: 2, value: 's', stringKey: 'step_final.shirt_size.small' },
@@ -272,7 +266,7 @@ function ShirtSizeRadioBtn({ prefix, shirtSize }) {
   ];
   return (
     <Field
-      name={`${prefix}_${stepFinalFormFieldNames.shirtSize}`}
+      name={stepFinalFormFieldNames.shirtSize}
       type="radio"
       options={options}
       component={({ input, options }) => (
@@ -322,7 +316,6 @@ function ShirtSizeRadioBtn({ prefix, shirtSize }) {
 function mapStateToProps(state) {
   return {
     positions: finalStepPositionsSelector(state),
-    prefix: stepOneFormValuesName(state),
     selectedPosition: finalStepSelectedPositionSelector(state),
     shirtSize: finalStepShirtSizeSelector(state),
   };

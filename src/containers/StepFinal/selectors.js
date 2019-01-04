@@ -1,7 +1,7 @@
 // Modules
 import { createSelector } from 'reselect';
 // Selectors
-import { stateSelector, stepOneFormValuesName, stepOneFormValueSelector } from '../StepOne/selectors';
+import { stateSelector, stepOneFormValueSelector } from '../StepOne/selectors';
 // Constants
 export const stepFinalFormFieldNames = {
   position: 'position',
@@ -29,88 +29,77 @@ export const finalStepPositionsSelector = createSelector(
 
 export const finalStepSelectedPositionSelector = createSelector(
   stateSelector,
-  stepOneFormValuesName,
-  function(state, name) {
-    return stepOneFormValueSelector(state, name, stepFinalFormFieldNames.position);
+  function(state) {
+    return stepOneFormValueSelector(state, stepFinalFormFieldNames.position);
   }
 );
 
 export const finalStepShirtSizeSelector = createSelector(
   stateSelector,
-  stepOneFormValuesName,
-  function(state, name) {
-    return stepOneFormValueSelector(state, name, stepFinalFormFieldNames.shirtSize);
+  function(state) {
+    return stepOneFormValueSelector(state, stepFinalFormFieldNames.shirtSize);
   }
 );
 
 export const finalStepPositionSelector = createSelector(
   stateSelector,
-  stepOneFormValuesName,
-  function(state, name) {
-    return stepOneFormValueSelector(state, name, stepFinalFormFieldNames.position);
+  function(state) {
+    return stepOneFormValueSelector(state, stepFinalFormFieldNames.position);
   }
 );
 
 export const finalStepFirstNameSelector = createSelector(
   stateSelector,
-  stepOneFormValuesName,
-  function(state, name) {
-    return stepOneFormValueSelector(state, name, stepFinalFormFieldNames.firstName);
+  function(state) {
+    return stepOneFormValueSelector(state, stepFinalFormFieldNames.firstName);
   }
 );
 
 export const finalStepLastNameSelector = createSelector(
   stateSelector,
-  stepOneFormValuesName,
-  function(state, name) {
-    return stepOneFormValueSelector(state, name, stepFinalFormFieldNames.lastName);
+  function(state) {
+    return stepOneFormValueSelector(state, stepFinalFormFieldNames.lastName);
   }
 );
 
 export const finalStepEmailSelector = createSelector(
   stateSelector,
-  stepOneFormValuesName,
-  function(state, name) {
-    return stepOneFormValueSelector(state, name, stepFinalFormFieldNames.email);
+  function(state) {
+    return stepOneFormValueSelector(state, stepFinalFormFieldNames.email);
   }
 );
 
 export const finalStepPhoneSelector = createSelector(
   stateSelector,
-  stepOneFormValuesName,
-  function(state, name) {
-    return stepOneFormValueSelector(state, name, stepFinalFormFieldNames.phone);
+  function(state) {
+    return stepOneFormValueSelector(state, stepFinalFormFieldNames.phone);
   }
 );
 
 export const finalStepGuardianFirstNameSelector = createSelector(
   stateSelector,
-  stepOneFormValuesName,
-  function(state, name) {
-    return stepOneFormValueSelector(state, name, stepFinalFormFieldNames.guardianInformationFirstName);
+  function(state) {
+    return stepOneFormValueSelector(state, stepFinalFormFieldNames.guardianInformationFirstName);
   }
 );
 
 export const finalStepGuardianLastNameSelector = createSelector(
   stateSelector,
-  stepOneFormValuesName,
-  function(state, name) {
-    return stepOneFormValueSelector(state, name, stepFinalFormFieldNames.guardianInformationLastName);
+  function(state) {
+    return stepOneFormValueSelector(state, stepFinalFormFieldNames.guardianInformationLastName);
   }
 );
 
 export const finalStepGuardianEmailSelector = createSelector(
   stateSelector,
-  stepOneFormValuesName,
-  function(state, name) {
-    return stepOneFormValueSelector(state, name, stepFinalFormFieldNames.guardianInformationEmail);
+  function(state) {
+    return stepOneFormValueSelector(state, stepFinalFormFieldNames.guardianInformationEmail);
   }
 );
 
 export const finalStepGuardianPhoneSelector = createSelector(
   stateSelector,
-  stepOneFormValuesName,
-  function(state, name) {
-    return stepOneFormValueSelector(state, name, stepFinalFormFieldNames.guardianInformationPhone);
+  function(state) {
+    return stepOneFormValueSelector(state, stepFinalFormFieldNames.guardianInformationPhone);
   }
 );

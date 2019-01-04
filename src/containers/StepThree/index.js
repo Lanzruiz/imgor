@@ -204,7 +204,6 @@ class StepThree extends React.Component {
     const { cartId, participantId, cartStepThreeProductId } = this.props;
 
     if (cartStepThreeProductId) {
-      console.log('Need delete first');
       this.props.stepThreeActions.stepThreeDeleteProductFromCartAndSetNew({ campId: id, cartId, participantId, productId: cartStepThreeProductId });
     }
     if (cartId && participantId && !cartStepThreeProductId) {
