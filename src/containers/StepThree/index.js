@@ -103,10 +103,10 @@ class StepThree extends React.Component {
     }
     if (!isEqual(stepTwoSelectedDate, prevProps.stepTwoSelectedDate)) {
       if (stepTwoSelectedDate.capacity_start_date && stepTwoSelectedDate.capacity_end_date) {
+        if (cartStepThreeProductId) {
+          this.setDefaultState();
+        }
         this.getCatalogCampsLevels();
-        console.log('cartStepThreeProductId ', cartStepThreeProductId);
-      } else {
-        // TODO: should delete project from the cart?
       }
     }
   }
@@ -201,19 +201,15 @@ class StepThree extends React.Component {
   };
 
   selectCard = (id) => {
-    const { cartId, participantId } = this.props;
+    const { cartId, participantId, cartStepThreeProductId } = this.props;
 
-    if (cartId && participantId) {
+    if (cartStepThreeProductId) {
+      console.log('Need delete first');
+      this.props.stepThreeActions.stepThreeDeleteProductFromCartAndSetNew({ campId: id, cartId, participantId, productId: cartStepThreeProductId });
+    }
+    if (cartId && participantId && !cartStepThreeProductId) {
       this.props.stepThreeActions.stepThreeSetProductToTheCart({ cartId, participantId, campId: id });
     }
-
-    // const { participantProductId } = this.props;
-    // if (!participantProductId) {
-    //   this.saveTrainingId(id);
-    //   this.setSecondaryPrograms({ id: null, secondary_programs: [] });
-    // } else {
-    //   this.props.stepThreeActions.stepThreeDeleteProductAndSetProduct({ campId: id })
-    // }
   };
 
   saveTrainingId = (id) => {
@@ -253,6 +249,10 @@ class StepThree extends React.Component {
   };
 
   setDefaultState = () => {
+    const { cartId, participantId, cartStepThreeProductId } = this.props;
+    if (cartStepThreeProductId) {
+      this.props.stepThreeActions.stepThreeDeleteProduct({ cartId, participantId, productId: cartStepThreeProductId });
+    }
     this.props.stepThreeActions.stepThreeSetDefaultState();
     this.props.trainingActions.setDefaultState();
   };

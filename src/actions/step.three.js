@@ -2,11 +2,13 @@
 import assign from 'lodash/assign';
 // Constants
 import * as stepThreeTypes from '../constants/step.three';
+import { stepsEnum } from '../constants/steps';
 // Api
 import Api from '../api';
 // Actions
 import { updateCart } from './cart';
 import { saveTrainingId } from './training';
+import { setStepsCounter } from './steps';
 
 export function getCatalogCampsLevelsRequest(args) {
   return function(dispatch) {
@@ -76,12 +78,17 @@ export function stepThreeSetSecondaryPrograms(secondaryPrograms) {
   };
 };
 
-export function stepThreeDeleteProductAndSetProduct({ campId }) {
+export function stepThreeDeleteProduct({ cartId, participantId, productId }) {
   return function(dispatch) {
-    Api.getCatalogCampCampId(campId)
-    .then(data => data.data.results[0])
-      .then((data) => { console.log(data); })
-      .catch((err) => { console.log(err); })
+    Api.req({
+      apiCall: Api.deleteCartCartIdParticipantParticipantIdProductId,
+      res200: ({ cart }) => {
+        dispatch( updateCart(assign({}, { cart, stepThreeProductId: null })), );
+      },
+      res404: console.log,
+      reject: console.error,
+      apiCallParams: { cartId, participantId, productId },
+    });
   }
 };
 
@@ -89,12 +96,29 @@ export function stepThreeSetProductToTheCart({ campId, cartId, participantId, ty
   return function(dispatch) {
     Api.getCatalogCampCampId(campId)
       .then(data => data.data.results[0])
-      .then((product => Api.postCartCartIdParticipantIdProduct({ cartId, participantId, product, quantity: 1, productId: product.id, type })))
+      .then(product => Api.postCartCartIdParticipantIdProduct({ cartId, participantId, product, quantity: 1, productId: product.id, type }))
       .then(data => data.data)
       .then(({ cart, participant_product_id }) => {
         dispatch( updateCart(assign({}, { cart, stepThreeProductId: participant_product_id })), );
         dispatch( saveTrainingId(campId), );
+        dispatch( setStepsCounter(stepsEnum.four), );
       })
       .catch(console.error)
+  }
+}
+
+export function stepThreeDeleteProductFromCartAndSetNew({ campId, cartId, participantId, productId }) {
+  return function(dispatch) {
+    dispatch( setStepsCounter(stepsEnum.three), );
+    Api.req({
+      apiCall: Api.deleteCartCartIdParticipantParticipantIdProductId,
+      res200: ({ cart }) => {
+        dispatch( updateCart(assign({}, { cart, stepThreeProductId: null })), );
+        dispatch( stepThreeSetProductToTheCart({ campId, cartId, participantId, type: 'camp' }), );
+      },
+      res404: console.log,
+      reject: console.error,
+      apiCallParams: { cartId, participantId, productId },
+    });
   }
 }
