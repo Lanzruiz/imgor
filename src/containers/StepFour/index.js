@@ -11,7 +11,9 @@ import scrollToComponent from 'react-scroll-to-component';
 import Header from '../../components/Header';
 import LocaleString from '../../components/LocaleString';
 import StepFourWeekConcentrationComponent from '../../components/StepFourWeekConcentrationComponent';
-import Card, { CardContent, CardContentRow, CardContentCol, ImagePlus } from '../../components/Card';
+import StepFourEslSecondaryProgram from './components/StepFourEslSecondaryProgram';
+import StepFourPerformanceSecondaryProgram from './components/StepFourPerformanceSecondaryProgram';
+import StepFourSatSecondaryProgram from './components/StepFourSatSecondaryProgram';
 // Action
 import * as weeksActions from '../../actions/weeks';
 import * as stepsActions from '../../actions/steps';
@@ -19,8 +21,11 @@ import * as stepFourActions from '../../actions/step.four';
 // Selectors
 import { stepThreeHasSecondaryProgram, stepThreeSecondaryProgramsSelector } from '../StepThree/selector';
 import { stepTwoStartDateSelector, stepTwoEndDateSelector } from '../StepTwo/selectors';
-import { weeksItemsSelector, stepOneAgeSelector, stepOneGenderSelector, weeksSelectedWeekIdSelector } from '../StepOne/selectors';
-import { stepFourDataSelector, stepFourSecondaryProgramIdSelector } from './selectors';
+import {
+  weeksItemsSelector, stepOneAgeSelector, stepOneGenderSelector, weeksSelectedWeekIdSelector,
+  cartIdSelector, participantIdSelector,
+} from '../StepOne/selectors';
+import { stepFourDataSelector } from './selectors';
 // Styles
 import './styles.scss';
 
@@ -58,7 +63,10 @@ class StepFour extends React.Component {
   };
 
   componentDidMount() {
-    this.getCatalogCamp();
+    const { hasSecondaryProgram } = this.props;
+    if (!hasSecondaryProgram) {
+      this.getCatalogCamp();
+    }
     this.sctollToCurrentComponent();
   }
 
@@ -69,7 +77,7 @@ class StepFour extends React.Component {
   render() {
     const {
       age, businessType, gender, weeks, selectedWeekId, sport, programType, data, hasSecondaryProgram,
-      stepThreeSecondaryPrograms, stepFourSecondaryProgramId,
+      stepThreeSecondaryPrograms,
     } = this.props;
 
     const tabsList = [];
@@ -81,8 +89,8 @@ class StepFour extends React.Component {
 
     if (hasSecondaryProgram) {
       return (
-        <div className="step-four">
-          <Container style={{ marginBottom: '100px' }} ref={this.stepFour}>
+        <div className="step-four" ref={this.stepFour}>
+          <Container style={{ marginBottom: '100px' }}>
             <Row>
               <Col>
                 <Header
@@ -95,9 +103,9 @@ class StepFour extends React.Component {
               <Col>
                 <div className="step-four__secondary-programs">
                   <Row className="align-items-stretch">
-                    {stepThreeSecondaryPrograms.map((item, idx) => (
-                      <Col md={6} lg={4} key={idx} className="card-column">
-                        {this.renderSecondaryPrograms({ ...item, selectedId: stepFourSecondaryProgramId })}
+                    {stepThreeSecondaryPrograms.map((item) => (
+                      <Col md={6} lg={4} key={item.id} className="card-column">
+                        {this.renderSecondaryPrograms(item)}
                       </Col>
                     ))}
                   </Row>
@@ -196,34 +204,21 @@ class StepFour extends React.Component {
     this.props.stepFourActions.stepFourSetDefaultState();
   };
 
-  setSecondaryProgramId = (id) => {
-    this.props.stepFourActions.stepFourSetSecondaryProgramId(id);
-  }
-
   renderSecondaryPrograms = (secondaryProgram) => {
     switch(secondaryProgram.name) {
       case 'ESL': {
         return (
-          <StepFourEslSecondaryProgram
-            {...secondaryProgram}
-            onClickHandler={this.setSecondaryProgramId}
-          />
+          <StepFourEslSecondaryProgram {...secondaryProgram} />
         );
       }
       case 'Performance': {
         return (
-          <StepFourPerformanceSecondaryProgram
-            {...secondaryProgram}
-            onClickHandler={this.setSecondaryProgramId}
-          />
+          <StepFourPerformanceSecondaryProgram {...secondaryProgram} />
         );
       }
       case 'SAT': {
         return (
-          <StepFourSatSecondaryProgram
-            {...secondaryProgram}
-            onClickHandler={this.setSecondaryProgramId}
-          />
+          <StepFourSatSecondaryProgram {...secondaryProgram} />
         );
       }
       default:
@@ -234,7 +229,7 @@ class StepFour extends React.Component {
   sctollToCurrentComponent = () => {
     const { hasSecondaryProgram, data } = this.props;
     if (hasSecondaryProgram || data.length > 0) {
-      scrollToComponent(this.stepFour.current);
+      scrollToComponent(this.stepFour.current, { align: 'top' });
     }
   }
 }
@@ -252,7 +247,8 @@ function mapStateToProps(state) {
     currentStep: state.steps.currentStep,
     data: stepFourDataSelector(state),
     stepThreeSecondaryPrograms: stepThreeSecondaryProgramsSelector(state),
-    stepFourSecondaryProgramId: stepFourSecondaryProgramIdSelector(state),
+    cartId: cartIdSelector(state),
+    participantId: participantIdSelector(state),
   };
 };
 
@@ -263,143 +259,6 @@ function mapDispatchToProps(dispatch) {
     stepFourActions: bindActionCreators(stepFourActions, dispatch),
   };
 };
-
-function StepFourEslSecondaryProgram(args) {
-  const { id, sold_out, price, display_name, onClickHandler, selectedId } = args;
-  const contentClassNames = cx('step-four__esl-secondary-program', {
-    'step-four__secondary-program--available': !sold_out,
-    'step-four__secondary-program--sold-out': sold_out,
-  });
-  return (
-    <Card
-      id={id}
-      cardHeader={<LocaleString stringKey="class" />}
-      color="dark"
-      header={display_name}
-      label="AGES 8-18"
-      price={price}
-      onClick={onClickHandler}
-      selectedId={selectedId}
-      soldOut={sold_out}
-      via={true}
-    >
-      <CardContent>
-        <CardContentRow>
-          <CardContentCol>
-            <div className={contentClassNames}>
-              <div className="step-four__esl-image-container">
-                <ImagePlus soldOut={sold_out} />
-              </div>
-              <div className="step-four__esl-content-container">
-                <FifteenHoursSentence />
-                <EducationSentence />
-                <PerWeekSentence />
-              </div>
-            </div>
-          </CardContentCol>
-        </CardContentRow>
-      </CardContent>
-    </Card>
-  );
-}
-
-function StepFourPerformanceSecondaryProgram(args) {
-  const { id, sold_out, price, display_name, onClickHandler, selectedId } = args;
-  const contentClassNames = cx('step-four__performance-secondary-program', {
-    'step-four__secondary-program--available': !sold_out,
-    'step-four__secondary-program--sold-out': sold_out,
-  });
-  const secondColumnContentClassNames = cx('step-four__performance-secondary-program step-four__performance-secondary-program-secondary-column', {
-    'step-four__secondary-program--available': !sold_out,
-    'step-four__secondary-program--sold-out': sold_out,
-  });
-  return (
-    <Card
-      id={id}
-      cardHeader={<LocaleString stringKey="training" />}
-      color="dark"
-      header={display_name}
-      label="AGES 8-18"
-      price={price}
-      onClick={onClickHandler}
-      selectedId={selectedId}
-      soldOut={sold_out}
-    >
-      <CardContent>
-        <CardContentRow>
-          <CardContentCol>
-            <div className={contentClassNames}>
-              <div className="step-four__performance-image-container">
-                <ImagePlus soldOut={sold_out} />
-              </div>
-              <div className="step-four__performance-content-container">
-                <OneHourSentence />
-                <TrainingSentence />
-                <PerWeekSentence />
-              </div>
-            </div>
-          </CardContentCol>
-          <CardContentCol>
-            <div className={secondColumnContentClassNames}>
-              <div className="step-four__performance-secondary-program-header">
-                <DailySessionsSentence />
-              </div>
-              <div className="step-four__performance-list-container">
-                <ul className="step-four__performance-list">
-                  <li className="step-four__performance-list-item"><LocaleString stringKey="strength" /></li>
-                  <li className="step-four__performance-list-item"><LocaleString stringKey="mental" /></li>
-                  <li className="step-four__performance-list-item"><LocaleString stringKey="vision" /></li>
-                </ul>
-                <ul className="step-four__performance-list">
-                  <li className="step-four__performance-list-item"><LocaleString stringKey="speed" /></li>
-                  <li className="step-four__performance-list-item"><LocaleString stringKey="nutrition" /></li>
-                </ul>
-              </div>
-            </div>
-          </CardContentCol>
-        </CardContentRow>
-      </CardContent>
-    </Card>
-  );
-}
-
-function StepFourSatSecondaryProgram(args) {
-  const { id, sold_out, price, display_name, onClickHandler, selectedId } = args;
-  const contentClassNames = cx('step-four__sat-secondary-program', {
-    'step-four__secondary-program--available': !sold_out,
-    'step-four__secondary-program--sold-out': sold_out,
-  });
-  return (
-    <Card
-      id={id}
-      cardHeader={<LocaleString stringKey="class" />}
-      color="dark"
-      header={display_name}
-      label="AGES 15-18"
-      price={price}
-      onClick={onClickHandler}
-      selectedId={selectedId}
-      soldOut={sold_out}
-    >
-      <CardContent>
-        <CardContentRow>
-          <CardContentCol>
-            <div className={contentClassNames}>
-              <div className="step-four__sat-image-container">
-                <ImagePlus soldOut={sold_out} />
-              </div>
-              <div className="step-four__sat-content-container">
-                <FifteenHoursSentence />
-                <EducationSentence />
-                <PerWeekSentence />
-              </div>
-            </div>
-          </CardContentCol>
-        </CardContentRow>
-      </CardContent>
-    </Card>
-  );
-}
 
 export function FifteenHoursSentence() {
   return (

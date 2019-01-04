@@ -7,7 +7,7 @@ import { stepsEnum } from '../constants/steps';
 import Api from '../api';
 // Actions
 import { updateCart } from './cart';
-import { saveTrainingId } from './training';
+import { saveTrainingId, setSecondaryProgramId } from './training';
 import { setStepsCounter } from './steps';
 
 export function getCatalogCampsLevelsRequest(args) {
@@ -83,7 +83,7 @@ export function stepThreeDeleteProduct({ cartId, participantId, productId }) {
     Api.req({
       apiCall: Api.deleteCartCartIdParticipantParticipantIdProductId,
       res200: ({ cart }) => {
-        dispatch( updateCart(assign({}, { cart, stepThreeProductId: null })), );
+        dispatch( updateCart(assign({}, cart, { stepThreeProductId: null })), );
       },
       res404: console.log,
       reject: console.error,
@@ -94,12 +94,14 @@ export function stepThreeDeleteProduct({ cartId, participantId, productId }) {
 
 export function stepThreeSetProductToTheCart({ campId, cartId, participantId, type = 'camp' }) {
   return function(dispatch) {
+    dispatch( stepThreeSetSecondaryPrograms({ id: null, secondary_programs: [] }), );
+    dispatch( setSecondaryProgramId(null), );
     Api.getCatalogCampCampId(campId)
       .then(data => data.data.results[0])
       .then(product => Api.postCartCartIdParticipantIdProduct({ cartId, participantId, product, quantity: 1, productId: product.id, type }))
       .then(data => data.data)
       .then(({ cart, participant_product_id }) => {
-        dispatch( updateCart(assign({}, { cart, stepThreeProductId: participant_product_id })), );
+        dispatch( updateCart(assign({}, cart, { stepThreeProductId: participant_product_id })), );
         dispatch( saveTrainingId(campId), );
         dispatch( setStepsCounter(stepsEnum.four), );
       })
@@ -110,11 +112,14 @@ export function stepThreeSetProductToTheCart({ campId, cartId, participantId, ty
 export function stepThreeDeleteProductFromCartAndSetNew({ campId, cartId, participantId, productId }) {
   return function(dispatch) {
     dispatch( setStepsCounter(stepsEnum.three), );
+    dispatch( stepThreeSetSecondaryPrograms({ id: null, secondary_programs: [] }), );
+    dispatch( setSecondaryProgramId(null), );
     Api.req({
       apiCall: Api.deleteCartCartIdParticipantParticipantIdProductId,
       res200: ({ cart }) => {
-        dispatch( updateCart(assign({}, { cart, stepThreeProductId: null })), );
+        dispatch( updateCart(assign({}, cart, { stepThreeProductId: null })), );
         dispatch( stepThreeSetProductToTheCart({ campId, cartId, participantId, type: 'camp' }), );
+        dispatch( setStepsCounter(stepsEnum.four), );
       },
       res404: console.log,
       reject: console.error,

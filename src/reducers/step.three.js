@@ -20,11 +20,7 @@ export default function(state = initialState, action) {
       if (isEqual(state, results)) {
         return state;
       }
-      return assign({}, state, {
-        data: results,
-        secondary_programs: [],
-        selected_card_with_secondary_programs_id: null,
-      });
+      return assign({}, state, { data: results });
     }
 
     case stepThreeTypes.STEP_THREE_SET_DEFAULT_STATE: {

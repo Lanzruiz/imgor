@@ -24,7 +24,7 @@ import * as trainingActions from '../../actions/training';
 // Selectors
 import {
   stepTreeSelectedIdSelector, stepThreeSelectedCardWithSecondaryProgramsIdSelector, stepThreeHasSecondaryProgram,
-  stepThreeSelectedProductSelector, stepThreeParticipantProductIdSelector,
+  stepThreeSelectedProductSelector, stepThreeParticipantProductIdSelector, stepThreeSecondaryProgramIdSelector,
 } from '../StepThree/selector';
 import { totalPriceSelector, currentStepSelector } from './selectors';
 import {
@@ -140,7 +140,7 @@ class WizardForm extends React.Component {
 
   componentDidUpdate(prevProps) {
     const {
-      age, gender, group, step, startDate, endDate, stepTreeSelectedId, secondaryGroup, weeksCounter, weeksItems,
+      age, gender, group, step, startDate, endDate, stepTreeSelectedId, secondaryGroup, weeksCounter,
       stepThreeSelectedCardWithSecondaryProgramsId, stepFourSecondaryProgramId, participantId, cartId, product,
     } = this.props;
 
@@ -216,10 +216,11 @@ class WizardForm extends React.Component {
         break;
       }
 
-      case !!((step > stepsEnum.four) && find(weeksItems, ['customize_id', null])): {
-        this.goingToStepByStepNymber(stepsEnum.four);
-        break;
-      }
+      // TODO: rewrite that!
+      // case !!(!stepThreeSecondaryProgramId && (step > stepsEnum.four) && find(weeksItems, ['customize_id', null])): {
+      //   this.goingToStepByStepNymber(stepsEnum.four);
+      //   break;
+      // }
 
       case !!(isEqual(step, stepsEnum.five) && stepFourSecondaryProgramId): {
         this.props.trainingActions.getCatalogCampCampIdRequest(stepFourSecondaryProgramId);
@@ -402,7 +403,11 @@ class WizardForm extends React.Component {
   };
 
   goingToStepFive = () => {
-    const { stepTreeSelectedId, stepFourSecondaryProgramId, weeksItems, hasSecondaryProgram } = this.props;
+    const { stepTreeSelectedId, stepFourSecondaryProgramId, weeksItems, hasSecondaryProgram, stepThreeSecondaryProgramId } = this.props;
+    if (hasSecondaryProgram && stepThreeSecondaryProgramId) {
+      this.goingToStepByStepNymber(stepsEnum.five);
+      return;
+    }
     const unselectedWeek = find(weeksItems, ['customize_id', null]);
     if ((!stepTreeSelectedId && isNumber(stepFourSecondaryProgramId)) || !unselectedWeek || ((!hasSecondaryProgram && stepTreeSelectedId) && !unselectedWeek)) {
       this.goingToStepByStepNymber(stepsEnum.five);
@@ -681,9 +686,9 @@ class WizardForm extends React.Component {
   };
 
   stepFourValidation = () => {
-    const { stepTreeSelectedId, stepFourSecondaryProgramId, weeksItems, hasSecondaryProgram } = this.props;
+    const { stepFourSecondaryProgramId, weeksItems, hasSecondaryProgram, stepThreeSecondaryProgramId } = this.props;
     switch(true) {
-      case hasSecondaryProgram && !stepTreeSelectedId && (typeof stepFourSecondaryProgramId !== 'number'): {
+      case hasSecondaryProgram && !stepThreeSecondaryProgramId && !isNumber(stepFourSecondaryProgramId): {
         return 'step_four_make_selection_for_entire_camp_stay';
       }
       case !hasSecondaryProgram && weeksItems[0] && isEqual(weeksItems[0].customize_id, null): {
@@ -943,6 +948,7 @@ function mapStateToProps(state) {
     startDate: stepTwoStartDateSelector(state),
     endDate: stepTwoEndDateSelector(state),
     stepTreeSelectedId: stepTreeSelectedIdSelector(state),
+    stepThreeSecondaryProgramId: stepThreeSecondaryProgramIdSelector(state),
     totalPrice: totalPriceSelector(state),
     isWeeklyCamp: isWeeklyCampSelector(state),
     stepThreeSelectedCardWithSecondaryProgramsId: stepThreeSelectedCardWithSecondaryProgramsIdSelector(state),

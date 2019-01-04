@@ -1,13 +1,18 @@
 // Modules
 import isEqual from 'lodash/isEqual';
 import isNumber from 'lodash/isNumber';
+import assign from 'lodash/assign';
 // Constants
 import * as stepFourTypes from '../constants/step.four';
 import { emptyConcentrationId } from '../reducers/step.four';
+import { stepsEnum } from '../constants/steps';
 // Api
 import Api from '../api';
 // Actions
 import { selectWeek, customizeWeek } from './weeks';
+import { updateCart } from './cart';
+import { setSecondaryProgramId } from './training';
+import { setStepsCounter } from './steps';
 
 function getCatalogCamps(data) {
   return {
@@ -104,9 +109,14 @@ export function getCatalogCampRequest({ business_type, program_type, sport, age,
   return function (dispatch) {
     Api.req({
       apiCall: Api.getCatalogCamps,
-      res200: (data) => dispatch(getCatalogCamps(data)),
+      res200: (data) => {
+        if (isEqual(data.results.length, 0)) {
+          dispatch( setStepsCounter(stepsEnum.five), );
+        }
+        dispatch( getCatalogCamps(data), );
+      },
       res404: () => console.log('Api.getCatalogCamps() => 404'),
-      reject: err => console.log(err),
+      reject: console.error,
       apiCallParams: {
         business_type,
         program_type,
@@ -366,11 +376,29 @@ export function stepFourSetDefaultState() {
   };
 }
 
-export function stepFourSetSecondaryProgramId(id) {
-  return {
-    type: stepFourTypes.STEP_FOUR_SET_SECONDARY_PROGRAM_ID,
-    payload: id,
-  };
+export function stepFourSetSecondaryProgramIdRequest({ campId, cartId, participantId, productId }) {
+  return function(dispatch) {
+    Api.getCatalogCampCampId(campId)
+      .then(data => data.data.results[0])
+      .then((product) => {
+        if (productId) {
+          dispatch( setStepsCounter(stepsEnum.four), );
+          return Api.putCartCartIdParticipantParticipantIdProductId({ cartId, participantId, productId, product });
+        }
+        return Api.postCartCartIdParticipantIdProduct({ cartId, participantId, product, quantity: 1, productId: product.id });
+      })
+      .then(data => data.data)
+      .then(({ cart, participant_product_id }) => {
+        if (productId) {
+          dispatch( updateCart(assign({}, cart, { stepThreeProductId: productId })), );
+        } else {
+          dispatch( updateCart(assign({}, cart, { stepThreeProductId: participant_product_id })), );
+        }
+        dispatch( setSecondaryProgramId(campId), );
+        dispatch( setStepsCounter(stepsEnum.five), );
+      })
+      .catch(console.error)
+  }
 }
 
 export function stepFourCustomizeWeekRequest({ cartId, product, participantId, quantity, productId, type, nextWeekId }) {

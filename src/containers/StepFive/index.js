@@ -193,7 +193,7 @@ class StepFive extends React.Component {
     };
     this.getCatalogGear({ sport, gender });
     this.getCatalogGearUpsellNew(getCatalogGearUpsellNewArgs);
-    scrollToComponent(this.stepFour.current);
+    scrollToComponent(this.stepFour.current, { align: 'top' });
   }
 
   componentWillUnmount() {
@@ -203,8 +203,8 @@ class StepFive extends React.Component {
   render() {
     const { data, shouldRenderLoadMoreButton, stepFiveGearUpsellNew } = this.props;
     return (
-      <div className="step-five">
-        <Container style={{ marginBottom: '65px' }} ref={this.stepFive}>
+      <div className="step-five" ref={this.stepFive}>
+        <Container style={{ marginBottom: '65px' }}>
           <Row>
             <Col>
               <Header

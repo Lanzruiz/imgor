@@ -216,8 +216,12 @@ class StepThree extends React.Component {
   };
 
   setSecondaryPrograms = ({ id, secondaryPrograms }) => {
+    const { cartId, participantId, cartStepThreeProductId } = this.props;
     if (isNumber(id)) {
       this.saveTrainingId(null);
+      if (cartStepThreeProductId) {
+        this.props.stepThreeActions.stepThreeDeleteProduct({ cartId, participantId, productId: cartStepThreeProductId });
+      }
     }
     this.props.stepThreeActions.stepThreeSetSecondaryPrograms({ id, secondary_programs: secondaryPrograms });
   };
@@ -261,7 +265,7 @@ class StepThree extends React.Component {
   };
 
   scrollToCurrentComponent = () => {
-    scrollToComponent(this.stepThree.current);
+    scrollToComponent(this.stepThree.current, { align: 'top' });
   }
 }
 

@@ -164,13 +164,6 @@ export default function(state = initialState, action) {
       return assign({}, state, { week_12_data });
     }
 
-    case stepFourTypes.STEP_FOUR_SET_SECONDARY_PROGRAM_ID: {
-      if (isEqual(state.secondaryProgramId, payload)) {
-        return state;
-      }
-      return assign({}, state, { secondaryProgramId: payload });
-    }
-
     default:
       return state;
   }

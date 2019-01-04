@@ -130,8 +130,13 @@ class Api {
     return await instance.delete(`cart/${cartId}/participant/${participantId}/product/${productId}`);
   };
 
-  async putCartCartIdParticipantParticipantIdProductId({ cartId, participantId, productId }) {
-    return await instance.put(`cart/${cartId}/participant/${participantId}/product/${productId}`);
+  async putCartCartIdParticipantParticipantIdProductId({ cartId, participantId, productId, product, type }) {
+    return await instance.put(`cart/${cartId}/participant/${participantId}/product/${productId}`, {
+      product,
+      type,
+      quantity: 1,
+      refundable: false,
+    });
   }
 
   async getCatalogCampsHistogram({ sport, gender, boarding, days, age }) {

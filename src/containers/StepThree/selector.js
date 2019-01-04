@@ -58,3 +58,10 @@ export const stepThreeParticipantProductIdSelector = createSelector(
     return stepThree.participantProductId;
   }
 );
+
+export const stepThreeSecondaryProgramIdSelector = createSelector(
+  trainingSelector,
+  function(training) {
+    return training.secondaryProgramId;
+  },
+);

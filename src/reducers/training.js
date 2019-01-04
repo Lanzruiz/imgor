@@ -6,6 +6,7 @@ import * as trainingTypes from '../constants/training';
 const initialState = {
   selectedId: null,
   product: null,
+  secondaryProgramId: null,
 };
 
 export default function(state = initialState, action) {
@@ -36,6 +37,13 @@ export default function(state = initialState, action) {
       return {
         ...state,
         ...initialState,
+      };
+    }
+
+    case trainingTypes.SET_SECONDARY_PROGRAM_ID: {
+      return {
+        ...state,
+        secondaryProgramId: payload,
       };
     }
 

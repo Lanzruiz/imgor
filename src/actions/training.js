@@ -34,3 +34,10 @@ export function setDefaultState() {
     type: trainingTypes.TRAINING_SET_DEFAULT_STATE,
   };
 }
+
+export function setSecondaryProgramId(secondaryProgramId) {
+  return {
+    type: trainingTypes.SET_SECONDARY_PROGRAM_ID,
+    payload: secondaryProgramId,
+  };
+}
