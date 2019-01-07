@@ -416,7 +416,7 @@ export function stepFourCustomizeWeekRequest({ cartId, product, participantId, q
       res200: (data) => {
         const { cart, participant_product_id } = data;
         dispatch( updateCart(assign({}, cart, { [`stepFourConcentrationProduct_${currentWeekId}`]: participant_product_id } )), );
-        if (nextWeekId > (currentWeekId - 1)) {
+        if (isNumber(nextWeekId) && (nextWeekId > (currentWeekId - 1))) {
           dispatch( selectWeek(nextWeekId), );
         }
       },

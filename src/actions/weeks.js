@@ -1,7 +1,10 @@
 // Modules
 import assign from 'lodash/assign';
+import isNumber from 'lodash/isNumber';
+import isEqual from 'lodash/isEqual';
 // Constants
 import * as weeksTypes from '../constants/weeks';
+import { emptyConcentrationId } from '../reducers/step.four';
 // Api
 import Api from '../api';
 // Actions
@@ -61,12 +64,19 @@ export function removeCustomizedWeek(id) {
   };
 }
 
-export function deleteSelectedConcentration({ cartId, participantId, productId, id, currentWeekId }) {
+export function deleteSelectedConcentration({ cartId, participantId, productId, id, currentWeekId, nextWeekId }) {
   return function(dispatch) {
     Api.req({
       apiCall: Api.deleteCartCartIdParticipantParticipantIdProductId,
       res200: (data) => {
         dispatch( updateCart(assign({}, data.cart, { [`stepFourConcentrationProduct_${currentWeekId}`]: null })) );
+        if (isEqual(emptyConcentrationId, id)) {
+          dispatch( customizeWeek(id), );
+          if (isNumber(nextWeekId) && (nextWeekId > (currentWeekId - 1))) {
+            dispatch( selectWeek(nextWeekId), );
+          }
+          return;
+        }
         dispatch( removeCustomizedWeek(id), );
       },
       res404: () => console.log('Api.deleteCartCartIdParticipantParticipantIdProductId => 404'),
@@ -83,10 +93,9 @@ export function updateSelectedConcentration({ cartId, participantId, productId, 
       res200: (data) => {
         dispatch( updateCart(assign({}, data.cart)), );
         dispatch( customizeWeek(product.id), );
-        if (nextWeekId > (currentWeekId - 1)) {
+        if (isNumber(nextWeekId) && (nextWeekId > (currentWeekId - 1))) {
           dispatch( selectWeek(nextWeekId), );
         }
-        dispatch( selectWeek(nextWeekId), );
       },
       res404: () => console.log('Api.putCartCartIdParticipantParticipantIdProductId => 404'),
       reject: console.error,

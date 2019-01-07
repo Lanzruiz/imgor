@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
 import scrollToComponent from 'react-scroll-to-component';
+import isEqual from 'lodash/isEqual';
+import find from 'lodash/find';
 // Components
 import Header from '../../components/Header';
 import LocaleString from '../../components/LocaleString';
@@ -26,6 +28,8 @@ import {
   cartIdSelector, participantIdSelector,
 } from '../StepOne/selectors';
 import { stepFourDataSelector } from './selectors';
+// Constants
+import { stepsEnum } from '../../constants/steps';
 // Styles
 import './styles.scss';
 
@@ -42,7 +46,6 @@ class StepFour extends React.Component {
     stepFourActions: PropTypes.shape({
       getCatalogCampRequest: PropTypes.func.isRequired,
       stepFourSetDefaultState: PropTypes.func.isRequired,
-      stepFourSetSecondaryProgramId: PropTypes.func.isRequired,
     }),
     businessType: PropTypes.string.isRequired,
     programType: PropTypes.string.isRequired,
@@ -71,6 +74,18 @@ class StepFour extends React.Component {
     this.sctollToCurrentComponent();
   }
 
+  componentDidUpdate() {
+    const { data, weeks, currentStep } = this.props;
+    const shouldRenderStepFour = data.length > 0;
+    const currentStepGreatherThenFour = currentStep > stepsEnum.four;
+    if (shouldRenderStepFour && currentStepGreatherThenFour) {
+      const unselectedWeek = find(weeks, ({ customize_id }) => !customize_id);
+      if (unselectedWeek) {
+        this.props.stepsActions.setStepsCounter(stepsEnum.four);
+      }
+    }
+  }
+
   componentWillUnmount() {
     this.setDefaultProps();
   }
@@ -84,14 +99,12 @@ class StepFour extends React.Component {
     const tabsList = [];
     const tabPanels = [];
 
-    const tabListClassName = cx('step-four-tabs__tab-list', {
-      'hidden': weeks.length === 1,
-    });
+    const tabListClassName = cx('step-four-tabs__tab-list', { 'hidden': isEqual(weeks.length, 1) });
 
     if (hasSecondaryProgram) {
       return (
         <div className="step-four" ref={this.stepFour}>
-          <Container style={{ marginBottom: '100px' }}>
+          <Container>
             <Row>
               <Col>
                 <Header
@@ -118,7 +131,7 @@ class StepFour extends React.Component {
       );
     }
 
-    if (data.length === 0) return false;
+    if (isEqual(data.length, 0)) return false;
 
     weeks.forEach(({ id, customize_id, end_date, start_date }) => {
       tabsList.push(

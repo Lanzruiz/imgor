@@ -5,7 +5,6 @@ import Img from 'react-image';
 import OutsideClickHandler from 'react-outside-click-handler';
 // Components
 import AnimatedHeightComponent from '../AnimateHeightComponent';
-import LocaleString from '../LocaleString';
 // Images
 import arrowDownSmall from '../../assets/img/arrow-down-small.png';
 import arrowDownSmallWhite from '../../assets/img/arrow-down-white.png';
@@ -22,7 +21,7 @@ export default class Dropdown extends React.Component {
       }),
     ).isRequired,
     handleChange: PropTypes.func,
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(LocaleString)]),
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     whiteArrow: PropTypes.bool,
   };
 
@@ -30,6 +29,7 @@ export default class Dropdown extends React.Component {
     options: [],
     selectedOption: 'select',
     handleChange: () => {},
+    label: '',
   };
 
   state = {

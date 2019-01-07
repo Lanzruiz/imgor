@@ -2,6 +2,10 @@
 
 #{$root} {
     .step-five {
+        & .card-body__body {
+            flex: 1 1 auto;
+        }
+
         &__no-items {
             color: $card-red-color;
             font-size: 18px;

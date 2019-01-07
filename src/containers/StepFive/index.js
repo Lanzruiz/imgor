@@ -64,7 +64,6 @@ class StepFive extends React.Component {
     data: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
-        is_package: PropTypes.bool,
         package_product_id: PropTypes.string,
         primary_product_id: PropTypes.string,
         name: PropTypes.string,
@@ -122,7 +121,6 @@ class StepFive extends React.Component {
     selectedGear: PropTypes.objectOf(
       PropTypes.shape({
         id: PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
-        is_package: PropTypes.bool,
         package_product_id: PropTypes.string,
         primary_product_id: PropTypes.string,
         name: PropTypes.string,

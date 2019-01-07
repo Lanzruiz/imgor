@@ -25,9 +25,8 @@ ReactDOM.render(
       <ConnectedRouter history={history}>
         <React.Fragment>
           <Switch>
-            <Route path="/" exact component={App} />
-            <Route path="/start" component={(args) => {
-              return(
+            <Route path="/start" exact component={(args) => {
+              return (
                 <InitialComponent
                   {...args}
                   sport={sport}
@@ -38,6 +37,7 @@ ReactDOM.render(
                 />
               );
             }} />
+            <Route path="/" component={App} />
           </Switch>
         </React.Fragment>
       </ConnectedRouter>

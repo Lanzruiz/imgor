@@ -8,6 +8,7 @@ import cx from 'classnames';
 import assign from 'lodash/assign';
 import find from 'lodash/find';
 import { ReactHeight } from 'react-height';
+import isEqual from 'lodash/isEqual';
 // Components
 import Card, { CardContent, CardContentRow, CardContentCol, ImagePlus } from '../../components/Card';
 import { EducationSentence, FifteenHoursSentence, OneHourSentence, PerWeekSentence, TrainingSentence } from '../../containers/StepFour';
@@ -157,7 +158,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
           <CardContent>
             <CardContentRow>
               <CardContentCol>
-                <ReactHeight onHeightReady={this.setMinHeight} style={{ height: `${this.props.height}px` }}>
+                <ReactHeight onHeightReady={this.setMinHeight} style={{ height }}>
                   <div className={contentClassNames}>
                     <div className="step-four__esl-image-container">
                       <ImagePlus soldOut={sold_out} />
@@ -304,9 +305,8 @@ class StepFourWeekConcentrationComponent extends React.Component {
     };
 
     if (stepFourConcentrationProductId) {
-      if (id === emptyConcentrationId) {
+      if (isEqual(emptyConcentrationId, id)) {
         this.deleteSelectedConcentration(id);
-        this.props.weeksActions.customizeWeek(id);
         return;
       }
       args.productId = stepFourConcentrationProductId;
@@ -319,14 +319,19 @@ class StepFourWeekConcentrationComponent extends React.Component {
 
   setMinHeight = (height) => {
     if (this.state.height < height) {
-      this.setState(() => ({ height }));
+      this.setState({ height });
     }
   };
 
   deleteSelectedConcentration = (id) => {
-    const { cartId, stepFourConcentrationProductId, participantId, weekId } = this.props;
+    const { cartId, stepFourConcentrationProductId, participantId, weekId, maxWeekCounter } = this.props;
     if (stepFourConcentrationProductId) {
-      this.props.weeksActions.deleteSelectedConcentration({ cartId, participantId, productId: stepFourConcentrationProductId, id, currentWeekId: weekId });
+      const nextWeekId = weekId >= maxWeekCounter ? null : weekId;
+      this.props.weeksActions.deleteSelectedConcentration({ cartId, participantId, nextWeekId, productId: stepFourConcentrationProductId, id, currentWeekId: weekId });
+      return;
+    }
+    if (isEqual(emptyConcentrationId, id)) {
+      this.props.weeksActions.removeCustomizedWeek(id);
     }
   }
 }

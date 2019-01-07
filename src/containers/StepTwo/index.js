@@ -15,6 +15,7 @@ import LocaleString from '../../components/LocaleString';
 import * as stepOneActions from '../../actions/step.one';
 import * as stepTwoActions from '../../actions/step.two';
 import * as weeksActions from '../../actions/weeks';
+import * as stepsActions from '../../actions/steps';
 // Images
 import call from '../../assets/img/call-icon.png';
 import email from '../../assets/img/email-icon.png';
@@ -95,9 +96,17 @@ class StepTwo extends React.Component {
 
   componentDidMount() {
     const {
-      age, businessType, boarding, packageType, sport,
+      age, businessType, boarding, packageType, sport, selectedDate, step,
       group, secondary_group, gender, weeksCounter, isWeeklyCamp,
     } = this.props;
+
+    const noDateAvailable = !selectedDate.capacity_start_date && !selectedDate.capacity_end_date;
+
+    if (step > stepsEnum.two && noDateAvailable) {
+      this.props.stepsActions.setStepsCounter(stepsEnum.one);
+      this.setDefaultState();
+      return;
+    }
 
     const getCatalogCampsCalendarArgs = {
       age,
@@ -423,6 +432,7 @@ function mapDispatchToProps(dispatch) {
     stepOneActions: bindActionCreators(stepOneActions, dispatch),
     stepTwoActions: bindActionCreators(stepTwoActions, dispatch),
     weeksActions: bindActionCreators(weeksActions, dispatch),
+    stepsActions: bindActionCreators(stepsActions, dispatch),
   };
 }
 
