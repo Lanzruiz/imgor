@@ -60,6 +60,7 @@ class StepFour extends React.Component {
   static defaultProps = {
     weeksLengthNumber: 0,
     hasSecondaryProgram: false,
+    selectedWeekId: 0,
   };
 
   componentDidMount() {
@@ -202,6 +203,7 @@ class StepFour extends React.Component {
 
   setDefaultProps = () => {
     this.props.stepFourActions.stepFourSetDefaultState();
+    this.selectWeek(0);
   };
 
   renderSecondaryPrograms = (secondaryProgram) => {

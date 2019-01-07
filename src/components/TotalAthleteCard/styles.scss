@@ -8,10 +8,18 @@
             height: 100%;
             justify-content: center;
             width: 100%;
+
+            @include breakpoint($mobile) {
+                flex-direction: column;
+            }
         }
 
         &__image {
             margin-left: auto;
+
+            @include breakpoint($mobile) {
+                margin: auto;
+            }
         }
 
         &__column {

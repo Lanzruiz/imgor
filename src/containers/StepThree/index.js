@@ -119,7 +119,7 @@ class StepThree extends React.Component {
     const { selectedId, data, selectedCardWithSecondaryProgramsId } = this.props;
     return (
       <div ref={this.stepThree} className="step-three">
-        <Container style={{ marginBottom: '100px' }}>
+        <Container>
           <Row>
             <Col>
               <Header

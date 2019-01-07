@@ -10,6 +10,18 @@ const initialState = {
   stepSixUnnacompaniedProductId: null,
   stepSixDepartingProductId: null,
   stepSixArrivalProductId: null,
+  stepFourConcentrationProduct_1: null,
+  stepFourConcentrationProduct_2: null,
+  stepFourConcentrationProduct_3: null,
+  stepFourConcentrationProduct_4: null,
+  stepFourConcentrationProduct_5: null,
+  stepFourConcentrationProduct_6: null,
+  stepFourConcentrationProduct_7: null,
+  stepFourConcentrationProduct_8: null,
+  stepFourConcentrationProduct_9: null,
+  stepFourConcentrationProduct_10: null,
+  stepFourConcentrationProduct_11: null,
+  stepFourConcentrationProduct_12: null,
 };
 
 export default function(state = initialState, action) {

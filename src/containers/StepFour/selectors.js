@@ -1,7 +1,7 @@
 // Modules
 import { createSelector } from 'reselect';
 // Selectors
-import { weeksWeeksSelector } from '../StepOne/selectors';
+import { weeksWeeksSelector, cartSelector, weeksSelectedWeekIdSelector } from '../StepOne/selectors';
 
 function stepFourSelector(state) {
   return state.stepFour;
@@ -115,5 +115,14 @@ export const stepFourSecondaryProgramIdSelector = createSelector(
   stepFourSelector,
   function(stepFour) {
     return stepFour.secondaryProgramId;
+  }
+);
+
+export const stepFourConcentrationProductIdSelector = createSelector(
+  cartSelector,
+  weeksSelectedWeekIdSelector,
+  function(cart, weeksSelectedWeekId) {
+    const weekId = weeksSelectedWeekId + 1;
+    return cart[`stepFourConcentrationProduct_${weekId}`];
   }
 );

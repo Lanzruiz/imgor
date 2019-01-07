@@ -23,9 +23,11 @@ import {
   stepFourWeekFourDataSelector, stepFourWeekFiveDataSelector, stepFourWeekSixDataSelector,
   stepFourWeekSevenDataSelector, stepFourWeekEightDataSelector, stepFourWeekNineDataSelector,
   stepFourWeekTenDataSelector, stepFourWeekElevenDataSelector, stepFourWeekTwelveDataSelector,
+  stepFourConcentrationProductIdSelector,
 } from '../../containers/StepFour/selectors';
 // Constants
 import { productTypesEnum } from '../../constants/cart';
+import { emptyConcentrationId } from '../../reducers/step.four';
 // Styles
 import './styles.scss';
 
@@ -284,21 +286,34 @@ class StepFourWeekConcentrationComponent extends React.Component {
   };
 
   customizeWeek = (id) => {
-    const { weekId, cartId, participantId, maxWeekCounter, stepThreeParticipantProductIdSelector } = this.props;
+    const { weekId, cartId, participantId, maxWeekCounter, stepFourConcentrationProductId } = this.props;
     const data = this.props[`week_${weekId}_data`];
     const selectedItem = find(data, ['id', id]);
     const price = selectedItem && selectedItem.price;
     this.props.weeksActions.setWeekPrice(price);
+
     const args = {
       cartId,
       participantId,
-      stepThreeParticipantProductIdSelector,
       product: selectedItem,
       quantity: 1,
       productId: id,
       type: productTypesEnum.concentration,
       nextWeekId: weekId >= maxWeekCounter ? null : weekId,
+      currentWeekId: weekId,
     };
+
+    if (stepFourConcentrationProductId) {
+      if (id === emptyConcentrationId) {
+        this.deleteSelectedConcentration(id);
+        this.props.weeksActions.customizeWeek(id);
+        return;
+      }
+      args.productId = stepFourConcentrationProductId;
+      this.props.weeksActions.updateSelectedConcentration(args);
+      return;
+    }
+
     this.props.stepFourActions.stepFourCustomizeWeekRequest(args);
   };
 
@@ -309,9 +324,10 @@ class StepFourWeekConcentrationComponent extends React.Component {
   };
 
   deleteSelectedConcentration = (id) => {
-    // TODO: write handler!
-    console.warn(`Need handler to delete concentration by ${id} :(`);
-    this.props.weeksActions.removeCustomizedWeek(id);
+    const { cartId, stepFourConcentrationProductId, participantId, weekId } = this.props;
+    if (stepFourConcentrationProductId) {
+      this.props.weeksActions.deleteSelectedConcentration({ cartId, participantId, productId: stepFourConcentrationProductId, id, currentWeekId: weekId });
+    }
   }
 }
 
@@ -332,6 +348,7 @@ function mapStateToProps(state) {
     cartId: cartIdSelector(state),
     participantId: participantIdSelector(state),
     stepThreeParticipantProductId: stepThreeParticipantProductIdSelector(state),
+    stepFourConcentrationProductId: stepFourConcentrationProductIdSelector(state),
   };
 };
 

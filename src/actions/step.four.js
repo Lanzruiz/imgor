@@ -401,24 +401,27 @@ export function stepFourSetSecondaryProgramIdRequest({ campId, cartId, participa
   }
 }
 
-export function stepFourCustomizeWeekRequest({ cartId, product, participantId, quantity, productId, type, nextWeekId }) {
-  // TODO: need to be fixed!
+export function stepFourCustomizeWeekRequest({ cartId, product, participantId, quantity, productId, type, nextWeekId, currentWeekId }) {
   return function(dispatch) {
-    // TODO: rewrite that when api call status === 200
-    dispatch(customizeWeek(productId));
+    dispatch( customizeWeek(productId), );
     if (isEqual(productId, emptyConcentrationId)) {
       if (isNumber(nextWeekId)) {
-        dispatch(selectWeek(nextWeekId));
+        dispatch( selectWeek(nextWeekId), );
       }
       return;
     }
-    // TODO: write select week after request status === 200
     Api.req({
       apiCall: Api.postCartCartIdParticipantIdProduct,
       apiCallParams: { cartId, participantId, product, quantity, productId, type },
-      res200: (data) => { console.log('data ', data) },
-      res404: err => console.log('Api.postCartCartIdParticipantIdProduct() => 404'),
-      reject: err => console.error(err),
+      res200: (data) => {
+        const { cart, participant_product_id } = data;
+        dispatch( updateCart(assign({}, cart, { [`stepFourConcentrationProduct_${currentWeekId}`]: participant_product_id } )), );
+        if (nextWeekId > (currentWeekId - 1)) {
+          dispatch( selectWeek(nextWeekId), );
+        }
+      },
+      res404: () => console.log('Api.postCartCartIdParticipantIdProduct() => 404'),
+      reject: console.error,
     });
   }
 }
