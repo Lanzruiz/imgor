@@ -1,6 +1,12 @@
 @import '../../constants/scss/variables.scss';
 
 #{$root} {
+    .step-three {
+        & .card__header {
+            margin-left: -1px;
+        }
+    }
+
     .card {
         &__container {
             cursor: default;
@@ -32,7 +38,6 @@
             font-weight: 700;
             text-transform: uppercase;
             margin-right: auto;
-            margin-left: -2px;
 
             &--extra-small {
                 font-size: 24px;
