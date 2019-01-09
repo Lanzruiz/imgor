@@ -13,8 +13,6 @@ import LocaleString from '../LocaleString';
 import Button from '../Button';
 // Images
 import shopImg from '../../assets/img/shop-img-logo.png';
-import arrowUpSmall from '../../assets/img/arrow-up-small.png';
-import arrowDownSmall from '../../assets/img/arrow-down-small.png';
 // Actions
 import * as stepSixActions from '../../actions/step.six';
 import * as stepsActions from '../../actions/steps';
@@ -82,7 +80,7 @@ class Footer extends React.Component {
 
   render() {
     const { price, message, arrowUp, hasMessage, purchaseOnClickHandler, saveCampOnClickHandler, shareOnClickHandler, step } = this.props;
-    const arrowPositinon = arrowUp ? arrowUpSmall : arrowDownSmall;
+    const arrowPositinon = arrowUp ? <span className="icon-arrow-up2" /> : <span className="icon-arrow-down2" />;
     const isCurrentStepEqualToSix = isEqual(step, stepsEnum.six);
 
     return (
@@ -107,7 +105,7 @@ class Footer extends React.Component {
                     <div className="footer__text">
                       <span>{message}</span>{' '}
                       <span>
-                        <Img src={arrowPositinon} />
+                        {arrowPositinon}
                       </span>
                     </div>
                   ) : (
