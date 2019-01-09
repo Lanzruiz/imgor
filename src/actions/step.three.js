@@ -127,3 +127,30 @@ export function stepThreeDeleteProductFromCartAndSetNew({ campId, cartId, partic
     });
   }
 }
+
+export function stepThreeDiscardCardWithSecondProgram() {
+  return function(dispatch) {
+    dispatch( setStepsCounter(stepsEnum.three), );
+    dispatch( stepThreeSetSecondaryPrograms({ id: null, secondary_programs: [] }), );
+    dispatch( setSecondaryProgramId(null), );
+  }
+}
+
+export function stepThreeDeleteProductFromCartAndDiscardCard({ campId, cartId, participantId, productId }) {
+  return function(dispatch) {
+    dispatch( setStepsCounter(stepsEnum.three), );
+    dispatch( stepThreeSetSecondaryPrograms({ id: null, secondary_programs: [] }), );
+    dispatch( setSecondaryProgramId(null), );
+    
+    Api.req({
+      apiCall: Api.deleteCartCartIdParticipantParticipantIdProductId,
+      res200: ({ cart }) => {
+        dispatch( updateCart(assign({}, cart, { stepThreeProductId: null })), );
+        dispatch( saveTrainingId(null), );
+      },
+      res404: console.log,
+      reject: console.error,
+      apiCallParams: { cartId, participantId, productId },
+    });
+  }
+}
