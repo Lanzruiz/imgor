@@ -554,7 +554,7 @@ function AgeRadioBtnContainer ({ range, age }) {
                 {...input}
                 className="content__radio-btn--font-16"
                 checked={`${age}` === `${value}`}
-                children={`${value}`.length < 2 ? `0${value}` : value}
+                children={value}
                 value={value}
               />
             </div>
