@@ -75,3 +75,67 @@ export const stepFiveCatalogExcursionsNewSelector = createSelector(
     return stepFive.excursions;
   }
 );
+
+export const stepFiveExcursionsItemsPerPageSelector = createSelector(
+  stepFiveSelector,
+  function(stepFive) {
+    return stepFive.excursionsItemsStepCounter;
+  }
+);
+
+export const stepFiveSelectedExcurcionGearSelector = createSelector(
+  stepFiveSelector,
+  function(stepFive) {
+    return stepFive.selectedExcurcionGear;
+  }
+);
+
+export const stepFiveExcurcionsPerPageSelector = createSelector(
+  stepFiveCatalogExcursionsNewSelector,
+  stepFiveExcursionsItemsPerPageSelector,
+  function(excursions, perPage) {
+    const startIndex = 0;
+    return excursions.slice(startIndex, perPage);
+  }
+);
+
+export const stepFiveShouldRenderExcursionsLoadMoreButtonSelector = createSelector(
+  stepFiveCatalogExcursionsNewSelector,
+  stepFiveExcursionsItemsPerPageSelector,
+  function(data, perPage) {
+    const maxItemsCount = data.length;
+    return maxItemsCount > perPage;
+  }
+);
+
+export const stepFiveUpsellNewSelectedProductsSelector = createSelector(
+  stepFiveSelector,
+  function(stepFive) {
+    return stepFive.upsellNewSelectedProducts;
+  }
+);
+
+export const stepFiveUpsellItemsPerPageSelector = createSelector(
+  stepFiveSelector,
+  function(stepFive) {
+    return stepFive.upsellItemsStepCounter;
+  }
+);
+
+export const stepFiveUpsellPerPageSelector = createSelector(
+  stepFiveGearUpsellNewSelector,
+  stepFiveUpsellItemsPerPageSelector,
+  function(upsellNew, perPage) {
+    const startIndex = 0;
+    return upsellNew.slice(startIndex, perPage);
+  }
+);
+
+export const stepFiveShouldRenderUpsellLoadMoreButtonSelector = createSelector(
+  stepFiveGearUpsellNewSelector,
+  stepFiveUpsellItemsPerPageSelector,
+  function(data, perPage) {
+    const maxItemsCount = data.length;
+    return maxItemsCount > perPage;
+  }
+);

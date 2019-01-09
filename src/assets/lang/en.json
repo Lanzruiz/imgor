@@ -199,6 +199,7 @@
     "remove": "remove",
     "update": "update",
     "date": "Date",
+    "select": "select",
     "step_three_choose_training_message": "Please choose your training",
     "step_four_make_selection_for_entire_camp_stay": "Make selection for entire camp stay",
     "step_four_week_one_message": "Make a selection for week one",

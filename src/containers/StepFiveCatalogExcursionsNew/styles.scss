@@ -1,0 +1,9 @@
+@import '../../constants/scss/variables.scss';
+
+#{$root} {
+    .excursion {
+        &__item {
+            margin-bottom: 15px;
+        }
+    }
+}

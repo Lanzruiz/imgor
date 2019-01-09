@@ -4,26 +4,33 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Col, Row } from 'react-grid-system';
-import ReactHeight from 'react-height';
-import VisibilitySensor from 'react-visibility-sensor';
 import isEqual from 'lodash/isEqual';
+import toLower from 'lodash/toLower';
+import find from 'lodash/find';
+import { CSSTransitionGroup } from 'react-transition-group';
 // Components
 import Card, { CardContent, CardContentCol, CardContentRow, CardContentText } from '../../components/Card';
 import Image from '../../components/Image';
 import LocaleString from '../../components/LocaleString';
 import Dropdown from '../../components/Dropdown';
+import LoadMoreButton from '../../components/LoadMoreButton';
 // Actions
 import * as stepFiveActions from '../../actions/step.five';
 // Selectors
-import { stepFiveCatalogExcursionsNewSelector } from '../StepFive/selectors';
+import { cartIdSelector, participantIdSelector } from '../StepOne/selectors';
+import {
+  stepFiveExcurcionsPerPageSelector, stepFiveSelectedExcurcionGearSelector, stepFiveShouldRenderExcursionsLoadMoreButtonSelector,
+} from '../StepFive/selectors';
+// Constants
+import { productTypesEnum } from '../../constants/cart';
 // Helpers
 import dateFormat from '../../helpers/dateFormat';
+// Styles
+import './styles.scss';
 
 class StepFiveCatalogExcursionsNew extends React.Component {
   state = {
     cardHeadHeight: 44,
-    contentHeight: 40,
-    cardBodyHeight: 40,
   };
 
   static propTypes = {
@@ -44,10 +51,12 @@ class StepFiveCatalogExcursionsNew extends React.Component {
         ),
       }),
     ).isRequired,
+    shouldRenderExcursionsLoadMoreButton: PropTypes.bool,
   };
 
   static defaultProps = {
     excursions: [],
+    shouldRenderExcursionsLoadMoreButton: false,
   };
 
   componentDidMount() {
@@ -56,13 +65,22 @@ class StepFiveCatalogExcursionsNew extends React.Component {
   }
 
   render() {
-    const { excursions } = this.props;
+    const { excursions, shouldRenderExcursionsLoadMoreButton } = this.props;
     if (isEqual(excursions.length, 0)) return null;
     return (
       <div className="excursions">
-        <Row>
+        <CSSTransitionGroup
+          component={Row}
+          transitionName="slide"
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={300}
+        >
           {excursions.map(this.renderExcursionItem)}
-        </Row>
+        </CSSTransitionGroup>
+        <LoadMoreButton
+          shouldRender={shouldRenderExcursionsLoadMoreButton}
+          onClick={this.increaseItemsPerPage}
+        />
       </div>
     );
   }
@@ -71,57 +89,55 @@ class StepFiveCatalogExcursionsNew extends React.Component {
     this.props.stepFiveActions.stepFiveGetCatalogExcursionsNewRequest({ startDate, endDate });
   };
 
-  renderExcursionItem = (item, idx) => {
-    const { cardHeadHeight, contentHeight, cardBodyHeight } = this.state;
+  increaseItemsPerPage = () => {
+    this.props.stepFiveActions.stepFiveIncreaseExcursionsItemsPerPage();
+  };
+
+  renderExcursionItem = (item) => {
+    const { selectedExcurcionGear } = this.props;
+    const { cardHeadHeight } = this.state;
     const { categories, description, name, image_url, dates } = item;
     const [ header ] = categories;
     const price = dates.length && dates[0].capacity_price;
-    const onClickHandler = () => {};
-    const customButtonTitle = 'select';
-    const onRemoveHandler = () => {};
     const cardBobyHeadStyles = { minHeight: cardHeadHeight };
-    const cardBodyStyles = { minHeight: cardBodyHeight };
-    const cardContentTextStyles = { minHeight: contentHeight };
-    const tooltipMessage = '';
+    const id = toLower(name);
+    const isCurrentItemSelected = selectedExcurcionGear[id] && selectedExcurcionGear[id].selected;
+    const tooltipMessage = selectedExcurcionGear[id] ? '' : <LocaleString stringKey="please_choose_date" />;
+    const customButtonTitle = (
+      isCurrentItemSelected
+        ? selectedExcurcionGear[id].needUpdate
+          ? <LocaleString stringKey="update" />
+          : <LocaleString stringKey="remove" />
+        : <LocaleString stringKey="selected" />
+    );
     return (
-      <Col key={idx} md={6} lg={4}>
+      <Col key={id} md={6} lg={4} className="excursion__item">
         <Card
-          id={idx}
+          id={id}
           cardHeader={name}
           color="dark"
           header={header.display_name}
           price={price}
-          selectedId={null}
+          selectedId={isCurrentItemSelected ? id : null}
           headerSize="extra-small"
-          onClick={onClickHandler}
+          onClick={id => this.setExcursionGearItemRequest(id, dates, !tooltipMessage)}
           customButtonTitle={customButtonTitle}
-          onRemove={onRemoveHandler}
+          onRemove={id => this.updateExcursionGearItemRequest(id, dates, !tooltipMessage)}
           onCardBodyHeadHeightReady={this.setCatdHeadHeight}
           cardBobyHeadStyles={cardBobyHeadStyles}
-          cardBodyStyles={cardBodyStyles}
-          onCardBodyHeightReady={this.setCardBodyHeight}
           tooltipMessage={tooltipMessage}
         >
           <CardContent>
             <CardContentRow>
               <CardContentCol className="card-content__img-container">
-                <Image
-                  className="card-content__img"
-                  src={image_url}
-                />
+                <Image className="card-content__img" src={image_url} />
               </CardContentCol>
               <CardContentCol className="center-center flex-1">
-                {this.renderDates(dates)}
+                {this.renderDates(dates, id)}
               </CardContentCol>
             </CardContentRow>
             <CardContentText>
-              <VisibilitySensor>
-                <ReactHeight
-                  onHeightReady={this.setMinHeight}
-                  children={description}
-                  style={cardContentTextStyles}
-                />
-              </VisibilitySensor>
+              {description}
             </CardContentText>
           </CardContent>
         </Card>
@@ -129,7 +145,8 @@ class StepFiveCatalogExcursionsNew extends React.Component {
     );
   }
 
-  renderDates = (dates) => {
+  renderDates = (dates, cardId) => {
+    const { selectedExcurcionGear } = this.props;
     const options = dates.map(({ id, capacity_start_date }) => {
       return {
         id,
@@ -137,23 +154,28 @@ class StepFiveCatalogExcursionsNew extends React.Component {
         display_name: dateFormat({ date: capacity_start_date, dateFormat: 'YYYY-MM-DD', resultFormat: 'MMM, DD YYYY' })
       };
     });
+    const selectedExcurcionGearItem = selectedExcurcionGear[cardId];
+    const selectedOptionItem = selectedExcurcionGearItem ? find(options, ['id', selectedExcurcionGearItem.dateId]) : '';
+    const selectedOption = (
+      selectedOptionItem
+        ? dateFormat({ date: selectedOptionItem.display_name, dateFormat: 'MMM, DD YYYY', resultFormat: 'MMM, DD' })
+        : <LocaleString stringKey="select" />
+    );
     return (
       <div className="step-five__card-attributes">
         <Dropdown
-          selectedOption={'Date'}// TODO: from redux
+          selectedOption={selectedOption}
           options={options}
           label={<LocaleString stringKey="date" />}
-          handleChange={this.setUpsellGearItemDate}
+          handleChange={id => this.setExcursionGearItemDate(id, cardId)}
         />
       </div>
     );
   };
 
-  setMinHeight = (height) => {
-    if (this.state.contentHeight < height) {
-      this.setState(() => ({ contentHeight: height }));
-    }
-  };
+  setExcursionGearItemDate = (dateId, cardId) => {
+    this.props.stepFiveActions.setExcursionGearItemDate({ dateId, cardId });
+  }
 
   setCatdHeadHeight = (height) => {
     if (this.state.cardHeadHeight < height) {
@@ -161,16 +183,54 @@ class StepFiveCatalogExcursionsNew extends React.Component {
     }
   };
 
-  setCardBodyHeight = (height) => {
-    if (this.state.cardBodyHeight < height) {
-      this.setState(() => ({ cardBodyHeight: height }));
+  setExcursionGearItemRequest = (cardId, dates, shouldSendRequest) => {
+    if (shouldSendRequest) {
+      const { cartId, participantId, selectedExcurcionGear } = this.props;
+      const selectedExcurcionGearItem = selectedExcurcionGear[cardId];
+      const product = selectedExcurcionGearItem ? find(dates, ['id', selectedExcurcionGearItem.dateId]) : '';
+      const args = {
+        cartId,
+        participantId,
+        product,
+        cardId,
+        quantity: 1,
+        productId: product.id,
+        type: productTypesEnum.excursion,
+      };
+      this.props.stepFiveActions.stepFiveSetExcursionGearItemRequest(args);
     }
   };
+
+  updateExcursionGearItemRequest = (cardId, dates, shouldSendRequest) => {
+    if (shouldSendRequest) {
+      const { cartId, participantId, selectedExcurcionGear } = this.props;
+      const selectedExcurcionGearItem = selectedExcurcionGear[cardId];
+      const product = selectedExcurcionGearItem ? find(dates, ['id', selectedExcurcionGearItem.dateId]) : '';
+      const args = {
+        cartId,
+        participantId,
+        product,
+        cardId,
+        quantity: 1,
+        productId: selectedExcurcionGearItem.productId,
+        type: productTypesEnum.excursion,
+      };
+      if (selectedExcurcionGearItem.needUpdate) {
+        this.props.stepFiveActions.stepFiveUpdateExcursionGearItemRequest(args);
+      } else {
+        this.props.stepFiveActions.stepFiveDeleteExcursionGearItemRequest(args);
+      }
+    }
+  }
 }
 
 function mapStateToProps(state) {
   return {
-    excursions: stepFiveCatalogExcursionsNewSelector(state),
+    excursions: stepFiveExcurcionsPerPageSelector(state),
+    selectedExcurcionGear: stepFiveSelectedExcurcionGearSelector(state),
+    cartId: cartIdSelector(state),
+    participantId: participantIdSelector(state),
+    shouldRenderExcursionsLoadMoreButton: stepFiveShouldRenderExcursionsLoadMoreButtonSelector(state),
   };
 }
 
