@@ -401,6 +401,7 @@ export function stepFourSetSecondaryProgramIdRequest({ campId, cartId, participa
   }
 }
 
+
 export function stepFourCustomizeWeekRequest({ cartId, product, participantId, quantity, productId, type, nextWeekId, currentWeekId }) {
   return function(dispatch) {
     dispatch( customizeWeek(productId), );
@@ -423,5 +424,12 @@ export function stepFourCustomizeWeekRequest({ cartId, product, participantId, q
       res404: () => console.log('Api.postCartCartIdParticipantIdProduct() => 404'),
       reject: console.error,
     });
+  }
+}
+
+export function stepFourUnsetSecondaryProgramIdRequest() {
+  return function(dispatch) {
+    dispatch( setSecondaryProgramId(null) );
+    dispatch( setStepsCounter(stepsEnum.four) );
   }
 }

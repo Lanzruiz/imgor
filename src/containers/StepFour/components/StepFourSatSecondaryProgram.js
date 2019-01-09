@@ -29,6 +29,7 @@ class StepFourSatSecondaryProgram extends React.Component {
         label="AGES 15-18"
         price={price}
         onClick={this.setSecondaryProgramId}
+        onRemove={this.unsetSecondaryProgramId}
         selectedId={selectedId}
         soldOut={sold_out}
         via={true}
@@ -56,7 +57,12 @@ class StepFourSatSecondaryProgram extends React.Component {
   setSecondaryProgramId = (id) => {
     const { cartId, participantId, participantProductId } = this.props;
     this.props.stepFourActions.stepFourSetSecondaryProgramIdRequest({ campId: id, cartId, participantId, productId: participantProductId });
-  }
+  };
+  
+  unsetSecondaryProgramId = (id) => {
+    const { cartId, participantId, participantProductId } = this.props;
+    this.props.stepFourActions.stepFourUnsetSecondaryProgramIdRequest({ campId: id, cartId, participantId, productId: participantProductId });
+  };
 }
 
 function mapStateToProps(state) {
