@@ -58,12 +58,20 @@ class StepFour extends React.Component {
     hasSecondaryProgram: PropTypes.bool,
     currentStep: PropTypes.number.isRequired,
     data: PropTypes.array,
+    weeks: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number,
+        customize_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      }),
+    ),
   };
 
   static defaultProps = {
     weeksLengthNumber: 0,
     hasSecondaryProgram: false,
     selectedWeekId: 0,
+    data: [],
+    weeks: [],
   };
 
   componentDidMount() {
