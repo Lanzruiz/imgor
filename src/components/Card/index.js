@@ -107,7 +107,7 @@ class Card extends React.Component {
       children, header, label, headerSize, color, cardHeader, imgSrc, id, soldOut,
       selectedId, priceDescription, cardHeaderCapitalize, style, className,
     } = this.props;
-
+    
     const isSelectedIdExists = (typeof selectedId === 'number' || typeof selectedId === 'string');
     const isCurrentCardSelected = (id === selectedId);
 
@@ -216,14 +216,16 @@ class Card extends React.Component {
 
   renderButtonBlock = (buttonClassNames, isCurrentCardSelected) => {
     const { buttonBlock, soldOut, customButtonTitle, tooltipMessage } = this.props;
-    const onClickHandler = soldOut ? null : this.onClickHandler;
+    
+    const onClickHandler = soldOut && !isCurrentCardSelected ? null : this.onClickHandler;
+  
     const buttonTitle = (
       soldOut
         ? <LocaleString stringKey="sold_out" />
         : isCurrentCardSelected
           ? customButtonTitle
             ? customButtonTitle
-            : <LocaleString stringKey="card.selected" />
+            : <LocaleString stringKey="card.remove" />
           : <LocaleString stringKey="card.select" />
     );
     return buttonBlock && (

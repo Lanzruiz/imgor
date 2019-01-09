@@ -54,6 +54,8 @@ class StepThree extends React.Component {
       getCatalogCampsLevelsRequest: PropTypes.func.isRequired,
       stepThreeSetDefaultState: PropTypes.func.isRequired,
       stepThreeSetSecondaryPrograms: PropTypes.func.isRequired,
+      stepThreeDeleteProductFromCartAndDiscardCard: PropTypes.func.isRequired,
+      stepThreeDiscardCardWithSecondProgram: PropTypes.func.isRequired,
     }),
     stepsActions: PropTypes.shape({
       incrementStepsCounter: PropTypes.func.isRequired,
@@ -157,6 +159,10 @@ class StepThree extends React.Component {
     const { age_range, display_name, name = '', price, id, selectedId, soldOut, has_secondary_program, secondaryPrograms, displayViaLabel } = args;
     const computedLabel = age_range ? `ages ${age_range}` : '';
     const nameLowerCase = toLower(name);
+    
+    const onCardClick = has_secondary_program
+        ? cardId => this.goToNextStep({ id: cardId, secondaryPrograms })
+        : this.selectCard;
 
     const cardProps = {
       id,
@@ -165,11 +171,12 @@ class StepThree extends React.Component {
       displayViaLabel,
       header: display_name,
       key: id,
-      onClick: has_secondary_program ? cardId => this.goToNextStep({ id: cardId, secondaryPrograms }) : this.selectCard,
+      onClick: onCardClick,
+      onRemove: has_secondary_program ? this.discardCardWithSecondProgram : this.discardCard,
       label: computedLabel,
       soldOut: soldOut,
     };
-
+    
     switch(nameLowerCase) {
       case 'breakthrough': {
         return (
@@ -209,6 +216,16 @@ class StepThree extends React.Component {
     if (cartId && participantId && !cartStepThreeProductId) {
       this.props.stepThreeActions.stepThreeSetProductToTheCart({ cartId, participantId, campId: id });
     }
+  };
+  
+  discardCardWithSecondProgram = () => {
+    this.props.stepThreeActions.stepThreeDiscardCardWithSecondProgram();
+  };
+  
+  discardCard = (id) => {
+    const { cartId, participantId, cartStepThreeProductId } = this.props;
+
+    this.props.stepThreeActions.stepThreeDeleteProductFromCartAndDiscardCard({ campId: id, cartId, participantId, productId: cartStepThreeProductId})
   };
 
   saveTrainingId = (id) => {

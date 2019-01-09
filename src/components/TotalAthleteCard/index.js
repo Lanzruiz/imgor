@@ -10,7 +10,7 @@ import footballCore from '../../assets/img/football-core_copy_2.png';
 import './styles.scss';
 
 const TotalAthleteCard = (props) => {
-  const { selectedId, onClick, price, label, id, header, soldOut, displayViaLabel } = props;
+  const { selectedId, onClick, onRemove, price, label, id, header, soldOut, displayViaLabel } = props;
   return (
     <Card
       cardHeader={<LocaleString stringKey="group_sport_training" />}
@@ -21,6 +21,7 @@ const TotalAthleteCard = (props) => {
       imgSrc={footballCore}
       label={label}
       onClick={onClick}
+      onRemove={onRemove}
       price={price}
       selectedId={selectedId}
       size="large"

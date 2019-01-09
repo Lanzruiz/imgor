@@ -79,7 +79,7 @@ class StepFour extends React.Component {
     if (!hasSecondaryProgram) {
       this.getCatalogCamp();
     }
-    this.sctollToCurrentComponent();
+    this.scrollToCurrentComponent();
   }
 
   componentDidUpdate() {
@@ -249,7 +249,7 @@ class StepFour extends React.Component {
     }
   };
 
-  sctollToCurrentComponent = () => {
+  scrollToCurrentComponent = () => {
     const { hasSecondaryProgram, data } = this.props;
     if (hasSecondaryProgram || data.length > 0) {
       scrollToComponent(this.stepFour.current, { align: 'top' });

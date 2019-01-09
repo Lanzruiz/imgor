@@ -10,7 +10,7 @@ import footballGameChanger from '../../assets/img/football-game-changer.png';
 import './styles.scss';
 
 const BreakthroughCard = (props) => {
-  const { selectedId, onClick, price, label, id, header, soldOut, displayViaLabel } = props;
+  const { selectedId, onClick, onRemove, price, label, id, header, soldOut, displayViaLabel } = props;
   return (
     <Card
       cardHeader={<LocaleString stringKey="individualized_sport_training" />}
@@ -21,6 +21,7 @@ const BreakthroughCard = (props) => {
       imgSrc={footballGameChanger}
       label={label}
       onClick={onClick}
+      onRemove={onRemove}
       price={price}
       selectedId={selectedId}
       size="large"
@@ -83,6 +84,7 @@ const BreakthroughCard = (props) => {
 BreakthroughCard.propTypes = {
   selectedId: PropTypes.number,
   onClick: PropTypes.func,
+  onRemove: PropTypes.func,
   price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   label: PropTypes.string,
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

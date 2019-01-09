@@ -10,7 +10,7 @@ import footballGameChanger from '../../assets/img/football-game-changer.png';
 import './styles.scss';
 
 const GameChangerCard = (props) => {
-  const { selectedId, onClick, price, label, id, header, soldOut, displayViaLabel } = props;
+  const { selectedId, onClick, onRemove, price, label, id, header, soldOut, displayViaLabel } = props;
   return (
     <Card
       cardHeader={<LocaleString stringKey="individualized_sport_training" />}
@@ -21,6 +21,7 @@ const GameChangerCard = (props) => {
       imgSrc={footballGameChanger}
       label={label}
       onClick={onClick}
+      onRemove={onRemove}
       price={price}
       selectedId={selectedId}
       size="large"
