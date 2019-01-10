@@ -4,7 +4,8 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Route, Switch } from 'react-router-dom';
-import { ConnectedRouter } from 'connected-react-router'
+import { ConnectedRouter } from 'connected-react-router';
+import axios from 'axios';
 // Containers
 import App from './containers/App';
 import InitialComponent from './containers/InitialComponent';
@@ -17,7 +18,11 @@ const { store, persistor } = configStore;
 
 const imgorRootContainer = document.getElementById('imgor-root');
 
-const { sport, gender, group, secondary_group, business_type } = imgorRootContainer.dataset;
+const { sport, gender, group, secondary_group, business_type, apiUrl, redirectUrlShopify, urlToNoProps } = imgorRootContainer.dataset;
+
+export const instance = axios.create({
+  baseURL: apiUrl || process.env.REACT_APP_API_URL,
+});
 
 ReactDOM.render(
   <Provider store={store}>
@@ -34,6 +39,8 @@ ReactDOM.render(
                   group={group}
                   secondaryGroup={secondary_group}
                   businessType={business_type}
+                  redirectUrlShopify={redirectUrlShopify}
+                  urlToNoProps={urlToNoProps}
                 />
               );
             }} />

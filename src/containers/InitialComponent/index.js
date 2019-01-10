@@ -21,9 +21,11 @@ class InitialComponent extends React.Component {
   };
 
   componentDidMount() {
-    const { location: { search }, sport, gender, group, secondaryGroup, businessType } = this.props;
+    const { location: { search }, sport, gender, group, secondaryGroup, businessType, urlToNoProps, redirectUrlShopify } = this.props;
     const initialParams = queryString.parse(search);
     const computedSettings = {
+      urlToNoProps,
+      redirectUrlShopify,
       sport: sport || initialParams.sport,
       gender: gender || initialParams.gender,
       group: group || initialParams.group,

@@ -12,10 +12,10 @@ export function setInitialSettings(initialSettings) {
 
 export function redirectToMainPage(initialSettings) {
   return function(dispatch) {
-    const { lang, sport, packageType, businessType } = initialSettings;
+    const { lang, sport, packageType, businessType, urlToNoProps } = initialSettings;
     if (lang || sport || packageType || businessType) {
       dispatch( setInitialSettings(initialSettings), );
-      dispatch( push('/'), );
     }
+    dispatch( push(urlToNoProps || process.env.REACT_APP_REDIRECT_URL_TO_NO_PROPS), );
   }
 }

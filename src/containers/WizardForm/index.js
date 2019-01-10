@@ -293,8 +293,8 @@ class WizardForm extends React.Component {
   }
 
   purchaseHandler = () => {
-    const { cartId } = this.props;
-    const shopifyUrl = process.env.REACT_APP_REDIRECT_URL_SHOPIFY;
+    const { cartId, redirectUrlShopify } = this.props;
+    const shopifyUrl = redirectUrlShopify || process.env.REACT_APP_REDIRECT_URL_SHOPIFY;
     if (window && cartId) {
       window.location = `${shopifyUrl}?order=${cartId}`;
     }
@@ -984,6 +984,7 @@ function mapStateToProps(state) {
     stepSixTransportUnaccompanied: stepSixTransportUnaccompaniedSelector(state),
     stepSixDepartingTransportObject: stepSixDepartingTransportObjectSelector(state),
     stepSixArrivalTransportObject: stepSixArrivalTransportObjectSelector(state),
+    redirectUrlShopify: state.initialSettings.redirectUrlShopify,
   };
 };
 
