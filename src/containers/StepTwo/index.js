@@ -7,10 +7,10 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import moment from 'moment';
 import isEqual from 'lodash/isEqual';
-import Carousel, { CarouselItem } from '../../components/Carousel';
 // Components
 import Header from '../../components/Header';
 import LocaleString from '../../components/LocaleString';
+import Carousel, { CarouselItem } from '../../components/Carousel';
 // Actions
 import * as stepOneActions from '../../actions/step.one';
 import * as stepTwoActions from '../../actions/step.two';
