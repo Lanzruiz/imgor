@@ -106,6 +106,13 @@ class StepFinal extends React.Component {
                             <label className="step-final__form-control">
                               <Input
                                 inputClassName="step-final__input"
+                                name={stepFinalFormFieldNames.dateOfBirth}
+                                label="birth day"
+                              />
+                            </label>
+                            <label className="step-final__form-control">
+                              <Input
+                                inputClassName="step-final__input"
                                 name={stepFinalFormFieldNames.email}
                                 label="email (optional)"
                               />
