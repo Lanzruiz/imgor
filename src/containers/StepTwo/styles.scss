@@ -23,6 +23,11 @@
             text-align: center;
             width: 25%;
 
+            [class^="icon-"] {
+              font-size: 30px;
+              margin-bottom: 4px;
+            }
+
             @include breakpoint($mobile){
                 width: 100%;
                 box-sizing: border-box;
