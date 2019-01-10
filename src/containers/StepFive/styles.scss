@@ -37,13 +37,14 @@
             background: $subheader-text-color;
             color: $white;
             text-transform: uppercase;
+            font-family: $serifa-bold;
 
             & .button {
                 box-sizing: border-box;
                 padding: 8px 16px;
             }
 
-            &:active {
+            &:active, &:hover {
                 background: $white;
                 border: 2px solid $subheader-text-color;
                 color: $subheader-text-color

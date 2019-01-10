@@ -2,16 +2,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import Img from 'react-image';
 // Components
 import Button from '../Button';
 import GreenBlock from '../GreenBlock';
 import LocaleString from '../LocaleString';
 import Tooltip from '../Tooltip';
 import Image from '../Image';
-// Images
-import plus from '../../assets/img/plus.png';
-import plusSoldOut from '../../assets/img/sold-out-plus.png';
 // Styles
 import './styles.scss';
 
@@ -311,10 +307,7 @@ export function CardContentText({ children, ...rest }) {
 export function ImagePlus({ className, soldOut = false }) {
   return (
     <span className={cx('card-body__image-plus', { [className]: className })}>
-      <Img
-        src={soldOut ? plusSoldOut : plus}
-        className="card-body__image-item"
-      />
+      <span className={`icon-plus ${soldOut ? 'sold-out' : ''}`} />
     </span>
   );
 }

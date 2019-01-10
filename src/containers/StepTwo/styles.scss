@@ -23,6 +23,11 @@
             text-align: center;
             width: 25%;
 
+            [class^="icon-"] {
+              font-size: 30px;
+              margin-bottom: 4px;
+            }
+
             @include breakpoint($mobile){
                 width: 100%;
                 box-sizing: border-box;
@@ -168,18 +173,31 @@
             cursor: pointer;
             font-family: $trade-gothic;
             font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-            &.sold-out {
-                color: $sold-out;
-                cursor: not-allowed;
-                text-decoration: line-through;
-            }
-
-            &.active {
+            &:hover{
                 background-color: $date-block-selected-bg;
                 color: $white;
                 font-family: $header-font;
                 font-size: 14px;
+            }
+
+            &.active{
+                background-color: $date-block-selected-bg;
+                color: $white;
+                font-family: $header-font;
+                font-size: 14px;
+            }
+
+
+            &.sold-out, &.sold-out:hover {
+                color: $sold-out;
+                cursor: not-allowed;
+                text-decoration: line-through;
+                background-color: transparent;
+                font-family: $trade-gothic;
             }
         }
 
@@ -214,6 +232,7 @@
             color: $sold-out;
             float: right;
             text-decoration: line-through;
+            text-transform: uppercase;
         }
     }
 

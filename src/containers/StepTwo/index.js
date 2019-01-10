@@ -1,7 +1,6 @@
 // Modules
 import React from 'react';
 import { Container, Row, Col } from 'react-grid-system';
-import Img from 'react-image';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -16,10 +15,6 @@ import * as stepOneActions from '../../actions/step.one';
 import * as stepTwoActions from '../../actions/step.two';
 import * as weeksActions from '../../actions/weeks';
 import * as stepsActions from '../../actions/steps';
-// Images
-import call from '../../assets/img/call-icon.png';
-import email from '../../assets/img/email-icon.png';
-import chat from '../../assets/img/chat-icon.png';
 // Helpers
 import dateFormat from '../../helpers/dateFormat';
 // Selectors
@@ -229,19 +224,19 @@ class StepTwo extends React.Component {
                   </p>
                   <div className="questions__icons icons">
                     <span className="icons__container">
-                      <Img src={call} alt="call" />
+                      <span className="icon-phone" />
                       <span className="icons__text">
                         <LocaleString stringKey="step_two.questions.call" />
                       </span>
                     </span>
                     <span className="icons__container">
-                      <Img src={email} alt="email" />
+                      <span className="icon-envelop" />
                       <span className="icons__text">
                         <LocaleString stringKey="step_two.questions.email" />
                       </span>
                     </span>
                     <span className="icons__container">
-                      <Img src={chat} alt="chat" />
+                      <span className="icon-bubble" />
                       <span className="icons__text">
                         <LocaleString stringKey="step_two.questions.chat" />
                       </span>

@@ -222,6 +222,12 @@
                 display: block;
                 height: 25px;
                 width: 24px;
+                color: $card-dark-blue-color;
+                font-size: 18px;
+
+                .sold-out{
+                  color: $card-red-color;
+                }
             }
         }
 
@@ -269,6 +275,11 @@
             &--regular {
                 background-color: $white;
                 color: $date-block-selected-bg;
+
+                &:hover{
+                  background-color: $date-block-selected-bg;
+                  color: $white
+                }
             }
 
             &--selected {
