@@ -104,3 +104,10 @@ export const finalStepGuardianPhoneSelector = createSelector(
     return stepOneFormValueSelector(state, stepFinalFormFieldNames.guardianInformationPhone);
   }
 );
+
+export const finalStepDateOfBirthSelector = createSelector(
+  stateSelector,
+  function(state) {
+    return stepOneFormValueSelector(state, stepFinalFormFieldNames.dateOfBirth);
+  }
+);

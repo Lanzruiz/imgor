@@ -17,16 +17,18 @@ class DatePickerReduxForm extends React.Component {
     isClearable: PropTypes.bool,
     placeholder: PropTypes.string,
     portal: PropTypes.bool,
+    showYearDropdown: PropTypes.bool,
   };
 
   static defaultProps = {
     showTimeSelect: true,
     dateFormat: 'YYYY-MM-DD HH:mm',
     isClearable: true,
+    showYearDropdown: false,
   };
 
   render() {
-    const { className, name, dateFormat, isClearable, placeholder, portal, showTimeSelect } = this.props;
+    const { className, name, dateFormat, isClearable, placeholder, portal, showTimeSelect, showYearDropdown } = this.props;
     return (
       <Field
         className={className}
@@ -38,6 +40,7 @@ class DatePickerReduxForm extends React.Component {
         withPortal={portal}
         normalize={this.normalizeDate}
         showTimeSelect={showTimeSelect}
+        showYearDropdown={showYearDropdown}
       />
     );
   }
@@ -68,7 +71,7 @@ class renderDatePicker extends React.Component {
 
   render() {
     const {
-      className, dateFormat, input, placeholder, showTimeSelect, meta, isClearable, withPortal,
+      className, dateFormat, input, placeholder, showTimeSelect, meta, isClearable, withPortal, showYearDropdown,
     } = this.props;
     const { touched, error } = meta;
     const datePickerContainerClassName = cx({ [className]: className });
@@ -100,6 +103,9 @@ class renderDatePicker extends React.Component {
               boundariesElement: 'viewport'
             }
           }}
+          showYearDropdown={showYearDropdown}
+          scrollableYearDropdown={true}
+          yearDropdownItemNumber={50}
         />
         {touched && error && <span>{error}</span>}
       </div>

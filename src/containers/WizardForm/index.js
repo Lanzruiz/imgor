@@ -10,7 +10,6 @@ import isEqual from 'lodash/isEqual';
 import isEmail from 'validator/lib/isEmail';
 import isMobilePhone from 'validator/lib/isMobilePhone';
 import find from 'lodash/find';
-import isArray from 'lodash/isArray';
 import moment from 'moment';
 // Components
 import Footer from '../../components/Footer';
@@ -44,11 +43,12 @@ import {
 import {
   finalStepFirstNameSelector, finalStepLastNameSelector, finalStepPositionSelector,
   finalStepShirtSizeSelector, finalStepGuardianFirstNameSelector, finalStepGuardianLastNameSelector,
-  finalStepGuardianEmailSelector, finalStepGuardianPhoneSelector,
+  finalStepGuardianEmailSelector, finalStepGuardianPhoneSelector, finalStepDateOfBirthSelector,
 } from '../StepFinal/selectors';
 // Helpers
 import isStringsEqual from '../../helpers/isStringsEqual';
 import stringToNumber from '../../helpers/stringToNumber';
+import calculateAge from '../../helpers/calculateAge';
 // Constants
 import { stepsEnum } from '../../constants/steps';
 import { weekly_camp } from '../StepOne';
@@ -806,58 +806,46 @@ class WizardForm extends React.Component {
   };
 
   stepFinalValidation = () => {
-    const isAdult = this.props.ageNumber <= 18;
+    const {
+      ageNumber, finalStepDateOfBirth, firstName, lastName, position, shirtSize, guardianFirstName,
+      guardianLastName, guardianEmail, guardianPhone,
+    } = this.props;
+    const adultAge = 18;
+    const isAdult = ageNumber <= adultAge;
 
     switch(true) {
-      case !this.props.firstName: {
+      case !firstName: {
         return 'step_final.no_first_name_message';
       }
-      case !this.props.lastName: {
+      case !lastName: {
         return 'step_final.no_last_name_message';
       }
-      case !this.props.position: {
+      case !finalStepDateOfBirth: {
+        return 'enter_day_of_birth';
+      }
+      case finalStepDateOfBirth && !isEqual( calculateAge(finalStepDateOfBirth), ageNumber ): {
+        return 'camper_age_is_not_equal';
+      }
+      case !position: {
         return 'step_final.no_position_message';
       }
-      case !this.props.shirtSize: {
+      case !shirtSize: {
         return 'step_final.no_shirt_size_message';
       }
-      case isAdult && !this.props.guardianFirstName: {
+      case isAdult && !guardianFirstName: {
         return 'step_final.no_guardian_first_name_message';
       }
-      case isAdult && !this.props.guardianLastName: {
+      case isAdult && !guardianLastName: {
         return 'step_final.no_guardian_last_name_message';
       }
-      case isAdult && !isEmail(this.props.guardianEmail): {
+      case isAdult && !isEmail(guardianEmail): {
         return 'step_final.no_guardian_email_message';
       }
-      case isAdult && !isMobilePhone(this.props.guardianPhone): {
+      case isAdult && !isMobilePhone(guardianPhone): {
         return 'step_final.no_guardian_phone_message';
       }
       default:
         return '';
-    }
-  };
-
-  postCartCartIdParticipantIdProduct = () => {
-    // TODO: rewrite that!
-    const { product, stepTreeSelectedId, cartId, participantId, participantProductId } = this.props;
-    if (product && stepTreeSelectedId && cartId && participantId && !participantProductId) {
-      const productId = (
-        isArray(product)
-          ? product[0].id
-          : product.id
-      );
-      const args = {
-        cartId,
-        participantId,
-        product: isArray(product) ? product[0]: product,
-        productId,
-        quantity: 1,
-        type: productTypesEnum.camp,
-      };
-      this.props.stepThreeActions.postCartCartIdParticipantIdProductRequest(args);
-    } else {
-      console.warn('We dont send request!');
     }
   };
 
@@ -985,6 +973,7 @@ function mapStateToProps(state) {
     stepSixDepartingTransportObject: stepSixDepartingTransportObjectSelector(state),
     stepSixArrivalTransportObject: stepSixArrivalTransportObjectSelector(state),
     redirectUrlShopify: state.initialSettings.redirectUrlShopify,
+    finalStepDateOfBirth: finalStepDateOfBirthSelector(state),
   };
 };
 
