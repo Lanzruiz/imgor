@@ -227,8 +227,6 @@ class StepTwo extends React.Component {
       counter: 0
     });
     
-    console.log(pagedDates)
-    
     return (
       <div className="step-two">
         <Container style={{ marginBottom: `${(!selectedDate.capacity_start_date && !selectedDate.capacity_end_date) ? 130 : 30}px` }}>
