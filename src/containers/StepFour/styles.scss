@@ -167,7 +167,7 @@
         }
 
         &__daily-sessions {
-            font-family: $trade-gothic-bold;
+            font-family: $header-font;
             font-size: 15px;
             font-weight: 700;
         }
@@ -184,7 +184,7 @@
             color: $date-block-selected-bg;
             cursor: pointer;
             display: flex;
-            font-family: $trade-gothic-bold;
+            font-family: $header-font;
             font-size: 26px;
             font-weight: 700;
             justify-content: center;

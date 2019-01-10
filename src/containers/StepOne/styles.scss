@@ -14,11 +14,11 @@
 
     .tab-row {
         &__group-header {
-            font-family: "Serifa-Bold";
+            font-family: $serifa-bold;
         }
 
         &__secondary-group-header {
-            font-family: $trade-gothic-bold;
+            font-family: $header-font;
         }
         &__section {
             margin: 1px 0 1px 1px;
@@ -118,7 +118,7 @@
             }
 
             & .sold-out-text {
-                font-family: $trade-gothic-bold;
+                font-family: $header-font;
                 font-size: 15px;
                 font-weight: 700;
                 text-transform: uppercase;
@@ -178,7 +178,7 @@
             }
 
             &--trade-gothic-bold {
-                font-family: $trade-gothic-bold;
+                font-family: $header-font;
             }
 
             &--font-18 {
@@ -319,7 +319,7 @@
 
         &__header {
             color: $tab-row-bg;
-            font-family: $trade-gothic-bold;
+            font-family: $header-font;
             display: block;
             font-weight: 700;
             text-transform: uppercase;
@@ -343,7 +343,7 @@
             color: $tab-row-bg;
             font-size: 15px;
             margin-bottom: 15px;
-            font-family: "Trade-Gothic";
+            font-family: $trade-gothic;
             line-height: 16px;
         }
 
@@ -394,7 +394,7 @@
 
         &__sleepaway-label {
             color: $tab-row-bg;
-            font-family: $trade-gothic-bold;
+            font-family: $header-font;
             font-size: 16px;
             font-weight: 700;
 

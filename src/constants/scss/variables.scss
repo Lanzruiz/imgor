@@ -35,12 +35,15 @@ $concentration-header: #083451;
 $final-step-radio-btn-color: #083451;
 
 // FONTS
-$trade-gothic-bold: 'Trade-Gothic-Bold';
-$proxima-nova: 'Proxima-Nova';
-$serifa-bold: 'Serifa-Bold';
-$serifa-light: 'Serifa-Light';
-$serifa-roman: 'Serifa-Roman';
-$trade-gothic: 'Trade-Gothic';
+$trade-gothic-bold: Trade Gothic Bold Cn\ 20;
+$proxima-nova: Proxima Nova, Helvetica Neue, Helvetica, Arial, sans-serif;
+$serifa-bold: Serifa Bold, Proxima Nova, Helvetica Neue, Helvetica, Arial, sans-serif ;
+$serifa-light: Serifa Light, Proxima Nova, Helvetica Neue, Helvetica, Arial, sans-serif;
+$serifa-roman: Serifa Roman, Proxima Nova, Helvetica Neue, Helvetica, Arial, sans-serif;
+$trade-gothic: Trade Gothic, Proxima Nova, Helvetica Neue, Helvetica, Arial, sans-serif;
+
+$header-font: Trade Gothic Bold Cn\ 20, Proxima Nova, Helvetica Neue, Helvetica, Arial, sans-serif;
+$normal-font: Proxima Nova, Helvetica Neue, Helvetica, Arial, sans-serif;
 
 
 // breakpoints

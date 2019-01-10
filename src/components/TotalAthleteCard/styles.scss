@@ -38,37 +38,37 @@
             }
 
             &--core {
-                font-family: "Serifa-Bold";
+                font-family: $serifa-bold;
                 font-size: 28px;
                 font-weight: 700;
             }
 
             &--group {
-                font-family: "Serifa-Roman";
+                font-family: $serifa-roman;
                 font-size: 23px;
             }
 
             &--training {
-                font-family: "Serifa-Roman";
+                font-family: $serifa-roman;
                 font-size: 16px;
             }
 
             &--daily-training-concentration {
-                font-family: "Serifa-Bold";
+                font-family: $serifa-bold;
                 font-size: 15px;
                 font-weight: 700;
                 max-width: 145px;
             }
 
             &--or {
-                font-family: "Serifa-Roman";
+                font-family: $serifa-roman;
                 font-size: 13px;
                 font-weight: 400;
             }
 
             &--education-class {
                 max-width: 155px;
-                font-family: "Serifa-Bold";
+                font-family: $serifa-bold;
                 font-size: 15px;
                 font-weight: 700;
             }

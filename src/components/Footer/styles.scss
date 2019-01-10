@@ -66,7 +66,7 @@
                 color: $subheader-text-color;
                 display: flex;
                 flex-direction: column;
-                font-family: $trade-gothic-bold;
+                font-family: $header-font;
                 font-size: 36px;
                 font-weight: 700;
                 text-transform: uppercase;
@@ -86,7 +86,7 @@
         &__text {
             margin: 0 auto;
             color: $subheader-text-color;
-            font-family: $trade-gothic-bold;
+            font-family: $header-font;
             font-size: 20px;
             font-weight: 700;
             text-transform: uppercase;

@@ -73,7 +73,7 @@
 
         &__header {
             color: $white;
-            font-family: $trade-gothic-bold;
+            font-family: $header-font;
             font-size: 18px;
             font-weight: 700;
             text-transform: uppercase;
@@ -111,7 +111,7 @@
 
         &__text {
             color: $white;
-            font-family: $trade-gothic-bold;
+            font-family: $header-font;
             font-size: 18px;
             font-weight: 700;
             text-transform: uppercase;
@@ -125,7 +125,7 @@
     .dates {
         &__header {
             color: $tab-row-bg;
-            font-family: $trade-gothic-bold;
+            font-family: $header-font;
             font-size: 18px;
             font-weight: 700;
             text-transform: uppercase;
@@ -178,7 +178,7 @@
             &.active {
                 background-color: $date-block-selected-bg;
                 color: $white;
-                font-family: $trade-gothic-bold;
+                font-family: $header-font;
                 font-size: 14px;
             }
         }
@@ -191,7 +191,7 @@
             justify-content: center;
             font-size: 24px;
             color: $sold-out;
-            font-family: "Trade-Gothic-Bold", sans-serif;
+            font-family: $header-font;
         }
 
     }
@@ -314,7 +314,7 @@
     .current-selected {
         &__header {
             color: $white;
-            font-family: $trade-gothic-bold;
+            font-family: $header-font;
             font-size: 15px;
             font-weight: 700;
             text-align: center;
@@ -342,7 +342,7 @@
             align-items: center;
             color: $white;
             display: flex;
-            font-family: $trade-gothic-bold;
+            font-family: $header-font;
             font-size: 32px;
             font-weight: 700;
             justify-content: space-between;

@@ -35,7 +35,7 @@
 
         &__header {
             align-self: flex-end;
-            font-family: $trade-gothic-bold;
+            font-family: $header-font;
             font-weight: 700;
             text-transform: uppercase;
             margin-right: auto;
@@ -102,7 +102,7 @@
             box-sizing: border-box;
             padding: 2px 5px;
             color: $tab-row-bg;
-            font-family: $trade-gothic-bold;
+            font-family: $header-font;
             font-weight: 700;
             text-transform: uppercase;
 
@@ -123,7 +123,7 @@
 
         &__text {
             color: $tab-row-bg;
-            font-family: $trade-gothic-bold;
+            font-family: $header-font;
             font-weight: 700;
             text-transform: uppercase;
 
@@ -191,7 +191,7 @@
 
         &__text {
             color: $white;
-            font-family: $trade-gothic-bold;
+            font-family: $header-font;
             font-size: 20px;
             font-weight: 500;
             text-transform: uppercase;
@@ -290,7 +290,7 @@
 
         &__price-description {
             color: $white;
-            font-family: $trade-gothic-bold;
+            font-family: $header-font;
             font-size: 11px;
             font-weight: 700;
             margin-top: -5px;
@@ -334,7 +334,7 @@
         &__text {
             margin: 15px;
             color: $tab-row-bg;
-            font-family: $trade-gothic;
+            font-family: $proxima-nova;
             font-size: 13px;
         }
     }

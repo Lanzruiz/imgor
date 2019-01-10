@@ -5,7 +5,7 @@
         &__card-content {
             width: 100%;
             padding: 35px;
-            font-family: $trade-gothic-bold;
+            font-family: $header-font;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
@@ -16,7 +16,7 @@
         &__slide-header {
             color: $tab-row-bg;
             display: block;
-            font-family: $trade-gothic-bold;
+            font-family: $header-font;
             font-size: 24px;
             font-weight: 700;
             text-transform: uppercase;
@@ -26,7 +26,7 @@
         &__slide-sub-header {
             color: $date-block-selected-bg;
             display: block;
-            font-family: $trade-gothic-bold;
+            font-family: $header-font;
             font-size: 20px;
             font-weight: 700;
             text-transform: uppercase;
@@ -46,7 +46,7 @@
         &__paragraph {
             color: $tab-row-bg;
             display: block;
-            font-family: $proxima-nova, sans-serif;
+            font-family: $normal-font, sans-serif;
             margin-bottom: 10px;
 
             &--small {
@@ -62,7 +62,7 @@
 
         &__radio-container {
             margin-bottom: 15px;
-            font-family: $trade-gothic-bold;
+            font-family: $header-font;
         }
 
         &__initial {
@@ -71,7 +71,7 @@
                 line-height: 38px;
                 display: block;
                 color: $tab-row-bg;
-                font-family: $trade-gothic-bold;
+                font-family: $header-font;
                 margin-bottom: 20px;
             }
 

@@ -31,7 +31,7 @@
             display: block;
             color: #60baeb;
             font-size: 24px;
-            font-family: $trade-gothic-bold;
+            font-family: $header-font;
             text-align: center;
             text-transform: uppercase;
         }
@@ -39,7 +39,7 @@
         &__description {
             color: #355971;
             display: block;
-            font-family: $proxima-nova, sans-serif;
+            font-family: $normal-font, sans-serif;
             font-size: 14px;
             text-align: center;
             margin-bottom: 15px;
@@ -71,7 +71,7 @@
 
         &__error-block {
             font-size: 12px;
-            font-family: $trade-gothic-bold;
+            font-family: $header-font;
             display: block;
             text-align: center;
             padding: 2px 4px;
