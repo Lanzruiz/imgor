@@ -18,6 +18,7 @@ import Dropdown from '../../components/Dropdown';
 import Input from '../../components/Input';
 import DatePickerReduxForm from '../../components/DatePicker';
 import Image from '../../components/Image';
+import AirportPickupCheckboxContainer from './components/AirportPickupCheckboxContainer';
 // Images
 import stubImage from '../../assets/img/2018-Suburban.png';
 // Actions
@@ -106,6 +107,13 @@ class StepSix extends React.Component {
     this.stepSixGetCatalogTransportUnaccompanied();
     this.getCatalogTransport();
     this.getCatalogAirlines();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { transportation } = this.props;
+    if (isEqual(transportation, 'true') && !isEqual(transportation, prevProps.transportation)) {
+      this.props.stepsActions.setStepsCounter(stepsEnum.six);
+    }
   }
 
   componentWillUnmount() {
@@ -411,40 +419,6 @@ class StepSix extends React.Component {
   stepSixGetCatalogTransportUnaccompanied = () => {
     this.props.stepSixActions.stepSixGetCatalogTransportUnaccompaniedRequest();
   }
-}
-
-function AirportPickupCheckboxContainer(args) {
-  const { airportPickup } = args;
-  const { both, arrival, departing, noPickup } = airportPickupInformation;
-  const options = [
-    { value: both, stringKey: 'step_six.roundtrip' },
-    { value: arrival, stringKey: 'step_six.pickup' },
-    { value: departing, stringKey: 'step_six.dropoff' },
-    { value: noPickup, stringKey: 'step_six.no_pickup' },
-  ];
-  return (
-    <div className="step-six__card-content">
-      <Field
-        name={stepSixFormFieldNames.airportPickup}
-        type="radio"
-        options={options}
-        component={({ input, options }) => (
-          options.map(({ value, stringKey }, idx) => {
-            return (
-              <Radio
-                {...input}
-                key={idx}
-                className="step-six__initial-label"
-                value={value}
-                checked={airportPickup === value}
-                children={<LocaleString stringKey={stringKey} />}
-              />
-            );
-          })
-        )}
-      />
-    </div>
-  );
 }
 
 function DropoffLocationTextField(args) {

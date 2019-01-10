@@ -75,7 +75,7 @@ export function stepSixGetCatalogTransportUnaccompaniedRequest() {
   return function(dispatch) {
     Api.req({
       apiCall: Api.getCatalogTransportUnaccompanied,
-      res200: data => dispatch(stepSixGetCatalogTransportUnaccompanied(data)),
+      res200: data => dispatch( stepSixGetCatalogTransportUnaccompanied(data), ),
       res404: () => console.log('Api.getCatalogTransportUnaccompanied => 404'), // TODO: Add error handler
       reject: err => console.log(err), // TODO: Add error handler
     });
@@ -90,15 +90,12 @@ export function stepSixSendProductToTheCart(args) {
         let cartObject;
         if (isEqual(args.attributes.type, 'arrival_transport')) {
           cartObject = assign({}, data.cart, { stepSixArrivalProductId: data.participant_product_id });
-          dispatch( stepSixSetArrivalData(null), );
         }
         if (isEqual(args.attributes.type, 'departing_transport')) {
           cartObject = assign({}, data.cart, { stepSixDepartingProductId: data.participant_product_id });
-          dispatch( stepSixSetDepartingData(null), );
         }
         if (isEqual(args.attributes.type, 'unacompannied')) {
           cartObject = assign({}, data.cart, { stepSixUnnacompaniedProductId: data.participant_product_id });
-          dispatch( stepSixSetUnnacompaniedData(null), );
         }
         dispatch( updateCart(cartObject), );
       },
@@ -135,15 +132,6 @@ export function stepSixUpdateProductInTheCart(args) {
     Api.req({
       apiCall: Api.putCartCartIdParticipantParticipantIdProductId,
       res200: (data) => {
-        if (isEqual(args.attributes.type, 'arrival_transport')) {
-          dispatch( stepSixSetArrivalData(null), );
-        }
-        if (isEqual(args.attributes.type, 'departing_transport')) {
-          dispatch( stepSixSetDepartingData(null), );
-        }
-        if (isEqual(args.attributes.type, 'unacompannied')) {
-          dispatch( stepSixSetUnnacompaniedData(null), );
-        }
         dispatch( updateCart(data.cart), );
       },
       res404: () => console.log('Api.() => 404'),

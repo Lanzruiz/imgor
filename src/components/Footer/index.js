@@ -18,15 +18,14 @@ import * as stepSixActions from '../../actions/step.six';
 import * as stepsActions from '../../actions/steps';
 // Constants
 import { stepsEnum } from '../../constants/steps';
-import { airportPickupInformation } from '../../containers/StepSix/selectors';
+import { stepSixFormFieldNames } from '../../containers/StepSix/selectors';
 // Selectors
 import {
   participantIdSelector, cartIdSelector, cartStepSixUnnacompaniedProductIdSelector, cartStepSixDepartingProductIdSelector,
-  cartStepSixArrivalProductIdSelector,
+  cartStepSixArrivalProductIdSelector, formMetaSelector,
 } from '../../containers/StepOne/selectors';
 import {
-  stepSixDepartingDataSelector, stepSixArrivalDataSelector, stepSixUnaccompaniedDataSelector,
-  stepSixAirportPickupSelector,
+  stepSixDepartingDataSelector, stepSixArrivalDataSelector, stepSixUnaccompaniedDataSelector, stepSixAirportPickupSelector,
 } from '../../containers/StepSix/selectors';
 // Styles
 import './styles.scss';
@@ -51,30 +50,50 @@ class Footer extends React.Component {
     shareOnClickHandler: () => { console.log('Where is your shareOnClickHandler?'); }
   };
 
+  componentDidMount() {
+    const { step, hasMessage } = this.props;
+    const isCurrentStepEqualToSix = isEqual(step, stepsEnum.six);
+    if (isCurrentStepEqualToSix && !hasMessage) {
+      this.props.stepsActions.setStepsCounter(stepsEnum.seven);
+    }
+  }
+
   componentDidUpdate(prevProps) {
-    const {
-      step, stepSixArrivalData, stepSixDepartingData, stepSixUnaccompaniedData, hasMessage,
-      stepSixAirportPickup,
-    } = this.props;
-    if (isEqual(step, stepsEnum.six) && !hasMessage) {
-      const airportPickupNoPickup = isEqual(stepSixAirportPickup, airportPickupInformation.noPickup);
+    const { stepSixArrivalData, stepSixDepartingData, stepSixUnaccompaniedData, hasMessage, step, airportPickup } = this.props;
 
-      // If no pickup need to delete all products
-      if (airportPickupNoPickup) {
-        console.log('No pickup');
+    const isFormTextFieldActive = this.isFormTextFieldActive(this.props.formMeta);
+    if (isFormTextFieldActive) {
+      return;
+    } else {
+      const isFormTextFieldActive = this.isFormTextFieldActive(prevProps.formMeta);
+      if (isFormTextFieldActive) {
+        if (!hasMessage) {
+          this.sendUnaccompaniedRequest();
+          this.sendArrivalRequest();
+          this.sendDepartingRequest();
+          this.props.stepsActions.setStepsCounter(stepsEnum.seven);
+        }
         return;
-      };
-
-      // Is data changed
-      const isArrivalDataChanged = !isEqual(stepSixArrivalData, prevProps.stepSixArrivalData);
-      const isDepartingDataChanged = !isEqual(stepSixDepartingData, prevProps.stepSixDepartingData);
-      const isUnaccompaniedDataChanged = !isEqual(stepSixUnaccompaniedData, prevProps.stepSixUnaccompaniedData);
-
-      const isDataChanged = isArrivalDataChanged || isDepartingDataChanged || isUnaccompaniedDataChanged;
-       // If data is changed, then go to the next step
-      if (isDataChanged && (!stepSixArrivalData && !stepSixDepartingData && !stepSixUnaccompaniedData)) {
-        this.props.stepsActions.setStepsCounter(stepsEnum.seven);
       }
+    }
+
+    const isArrivalDataChanged = !isEqual(stepSixArrivalData, prevProps.stepSixArrivalData);
+    if (isArrivalDataChanged) {
+      this.sendArrivalRequest()
+    }
+
+    const isDepartingDataChanged = !isEqual(stepSixDepartingData, prevProps.stepSixDepartingData);
+    if (isDepartingDataChanged) {
+      this.sendDepartingRequest();
+    }
+
+    const isUnaccompaniedDataChanged = !isEqual(stepSixUnaccompaniedData, prevProps.stepSixUnaccompaniedData);
+    if (isUnaccompaniedDataChanged) {
+      this.sendUnaccompaniedRequest();
+    }
+
+    if (!hasMessage && step >= stepsEnum.six && airportPickup) {
+      this.props.stepsActions.setStepsCounter(stepsEnum.seven);
     }
   }
 
@@ -108,33 +127,24 @@ class Footer extends React.Component {
                         {arrowPositinon}
                       </span>
                     </div>
-                  ) : (
-                    isCurrentStepEqualToSix
-                      ? (
-                        <div className="footer__btn-container">
-                          <Button onClick={this.sendStepSixData}>
-                            Continue
-                          </Button>
-                        </div>
-                      ) : (
-                        <div className="footer__btn-container">
-                          <FooterButton
-                            purchase
-                            stringKey="purchase_on_shop_img"
-                            onClick={purchaseOnClickHandler}
-                          />
-                          <FooterButton
-                            save
-                            stringKey="save_camp"
-                            onClick={saveCampOnClickHandler}
-                          />
-                          <FooterButton
-                            share
-                            stringKey="share_camp"
-                            onClick={shareOnClickHandler}
-                          />
-                        </div>
-                      )
+                  ) : !isCurrentStepEqualToSix && (
+                    <div className="footer__btn-container">
+                      <FooterButton
+                        purchase
+                        stringKey="purchase_on_shop_img"
+                        onClick={purchaseOnClickHandler}
+                      />
+                      <FooterButton
+                        save
+                        stringKey="save_camp"
+                        onClick={saveCampOnClickHandler}
+                      />
+                      <FooterButton
+                        share
+                        stringKey="share_camp"
+                        onClick={shareOnClickHandler}
+                      />
+                    </div>
                   )
                 }
               </footer>
@@ -145,12 +155,26 @@ class Footer extends React.Component {
     );
   }
 
-  sendStepSixData = () => {
-    const {
-      stepSixDepartingData, participantId, cartId, stepSixArrivalData, stepSixUnaccompaniedData,
-      cartStepSixUnnacompaniedProductId, cartStepSixDepartingProductId, cartStepSixArrivalProductId,
-    } = this.props;
+  isFormTextFieldActive = (formMeta) => {
+    const textFields = [
+      stepSixFormFieldNames.arrivalDateTime,
+      stepSixFormFieldNames.arrivalFlightNumber,
+      stepSixFormFieldNames.departingDateTime,
+      stepSixFormFieldNames.departingFlightNumber,
+      stepSixFormFieldNames.dropoffOtherLocation,
+      stepSixFormFieldNames.pickUpOtherLocation,
+    ];
+    let hasActiveTextField = false;
+    textFields.forEach((textFieldName) => {
+      if (formMeta[textFieldName] && formMeta[textFieldName].active) {
+        hasActiveTextField = true;
+      }
+    });
+    return hasActiveTextField;
+  };
 
+  sendArrivalRequest = () => {
+    const { cartStepSixArrivalProductId, stepSixArrivalData, cartId, participantId } = this.props;
     // If arrival product id exist
     if (cartStepSixArrivalProductId) {
       // If arrival data exist update project else delete project
@@ -165,7 +189,10 @@ class Footer extends React.Component {
         this.props.stepSixActions.stepSixSendProductToTheCart( assign({}, stepSixArrivalData, { cartId, participantId }), );
       }
     }
+  };
 
+  sendDepartingRequest = () => {
+    const { cartStepSixDepartingProductId, stepSixDepartingData, cartId, participantId } = this.props;
     // If departing product id exist
     if (cartStepSixDepartingProductId) {
       // If departing data exist update project else delete project
@@ -180,7 +207,10 @@ class Footer extends React.Component {
         this.props.stepSixActions.stepSixSendProductToTheCart( assign({}, stepSixDepartingData, { cartId, participantId }), );
       }
     }
+  };
 
+  sendUnaccompaniedRequest = () => {
+    const { cartStepSixUnnacompaniedProductId, stepSixUnaccompaniedData, cartId, participantId } = this.props;
     // If unaccompanied product id exist
     if (cartStepSixUnnacompaniedProductId) {
       // If unaccompanied data exist update project else delete project
@@ -195,12 +225,28 @@ class Footer extends React.Component {
         this.props.stepSixActions.stepSixSendProductToTheCart( assign({}, stepSixUnaccompaniedData, { cartId, participantId }), );
       }
     }
+  };
 
-    // Go to next step
-    if (!stepSixArrivalData && !stepSixDepartingData && !stepSixUnaccompaniedData) {
-      this.props.stepsActions.setStepsCounter(stepsEnum.seven);
+  stepSixDeleteArrivalProductInTheCart = () => {
+    const { cartId, participantId, cartStepSixArrivalProductId } = this.props;
+    if (cartStepSixArrivalProductId) {
+      this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixArrivalProductId, type: 'arrival_transport' });
     }
-  }
+  };
+
+  stepSixDeleteUnaccompaniedProductInTheCart = () => {
+    const { cartId, participantId, cartStepSixUnnacompaniedProductId } = this.props;
+    if (cartStepSixUnnacompaniedProductId) {
+      this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixUnnacompaniedProductId, type: 'unacompannied' });
+    }
+  };
+
+  stepSixDeleteDepartingProductInTheCart = () => {
+    const { cartId, participantId, cartStepSixDepartingProductId } = this.props;
+    if (cartStepSixDepartingProductId) {
+      this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixDepartingProductId, type: 'departing_transport' });
+    }
+  };
 };
 
 function formatMoney(amount, decimalCount = 2, decimal = ".", thousands = ",") {
@@ -247,7 +293,8 @@ function mapStateToProps(state) {
     cartStepSixUnnacompaniedProductId: cartStepSixUnnacompaniedProductIdSelector(state),
     cartStepSixDepartingProductId: cartStepSixDepartingProductIdSelector(state),
     cartStepSixArrivalProductId: cartStepSixArrivalProductIdSelector(state),
-    stepSixAirportPickup: stepSixAirportPickupSelector(state),
+    formMeta: formMetaSelector(state),
+    airportPickup: stepSixAirportPickupSelector(state),
   };
 }
 
