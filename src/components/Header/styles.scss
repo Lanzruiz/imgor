@@ -18,7 +18,7 @@
             color: $header-text-color;
             font-size: 40px;
             font-weight: 700;
-            font-family: $trade-gothic-bold;
+            font-family: $header-font;
             text-transform: uppercase;
 
             @include breakpoint($mobile){
@@ -33,7 +33,7 @@
             font-size: 20px;
             font-weight: 700;
             text-transform: uppercase;
-            font-family: $trade-gothic-bold;
+            font-family: $normal-font;
 
             @include breakpoint($mobile){
                 font-size: 18px;

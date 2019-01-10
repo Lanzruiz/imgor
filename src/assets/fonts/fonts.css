@@ -1,6 +1,6 @@
 
 @font-face {
-    font-family: "Proxima-Nova";
+    font-family: Proxima Nova;
     font-weight: normal;
     src: url("./licensed/fbc6b03a-b3a1-427c-a884-053deca3a53c.eot?#iefix");
     src: url("./licensed/fbc6b03a-b3a1-427c-a884-053deca3a53c.eot?#iefix") format("eot"),
@@ -11,7 +11,7 @@
 }
 
 @font-face {
-    font-family: "Proxima-Nova";
+    font-family: Proxima Nova;
     font-weight: normal;
     src: url("./licensed/7e90123f-e4a7-4689-b41f-6bcfe331c00a.eot?#iefix");
     src: url("./licensed/7e90123f-e4a7-4689-b41f-6bcfe331c00a.eot?#iefix") format("eot"),
@@ -22,7 +22,7 @@
 }
 
 @font-face {
-    font-family: "Serifa";
+    font-family: Serifa;
     font-weight: normal;
     src: url("./licensed/d60f05ba-473f-4f6a-aed4-46b91e21919a.eot?#iefix");
     src: url("./licensed/d60f05ba-473f-4f6a-aed4-46b91e21919a.eot?#iefix") format("eot"),
@@ -33,7 +33,7 @@
 }
 
 @font-face {
-    font-family: "Serifa";
+    font-family: Serifa;
     font-weight: bold;
     src: url("./licensed/0a8ff7a2-fea6-4b39-8c88-4ff17ae318bb.eot?#iefix");
     src: url("./licensed/0a8ff7a2-fea6-4b39-8c88-4ff17ae318bb.eot?#iefix") format("eot"),
@@ -44,7 +44,7 @@
 }
 
 @font-face {
-    font-family: "Serifa";
+    font-family: Serifa;
     font-weight: 900;
     src: url("./licensed/d404af09-c3f1-43a7-8927-7ccc1e6c6c54.eot?#iefix");
     src: url("./licensed/d404af09-c3f1-43a7-8927-7ccc1e6c6c54.eot?#iefix") format("eot"),
@@ -55,7 +55,7 @@
   }
 
 @font-face {
-    font-family: "Trade-Gothic-Bold";
+    font-family: Trade Gothic Bold Cn\ 20;
     src: url("./licensed/257c802f-349c-4b4d-aefa-546d5de15ec6.eot?#iefix");
     src: url("./licensed/257c802f-349c-4b4d-aefa-546d5de15ec6.eot?#iefix") format("eot"),
          url("./licensed/1ba28851-f34b-4cb8-bf58-6a4b160ba249.woff2") format("woff2"),
