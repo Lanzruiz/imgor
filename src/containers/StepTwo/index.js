@@ -199,9 +199,9 @@ class StepTwo extends React.Component {
       [monthEnum[10]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['nov'])),
       [monthEnum[11]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['dec'])),
     };
-    
+
     const carouselDates = Object.keys(dates).reduce((acc, key) => {
-      if(dates[key] && dates[key].length > 1){
+      if (dates[key] && dates[key].length > 1) {
         acc = {
           ...acc,
           [key]: dates[key]
@@ -209,13 +209,13 @@ class StepTwo extends React.Component {
       }
       return acc;
     }, {});
-  
+
     const total = Object.keys(carouselDates).length;
     const perPage = 4;
     const totalPages = Math.ceil(total/perPage);
-  
+
     const pagedDates = Object.keys(carouselDates).reduce((acc, key) => {
-      const index = Math.floor(acc.counter/perPage);
+    const index = Math.floor(acc.counter/perPage);
       acc.data[index] = {
         ...acc.data[index],
         [key]: dates[key]
@@ -226,7 +226,7 @@ class StepTwo extends React.Component {
       data: [],
       counter: 0
     });
-    
+
     return (
       <div className="step-two">
         <Container style={{ marginBottom: `${(!selectedDate.capacity_start_date && !selectedDate.capacity_end_date) ? 130 : 30}px` }}>
@@ -279,7 +279,7 @@ class StepTwo extends React.Component {
                       formatString={{ sport, length_program: weeksCounter ? `${weeksCounter} week` : '' }}
                     />&#42;
                   </h2>
-  
+
                   <div className="dates__container--mobile">
                     <Carousel render={true} className="test">
                       {pagedDates.data.length > 0 && pagedDates.data.map((value, index) => (
@@ -292,7 +292,7 @@ class StepTwo extends React.Component {
                           </ul>
                         </CarouselItem>
                       ))}
-                      
+
                       {(!pagedDates.data || pagedDates.data.length === 0) && (
                         <CarouselItem>
                           <div className="dates__no-data">
@@ -302,7 +302,7 @@ class StepTwo extends React.Component {
                       )}
                     </Carousel>
                   </div>
-                  
+
                   <div className="dates__container--desktop">
                     {data.length
                       ? (

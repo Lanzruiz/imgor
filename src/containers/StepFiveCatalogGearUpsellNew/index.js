@@ -12,13 +12,10 @@ import Card, { CardContent, CardContentRow, CardContentCol, CardContentText } fr
 import LocaleString from '../../components/LocaleString';
 import Dropdown from '../../components/Dropdown';
 import Image from '../../components/Image';
-import LoadMoreButton from '../../components/LoadMoreButton';
 // Selectors
 import { stepOneGenderSelector, cartIdSelector, participantIdSelector } from '../StepOne/selectors';
 import { stepTwoStartDateSelector, stepTwoEndDateSelector } from '../StepTwo/selectors';
-import {
-  stepFiveUpsellPerPageSelector, stepFiveUpsellNewSelectedProductsSelector, stepFiveShouldRenderUpsellLoadMoreButtonSelector,
-} from '../StepFive/selectors';
+import { stepFiveUpsellPerPageSelector, stepFiveUpsellNewSelectedProductsSelector } from '../StepFive/selectors';
 // Actions
 import * as stepFiveActions from '../../actions/step.five';
 // Constants
@@ -64,7 +61,6 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
   static defaultProps = {
     stepFiveGearUpsellNew: [],
     upsellNewSelectedProducts: {},
-    shouldRenderLoadMoreButton: false,
   };
 
   componentDidMount() {
@@ -72,7 +68,7 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
   }
 
   render() {
-    const { stepFiveGearUpsellNew, shouldRenderLoadMoreButton } = this.props;
+    const { stepFiveGearUpsellNew } = this.props;
     const shouldRenderCatalogGearItem = stepFiveGearUpsellNew.length > 0;
     return shouldRenderCatalogGearItem && (
       <div className="upsell-new">
@@ -85,25 +81,17 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
         >
           {stepFiveGearUpsellNew.map(this.renderUpsellNew)}
         </CSSTransitionGroup>
-        <LoadMoreButton
-          shouldRender={shouldRenderLoadMoreButton}
-          onClick={this.increaseItemsPerPage}
-        />
       </div>
     );
   }
 
-  increaseItemsPerPage = () => {
-    this.props.stepFiveActions.stepFiveIncreaseUpsellItemsPerPage();
-  };
-
   getCatalogGearUpsellNew = () => {
     const { sport, startDate, endDate, gender } = this.props;
     const getCatalogGearUpsellNewArgs = {
-      sport: 'golf' || sport, // TODO: remove that
+      sport: sport,
       gender,
-      start_date: '2017-10-10' || startDate, // TODO: remove that
-      end_date: '2019-10-10' || endDate, // TODO: remove that
+      start_date: startDate,
+      end_date: endDate,
     };
     this.props.stepFiveActions.getCatalogGearUpsellNewRequest(getCatalogGearUpsellNewArgs);
   };
@@ -241,7 +229,6 @@ function mapStateToProps(state) {
     cartId: cartIdSelector(state),
     participantId: participantIdSelector(state),
     upsellNewSelectedProducts: stepFiveUpsellNewSelectedProductsSelector(state),
-    shouldRenderLoadMoreButton: stepFiveShouldRenderUpsellLoadMoreButtonSelector(state),
   };
 }
 

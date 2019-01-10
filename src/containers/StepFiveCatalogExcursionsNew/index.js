@@ -13,14 +13,12 @@ import Card, { CardContent, CardContentCol, CardContentRow, CardContentText } fr
 import Image from '../../components/Image';
 import LocaleString from '../../components/LocaleString';
 import Dropdown from '../../components/Dropdown';
-import LoadMoreButton from '../../components/LoadMoreButton';
 // Actions
 import * as stepFiveActions from '../../actions/step.five';
 // Selectors
 import { cartIdSelector, participantIdSelector } from '../StepOne/selectors';
-import {
-  stepFiveExcurcionsPerPageSelector, stepFiveSelectedExcurcionGearSelector, stepFiveShouldRenderExcursionsLoadMoreButtonSelector,
-} from '../StepFive/selectors';
+import { stepTwoStartDateSelector, stepTwoEndDateSelector } from '../StepTwo/selectors';
+import { stepFiveExcurcionsPerPageSelector, stepFiveSelectedExcurcionGearSelector } from '../StepFive/selectors';
 // Constants
 import { productTypesEnum } from '../../constants/cart';
 // Helpers
@@ -51,7 +49,6 @@ class StepFiveCatalogExcursionsNew extends React.Component {
         ),
       }),
     ).isRequired,
-    shouldRenderExcursionsLoadMoreButton: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -60,12 +57,12 @@ class StepFiveCatalogExcursionsNew extends React.Component {
   };
 
   componentDidMount() {
-    // TODO: rewrite that
-    this.getCatalogExcursionsNew({ startDate: '2017-10-10', endDate: '2019-10-10' });
+    const { startDate, endDate } = this.props;
+    this.getCatalogExcursionsNew({ startDate, endDate });
   }
 
   render() {
-    const { excursions, shouldRenderExcursionsLoadMoreButton } = this.props;
+    const { excursions } = this.props;
     if (isEqual(excursions.length, 0)) return null;
     return (
       <div className="excursions">
@@ -77,20 +74,12 @@ class StepFiveCatalogExcursionsNew extends React.Component {
         >
           {excursions.map(this.renderExcursionItem)}
         </CSSTransitionGroup>
-        <LoadMoreButton
-          shouldRender={shouldRenderExcursionsLoadMoreButton}
-          onClick={this.increaseItemsPerPage}
-        />
       </div>
     );
   }
 
   getCatalogExcursionsNew = ({ startDate, endDate }) => {
     this.props.stepFiveActions.stepFiveGetCatalogExcursionsNewRequest({ startDate, endDate });
-  };
-
-  increaseItemsPerPage = () => {
-    this.props.stepFiveActions.stepFiveIncreaseExcursionsItemsPerPage();
   };
 
   renderExcursionItem = (item) => {
@@ -230,7 +219,8 @@ function mapStateToProps(state) {
     selectedExcurcionGear: stepFiveSelectedExcurcionGearSelector(state),
     cartId: cartIdSelector(state),
     participantId: participantIdSelector(state),
-    shouldRenderExcursionsLoadMoreButton: stepFiveShouldRenderExcursionsLoadMoreButtonSelector(state),
+    startDate: stepTwoStartDateSelector(state),
+    endDate: stepTwoEndDateSelector(state),
   };
 }
 

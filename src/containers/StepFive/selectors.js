@@ -49,7 +49,7 @@ export const stepFiveDataPerPageSelector = createSelector(
 export const stepFiveShouldRenderLoadMoreButtonSelector = createSelector(
   stepFiveDataSelector,
   stepFiveItemsPerPageSelector,
-  function(data = [], perPage = 6) {
+  function(data = [], perPage = 0) {
     const maxItemsCount = data.length;
     return maxItemsCount > perPage;
   }
@@ -93,7 +93,7 @@ export const stepFiveSelectedExcurcionGearSelector = createSelector(
 export const stepFiveExcurcionsPerPageSelector = createSelector(
   stepFiveCatalogExcursionsNewSelector,
   stepFiveExcursionsItemsPerPageSelector,
-  function(excursions = [], perPage = 6) {
+  function(excursions = [], perPage = 0) {
     const startIndex = 0;
     return excursions.slice(startIndex, perPage);
   }
@@ -102,7 +102,7 @@ export const stepFiveExcurcionsPerPageSelector = createSelector(
 export const stepFiveShouldRenderExcursionsLoadMoreButtonSelector = createSelector(
   stepFiveCatalogExcursionsNewSelector,
   stepFiveExcursionsItemsPerPageSelector,
-  function(data = [], perPage = 6) {
+  function(data = [], perPage = 0) {
     const maxItemsCount = data.length;
     return maxItemsCount > perPage;
   }
@@ -125,7 +125,7 @@ export const stepFiveUpsellItemsPerPageSelector = createSelector(
 export const stepFiveUpsellPerPageSelector = createSelector(
   stepFiveGearUpsellNewSelector,
   stepFiveUpsellItemsPerPageSelector,
-  function(upsellNew = [], perPage = 6) {
+  function(upsellNew = [], perPage = 0) {
     const startIndex = 0;
     return upsellNew.slice(startIndex, perPage);
   }
@@ -134,7 +134,7 @@ export const stepFiveUpsellPerPageSelector = createSelector(
 export const stepFiveShouldRenderUpsellLoadMoreButtonSelector = createSelector(
   stepFiveGearUpsellNewSelector,
   stepFiveUpsellItemsPerPageSelector,
-  function(data = [], perPage = 6) {
+  function(data = [], perPage = 0) {
     const maxItemsCount = data.length;
     return maxItemsCount > perPage;
   }

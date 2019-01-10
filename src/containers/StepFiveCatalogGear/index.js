@@ -13,15 +13,12 @@ import isEqual from 'lodash/isEqual';
 import Button from '../../components/Button';
 import Card, { CardContent, CardContentRow, CardContentCol, CardContentText } from '../../components/Card';
 import LocaleString from '../../components/LocaleString';
-import LoadMoreButton from '../../components/LoadMoreButton';
 import Dropdown from '../../components/Dropdown';
 // Actions
 import * as stepFiveActions from '../../actions/step.five';
 // Selectors
 import { cartIdSelector, participantIdSelector, stepOneGenderSelector } from '../StepOne/selectors';
-import {
-  stepFiveShouldRenderLoadMoreButtonSelector, stepFiveDataPerPageSelector, stepFiveSelectedGearsSelector, stepFiveProductsSelector,
-} from '../StepFive/selectors';
+import { stepFiveDataPerPageSelector, stepFiveSelectedGearsSelector, stepFiveProductsSelector } from '../StepFive/selectors';
 // Constants
 import { productTypesEnum } from '../../constants/cart';
 
@@ -88,7 +85,7 @@ class StepFiveCatalogGear extends React.Component {
   }
 
   render() {
-    const { data, shouldRenderLoadMoreButton } = this.props;
+    const { data } = this.props;
     const isCatalogGearDataAvailable = data.length > 0;
     return (
       <div className="catalog-gear">
@@ -104,17 +101,9 @@ class StepFiveCatalogGear extends React.Component {
             : this.renderNoGearAvailableBlock()
           }
         </CSSTransitionGroup>
-        <LoadMoreButton
-          shouldRender={shouldRenderLoadMoreButton}
-          onClick={this.increaseItemsPerPage}
-        />
       </div>
     );
   }
-
-  increaseItemsPerPage = () => {
-    this.props.stepFiveActions.stepFiveIncreaseItemsPerPage();
-  };
 
   renderNoGearAvailableBlock = () => {
     return (
@@ -336,7 +325,6 @@ function mapStateToProps(state) {
     gender: stepOneGenderSelector(state),
     participantId: participantIdSelector(state),
     stepFiveProducts: stepFiveProductsSelector(state),
-    shouldRenderLoadMoreButton: stepFiveShouldRenderLoadMoreButtonSelector(state),
     selectedGear: stepFiveSelectedGearsSelector(state),
   };
 }

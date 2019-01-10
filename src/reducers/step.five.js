@@ -16,8 +16,8 @@ const initialState = {
   upsellNewSelectedProducts: {},
   excursions: [],
   selectedExcurcionGear: {},
-  excursionsItemsStepCounter: 6,
-  upsellItemsStepCounter: 6,
+  excursionsItemsStepCounter: 0,
+  upsellItemsStepCounter: 0,
 };
 
 export default function(state = initialState, action) {
@@ -174,7 +174,7 @@ export default function(state = initialState, action) {
     }
 
     case stepFiveTypes.STEP_FIVE_INCREASE_UPSELL_ITEMS_PER_PAGE: {
-      const upsellItemsStepCounter = state.upsellItemsStepCounter + state.itemsPerPage;
+      const upsellItemsStepCounter = state.upsellItemsStepCounter + state.itemsPerPageCounter;
       const maxItemsCount = state.data.length;
       return assign({}, state, { upsellItemsStepCounter: (upsellItemsStepCounter <= maxItemsCount) ? upsellItemsStepCounter : maxItemsCount });
     }
@@ -256,7 +256,7 @@ export default function(state = initialState, action) {
     }
 
     case stepFiveTypes.STEP_FIVE_INCREASE_EXCURSION_ITEMS_PER_PAGE: {
-      const excursionsItemsPerPage = state.excursionsItemsStepCounter + state.itemsPerPage;
+      const excursionsItemsPerPage = state.excursionsItemsStepCounter + state.itemsStepCounter;
       const maxItemsCount = state.excursions.length;
       return assign({}, state, { excursionsItemsStepCounter: (excursionsItemsPerPage <= maxItemsCount) ? excursionsItemsPerPage : maxItemsCount });
     }

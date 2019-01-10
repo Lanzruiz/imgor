@@ -57,7 +57,7 @@ export const stepTwoSelectedDateSelector = createSelector(
         selectedDate.capacity_end_date = momentObjStartDate.add(daysToNeedAdd, 'days').format(stringFormat);
       }
     }
-    return { capacity_start_date: '', capacity_end_date: '' };
+    return stepTwo.selectedDate;
   }
 );
 

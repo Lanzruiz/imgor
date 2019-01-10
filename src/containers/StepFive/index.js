@@ -11,6 +11,11 @@ import StepFiveCatalogGearUpsellNew from '../StepFiveCatalogGearUpsellNew';
 import StepFiveCatalogExcursionsNew from '../StepFiveCatalogExcursionsNew';
 // Components
 import Header from '../../components/Header';
+import LoadMoreButton from '../../components/LoadMoreButton';
+// Selectors
+import {
+  stepFiveShouldRenderLoadMoreButtonSelector, stepFiveShouldRenderUpsellLoadMoreButtonSelector, stepFiveShouldRenderExcursionsLoadMoreButtonSelector,
+} from './selectors';
 // Actions
 import * as stepFiveActions from '../../actions/step.five';
 // Styles
@@ -25,7 +30,13 @@ class StepFive extends React.Component {
   static propTypes = {
     stepFiveActions: PropTypes.shape({
       stepFiveSetDefaultState: PropTypes.func.isRequired,
+      stepFiveIncreaseItemsPerPage: PropTypes.isRequired,
+      stepFiveIncreaseUpsellItemsPerPage: PropTypes.func.isRequired,
+      stepFiveIncreaseExcursionsItemsPerPage: PropTypes.func.isRequired,
     }),
+    shouldRenderGearLoadMoreButton: PropTypes.bool,
+    shouldRenderUpsellLoadMoreButton: PropTypes.bool,
+    shouldRenderExcursionsLoadMoreButton: PropTypes.bool,
   };
 
   static defaultProps = {};
@@ -39,7 +50,12 @@ class StepFive extends React.Component {
   }
 
   render() {
-    const { sport } = this.props;
+    const { sport, shouldRenderGearLoadMoreButton, shouldRenderUpsellLoadMoreButton, shouldRenderExcursionsLoadMoreButton } = this.props;
+    const shouldRenderLoadMoreButton = (
+      shouldRenderGearLoadMoreButton
+      || shouldRenderUpsellLoadMoreButton
+      || shouldRenderExcursionsLoadMoreButton
+    );
     return (
       <div className="step-five" ref={this.stepFive}>
         <Container style={{ marginBottom: '65px' }}>
@@ -54,6 +70,10 @@ class StepFive extends React.Component {
           <StepFiveCatalogGear />
           <StepFiveCatalogGearUpsellNew sport={sport} />
           <StepFiveCatalogExcursionsNew />
+          <LoadMoreButton
+            shouldRender={shouldRenderLoadMoreButton}
+            onClick={this.increaseItemsPerPage}
+          />
         </Container>
       </div>
     );
@@ -61,6 +81,37 @@ class StepFive extends React.Component {
 
   setDefaultState = () => {
     this.props.stepFiveActions.stepFiveSetDefaultState();
+  };
+
+  increaseItemsPerPage = () => {
+    const { shouldRenderGearLoadMoreButton, shouldRenderUpsellLoadMoreButton, shouldRenderExcursionsLoadMoreButton } = this.props;
+    if (shouldRenderGearLoadMoreButton) {
+      this.increaseGearItemsPerPage();
+    } else if (shouldRenderUpsellLoadMoreButton) {
+      this.increaseUpsellItemsPerPage();
+    } else if (shouldRenderExcursionsLoadMoreButton) {
+      this.increaseExcursionsItemsPerPage();
+    }
+  };
+
+  increaseGearItemsPerPage = () => {
+    this.props.stepFiveActions.stepFiveIncreaseItemsPerPage();
+  };
+
+  increaseUpsellItemsPerPage = () => {
+    this.props.stepFiveActions.stepFiveIncreaseUpsellItemsPerPage();
+  };
+
+  increaseExcursionsItemsPerPage = () => {
+    this.props.stepFiveActions.stepFiveIncreaseExcursionsItemsPerPage();
+  };
+}
+
+function mapStateToProps(state) {
+  return {
+    shouldRenderGearLoadMoreButton: stepFiveShouldRenderLoadMoreButtonSelector(state),
+    shouldRenderUpsellLoadMoreButton: stepFiveShouldRenderUpsellLoadMoreButtonSelector(state),
+    shouldRenderExcursionsLoadMoreButton: stepFiveShouldRenderExcursionsLoadMoreButtonSelector(state),
   };
 }
 
@@ -70,4 +121,4 @@ function mapDispatchToProps(dispatch) {
   };
 };
 
-export default connect(null, mapDispatchToProps)(StepFive);
+export default connect(mapStateToProps, mapDispatchToProps)(StepFive);
