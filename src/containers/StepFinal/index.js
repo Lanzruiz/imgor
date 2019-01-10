@@ -74,7 +74,7 @@ class StepFinal extends React.Component {
             </Col>
           </Row>
           <Row>
-            <Col style={{ padding: '0 15px', margin: '0 1px' }}>
+            <Col>
               <Col style={{ padding: 0, margin: '0 1px' }}>
                 <Card
                   buttonBlock={false}
@@ -100,6 +100,13 @@ class StepFinal extends React.Component {
                               inputClassName="step-final__input"
                               name={stepFinalFormFieldNames.lastName}
                               label="last name"
+                            />
+                          </label>
+                          <label className="step-final__form-control">
+                            <Input
+                              inputClassName="step-final__input"
+                              name={stepFinalFormFieldNames.dateOfBirth}
+                              label="birth day"
                             />
                           </label>
                           <label className="step-final__form-control">

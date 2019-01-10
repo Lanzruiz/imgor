@@ -14,6 +14,7 @@ export const stepFinalFormFieldNames = {
   guardianInformationLastName: 'guardian_information.last_name',
   guardianInformationEmail: 'guardian_information.email',
   guardianInformationPhone: 'guardian_information.phone',
+  dateOfBirth: 'date_of_birth',
 };
 
 function finalStepSelector(state) {
