@@ -43,6 +43,10 @@
     content: "\e96b";
 }
 
+.icon-plus:before {
+    content: "\ea0a";
+}
+
 [class^="icon-"].white-background:before {
     background-color: white;
 }
