@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import moment from 'moment';
 import isEqual from 'lodash/isEqual';
+import Carousel, { CarouselItem } from '../../components/Carousel';
 // Components
 import Header from '../../components/Header';
 import LocaleString from '../../components/LocaleString';
@@ -197,7 +198,37 @@ class StepTwo extends React.Component {
       [monthEnum[9]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['oct'])),
       [monthEnum[10]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['nov'])),
       [monthEnum[11]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['dec'])),
-    }
+    };
+    
+    const carouselDates = Object.keys(dates).reduce((acc, key) => {
+      if(dates[key] && dates[key].length > 1){
+        acc = {
+          ...acc,
+          [key]: dates[key]
+        }
+      }
+      return acc;
+    }, {});
+  
+    const total = Object.keys(carouselDates).length;
+    const perPage = 4;
+    const totalPages = Math.ceil(total/perPage);
+  
+    const pagedDates = Object.keys(carouselDates).reduce((acc, key) => {
+      const index = Math.floor(acc.counter/perPage);
+      acc.data[index] = {
+        ...acc.data[index],
+        [key]: dates[key]
+      };
+      acc.counter++;
+      return acc;
+    }, {
+      data: [],
+      counter: 0
+    });
+    
+    console.log(pagedDates)
+    
     return (
       <div className="step-two">
         <Container style={{ marginBottom: `${(!selectedDate.capacity_start_date && !selectedDate.capacity_end_date) ? 130 : 30}px` }}>
@@ -250,17 +281,43 @@ class StepTwo extends React.Component {
                       formatString={{ sport, length_program: weeksCounter ? `${weeksCounter} week` : '' }}
                     />&#42;
                   </h2>
-                  {data.length
-                    ? (
-                      <ul className="dates__container">
-                        {this.renderDates(dates)}
-                      </ul>
-                    ) : (
-                      <div className="dates__no-data">
-                        <LocaleString stringKey="step_two.dates.no-data" />
-                      </div>
-                    )
-                  }
+  
+                  <div className="dates__container--mobile">
+                    <Carousel render={true} className="test">
+                      {pagedDates.data.length > 0 && pagedDates.data.map((value, index) => (
+                        <CarouselItem key={index}>
+                          <h2 className="header__h6">
+                            <LocaleString stringKey="step_two.page_of" formatString={{ current: ++index, max: totalPages }} />
+                          </h2>
+                          <ul className="dates__page">
+                            {this.renderDates(value)}
+                          </ul>
+                        </CarouselItem>
+                      ))}
+                      
+                      {(!pagedDates.data || pagedDates.data.length === 0) && (
+                        <CarouselItem>
+                          <div className="dates__no-data">
+                            <LocaleString stringKey="step_two.dates.no-data" />
+                          </div>
+                        </CarouselItem>
+                      )}
+                    </Carousel>
+                  </div>
+                  
+                  <div className="dates__container--desktop">
+                    {data.length
+                      ? (
+                        <ul className="dates__container">
+                          {this.renderDates(dates)}
+                        </ul>
+                      ) : (
+                        <div className="dates__no-data">
+                          <LocaleString stringKey="step_two.dates.no-data" />
+                        </div>
+                      )
+                    }
+                  </div>
                   <div className="step-two__description description">
                     <span className="description__info">
                       &#42;<LocaleString stringKey="step_two.dates.header_descripion" />

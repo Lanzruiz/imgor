@@ -41,6 +41,10 @@
             padding: 15px;
             width: 75%;
 
+            @include breakpoint($tablet){
+              width: 67%;
+            }
+
             @include breakpoint($mobile){
                 width: 100%;
                 box-sizing: border-box;
@@ -146,6 +150,57 @@
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
+
+            &--desktop{
+              display: flex;
+              @include breakpoint($tablet) {
+                display: none;
+              }
+            }
+
+            &--mobile{
+              display: none;
+              margin-bottom: 10px;
+
+              @include breakpoint($tablet) {
+                display: block;
+                flex-wrap: nowrap;
+              }
+
+              .carousel__container{
+                padding: 0 30px 40px 30px;
+                border: none;
+                min-height: unset;
+
+                .carousel__item{
+                  padding: 6px;
+                }
+
+                .slick-arrow:before{
+                  width: 30px;
+                  height: 30px;
+                  background-size: 38px 45px;
+                }
+
+                .slick-next{
+                  right: -30px;
+                }
+              }
+
+              .dates__page{
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                padding: 20px 0;
+
+                .dates__column{
+                  .dates__item{
+                    margin-bottom: 4px;
+                  }
+                }
+              }
+            }
 
             & > li {
                 font-size: 14px;
