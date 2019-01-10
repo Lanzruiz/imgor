@@ -4,20 +4,22 @@ import moment from 'moment';
 // Constants
 import { daysInWeek } from '../../constants/weeks';
 import { weekly_camp } from '../StepOne/index';
+// Helpers
+import isStringsEqual from '../../helpers/isStringsEqual';
 
-function stepTwoSelector(state) {
+function stepTwoSelector(state = {}) {
   return state.stepTwo;
 }
 
-function stepTwoData(state) {
+function stepTwoData(state = { stepTwo: { data: [] } }) {
   return state.stepTwo.data;
 }
 
-function isWeeklyCampSelector(state) {
-  return state.stepOne.group === weekly_camp;
+function isWeeklyCampSelector(state = { stepOne: { group: '' } }) {
+  return isStringsEqual(state.stepOne.group, weekly_camp);
 }
 
-function weeksCounterSelector(state) {
+function weeksCounterSelector(state = { weeks: { weeks: [] } }) {
   return state.weeks.weeks.length;
 }
 
@@ -25,7 +27,7 @@ export const stepTwoDataSelector = createSelector(
   stepTwoData,
   isWeeklyCampSelector,
   weeksCounterSelector,
-  function(data, isWeeklyCamp, weeksCounter) {
+  function(data = [], isWeeklyCamp = false, weeksCounter = 0) {
     let weeksCount = weeksCounter;
     let result = [];
     if (isWeeklyCamp) {
@@ -45,9 +47,9 @@ export const stepTwoSelectedDateSelector = createSelector(
   stepTwoSelector,
   weeksCounterSelector,
   isWeeklyCampSelector,
-  function(stepTwo, weeksCounter, isWeeklyCamp) {
+  function(stepTwo = {}, weeksCounter = 0, isWeeklyCamp = false) {
     if (isWeeklyCamp && weeksCounter > 1) {
-      const { selectedDate } = stepTwo;
+      const { selectedDate = { capacity_start_date: '', capacity_end_date: '' } } = stepTwo;
       if (selectedDate.capacity_start_date && selectedDate.capacity_end_date) {
         const stringFormat = 'YYYY-MM-DD';
         const momentObjStartDate = moment(selectedDate.capacity_start_date, stringFormat);
@@ -55,32 +57,32 @@ export const stepTwoSelectedDateSelector = createSelector(
         selectedDate.capacity_end_date = momentObjStartDate.add(daysToNeedAdd, 'days').format(stringFormat);
       }
     }
-    return stepTwo.selectedDate;
+    return { capacity_start_date: '', capacity_end_date: '' };
   }
 );
 
 export const stepTwoStartDateSelector = createSelector(
   stepTwoSelectedDateSelector,
-  function(selectedDate) {
+  function(selectedDate = {}) {
     return selectedDate.capacity_start_date;
   }
 );
 
 export const stepTwoEndDateSelector = createSelector(
   stepTwoSelectedDateSelector,
-  function(selectedDate) {
+  function(selectedDate = {}) {
     return selectedDate.capacity_end_date;
   }
 );
 
 export const stepTwoCampDaysLengthSelector = createSelector(
   stepTwoSelector,
-  function(stepTwo) {
+  function(stepTwo = {}) {
     return stepTwo.stepTwoCampDaysLength;
   }
 );
 
-function findWeeksDurations(arr) {
+function findWeeksDurations(arr = []) {
   const result = [];
   const dateFormat = 'YYYY-MM-DD';
   for (let i = 0; i < arr.length; i++) {

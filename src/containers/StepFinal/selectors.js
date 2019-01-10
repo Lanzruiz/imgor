@@ -17,97 +17,97 @@ export const stepFinalFormFieldNames = {
   dateOfBirth: 'date_of_birth',
 };
 
-function finalStepSelector(state) {
+function finalStepSelector(state = {}) {
   return state.finalStep;
 }
 
 export const finalStepPositionsSelector = createSelector(
   finalStepSelector,
-  function(finalStep) {
+  function(finalStep = {}) {
     return finalStep.positions;
   }
 );
 
 export const finalStepSelectedPositionSelector = createSelector(
   stateSelector,
-  function(state) {
+  function(state = {}) {
     return stepOneFormValueSelector(state, stepFinalFormFieldNames.position);
   }
 );
 
 export const finalStepShirtSizeSelector = createSelector(
   stateSelector,
-  function(state) {
+  function(state = {}) {
     return stepOneFormValueSelector(state, stepFinalFormFieldNames.shirtSize);
   }
 );
 
 export const finalStepPositionSelector = createSelector(
   stateSelector,
-  function(state) {
+  function(state = {}) {
     return stepOneFormValueSelector(state, stepFinalFormFieldNames.position);
   }
 );
 
 export const finalStepFirstNameSelector = createSelector(
   stateSelector,
-  function(state) {
+  function(state = {}) {
     return stepOneFormValueSelector(state, stepFinalFormFieldNames.firstName);
   }
 );
 
 export const finalStepLastNameSelector = createSelector(
   stateSelector,
-  function(state) {
+  function(state = {}) {
     return stepOneFormValueSelector(state, stepFinalFormFieldNames.lastName);
   }
 );
 
 export const finalStepEmailSelector = createSelector(
   stateSelector,
-  function(state) {
+  function(state = {}) {
     return stepOneFormValueSelector(state, stepFinalFormFieldNames.email);
   }
 );
 
 export const finalStepPhoneSelector = createSelector(
   stateSelector,
-  function(state) {
+  function(state = {}) {
     return stepOneFormValueSelector(state, stepFinalFormFieldNames.phone);
   }
 );
 
 export const finalStepGuardianFirstNameSelector = createSelector(
   stateSelector,
-  function(state) {
+  function(state = {}) {
     return stepOneFormValueSelector(state, stepFinalFormFieldNames.guardianInformationFirstName);
   }
 );
 
 export const finalStepGuardianLastNameSelector = createSelector(
   stateSelector,
-  function(state) {
+  function(state = {}) {
     return stepOneFormValueSelector(state, stepFinalFormFieldNames.guardianInformationLastName);
   }
 );
 
 export const finalStepGuardianEmailSelector = createSelector(
   stateSelector,
-  function(state) {
+  function(state = {}) {
     return stepOneFormValueSelector(state, stepFinalFormFieldNames.guardianInformationEmail);
   }
 );
 
 export const finalStepGuardianPhoneSelector = createSelector(
   stateSelector,
-  function(state) {
+  function(state = {}) {
     return stepOneFormValueSelector(state, stepFinalFormFieldNames.guardianInformationPhone);
   }
 );
 
 export const finalStepDateOfBirthSelector = createSelector(
   stateSelector,
-  function(state) {
+  function(state = {}) {
     return stepOneFormValueSelector(state, stepFinalFormFieldNames.dateOfBirth);
   }
 );

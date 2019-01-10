@@ -36,86 +36,86 @@ export const departingFormFieldNames = {
 
 const selector = formValueSelector('wizard');
 
-export function stepSixDepartingDateTimeSelector(state) {
+export function stepSixDepartingDateTimeSelector(state = {}) {
   return selector(state, stepSixFormFieldNames.departingDateTime);
 };
 
-export function stepSixArrivalDateTimeSelector(state) {
+export function stepSixArrivalDateTimeSelector(state = {}) {
   return selector(state, stepSixFormFieldNames.arrivalDateTime);
 };
 
-export function stepSixArrivalFlightNumberSelector(state) {
+export function stepSixArrivalFlightNumberSelector(state = {}) {
   return selector(state, stepSixFormFieldNames.arrivalFlightNumber);
 };
 
-export function stepSixDepartingFlightNumberSelector(state) {
+export function stepSixDepartingFlightNumberSelector(state = {}) {
   return selector(state, stepSixFormFieldNames.departingFlightNumber);
 };
 
-export function stepSixDepartingTransportSelector(state) {
+export function stepSixDepartingTransportSelector(state = {}) {
   return selector(state, stepSixFormFieldNames.departingTransport);
 };
 
-export function stepSixDepartingSelector(state) {
+export function stepSixDepartingSelector(state = {}) {
   return selector(state, stepSixFormFieldNames.departing);
 };
 
-export function stepSixDropoffSelector(state) {
+export function stepSixDropoffSelector(state = {}) {
   return selector(state, stepSixFormFieldNames.dropoff);
 };
 
-export function stepSixDropoffOtherLocationSelector(state) {
+export function stepSixDropoffOtherLocationSelector(state = {}) {
   return selector(state, stepSixFormFieldNames.dropoffOtherLocation);
 };
 
-export function stepSixPickUpOtherLocationSelector(state) {
+export function stepSixPickUpOtherLocationSelector(state = {}) {
   return selector(state, stepSixFormFieldNames.pickUpOtherLocation);
 };
 
-export function stepSixTransportationSelector(state) {
+export function stepSixTransportationSelector(state = {}) {
   return selector(state, stepSixFormFieldNames.transportation);
 };
 
-export function stepSixAirportPickupSelector(state) {
+export function stepSixAirportPickupSelector(state = {}) {
   return selector(state, stepSixFormFieldNames.airportPickup);
 };
 
-export function stepSixSelectedTransportSelector(state) {
+export function stepSixSelectedTransportSelector(state = {}) {
   return selector(state, stepSixFormFieldNames.transport);
 };
 
-export function stepSixUnaccompaniedSelector(state) {
+export function stepSixUnaccompaniedSelector(state = {}) {
   return selector(state, stepSixFormFieldNames.unaccompanied);
 };
 
-function stepSixSelector(state) {
+function stepSixSelector(state = {}) {
   return state.stepSix;
 };
 
 const stepSixSelectedArrivalAirlineId = createSelector(
   stepSixSelector,
-  function(stepSix) {
+  function(stepSix = {}) {
     return stepSix.selectedArrivalAirline;
   }
 );
 
 const stepSixSelectedDepartingAirlineId = createSelector(
   stepSixSelector,
-  function(stepSix) {
+  function(stepSix = {}) {
     return stepSix.selectedDepartingAirline;
   }
 );
 
 export const stepSixTransportSelector = createSelector(
   stepSixSelector,
-  function(stepSix) {
+  function(stepSix = {}) {
     return stepSix.transport;
   }
 );
 
 export const stepSixAirlinesSelector = createSelector(
   stepSixSelector,
-  function(stepSix) {
+  function(stepSix = { airlines: [] }) {
     return stepSix.airlines.map(function(item, idx) {
       return {
         id: '' + idx,
@@ -129,7 +129,7 @@ export const stepSixAirlinesSelector = createSelector(
 export const stepSixSelectedArrivalAirlineSelector = createSelector(
   stepSixAirlinesSelector,
   stepSixSelectedArrivalAirlineId,
-  function(airlines, id) {
+  function(airlines = [], id) {
     return airlines.find(function(airlineItem) {
       return isEqual(airlineItem.id, id);
     });
@@ -139,7 +139,7 @@ export const stepSixSelectedArrivalAirlineSelector = createSelector(
 export const stepSixSelectedDepartingAirlineSelector = createSelector(
   stepSixAirlinesSelector,
   stepSixSelectedDepartingAirlineId,
-  function(airlines, id) {
+  function(airlines = [], id) {
     return airlines.find(function(airlineItem) {
       return isEqual(airlineItem.id, id);
     });
@@ -148,7 +148,7 @@ export const stepSixSelectedDepartingAirlineSelector = createSelector(
 
 export const stepSixTransportUnaccompaniedSelector = createSelector(
   stepSixSelector,
-  function(stepSix) {
+  function(stepSix = {}) {
     return stepSix.unaccompanied;
   }
 );
@@ -156,7 +156,7 @@ export const stepSixTransportUnaccompaniedSelector = createSelector(
 const stepSixArrivalPriceSelector = createSelector(
   stepSixTransportSelector,
   stepSixSelectedTransportSelector,
-  function(transport, selectedTransport) {
+  function(transport = [], selectedTransport = '') {
     const transportObject = transport.find(({ id }) => {
       return isEqual( stringToNumber(selectedTransport), stringToNumber(id) );
     });
@@ -170,7 +170,7 @@ const stepSixArrivalPriceSelector = createSelector(
 const stepSixDepartingPriceSelector = createSelector(
   stepSixTransportSelector,
   stepSixDepartingTransportSelector,
-  function(transport, selectedTransport) {
+  function(transport = [], selectedTransport = '') {
     const transportObject = transport.find(({ id }) => {
       return isEqual( stringToNumber(selectedTransport), stringToNumber(id) );
     });
@@ -186,7 +186,7 @@ export const stepSixPriceSelector = createSelector(
   stepSixUnaccompaniedSelector,
   stepSixArrivalPriceSelector,
   stepSixDepartingPriceSelector,
-  function(transportUnaccompanied, unaccompanied, arrivalPrice, departingPrice) {
+  function(transportUnaccompanied = false, unaccompanied = 'false', arrivalPrice = 0, departingPrice = 0) {
     const free = 0;
     const unaccompaniedPrice = (
       isEqual(unaccompanied, 'true')
@@ -202,7 +202,7 @@ export const stepSixPriceSelector = createSelector(
 export const stepSixDepartingTransportObjectSelector = createSelector(
   stepSixTransportSelector,
   stepSixDepartingTransportSelector,
-  function(transport, selectedTransport) {
+  function(transport = [], selectedTransport = '') {
     const transportObject = transport.find(({ id }) => {
       return isEqual( stringToNumber(selectedTransport), stringToNumber(id) );
     });
@@ -213,7 +213,7 @@ export const stepSixDepartingTransportObjectSelector = createSelector(
 export const stepSixArrivalTransportObjectSelector = createSelector(
   stepSixTransportSelector,
   stepSixSelectedTransportSelector,
-  function(transport, selectedTransport) {
+  function(transport = [], selectedTransport = '') {
     const transportObject = transport.find(({ id }) => {
       return isEqual( stringToNumber(selectedTransport), stringToNumber(id) );
     });
@@ -223,21 +223,21 @@ export const stepSixArrivalTransportObjectSelector = createSelector(
 
 export const stepSixDepartingDataSelector = createSelector(
   stepSixSelector,
-  function(stepSix) {
+  function(stepSix = {}) {
     return stepSix.departingData;
   }
 );
 
 export const stepSixArrivalDataSelector = createSelector(
   stepSixSelector,
-  function(stepSix) {
+  function(stepSix = {}) {
     return stepSix.arrivalData;
   }
 );
 
 export const stepSixUnaccompaniedDataSelector = createSelector(
   stepSixSelector,
-  function(stepSix) {
+  function(stepSix = {}) {
     return stepSix.unnacompaniedData;
   }
 );

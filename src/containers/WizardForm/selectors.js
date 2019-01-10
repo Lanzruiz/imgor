@@ -17,7 +17,7 @@ export const totalPriceSelector = createSelector(
   stepFourPriceSelector,
   stepFivePriceSelector,
   stepSixPriceSelector,
-  function(stepOnePrice, weeksCounter, stepOneGroup, stepFourPrice, stepFivePrice, stepSixPrice) {
+  function(stepOnePrice = 0, weeksCounter = '', stepOneGroup = '', stepFourPrice = 0, stepFivePrice = 0, stepSixPrice = 0) {
     const stepOneComputedPrice = (
       isStringsEqual(stepOneGroup, weekly_camp)
         ? stepOnePrice * weeksCounter
@@ -27,13 +27,13 @@ export const totalPriceSelector = createSelector(
   }
 );
 
-function stepsSelector(state) {
+function stepsSelector(state = {}) {
   return state.steps;
 }
 
 export const currentStepSelector = createSelector(
   stepsSelector,
-  function(steps) {
+  function(steps = {}) {
     return steps.currentStep;
   }
 );
