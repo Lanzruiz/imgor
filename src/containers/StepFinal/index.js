@@ -18,6 +18,7 @@ import DatePickerReduxForm from '../../components/DatePicker';
 import * as finalStepActions from '../../actions/final.step';
 // Selectors
 import { finalStepPositionsSelector, finalStepSelectedPositionSelector, finalStepShirtSizeSelector } from './selectors';
+import { sportSelector, businessTypeSelector, packageTypeSelector } from '../InitialComponent/selectors';
 // Constants
 import { stepFinalFormFieldNames } from './selectors';
 // Helpers
@@ -330,6 +331,9 @@ function mapStateToProps(state) {
     positions: finalStepPositionsSelector(state),
     selectedPosition: finalStepSelectedPositionSelector(state),
     shirtSize: finalStepShirtSizeSelector(state),
+    sport: sportSelector(state),
+    businessType: businessTypeSelector(state),
+    packageType: packageTypeSelector(state),
   };
 }
 

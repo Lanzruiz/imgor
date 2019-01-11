@@ -26,6 +26,7 @@ import {
   stepOneSecondaryGroupSelector, isWeeklyCampSelector, stepOneSleepawaySelector, stepOneBoardingBooleanSelector,
 } from '../StepOne/selectors';
 import { currentStepSelector } from '../WizardForm/selectors';
+import { sportSelector, businessTypeSelector, packageTypeSelector } from '../InitialComponent/selectors';
 // Constants
 import { monthEnum } from '../../constants/step.two';
 import { daysInWeek } from '../../constants/weeks';
@@ -480,6 +481,9 @@ function mapStateToProps(state) {
     weeksCounter: weeksCounterSelector(state),
     isWeeklyCamp: isWeeklyCampSelector(state),
     step: currentStepSelector(state),
+    sport: sportSelector(state),
+    businessType: businessTypeSelector(state),
+    packageType: packageTypeSelector(state),
   };
 }
 

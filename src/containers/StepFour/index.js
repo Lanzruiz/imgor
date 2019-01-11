@@ -27,6 +27,7 @@ import {
   weeksItemsSelector, stepOneAgeSelector, stepOneGenderSelector, weeksSelectedWeekIdSelector,
   cartIdSelector, participantIdSelector,
 } from '../StepOne/selectors';
+import { sportSelector, businessTypeSelector, packageTypeSelector } from '../InitialComponent/selectors';
 import { stepFourDataSelector } from './selectors';
 // Constants
 import { stepsEnum } from '../../constants/steps';
@@ -272,6 +273,9 @@ function mapStateToProps(state) {
     stepThreeSecondaryPrograms: stepThreeSecondaryProgramsSelector(state),
     cartId: cartIdSelector(state),
     participantId: participantIdSelector(state),
+    sport: sportSelector(state),
+    businessType: businessTypeSelector(state),
+    packageType: packageTypeSelector(state),
   };
 };
 

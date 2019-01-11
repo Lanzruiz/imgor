@@ -33,6 +33,7 @@ import {
   stepSixSelectedTransportSelector, stepSixTransportUnaccompaniedSelector,
 } from './selectors';
 import { stepFiveDataPerPageSelector } from '../StepFive/selectors';
+import { sportSelector, businessTypeSelector, packageTypeSelector } from '../InitialComponent/selectors';
 // Constants
 import { stepsEnum } from '../../constants/steps';
 import { stepSixFormFieldNames, airportPickupInformation, departingFormFieldNames } from './selectors';
@@ -737,6 +738,9 @@ function mapStateToProps(state) {
     selectedTransportValue: stepSixSelectedTransportSelector(state),
     stepFiveDataPerPage: stepFiveDataPerPageSelector(state),
     transportUnaccompanied: stepSixTransportUnaccompaniedSelector(state),
+    sport: sportSelector(state),
+    businessType: businessTypeSelector(state),
+    packageType: packageTypeSelector(state),
   };
 };
 

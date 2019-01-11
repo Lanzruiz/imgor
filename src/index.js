@@ -44,11 +44,31 @@ ReactDOM.render(
                 />
               );
             }} />
-            <Route path="/" component={(args) => {
+            <Route path={urlToNoProps || process.env.REACT_APP_REDIRECT_URL_TO_NO_PROPS} exact component={(args) => {
               return (
                 <App
                   {...args}
                   redirectUrlShopify={redirectUrlShopify}
+                  sport={sport}
+                  gender={gender}
+                  group={group}
+                  secondaryGroup={secondary_group}
+                  businessType={business_type}
+                  urlToNoProps={urlToNoProps}
+                />
+              );
+            }} />
+            <Route path="/" component={(args) => {
+              return (
+                <InitialComponent
+                  {...args}
+                  sport={sport}
+                  gender={gender}
+                  group={group}
+                  secondaryGroup={secondary_group}
+                  businessType={business_type}
+                  redirectUrlShopify={redirectUrlShopify}
+                  urlToNoProps={urlToNoProps}
                 />
               );
             }} />

@@ -7,7 +7,7 @@ import Api from '../api';
 import { addParticipant } from './participant';
 import { setStepsCounter } from './steps';
 
-export function getCatalogCampsGroup({ sport }) {
+export function getCatalogCampsGroup({ sport, gender, group, businessType }) {
   return function(dispatch) {
     Api.req({
       apiCall: Api.getCatalogCampsGroup,
@@ -16,6 +16,9 @@ export function getCatalogCampsGroup({ sport }) {
       reject: err => console.log(err), // TODO: Add error handler
       apiCallParams: {
         sport,
+        gender,
+        group,
+        businessType,
       },
     });
   };

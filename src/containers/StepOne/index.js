@@ -37,6 +37,7 @@ import {
   stepOneGroupSelector, stepOneDataSelector, stepOneTabIndexSelector, weeksCounterSelector,
   stepOneAgeSelector, stepOneGenderSelector, stepOneSleepawaySelector,
 } from './selectors';
+import { sportSelector, businessTypeSelector, packageTypeSelector } from '../InitialComponent/selectors';
 // Styles
 import './styles.scss';
 
@@ -109,8 +110,8 @@ class StepOne extends React.Component {
   };
 
   componentDidMount() {
-    const { sport } = this.props;
-    this.props.stepOneActions.getCatalogCampsGroup({ sport });
+    const { sport, gender, group, businessType } = this.props;
+    this.props.stepOneActions.getCatalogCampsGroup({ sport, gender, group, businessType });
     scrollToComponent(this.stepOne.current);
   }
 
@@ -628,6 +629,9 @@ function mapStateToProps(state) {
     tabIndex: stepOneTabIndexSelector(state),
     group: stepOneGroupSelector(state),
     weeksLengthNumber: state.stepOne.weeksLengthNumber,
+    sport: sportSelector(state),
+    businessType: businessTypeSelector(state),
+    packageType: packageTypeSelector(state),
   };
 };
 

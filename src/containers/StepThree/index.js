@@ -26,6 +26,7 @@ import {
   stepThreeDataSelector, stepTreeSelectedIdSelector, stepThreeSelectedProductSelector,
   stepThreeSelectedCardWithSecondaryProgramsIdSelector, stepThreeParticipantProductIdSelector,
 } from './selector';
+import { sportSelector, businessTypeSelector, packageTypeSelector } from '../InitialComponent/selectors';
 import {
   isWeeklyCampSelector, stepOneAgeSelector, stepOneGenderSelector, cartIdSelector, participantIdSelector,
   stepOneBoardingBooleanSelector, stepOneGroupSelector, stepOneSecondaryGroupSelector,
@@ -159,7 +160,7 @@ class StepThree extends React.Component {
     const { age_range, display_name, name = '', price, id, selectedId, soldOut, has_secondary_program, secondaryPrograms, displayViaLabel } = args;
     const computedLabel = age_range ? `ages ${age_range}` : '';
     const nameLowerCase = toLower(name);
-    
+
     const onCardClick = has_secondary_program
         ? cardId => this.goToNextStep({ id: cardId, secondaryPrograms })
         : this.selectCard;
@@ -176,7 +177,7 @@ class StepThree extends React.Component {
       label: computedLabel,
       soldOut: soldOut,
     };
-    
+
     switch(nameLowerCase) {
       case 'breakthrough': {
         return (
@@ -217,11 +218,11 @@ class StepThree extends React.Component {
       this.props.stepThreeActions.stepThreeSetProductToTheCart({ cartId, participantId, campId: id });
     }
   };
-  
+
   discardCardWithSecondProgram = () => {
     this.props.stepThreeActions.stepThreeDiscardCardWithSecondProgram();
   };
-  
+
   discardCard = (id) => {
     const { cartId, participantId, cartStepThreeProductId } = this.props;
 
@@ -304,6 +305,9 @@ function mapStateToProps(state) {
     participantProductId: stepThreeParticipantProductIdSelector(state),
     stepTwoSelectedDate: stepTwoSelectedDateSelector(state),
     cartStepThreeProductId: cartStepThreeProductIdSelector(state),
+    sport: sportSelector(state),
+    businessType: businessTypeSelector(state),
+    packageType: packageTypeSelector(state),
   };
 };
 

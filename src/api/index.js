@@ -23,10 +23,13 @@ class Api {
     return await instance.post('cart');
   };
 
-  async getCatalogCampsGroup({ sport }) {
+  async getCatalogCampsGroup({ sport, gender, group, businessType }) {
     return await instance.get('catalog/camps/groups', {
       params: {
         sport,
+        gender,
+        group,
+        business_type: businessType,
       },
     });
   };

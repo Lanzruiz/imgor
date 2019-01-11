@@ -16,6 +16,7 @@ import LoadMoreButton from '../../components/LoadMoreButton';
 import {
   stepFiveShouldRenderLoadMoreButtonSelector, stepFiveShouldRenderUpsellLoadMoreButtonSelector, stepFiveShouldRenderExcursionsLoadMoreButtonSelector,
 } from './selectors';
+import { sportSelector, businessTypeSelector, packageTypeSelector } from '../InitialComponent/selectors';
 // Actions
 import * as stepFiveActions from '../../actions/step.five';
 // Styles
@@ -112,6 +113,9 @@ function mapStateToProps(state) {
     shouldRenderGearLoadMoreButton: stepFiveShouldRenderLoadMoreButtonSelector(state),
     shouldRenderUpsellLoadMoreButton: stepFiveShouldRenderUpsellLoadMoreButtonSelector(state),
     shouldRenderExcursionsLoadMoreButton: stepFiveShouldRenderExcursionsLoadMoreButtonSelector(state),
+    sport: sportSelector(state),
+    businessType: businessTypeSelector(state),
+    packageType: packageTypeSelector(state),
   };
 }
 
