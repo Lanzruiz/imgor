@@ -11,6 +11,7 @@ import isEqual from 'lodash/isEqual';
 import Header from '../../components/Header';
 import LocaleString from '../../components/LocaleString';
 import Carousel, { CarouselItem } from '../../components/Carousel';
+import { Default, Mobile } from '../../components/Responsive';
 // Actions
 import * as stepOneActions from '../../actions/step.one';
 import * as stepTwoActions from '../../actions/step.two';
@@ -201,7 +202,7 @@ class StepTwo extends React.Component {
     };
 
     const carouselDates = Object.keys(dates).reduce((acc, key) => {
-      if (dates[key] && dates[key].length > 1) {
+      if (dates[key] && dates[key].length) {
         acc = {
           ...acc,
           [key]: dates[key]
@@ -279,31 +280,36 @@ class StepTwo extends React.Component {
                       formatString={{ sport, length_program: weeksCounter ? `${weeksCounter} week` : '' }}
                     />&#42;
                   </h2>
-
-                  <div className="dates__container--mobile">
-                    <Carousel render={true} className="test">
-                      {pagedDates.data.length > 0 && pagedDates.data.map((value, index) => (
-                        <CarouselItem key={index}>
-                          <h2 className="header__h6">
-                            <LocaleString stringKey="step_two.page_of" formatString={{ current: ++index, max: totalPages }} />
-                          </h2>
-                          <ul className="dates__page">
-                            {this.renderDates(value)}
-                          </ul>
-                        </CarouselItem>
-                      ))}
-
-                      {(!pagedDates.data || pagedDates.data.length === 0) && (
-                        <CarouselItem>
-                          <div className="dates__no-data">
-                            <LocaleString stringKey="step_two.dates.no-data" />
-                          </div>
-                        </CarouselItem>
-                      )}
-                    </Carousel>
-                  </div>
-
-                  <div className="dates__container--desktop">
+                  <Mobile>
+                    {(pagedDates.data.length > 0)
+                      ? (
+                        (totalPages > 1)
+                          ? (
+                            <Carousel render={true} className="test">
+                              {pagedDates.data.map((value, index) => (
+                                <CarouselItem key={index}>
+                                  <h2 className="header__h6">
+                                    <LocaleString stringKey="step_two.page_of" formatString={{ current: ++index, max: totalPages }} />
+                                  </h2>
+                                  <ul className="dates__page">
+                                    {this.renderDates(value)}
+                                  </ul>
+                                </CarouselItem>
+                              ))}
+                            </Carousel>
+                          ) : (
+                            <ul className="dates__container">
+                              {this.renderDates(dates)}
+                            </ul>
+                          )
+                      ) : (
+                        <div className="dates__no-data">
+                          <LocaleString stringKey="step_two.dates.no-data" />
+                        </div>
+                      )
+                    }
+                  </Mobile>
+                  <Default>
                     {data.length
                       ? (
                         <ul className="dates__container">
@@ -315,7 +321,7 @@ class StepTwo extends React.Component {
                         </div>
                       )
                     }
-                  </div>
+                  </Default>
                   <div className="step-two__description description">
                     <span className="description__info">
                       &#42;<LocaleString stringKey="step_two.dates.header_descripion" />
