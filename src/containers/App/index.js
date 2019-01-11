@@ -40,6 +40,7 @@ class App extends React.Component {
     sport: PropTypes.string,
     packageType: PropTypes.string.isRequired,
     businessType: PropTypes.string.isRequired,
+    redirectUrlShopify: PropTypes.string,
   };
 
   static defaultProps = {
@@ -100,10 +101,10 @@ class App extends React.Component {
   }
 
   render() {
-    const { lang } = this.props;
+    const { lang, redirectUrlShopify } = this.props;
     return (
       <ReactLocalization lang={lang}>
-        <WizardForm>
+        <WizardForm redirectUrlShopify={redirectUrlShopify}>
           {() => this.wizardFormChildren}
         </WizardForm>
       </ReactLocalization>

@@ -44,7 +44,14 @@ ReactDOM.render(
                 />
               );
             }} />
-            <Route path="/" component={App} />
+            <Route path="/" component={(args) => {
+              return (
+                <App
+                  {...args}
+                  redirectUrlShopify={redirectUrlShopify}
+                />
+              );
+            }} />
           </Switch>
         </React.Fragment>
       </ConnectedRouter>

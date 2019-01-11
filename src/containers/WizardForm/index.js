@@ -972,7 +972,6 @@ function mapStateToProps(state) {
     stepSixTransportUnaccompanied: stepSixTransportUnaccompaniedSelector(state),
     stepSixDepartingTransportObject: stepSixDepartingTransportObjectSelector(state),
     stepSixArrivalTransportObject: stepSixArrivalTransportObjectSelector(state),
-    redirectUrlShopify: state.initialSettings.redirectUrlShopify,
     finalStepDateOfBirth: finalStepDateOfBirthSelector(state),
   };
 };
