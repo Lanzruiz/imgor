@@ -36,8 +36,8 @@ export default class Dropdown extends React.Component {
     const { whiteArrow, options, selectedOption, handleChange, label } = this.props;
     const { isOpen } = this.state;
     const image = whiteArrow
-      ? <span className="icon-arrow-down2 white-background" />
-      : <span className="icon-arrow-down2" />;
+      ? <span className="icon-arrow-down white" />
+      : <span className="icon-arrow-down" />;
     
     return (
       <OutsideClickHandler onOutsideClick={this.closeDropdown}>

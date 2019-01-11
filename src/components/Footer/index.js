@@ -99,7 +99,7 @@ class Footer extends React.Component {
 
   render() {
     const { price, message, arrowUp, hasMessage, purchaseOnClickHandler, saveCampOnClickHandler, shareOnClickHandler, step } = this.props;
-    const arrowPositinon = arrowUp ? <span className="icon-arrow-up2" /> : <span className="icon-arrow-down2" />;
+    const arrowPositinon = arrowUp ? <span className="icon-arrow-up" /> : <span className="icon-arrow-down" />;
     const isCurrentStepEqualToSix = isEqual(step, stepsEnum.six);
 
     return (
