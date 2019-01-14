@@ -28,7 +28,6 @@ import {
 import { currentStepSelector } from '../WizardForm/selectors';
 import { sportSelector, businessTypeSelector, packageTypeSelector } from '../InitialComponent/selectors';
 // Constants
-import { monthEnum } from '../../constants/step.two';
 import { daysInWeek } from '../../constants/weeks';
 import { stepsEnum } from '../../constants/steps';
 // Styles
@@ -187,47 +186,21 @@ class StepTwo extends React.Component {
 
   render() {
     const { data, weeksCounter, sport, selectedDate } = this.props;
-    const dates = {
-      [monthEnum[0]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['jan'])),
-      [monthEnum[1]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['feb'])),
-      [monthEnum[2]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['mar'])),
-      [monthEnum[3]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['apr'])),
-      [monthEnum[4]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['may'])),
-      [monthEnum[5]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['june'])),
-      [monthEnum[6]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['july'])),
-      [monthEnum[7]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['aug'])),
-      [monthEnum[8]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['sept'])),
-      [monthEnum[9]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['oct'])),
-      [monthEnum[10]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['nov'])),
-      [monthEnum[11]]: data.filter(({ capacity_start_date }) => this.filterDatesByMonth({ capacity_start_date }, monthEnum['dec'])),
-    };
-
-    const carouselDates = Object.keys(dates).reduce((acc, key) => {
-      if (dates[key] && dates[key].length) {
-        acc = {
-          ...acc,
-          [key]: dates[key]
-        }
-      }
+    
+    const groupSize = 10;
+    const perPage = 2;
+    
+    const dataGrouped = data.reduce((acc, v, index) => {
+      const i = Math.floor(index / groupSize);
+      acc[i] = [...(acc[i] || []), v];
       return acc;
-    }, {});
-
-    const total = Object.keys(carouselDates).length;
-    const perPage = 4;
-    const totalPages = Math.ceil(total/perPage);
-
-    const pagedDates = Object.keys(carouselDates).reduce((acc, key) => {
-    const index = Math.floor(acc.counter/perPage);
-      acc.data[index] = {
-        ...acc.data[index],
-        [key]: dates[key]
-      };
-      acc.counter++;
+    }, []);
+    
+    const dataGroupedAndPaged = dataGrouped.reduce((acc, v, index) => {
+      const i = Math.floor(index / perPage);
+      acc[i] = [...(acc[i] || []), v];
       return acc;
-    }, {
-      data: [],
-      counter: 0
-    });
+    }, []);
 
     return (
       <div className="step-two">
@@ -281,48 +254,46 @@ class StepTwo extends React.Component {
                       formatString={{ sport, length_program: weeksCounter ? `${weeksCounter} week` : '' }}
                     />&#42;
                   </h2>
-                  <Mobile>
-                    {(pagedDates.data.length > 0)
-                      ? (
-                        (totalPages > 1)
-                          ? (
-                            <Carousel render={true} className="test">
-                              {pagedDates.data.map((value, index) => (
-                                <CarouselItem key={index}>
-                                  <h2 className="header__h6">
-                                    <LocaleString stringKey="step_two.page_of" formatString={{ current: ++index, max: totalPages }} />
-                                  </h2>
-                                  <ul className="dates__page">
-                                    {this.renderDates(value)}
-                                  </ul>
-                                </CarouselItem>
-                              ))}
-                            </Carousel>
-                          ) : (
-                            <ul className="dates__container">
-                              {this.renderDates(dates)}
-                            </ul>
-                          )
-                      ) : (
-                        <div className="dates__no-data">
-                          <LocaleString stringKey="step_two.dates.no-data" />
-                        </div>
-                      )
-                    }
-                  </Mobile>
-                  <Default>
-                    {data.length
-                      ? (
-                        <ul className="dates__container">
-                          {this.renderDates(dates)}
-                        </ul>
-                      ) : (
-                        <div className="dates__no-data">
-                          <LocaleString stringKey="step_two.dates.no-data" />
-                        </div>
-                      )
-                    }
-                  </Default>
+                  <div className="dates">
+                    <Mobile>
+                      {(dataGroupedAndPaged && dataGroupedAndPaged.length > 0) ?
+                        (
+                        <Carousel render={true} className="test">
+                          {dataGroupedAndPaged.map((page, index) => (
+                            <CarouselItem key={index}>
+                              <h2 className="header__h6">
+                                <LocaleString stringKey="step_two.page_of" formatString={{ current: ++index, max: dataGroupedAndPaged.length }} />
+                              </h2>
+                              <div className="dates__container">
+                                {this.newRenderDates(page)}
+                              </div>
+                            </CarouselItem>
+                          ))}
+                        </Carousel>
+                        ) : (
+                          <div className="dates__no-data">
+                            <LocaleString stringKey="step_two.dates.no-data" />
+                          </div>
+                        )
+                      }
+                    </Mobile>
+                    <Default>
+                      {data.length
+                        ? (
+                          <div className="dates__container ">
+                            {this.newRenderDates(dataGrouped)}
+                          </div>
+                          // <ul className="dates__container">
+                          //   {this.renderDates(dates)}
+                          // </ul>
+                        ) : (
+                          <div className="dates__no-data">
+                            <LocaleString stringKey="step_two.dates.no-data" />
+                          </div>
+                        )
+                      }
+                    </Default>
+                  </div>
                   <div className="step-two__description description">
                     <span className="description__info">
                       &#42;<LocaleString stringKey="step_two.dates.header_descripion" />
@@ -340,6 +311,51 @@ class StepTwo extends React.Component {
       </div>
     );
   }
+  
+  newRenderDates = (dataArray) => {
+    const { boarding, selectedDate, isWeeklyCamp } = this.props;
+    
+    const element = (item, index) => {
+      const { capacity, capacity_start_date, capacity_end_date, length, length_days } = item;
+      const capacityItemByBoardingValue = capacity.find((capacityItem) => capacityItem.boarding === boarding);
+      const isAvailable = capacityItemByBoardingValue.available > 0;
+      const onClickHandler = (
+        isAvailable
+          ?
+          () => {
+            if (!isWeeklyCamp) {
+              const weeksCounter = length_days / daysInWeek;
+              const weeksLength = (weeksCounter > 1) ? weeksCounter : 1;
+              this.selectCampLength(length);
+              this.setCampDaysLength(length_days);
+              this.setOnlyWeeks(weeksLength);
+            }
+            this.selectDate({ capacity_start_date, capacity_end_date });
+          }
+          : null
+      );
+      const dateString = dateFormat({ date: capacity_start_date, dateFormat: 'YYYY-MM-DD', resultFormat: 'MMM, DD YYYY' });
+      const listItemClassNames = cx('dates__item', {
+        'sold-out': !isAvailable,
+        'active': (selectedDate.capacity_start_date === capacity_start_date),
+      });
+      
+      return (
+        <li
+          key={index}
+          className={listItemClassNames}
+          onClick={onClickHandler}
+          children={dateString}
+        />
+      )
+    };
+    
+    return dataArray.map((group, index) => (
+      <div className="dates__column" key={index}>
+        {group.map((item, index) => element(item, index))}
+      </div>
+    ));
+  };
 
   renderDates = (dataObject) => {
     const result = [];
