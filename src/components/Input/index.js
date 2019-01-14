@@ -7,6 +7,8 @@ import PropTypes from 'prop-types';
 import { ReactLocalizationConsumer } from '../../providers/ReactLocalization';
 
 export default class Input extends React.Component {
+  static displayName = 'Input';
+
   static propTypes = {
     type: PropTypes.string,
     label: PropTypes.string,

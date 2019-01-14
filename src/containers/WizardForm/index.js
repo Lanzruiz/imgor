@@ -823,6 +823,9 @@ class WizardForm extends React.Component {
       case !finalStepDateOfBirth: {
         return 'enter_day_of_birth';
       }
+      case finalStepDateOfBirth && !moment(finalStepDateOfBirth, 'MM/DD/YYYY').isValid(): {
+        return 'date_is_not_valid';
+      }
       case finalStepDateOfBirth && !isEqual( calculateAge(finalStepDateOfBirth), ageNumber ): {
         return 'camper_age_is_not_equal';
       }

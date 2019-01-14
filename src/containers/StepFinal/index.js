@@ -13,7 +13,7 @@ import Card, { CardContent, CardContentRow, CardContentCol } from '../../compone
 import LocaleString from '../../components/LocaleString';
 import Input from '../../components/Input';
 import Radio from '../../components/Radio';
-import DatePickerReduxForm from '../../components/DatePicker';
+import InputBirthDayMask from '../../components/InputBirthDayMask';
 // Actions
 import * as finalStepActions from '../../actions/final.step';
 // Selectors
@@ -105,14 +105,10 @@ class StepFinal extends React.Component {
                             />
                           </label>
                           <label className="step-final__form-control">
-                            <DatePickerReduxForm
-                              isClearable={false}
-                              showTimeSelect={false}
-                              showYearDropdown={true}
+                            <InputBirthDayMask
                               inputClassName="step-final__input"
                               name={stepFinalFormFieldNames.dateOfBirth}
-                              placeholder="Date of Birth"
-                              dateFormat="YYYY-MM-DD"
+                              label="date of birth"
                             />
                           </label>
                           <label className="step-final__form-control">
