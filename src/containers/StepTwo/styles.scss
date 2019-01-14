@@ -132,6 +132,26 @@
     }
 
     .dates {
+        .carousel__container{
+          padding: 0 30px 40px 30px;
+          border: none;
+          min-height: unset;
+
+          .carousel__item{
+            padding: 6px;
+          }
+
+          .slick-arrow:before{
+            width: 30px;
+            height: 30px;
+            background-size: 38px 45px;
+          }
+
+          .slick-next{
+            right: -25px;
+          }
+        }
+
         &__header {
             color: $tab-row-bg;
             font-family: $header-font;
@@ -146,82 +166,11 @@
             color: $tab-row-bg;
             font-size: 0;
             line-height: 0;
-            margin: 0 0 10px;
+            margin: 10px 0 10px;
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
-
-            &--desktop{
-              display: flex;
-              @include breakpoint($tablet) {
-                display: none;
-              }
-            }
-
-            &--mobile{
-              display: none;
-              margin-bottom: 10px;
-
-              @include breakpoint($tablet) {
-                display: block;
-                flex-wrap: nowrap;
-              }
-
-              .carousel__container{
-                padding: 0 30px 40px 30px;
-                border: none;
-                min-height: unset;
-
-                .carousel__item{
-                  padding: 6px;
-                }
-
-                .slick-arrow:before{
-                  width: 30px;
-                  height: 30px;
-                  background-size: 38px 45px;
-                }
-
-                .slick-next{
-                  right: -30px;
-                }
-              }
-
-              .dates__page{
-                display: flex;
-                flex-direction: row;
-                flex-wrap: wrap;
-                justify-content: space-between;
-                padding: 20px 0;
-
-                .dates__column{
-                  .dates__item{
-                    margin-bottom: 4px;
-                  }
-                }
-              }
-            }
-
-            & > li {
-                font-size: 14px;
-                display: inline-block;
-                line-height: 16px;
-                text-align: center;
-                vertical-align: top;
-                width: calc(100%/6);
-
-                @include breakpoint($tablet){
-                    width: calc(100%/2);
-                }
-            }
-            & > li li {
-                margin: 0 0 3px;
-                display: block;
-
-                @include breakpoint($tablet){
-                    padding: 5px 0;
-                }
-            }
+            justify-content: space-around;
         }
 
         &__item {
