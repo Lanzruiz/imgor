@@ -9,14 +9,13 @@ import scrollToComponent from 'react-scroll-to-component';
 import isNumber from 'lodash/isNumber';
 import isEqual from 'lodash/isEqual';
 import toLower from 'lodash/toLower';
+import ScrollAnimation from 'react-animate-on-scroll';
 // Components
 import Header from '../../components/Header';
 import BreakthroughCard from '../../components/BreakthroughCard';
 import CoreCard from '../../components/CoreCard';
 import TotalAthleteCard from '../../components/TotalAthleteCard';
 import GameChangerCard from '../../components/GameChangerCard';
-// Helpers
-import validation from '../../helpers/validate';
 // Actions
 import * as trainingActions from '../../actions/training';
 import * as stepThreeActions from '../../actions/step.three';
@@ -121,7 +120,7 @@ class StepThree extends React.Component {
   render() {
     const { selectedId, data, selectedCardWithSecondaryProgramsId } = this.props;
     return (
-      <div ref={this.stepThree} className="step-three">
+      <ScrollAnimation className="step-three" animateIn='fadeInUp' animateOut='fadeOut' ref={this.stepThree}>
         <Container>
           <Row>
             <Col>
@@ -134,7 +133,7 @@ class StepThree extends React.Component {
           <Row className="align-items-stretch">
             {data.map(({ age_range, display_name, price, id, name, sold_out, has_secondary_program, secondary_programs, starting_price, display_via_label }, idx) => {
               return (
-                <Col xl={6} key={idx} className="card-column">
+                <Col lg={6} key={idx} className="card-column">
                   {this.renderCurrentCard({
                     age_range,
                     display_name,
@@ -152,7 +151,7 @@ class StepThree extends React.Component {
             })}
           </Row>
         </Container>
-      </div>
+      </ScrollAnimation>
     );
   }
 
@@ -323,7 +322,6 @@ export default reduxForm({
   form: 'wizard', // <------ same form name
   destroyOnUnmount: false, // <------ preserve form data
   forceUnregisterOnUnmount: true, // <------ unregister fields on unmount
-  validate: validation, // <------ validation
 })(
   connect(mapStateToProps, mapDispatchToProps)(StepThree)
 );

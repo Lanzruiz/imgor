@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
+import ScrollAnimation from 'react-animate-on-scroll';
 // Components
 import Header from '../../components/Header';
 import Card, { CardContent, CardContentRow, CardContentCol } from '../../components/Card';
@@ -47,15 +48,9 @@ class StepFinal extends React.Component {
     positions: [],
   };
 
-  constructor(props) {
-    super(props);
-    this.stepFinal = React.createRef();
-  }
-
   componentDidMount() {
     const { sport, participant } = this.props;
     this.finalStepGetCatalogPositions({ sport, participant });
-    this.scrollToComponent();
   }
 
   componentWillMount() {
@@ -65,14 +60,16 @@ class StepFinal extends React.Component {
   render() {
     const { positions, selectedPosition, shirtSize } = this.props;
     return (
-      <div ref={this.stepFinal} className="step-final">
+      <ScrollAnimation className="step-final" animateIn='fadeIn' animateOut='fadeOut'>
         <Container style={{ marginBottom: '65px' }}>
           <Row>
             <Col>
-              <Header
-                header="step_final.header"
-                subHeader="step_final.subHeader"
-              />
+              <ScrollAnimation animateIn='bounceInRight' animateOut='fadeOut' animateOnce={true}>
+                <Header
+                  header="step_final.header"
+                  subHeader="step_final.subHeader"
+                />
+              </ScrollAnimation>
             </Col>
           </Row>
           <Row>
@@ -221,7 +218,7 @@ class StepFinal extends React.Component {
             </Col>
           </Row>
         </Container>
-      </div>
+      </ScrollAnimation>
     );
   }
 

@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import { reduxForm } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import isEqual from 'lodash/isEqual';
+import ScrollAnimation from 'react-animate-on-scroll';
 // Components
 import Header from '../../components/Header';
 import Card, { CardContent, CardContentRow, CardContentCol, CardContentText } from '../../components/Card';
@@ -144,7 +145,7 @@ class StepSix extends React.Component {
     );
 
     return (
-      <div className="step-six">
+      <ScrollAnimation className="step-six" animateIn='fadeIn' animateOut='fadeOut'>
         <Container style={{ marginBottom: '65px' }} ref={this.stepSix}>
           <Row>
             <Col>
@@ -374,7 +375,7 @@ class StepSix extends React.Component {
             </Col>
           </Row>
         </Container>
-      </div>
+      </ScrollAnimation>
     );
   }
 

@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import scrollToComponent from 'react-scroll-to-component';
+import ScrollAnimation from 'react-animate-on-scroll';
 // Containers
 import StepFiveCatalogGear from '../StepFiveCatalogGear';
 import StepFiveCatalogGearUpsellNew from '../StepFiveCatalogGearUpsellNew';
@@ -58,7 +59,7 @@ class StepFive extends React.Component {
       || shouldRenderExcursionsLoadMoreButton
     );
     return (
-      <div className="step-five" ref={this.stepFive}>
+      <ScrollAnimation className="step-five" ref={this.stepFive} animateIn='fadeIn' animateOut='fadeOut'>
         <Container style={{ marginBottom: '65px' }}>
           <Row>
             <Col>
@@ -76,7 +77,7 @@ class StepFive extends React.Component {
             onClick={this.increaseItemsPerPage}
           />
         </Container>
-      </div>
+      </ScrollAnimation>
     );
   }
 

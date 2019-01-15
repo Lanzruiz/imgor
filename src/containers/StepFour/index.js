@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import scrollToComponent from 'react-scroll-to-component';
 import isEqual from 'lodash/isEqual';
 import find from 'lodash/find';
+import ScrollAnimation from 'react-animate-on-scroll';
 // Components
 import Header from '../../components/Header';
 import LocaleString from '../../components/LocaleString';
@@ -115,7 +116,7 @@ class StepFour extends React.Component {
 
     if (hasSecondaryProgram) {
       return (
-        <div className="step-four" ref={this.stepFour}>
+        <ScrollAnimation className="step-four" ref={this.stepFour} animateIn='fadeIn' animateOut='fadeOut'>
           <Container>
             <Row>
               <Col>
@@ -130,7 +131,7 @@ class StepFour extends React.Component {
                 <div className="step-four__secondary-programs">
                   <Row className="align-items-stretch">
                     {stepThreeSecondaryPrograms.map((item) => (
-                      <Col md={6} lg={4} key={item.id} className="card-column">
+                      <Col lg={4} key={item.id} className="card-column">
                         {this.renderSecondaryPrograms(item)}
                       </Col>
                     ))}
@@ -139,7 +140,7 @@ class StepFour extends React.Component {
               </Col>
             </Row>
           </Container>
-        </div>
+        </ScrollAnimation>
       );
     }
 
@@ -169,8 +170,8 @@ class StepFour extends React.Component {
       );
     });
     return (
-      <div className="step-four">
-        <Container style={{ marginBottom: '65px' }} ref={this.stepFour}>
+      <ScrollAnimation className="step-four" ref={this.stepFour} animateIn="fadeIn">
+        <Container style={{ marginBottom: '65px' }}>
           <Row>
             <Col>
               <Header
@@ -196,7 +197,7 @@ class StepFour extends React.Component {
             </Col>
           </Row>
         </Container>
-      </div>
+      </ScrollAnimation>
     );
   }
 

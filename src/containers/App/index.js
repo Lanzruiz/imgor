@@ -23,6 +23,8 @@ import { setMaxStepValue } from '../../actions/steps';
 import { createCartRequest } from '../../actions/cart';
 import { setInitialSettings } from '../../actions/initialSettings';
 import { selectGroup } from '../../actions/step.one';
+// Styles
+import './styles.scss';
 
 class App extends React.Component {
   static propTypes = {

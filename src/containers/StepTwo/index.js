@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import moment from 'moment';
 import isEqual from 'lodash/isEqual';
+import ScrollAnimation from 'react-animate-on-scroll';
 // Components
 import Header from '../../components/Header';
 import LocaleString from '../../components/LocaleString';
@@ -203,7 +204,7 @@ class StepTwo extends React.Component {
     }, []);
 
     return (
-      <div className="step-two">
+      <ScrollAnimation className="step-two" animateIn='fadeInUp' animateOut='fadeOut'>
         <Container style={{ marginBottom: `${(!selectedDate.capacity_start_date && !selectedDate.capacity_end_date) ? 130 : 30}px` }}>
           <Row>
             <Col>
@@ -283,9 +284,6 @@ class StepTwo extends React.Component {
                           <div className="dates__container ">
                             {this.newRenderDates(dataGrouped)}
                           </div>
-                          // <ul className="dates__container">
-                          //   {this.renderDates(dates)}
-                          // </ul>
                         ) : (
                           <div className="dates__no-data">
                             <LocaleString stringKey="step_two.dates.no-data" />
@@ -308,13 +306,13 @@ class StepTwo extends React.Component {
           </Row>
           {this.renderSelectedDate(selectedDate)}
         </Container>
-      </div>
+      </ScrollAnimation>
     );
   }
-  
+
   newRenderDates = (dataArray) => {
     const { boarding, selectedDate, isWeeklyCamp } = this.props;
-    
+
     const element = (item, index) => {
       const { capacity, capacity_start_date, capacity_end_date, length, length_days } = item;
       const capacityItemByBoardingValue = capacity.find((capacityItem) => capacityItem.boarding === boarding);
@@ -339,7 +337,7 @@ class StepTwo extends React.Component {
         'sold-out': !isAvailable,
         'active': (selectedDate.capacity_start_date === capacity_start_date),
       });
-      
+
       return (
         <li
           key={index}
@@ -349,7 +347,7 @@ class StepTwo extends React.Component {
         />
       )
     };
-    
+
     return dataArray.map((group, index) => (
       <div className="dates__column" key={index}>
         {group.map((item, index) => element(item, index))}

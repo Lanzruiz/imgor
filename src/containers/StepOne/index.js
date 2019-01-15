@@ -9,7 +9,8 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import include from 'lodash/includes';
 import toLower from 'lodash/toLower';
-import isEqual from 'lodash/isEqual'
+import isEqual from 'lodash/isEqual';
+import ScrollAnimation from 'react-animate-on-scroll';
 // Components
 import EmailModal from '../../components/EmailModal';
 import Header from '../../components/Header';
@@ -118,7 +119,7 @@ class StepOne extends React.Component {
   render() {
     const { weeksCounter, participantId, data, tabIndex, group } = this.props;
     return (
-      <div className="step-one">
+      <ScrollAnimation className="step-one" animateIn='fadeIn' animateOut='fadeOut'>
         <EmailModal
           onSubmit={this.closeEmailModal}
           shouldShowEmailModal={!participantId}
@@ -339,7 +340,7 @@ class StepOne extends React.Component {
             );
           })}
         </Container>
-      </div>
+      </ScrollAnimation>
     );
   }
 
