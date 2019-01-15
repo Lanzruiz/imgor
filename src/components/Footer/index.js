@@ -93,7 +93,7 @@ class Footer extends React.Component {
         this.sendUnaccompaniedRequest();
       }
 
-      if (!hasMessage) {
+      if (!hasMessage && (step === stepsEnum.six)) {
         this.props.stepsActions.setStepsCounter(stepsEnum.seven);
       }
     }

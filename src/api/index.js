@@ -23,13 +23,14 @@ class Api {
     return await instance.post('cart');
   };
 
-  async getCatalogCampsGroup({ sport, gender, group, businessType }) {
+  async getCatalogCampsGroup({ sport, gender, group, businessType, secondaryGroup }) {
     return await instance.get('catalog/camps/groups', {
       params: {
         sport,
         gender,
         group,
         business_type: businessType,
+        secondary_group: secondaryGroup,
       },
     });
   };
@@ -69,7 +70,7 @@ class Api {
         end_date: endDate,
       },
     });
-  }
+  };
 
   async getCatalogCampsCalendar({ age, boarding, business_type, gender, package_type, sport, group, secondary_group, length, }) {
     return await instance.get('catalog/camps/calendar', {

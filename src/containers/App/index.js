@@ -54,10 +54,19 @@ class App extends React.Component {
     super(props);
     // To add more steps just add component into this array
     this.wizardFormChildren = [
-      <StepOne key="0" />,
+      <StepOne
+        key="0"
+        dataGroup={props.dataGroup}
+        dataSecondaryGroup={props.dataSecondaryGroup}
+        dataGender={props.dataGender}
+        dataBusinessType={props.dataBusinessType}
+      />,
       <StepTwo key="1" />,
       <StepThree key="2" />,
-      <StepFour key="3" programType="Concentration" />,
+      <StepFour
+        key="3"
+        programType="Concentration"
+      />,
       <StepFive key="4" />,
       <StepSix key="5" />,
       <StepFinal key="6" />,

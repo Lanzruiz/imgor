@@ -55,6 +55,10 @@ ReactDOM.render(
                   secondaryGroup={secondary_group}
                   businessType={business_type}
                   urlToNoProps={urlToNoProps}
+                  dataGroup={group}
+                  dataSecondaryGroup={secondary_group}
+                  dataBusinessType={business_type}
+                  dataGender={gender}
                 />
               );
             }} />

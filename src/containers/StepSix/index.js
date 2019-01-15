@@ -116,7 +116,7 @@ class StepSix extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { step } = this.props;
-    if (step !== prevProps.step && prevProps.step > step) {
+    if ((step !== prevProps.step) && (prevProps.step > step) && ((prevProps.step - 1) === step)) {
       scrollToComponent(this.stepSix.current, { align: 'top', duration: 500 });
     }
   }

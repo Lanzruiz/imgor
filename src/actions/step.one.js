@@ -7,18 +7,19 @@ import Api from '../api';
 import { addParticipant } from './participant';
 import { setStepsCounter } from './steps';
 
-export function getCatalogCampsGroup({ sport, gender, group, businessType }) {
+export function getCatalogCampsGroup({ sport, gender, group, businessType, secondaryGroup }) {
   return function(dispatch) {
     Api.req({
       apiCall: Api.getCatalogCampsGroup,
-      res200: data => dispatch(stepOneGetCatalogGroup(data)),
+      res200: data => dispatch( stepOneGetCatalogGroup(data), ),
       res404: () => console.log('Api.getCatalogCampsGroup() => Error 404'), // TODO: Add error handler
-      reject: err => console.log(err), // TODO: Add error handler
+      reject: err => console.error,
       apiCallParams: {
         sport,
         gender,
         group,
         businessType,
+        secondaryGroup,
       },
     });
   };
@@ -29,8 +30,8 @@ export function stepOnePutCartCartIdParticipantParticipantIdRequest({ cartId, pa
     Api.req({
       apiCall: Api.putCartCartIdParticipantParticipantId,
       res200: (data) => {
-        dispatch(addParticipant(data));
-        dispatch(setStepsCounter(stepsEnum.two));
+        dispatch( addParticipant(data), );
+        dispatch( setStepsCounter(stepsEnum.two), );
       },
       res404: () => console.log('Api.putCartCartIdParticipantParticipantId() => Error 404'), // TODO: Add error handler
       reject: err => console.log(err), // TODO: Add error handler

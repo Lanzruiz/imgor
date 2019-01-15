@@ -10,7 +10,6 @@ import cx from 'classnames';
 import include from 'lodash/includes';
 import toLower from 'lodash/toLower';
 import isEqual from 'lodash/isEqual'
-import scrollToComponent from 'react-scroll-to-component';
 // Components
 import EmailModal from '../../components/EmailModal';
 import Header from '../../components/Header';
@@ -44,11 +43,6 @@ import './styles.scss';
 export const weekly_camp = 'Year-Round Weekly Camps';
 
 class StepOne extends React.Component {
-  constructor(props) {
-    super(props);
-    this.stepOne = React.createRef();
-  }
-
   static propTypes = {
     weeksCounter: PropTypes.number,
     weeksActions: PropTypes.shape({
@@ -110,16 +104,15 @@ class StepOne extends React.Component {
   };
 
   componentDidMount() {
-    const { sport, gender, group, businessType } = this.props;
-    this.props.stepOneActions.getCatalogCampsGroup({ sport, gender, group, businessType });
-    scrollToComponent(this.stepOne.current);
-  }
-
-  componentDidUpdate(prevProps) {
-    const { sport } = this.props;
-    if (!isEqual(prevProps.sport, sport)) {
-      this.props.stepOneActions.getCatalogCampsGroup({ sport });
-    }
+    const { sport, dataGender, dataGroup, dataBusinessType, dataSecondaryGroup } = this.props;
+    const args = {
+      sport,
+      gender: dataGender,
+      group: dataGroup,
+      businessType: dataBusinessType,
+      secondaryGroup: dataSecondaryGroup,
+    };
+    this.props.stepOneActions.getCatalogCampsGroup(args);
   }
 
   render() {
@@ -130,7 +123,7 @@ class StepOne extends React.Component {
           onSubmit={this.closeEmailModal}
           shouldShowEmailModal={!participantId}
         />
-        <Container style={{ marginBottom: '71px' }} ref={this.stepOne}>
+        <Container style={{ marginBottom: '71px' }}>
           <Row>
             <Col>
               <Header
