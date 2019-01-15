@@ -89,6 +89,7 @@ class renderDatePicker extends React.Component {
           placeholderText={placeholder}
           popperPlacement="left"
           onChange={this.handleChange}
+          onBlur={() => { input.onBlur(); }}
           timeFormat="HH:mm"
           timeIntervals={5}
           timeCaption="time"

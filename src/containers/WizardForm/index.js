@@ -33,12 +33,13 @@ import {
 import { stepTwoStartDateSelector, stepTwoEndDateSelector } from '../StepTwo/selectors';
 import { stepFourSecondaryProgramIdSelector } from '../StepFour/selectors';
 import {
-  stepSixTransportationSelector, stepSixAirportPickupSelector, stepSixUnaccompaniedSelector, stepSixSelectedTransportSelector,
-  stepSixArrivalFlightNumberSelector, stepSixArrivalDateTimeSelector, stepSixSelectedArrivalAirlineSelector, stepSixDropoffSelector,
+  stepSixAirportPickupSelector, stepSixUnaccompaniedSelector, stepSixSelectedTransportSelector,
+  stepSixArrivalFlightNumberSelector, stepSixArrivalDateTimeSelector, stepSixSelectedArrivalAirlineSelector,
   stepSixDropoffOtherLocationSelector, stepSixDepartingTransportSelector, stepSixPickUpOtherLocationSelector,
   stepSixSelectedDepartingAirlineSelector, stepSixDepartingFlightNumberSelector, stepSixDepartingDateTimeSelector,
   stepSixDepartingSelector, stepSixTransportUnaccompaniedSelector, stepSixDepartingTransportObjectSelector,
-  stepSixArrivalTransportObjectSelector,
+  stepSixArrivalTransportObjectSelector, stepSixTransportationIdSelector, stepSixAirportPickupAirlineSelector,
+  stepSixDropoffSelector, stepSixDepartingAirlineSelector,
 } from '../StepSix/selectors';
 import {
   finalStepFirstNameSelector, finalStepLastNameSelector, finalStepPositionSelector,
@@ -54,6 +55,8 @@ import { stepsEnum } from '../../constants/steps';
 import { weekly_camp } from '../StepOne';
 import { airportPickupInformation, departingFormFieldNames } from '../StepSix/selectors';
 import { productTypesEnum } from '../../constants/cart';
+// Styles
+import './styles.scss';
 
 class WizardForm extends React.Component {
   static propTypes = {
@@ -272,7 +275,7 @@ class WizardForm extends React.Component {
         <CSSTransitionGroup
           component="div"
           className="wizard-form"
-          transitionName="slide"
+          transitionName="fade"
           transitionEnterTimeout={500}
           transitionLeaveTimeout={300}
         >
@@ -420,14 +423,20 @@ class WizardForm extends React.Component {
 
   goingToFinalStep = (prevProps = {}) => {
     const {
-      stepSixTransportation, stepSixAirportPickup, stepSixUnaccompanied, stepSixSelectedTransport, stepSixArrivalFlightNumber,
+      stepSixAirportPickup, stepSixUnaccompanied, stepSixSelectedTransport, stepSixArrivalFlightNumber, stepSixTransportationId,
       stepSixArrivalDateTime, stepSixSelectedArrivalAirline, stepSixDropoff, stepSixDropoffOtherLocation, stepSixDepartingTransport,
       stepSixPickUpOtherLocation, stepSixSelectedDepartingAirline, stepSixDepartingFlightNumber, stepSixDepartingDateTime,
       stepSixDeparting, stepSixTransportUnaccompanied, stepSixDepartingTransportObject, stepSixArrivalTransportObject,
+      stepSixDepartingAirline, stepSixAirportPickupAirline,
     } = this.props;
 
-    if (!stepSixTransportation) {
-      this.goingToStepByStepNymber(stepsEnum.seven);
+    const isStepSixTransportationIdSelected = isNumber(stepSixTransportationId);
+
+    if (!isStepSixTransportationIdSelected) {
+      this.props.stepSixActions.stepSixSetUnnacompaniedData(null); // Set unnacompanied data here
+      this.props.stepSixActions.stepSixSetDepartingData(null); // Set departing data here
+      this.props.stepSixActions.stepSixSetArrivalData(null); // Set arrival data here
+      // this.goingToStepByStepNymber(stepsEnum.seven);
       return;
     }
 
@@ -438,7 +447,7 @@ class WizardForm extends React.Component {
     // Pickup location for partFive
     const isPickupLocationEqualToOther = isEqual(stepSixDeparting, other);
 
-    const { both, arrival, departing, noPickup } = airportPickupInformation;
+    const { both, arrival, departing } = airportPickupInformation;
 
     // If step six data changed need send the request to the server
     const isStepSixDataChanged = this.isStepSixDataChanged(prevProps);
@@ -446,7 +455,6 @@ class WizardForm extends React.Component {
     const airportPickupArrivalAndDeparting = isEqual(stepSixAirportPickup, both);
     const airportPickupArrivalOnly = isEqual(stepSixAirportPickup, arrival);
     const airportPickupDepartingOnly = isEqual(stepSixAirportPickup, departing);
-    const airportPickupNoPickup = isEqual(stepSixAirportPickup, noPickup);
 
     const isUnacompanniedSelected = isEqual(stepSixUnaccompanied, 'true');
 
@@ -473,7 +481,7 @@ class WizardForm extends React.Component {
         const arrivalData = {
           attributes: {
             flight: {
-              airline: stepSixSelectedArrivalAirline.name,
+              airline: stepSixAirportPickupAirline,
               booked: false,
               date: moment(stepSixArrivalDateTime, 'YYYY-MM-DD HH:mm').format(),
               location: isDropoffLocationEqualToOther ? null : stepSixDropoff,
@@ -493,10 +501,10 @@ class WizardForm extends React.Component {
         const departingData = {
           attributes: {
             flight: {
-              airline: stepSixSelectedDepartingAirline.name,
+              airline: stepSixDepartingAirline,
               booked: false,
               date: moment(stepSixDepartingDateTime, 'YYYY-MM-DD HH:mm').format(),
-              location: isPickupLocationEqualToOther ? null : stepSixPickUpOtherLocation,
+              location: isPickupLocationEqualToOther ? null : stepSixDeparting,
               location_other: isPickupLocationEqualToOther ? stepSixPickUpOtherLocation : null,
               number: stepSixDepartingFlightNumber,
             },
@@ -538,7 +546,7 @@ class WizardForm extends React.Component {
         const arrivalData = {
           attributes: {
             flight: {
-              airline: stepSixSelectedArrivalAirline.name,
+              airline: stepSixAirportPickupAirline,
               booked: false,
               date: moment(stepSixArrivalDateTime, 'YYYY-MM-DD HH:mm').format(),
               location: isDropoffLocationEqualToOther ? null : stepSixDropoff,
@@ -583,11 +591,11 @@ class WizardForm extends React.Component {
         const departingData = {
           attributes: {
             flight: {
-              airline: stepSixSelectedDepartingAirline.name,
+              airline: stepSixDepartingAirline,
               booked: false,
               date: moment(stepSixDepartingDateTime, 'YYYY-MM-DD HH:mm').format(),
-              location: isPickupLocationEqualToOther ? null : stepSixPickUpOtherLocation,
-              location_other: isEqual(stepSixDeparting, other) ? stepSixPickUpOtherLocation : null,
+              location: isPickupLocationEqualToOther ? null : stepSixDeparting,
+              location_other: isPickupLocationEqualToOther ? stepSixPickUpOtherLocation : null,
               number: stepSixDepartingFlightNumber,
             },
             type: 'departing_transport',
@@ -607,20 +615,21 @@ class WizardForm extends React.Component {
       }
       return;
     }
-
-    if (airportPickupNoPickup) {
-      this.props.stepSixActions.stepSixSetUnnacompaniedData(null); // Set unnacompanied data here
-      this.props.stepSixActions.stepSixSetDepartingData(null); // Set departing data here
-      this.props.stepSixActions.stepSixSetArrivalData(null); // Set arrival data here
-      return;
-    }
   };
 
   goingToStepSixFromFinalStep = (prevProps = {}) => {
+    const { stepSixTransportationId } = this.props;
     const isStepSixDataChanged = this.isStepSixDataChanged(prevProps);
 
     if (isStepSixDataChanged) {
       this.goingToFinalStep(prevProps);
+      this.goingToStepByStepNymber(stepsEnum.six);
+      return;
+    }
+
+    const isStepSixTransportationIdSelected = isNumber(stepSixTransportationId);
+
+    if (isStepSixTransportationIdSelected && !isEqual(stepSixTransportationId, prevProps.stepSixTransportationId)) {
       this.goingToStepByStepNymber(stepsEnum.six);
     }
   };
@@ -741,27 +750,25 @@ class WizardForm extends React.Component {
 
   stepSixValidation = () => {
     const {
-      stepSixTransportation, stepSixAirportPickup, stepSixUnaccompanied, stepSixSelectedTransport, stepSixArrivalFlightNumber,
+      stepSixAirportPickup, stepSixUnaccompanied, stepSixSelectedTransport, stepSixArrivalFlightNumber,
       stepSixArrivalDateTime, stepSixSelectedArrivalAirline, stepSixDropoff, stepSixDropoffOtherLocation, stepSixDepartingTransport,
       stepSixPickUpOtherLocation, stepSixSelectedDepartingAirline, stepSixDepartingFlightNumber, stepSixDepartingDateTime,
-      stepSixDeparting,
+      stepSixDeparting, stepSixTransportationId, stepSixAirportPickupAirline, stepSixDepartingAirline,
     } = this.props;
 
-    const { both, arrival, departing, noPickup } = airportPickupInformation;
+    const { both, arrival, departing } = airportPickupInformation;
     const { other } = departingFormFieldNames;
 
     const airportPickupArrivalAndDeparting = isEqual(stepSixAirportPickup, both);
     const airportPickupArrivalOnly = isEqual(stepSixAirportPickup, arrival);
     const airportPickupDepartingOnly = isEqual(stepSixAirportPickup, departing);
-    const airportPickupNoPickup = isEqual(stepSixAirportPickup, noPickup);
 
-    if (stepSixTransportation) {
+    const isStepSixTransportationSelected = isNumber(stepSixTransportationId);
+
+    if (isStepSixTransportationSelected) {
       switch(true) {
         case !stepSixAirportPickup: {
           return 'step_six_airport_transportation_message';
-        }
-        case airportPickupNoPickup: {
-          return '';
         }
         case !stepSixUnaccompanied: {
           return 'step_six_unaccompanied_message';
@@ -769,7 +776,7 @@ class WizardForm extends React.Component {
         case (airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && !stepSixSelectedTransport: {
           return 'step_six_arrival_flight_information_message';
         }
-        case (airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && !stepSixSelectedArrivalAirline: {
+        case (airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && !stepSixAirportPickupAirline: {
           return 'step_six_airlines_message';
         }
         case (airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && !stepSixArrivalFlightNumber: {
@@ -785,7 +792,7 @@ class WizardForm extends React.Component {
         case (airportPickupArrivalAndDeparting || airportPickupDepartingOnly) && !stepSixDepartingTransport: {
           return 'step_six_departing_location_message';
         }
-        case (airportPickupArrivalAndDeparting || airportPickupDepartingOnly) && !stepSixSelectedDepartingAirline: {
+        case (airportPickupArrivalAndDeparting || airportPickupDepartingOnly) && !stepSixDepartingAirline: {
           return 'step_six_departing_airline_message';
         }
         case (airportPickupArrivalAndDeparting || airportPickupDepartingOnly) && !stepSixDepartingFlightNumber: {
@@ -854,9 +861,9 @@ class WizardForm extends React.Component {
 
   isStepSixDataChanged = (prevProps) => {
     const {
-      stepSixUnaccompanied, stepSixSelectedTransport, stepSixSelectedArrivalAirline,
+      stepSixUnaccompanied, stepSixSelectedTransport, stepSixAirportPickupAirline,
       stepSixArrivalDateTime, stepSixDropoff, stepSixDeparting, stepSixDropoffOtherLocation,
-      stepSixDepartingTransport, stepSixSelectedDepartingAirline, stepSixDepartingFlightNumber,
+      stepSixDepartingTransport, stepSixDepartingAirline, stepSixDepartingFlightNumber,
       stepSixDepartingDateTime, stepSixArrivalFlightNumber, stepSixAirportPickup, stepSixPickUpOtherLocation,
     } = this.props;
 
@@ -872,7 +879,7 @@ class WizardForm extends React.Component {
 
     // Arrival
     const isArrivalTransportChanged = !isEqual(stepSixSelectedTransport, prevProps.stepSixSelectedTransport);
-    const isSelectedArrivalAirlineChanged = !isEqual(stepSixSelectedArrivalAirline, prevProps.stepSixSelectedArrivalAirline);
+    const isSelectedArrivalAirlineChanged = !isEqual(stepSixAirportPickupAirline, prevProps.stepSixAirportPickupAirline);
     const isArrivalFlightNumberChanged = !isEqual(stepSixArrivalFlightNumber, prevProps.stepSixArrivalFlightNumber);
     const isArrivalDateTimeChanged = !isEqual(stepSixArrivalDateTime, prevProps.stepSixArrivalDateTime);
 
@@ -884,7 +891,7 @@ class WizardForm extends React.Component {
 
     // Dropoff
     const isDepartingTransportChanged = !isEqual(stepSixDepartingTransport, prevProps.stepSixDepartingTransport);
-    const isSelectedDepartingAirlineChanged = !isEqual(stepSixSelectedDepartingAirline, prevProps.stepSixSelectedDepartingAirline);
+    const isSelectedDepartingAirlineChanged = !isEqual(stepSixDepartingAirline, prevProps.stepSixDepartingAirline);
     const isDepartingFlightNumberChanged = !isEqual(stepSixDepartingFlightNumber, prevProps.stepSixDepartingFlightNumber);
     const isDepartingDateTimeChanged = !isEqual(stepSixDepartingDateTime, prevProps.stepSixDepartingDateTime);
 
@@ -955,7 +962,6 @@ function mapStateToProps(state) {
     guardianLastName: finalStepGuardianLastNameSelector(state),
     guardianEmail: finalStepGuardianEmailSelector(state),
     guardianPhone: finalStepGuardianPhoneSelector(state),
-    stepSixTransportation: stepSixTransportationSelector(state),
     stepSixAirportPickup: stepSixAirportPickupSelector(state),
     stepSixUnaccompanied: stepSixUnaccompaniedSelector(state),
     stepSixSelectedTransport: stepSixSelectedTransportSelector(state),
@@ -976,6 +982,9 @@ function mapStateToProps(state) {
     stepSixDepartingTransportObject: stepSixDepartingTransportObjectSelector(state),
     stepSixArrivalTransportObject: stepSixArrivalTransportObjectSelector(state),
     finalStepDateOfBirth: finalStepDateOfBirthSelector(state),
+    stepSixTransportationId: stepSixTransportationIdSelector(state),
+    stepSixAirportPickupAirline: stepSixAirportPickupAirlineSelector(state),
+    stepSixDepartingAirline: stepSixDepartingAirlineSelector(state),
   };
 };
 

@@ -84,6 +84,20 @@ export default function(state = initialState, action) {
       return assign({}, state, { unnacompaniedData: payload });
     }
 
+    case stepSixTypes.STEP_SIX_SELECT_TRANSPORTATION_CARD: {
+      if (isEqual(state.transportationId, payload)) {
+        return state;
+      }
+      return assign({}, state, { transportationId: payload });
+    }
+
+    case stepSixTypes.STEP_SIX_UNSELECT_TRANSPORTATION_CARD: {
+      if (isEqual(state.transportationId, null)) {
+        return state;
+      }
+      return assign({}, state, { transportationId: null });
+    }
+
     default:
       return state;
   }

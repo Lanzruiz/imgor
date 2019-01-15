@@ -19,6 +19,7 @@ export default class Carousel extends React.Component {
     return (
       <CSSTransitionGroup
         component="div"
+        className="h-100"
         transitionName="slide"
         transitionEnterTimeout={500}
         transitionLeaveTimeout={300}

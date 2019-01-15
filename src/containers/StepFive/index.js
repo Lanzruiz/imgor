@@ -43,7 +43,7 @@ class StepFive extends React.Component {
   static defaultProps = {};
 
   componentDidMount() {
-    scrollToComponent(this.stepFour.current, { align: 'top' });
+    scrollToComponent(this.stepFour.current, { align: 'top', duration: 500 });
   }
 
   componentWillUnmount() {

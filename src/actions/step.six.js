@@ -1,10 +1,12 @@
 // Modules
 import isEqual from 'lodash/isEqual';
 import assign from 'lodash/assign';
+import { change, untouch } from 'redux-form';
 // Actions
 import { updateCart } from './cart';
 // Constants
 import * as stepSixTypes from '../constants/step.six';
+import { stepSixFormFieldNames } from '../containers/StepSix/selectors';
 // Api
 import Api from '../api';
 
@@ -139,7 +141,7 @@ export function stepSixUpdateProductInTheCart(args) {
       apiCallParams: args,
     });
   }
-}
+};
 
 export function stepSixDeleteProductInTheCart(args) {
   return function(dispatch) {
@@ -163,4 +165,37 @@ export function stepSixDeleteProductInTheCart(args) {
       apiCallParams: args,
     });
   }
+};
+
+export function stepSixSelectTransportationOption(id) {
+  return {
+    type: stepSixTypes.STEP_SIX_SELECT_TRANSPORTATION_CARD,
+    payload: id,
+  };
+}
+
+export function stepSixUnselectTransportationOption() {
+  return function(dispatch) {
+    const fields = [
+      stepSixFormFieldNames.airportPickup,
+      stepSixFormFieldNames.unaccompanied,
+      stepSixFormFieldNames.transport,
+      stepSixFormFieldNames.arrivalFlightNumber,
+      stepSixFormFieldNames.arrivalDateTime,
+      stepSixFormFieldNames.dropoff,
+      stepSixFormFieldNames.dropoffOtherLocation,
+      stepSixFormFieldNames.departingTransport,
+      stepSixFormFieldNames.departingFlightNumber,
+      stepSixFormFieldNames.departingDateTime,
+      stepSixFormFieldNames.departing,
+      stepSixFormFieldNames.pickUpOtherLocation,
+      stepSixFormFieldNames.airportPickupAirline,
+      stepSixFormFieldNames.departingAirline,
+    ];
+    fields.forEach((fieldName) => {
+      dispatch( change('wizard', fieldName, null), );
+      dispatch( untouch('wizard', null), );
+    });
+    dispatch({ type: stepSixTypes.STEP_SIX_UNSELECT_TRANSPORTATION_CARD });
+  };
 }

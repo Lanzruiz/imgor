@@ -103,7 +103,7 @@ class Card extends React.Component {
       children, header, label, headerSize, color, cardHeader, imgSrc, id, soldOut,
       selectedId, priceDescription, cardHeaderCapitalize, style, className,
     } = this.props;
-    
+
     const isSelectedIdExists = (typeof selectedId === 'number' || typeof selectedId === 'string');
     const isCurrentCardSelected = (id === selectedId);
 

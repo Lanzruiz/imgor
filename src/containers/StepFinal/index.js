@@ -234,7 +234,7 @@ class StepFinal extends React.Component {
   };
 
   scrollToComponent = () => {
-    scrollToComponent(this.stepFinal.current);
+    scrollToComponent(this.stepFinal.current, { align: 'top', duration: 500 });
   }
 }
 

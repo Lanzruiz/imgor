@@ -83,7 +83,7 @@ class StepFour extends React.Component {
     this.scrollToCurrentComponent();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     const { data, weeks, currentStep } = this.props;
     const shouldRenderStepFour = data.length > 0;
     const currentStepGreatherThenFour = currentStep > stepsEnum.four;
@@ -92,6 +92,9 @@ class StepFour extends React.Component {
       if (unselectedWeek) {
         this.props.stepsActions.setStepsCounter(stepsEnum.four);
       }
+    }
+    if (currentStep !== prevProps.currentStep && prevProps.currentStep > currentStep) {
+      this.scrollToCurrentComponent();
     }
   }
 
@@ -253,7 +256,7 @@ class StepFour extends React.Component {
   scrollToCurrentComponent = () => {
     const { hasSecondaryProgram, data } = this.props;
     if (hasSecondaryProgram || data.length > 0) {
-      scrollToComponent(this.stepFour.current, { align: 'top' });
+      scrollToComponent(this.stepFour.current, { align: 'top', duration: 500 });
     }
   }
 }

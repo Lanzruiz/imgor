@@ -61,39 +61,45 @@ class Footer extends React.Component {
   componentDidUpdate(prevProps) {
     const { stepSixArrivalData, stepSixDepartingData, stepSixUnaccompaniedData, hasMessage, step, airportPickup } = this.props;
 
-    const isFormTextFieldActive = this.isFormTextFieldActive(this.props.formMeta);
-    if (isFormTextFieldActive) {
-      return;
-    } else {
-      const isFormTextFieldActive = this.isFormTextFieldActive(prevProps.formMeta);
+    if (step >= stepsEnum.six) {
+      const isFormTextFieldActive = this.isFormTextFieldActive(this.props.formMeta);
       if (isFormTextFieldActive) {
-        if (!hasMessage) {
-          this.sendUnaccompaniedRequest();
-          this.sendArrivalRequest();
-          this.sendDepartingRequest();
-          this.props.stepsActions.setStepsCounter(stepsEnum.seven);
-        }
         return;
+      } else {
+        const isFormTextFieldActive = this.isFormTextFieldActive(prevProps.formMeta);
+        if (isFormTextFieldActive) {
+          if (!hasMessage) {
+            this.sendUnaccompaniedRequest();
+            this.sendArrivalRequest();
+            this.sendDepartingRequest();
+            this.props.stepsActions.setStepsCounter(stepsEnum.seven);
+          }
+          return;
+        }
       }
-    }
 
-    const isArrivalDataChanged = !isEqual(stepSixArrivalData, prevProps.stepSixArrivalData);
-    if (isArrivalDataChanged) {
-      this.sendArrivalRequest()
-    }
+      const isArrivalDataChanged = !isEqual(stepSixArrivalData, prevProps.stepSixArrivalData);
+      if (isArrivalDataChanged) {
+        console.log('isArrivalDataChanged');
+        this.sendArrivalRequest();
+      }
 
-    const isDepartingDataChanged = !isEqual(stepSixDepartingData, prevProps.stepSixDepartingData);
-    if (isDepartingDataChanged) {
-      this.sendDepartingRequest();
-    }
+      const isDepartingDataChanged = !isEqual(stepSixDepartingData, prevProps.stepSixDepartingData);
+      if (isDepartingDataChanged) {
+        console.log('isDepartingDataChanged');
+        this.sendDepartingRequest();
+      }
 
-    const isUnaccompaniedDataChanged = !isEqual(stepSixUnaccompaniedData, prevProps.stepSixUnaccompaniedData);
-    if (isUnaccompaniedDataChanged) {
-      this.sendUnaccompaniedRequest();
-    }
+      const isUnaccompaniedDataChanged = !isEqual(stepSixUnaccompaniedData, prevProps.stepSixUnaccompaniedData);
+      if (isUnaccompaniedDataChanged) {
+        console.log('isUnaccompaniedDataChanged');
+        this.sendUnaccompaniedRequest();
+      }
 
-    if (!hasMessage && step >= stepsEnum.six && airportPickup) {
-      this.props.stepsActions.setStepsCounter(stepsEnum.seven);
+      if (!hasMessage) {
+        console.log('???');
+        this.props.stepsActions.setStepsCounter(stepsEnum.seven);
+      }
     }
   }
 

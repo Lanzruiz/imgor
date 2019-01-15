@@ -19,13 +19,14 @@ export const stepSixFormFieldNames = {
   arrivalFlightNumber: 'arrival_flight_number',
   departingDateTime: 'departing_date_time',
   arrivalDateTime: 'arrival_date_time',
+  airportPickupAirline: 'airport_pickup_airline',
+  departingAirline: 'departing_airline',
 };
 
 export const airportPickupInformation = {
   both: 'both',
   arrival: 'arrival',
   departing: 'departing',
-  noPickup: 'no-pickup',
 };
 
 export const departingFormFieldNames = {
@@ -70,10 +71,6 @@ export function stepSixDropoffOtherLocationSelector(state = {}) {
 
 export function stepSixPickUpOtherLocationSelector(state = {}) {
   return selector(state, stepSixFormFieldNames.pickUpOtherLocation);
-};
-
-export function stepSixTransportationSelector(state = {}) {
-  return selector(state, stepSixFormFieldNames.transportation);
 };
 
 export function stepSixAirportPickupSelector(state = {}) {
@@ -241,3 +238,18 @@ export const stepSixUnaccompaniedDataSelector = createSelector(
     return stepSix.unnacompaniedData;
   }
 );
+
+export const stepSixTransportationIdSelector = createSelector(
+  stepSixSelector,
+  function(stepSix = {}) {
+    return stepSix.transportationId;
+  }
+);
+
+export function stepSixAirportPickupAirlineSelector(state = {}) {
+  return selector(state, stepSixFormFieldNames.airportPickupAirline);
+};
+
+export function stepSixDepartingAirlineSelector(state = {}) {
+  return selector(state, stepSixFormFieldNames.departingAirline);
+};
