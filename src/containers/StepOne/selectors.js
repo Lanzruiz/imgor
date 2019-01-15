@@ -159,6 +159,13 @@ export const stepOneSleepawaySelector = createSelector(
   },
 );
 
+export const stepOneEmailSelector = createSelector(
+  stateSelector,
+  function(state = {}) {
+    return stepOneFormValueSelector(state, 'email');
+  },
+);
+
 export const stepOneBoardingSelector = createSelector(
   stepOneSleepawaySelector,
   function(sleepaway) {

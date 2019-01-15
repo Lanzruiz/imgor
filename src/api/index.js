@@ -87,10 +87,19 @@ class Api {
     });
   };
 
-  async putCartCartIdParticipantParticipantId({ cartId, participantId, gender, age }) {
+  async putCartCartIdParticipantParticipantId({ cartId, participantId, gender, age, ...rest }) {
     return await instance.put(`cart/${cartId}/participant/${participantId}`, {
       gender,
       age,
+      firstName: rest.firstName,
+      lastName: rest.lastName,
+      phone: rest.phone,
+      dob: rest.dob,
+      first_name: rest.first_name,
+      last_name: rest.last_name,
+      position: rest.position,
+      preferred_shirt_size: rest.preferred_shirt_size,
+      email: rest.email,
     });
   };
 
@@ -187,6 +196,15 @@ class Api {
         participant,
       },
     });
+  };
+
+  async putCartCartId({ cartId, ...rest }) {
+    return await instance.put(`cart/${cartId}`, {
+      first_name: rest.first_name,
+      last_name: rest.last_name,
+      email: rest.email,
+      contact_number: rest.contact_number,
+    })
   }
 }
 

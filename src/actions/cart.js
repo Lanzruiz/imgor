@@ -33,3 +33,39 @@ function createCart(cart) {
     payload: cart,
   };
 }
+
+export function purchaseRequest(args) {
+  return function(dispatch) {
+    Api.req({
+      res200: (data) => {
+        dispatch( updateCart(data.cart), );
+
+        if (window && args.cartId) {
+          window.location = `${args.shopifyUrl}?order=${args.cartId}`;
+        }
+
+        // Api.req({
+        //   res200: (data) => {
+        //     console.log(data);
+        //     dispatch( updateCart(data.cart), );
+        //   },
+        //   res404: () => { console.log('Api.putCartCartId => 404'); },
+        //   reject: console.error,
+        //   apiCall: Api.putCartCartId,
+        //   apiCallParams: {
+        //     cartId: args.cartId,
+        //     first_name: args.guardianFirstName,
+        //     last_name: args.guardianLastName,
+        //     email: args.guardianEmail,
+        //     contact_number: args.guardianPhone,
+        //   },
+        // });
+
+      },
+      res404: () => console.log('purchaseRequest => 404'),
+      reject: () => {},
+      apiCall: Api.putCartCartIdParticipantParticipantId,
+      apiCallParams: args,
+    });
+  }
+}

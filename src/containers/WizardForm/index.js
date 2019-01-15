@@ -20,6 +20,7 @@ import * as stepOneActions from '../../actions/step.one';
 import * as stepThreeActions from '../../actions/step.three';
 import * as stepSixActions from '../../actions/step.six';
 import * as trainingActions from '../../actions/training';
+import * as cartActions from '../../actions/cart';
 // Selectors
 import {
   stepTreeSelectedIdSelector, stepThreeSelectedCardWithSecondaryProgramsIdSelector, stepThreeHasSecondaryProgram,
@@ -28,7 +29,7 @@ import {
 import { totalPriceSelector, currentStepSelector } from './selectors';
 import {
   stepOneAgeSelector, stepOneSleepawaySelector, stepOneGenderSelector, stepOneAgeNumberSelector, weeksItemsSelector,
-  stepOneGroupSelector, stepOneSecondaryGroupSelector, weeksCounterSelector, isWeeklyCampSelector,
+  stepOneGroupSelector, stepOneSecondaryGroupSelector, weeksCounterSelector, isWeeklyCampSelector, stepOneEmailSelector,
 } from '../StepOne/selectors';
 import { stepTwoStartDateSelector, stepTwoEndDateSelector } from '../StepTwo/selectors';
 import { stepFourSecondaryProgramIdSelector } from '../StepFour/selectors';
@@ -42,7 +43,7 @@ import {
   stepSixDropoffSelector, stepSixDepartingAirlineSelector,
 } from '../StepSix/selectors';
 import {
-  finalStepFirstNameSelector, finalStepLastNameSelector, finalStepPositionSelector,
+  finalStepFirstNameSelector, finalStepLastNameSelector, finalStepPositionSelector, finalStepPhoneSelector,
   finalStepShirtSizeSelector, finalStepGuardianFirstNameSelector, finalStepGuardianLastNameSelector,
   finalStepGuardianEmailSelector, finalStepGuardianPhoneSelector, finalStepDateOfBirthSelector,
 } from '../StepFinal/selectors';
@@ -296,11 +297,32 @@ class WizardForm extends React.Component {
   }
 
   purchaseHandler = () => {
-    const { cartId, redirectUrlShopify } = this.props;
+    const {
+      cartId, redirectUrlShopify, firstName, lastName, position, finalStepDateOfBirth, shirtSize, guardianFirstName,
+      guardianLastName, finalStepPhone, participantId, gender, age, guardianEmail, guardianPhone, email,
+    } = this.props;
+
     const shopifyUrl = redirectUrlShopify || process.env.REACT_APP_REDIRECT_URL_SHOPIFY;
-    if (window && cartId) {
-      window.location = `${shopifyUrl}?order=${cartId}`;
-    }
+    const data = {
+      cartId,
+      shopifyUrl,
+      participantId,
+      position,
+      age,
+      gender,
+      email,
+      guardianFirstName,
+      guardianLastName,
+      guardianEmail,
+      guardianPhone,
+      phone: finalStepPhone,
+      first_name: firstName,
+      last_name: lastName,
+      dob: new Date(finalStepDateOfBirth) / 1000,
+      preferred_shirt_size: shirtSize,
+    };
+
+    this.props.cartActions.purchaseRequest(data);
   };
 
   saveCampHandler = () => {
@@ -751,8 +773,8 @@ class WizardForm extends React.Component {
   stepSixValidation = () => {
     const {
       stepSixAirportPickup, stepSixUnaccompanied, stepSixSelectedTransport, stepSixArrivalFlightNumber,
-      stepSixArrivalDateTime, stepSixSelectedArrivalAirline, stepSixDropoff, stepSixDropoffOtherLocation, stepSixDepartingTransport,
-      stepSixPickUpOtherLocation, stepSixSelectedDepartingAirline, stepSixDepartingFlightNumber, stepSixDepartingDateTime,
+      stepSixArrivalDateTime, stepSixDropoff, stepSixDropoffOtherLocation, stepSixDepartingTransport,
+      stepSixPickUpOtherLocation, stepSixDepartingFlightNumber, stepSixDepartingDateTime,
       stepSixDeparting, stepSixTransportationId, stepSixAirportPickupAirline, stepSixDepartingAirline,
     } = this.props;
 
@@ -929,6 +951,7 @@ function mapDispatchToProps(dispatch) {
     stepThreeActions: bindActionCreators(stepThreeActions, dispatch),
     stepSixActions: bindActionCreators(stepSixActions, dispatch),
     trainingActions: bindActionCreators(trainingActions, dispatch),
+    cartActions: bindActionCreators(cartActions, dispatch),
   };
 };
 
@@ -985,6 +1008,8 @@ function mapStateToProps(state) {
     stepSixTransportationId: stepSixTransportationIdSelector(state),
     stepSixAirportPickupAirline: stepSixAirportPickupAirlineSelector(state),
     stepSixDepartingAirline: stepSixDepartingAirlineSelector(state),
+    finalStepPhone: finalStepPhoneSelector(state),
+    email: stepOneEmailSelector(state),
   };
 };
 
