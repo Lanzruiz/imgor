@@ -303,6 +303,13 @@ class WizardForm extends React.Component {
     } = this.props;
 
     const shopifyUrl = redirectUrlShopify || process.env.REACT_APP_REDIRECT_URL_SHOPIFY;
+    const stubData = {
+      address: {
+        address1: 'fake address',
+      },
+      status: 1,
+      push_status: 0,
+    };
     const data = {
       cartId,
       shopifyUrl,
@@ -322,7 +329,7 @@ class WizardForm extends React.Component {
       preferred_shirt_size: shirtSize,
     };
 
-    this.props.cartActions.purchaseRequest(data);
+    this.props.cartActions.purchaseRequest(data, stubData);
   };
 
   saveCampHandler = () => {

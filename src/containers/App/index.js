@@ -57,7 +57,7 @@ class App extends React.Component {
       <StepOne key="0" />,
       <StepTwo key="1" />,
       <StepThree key="2" />,
-      <StepFour key="3" programType="Concentrations" />,
+      <StepFour key="3" programType="Concentration" />,
       <StepFive key="4" />,
       <StepSix key="5" />,
       <StepFinal key="6" />,

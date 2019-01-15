@@ -59,7 +59,7 @@ class Footer extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { stepSixArrivalData, stepSixDepartingData, stepSixUnaccompaniedData, hasMessage, step, airportPickup } = this.props;
+    const { stepSixArrivalData, stepSixDepartingData, stepSixUnaccompaniedData, hasMessage, step } = this.props;
 
     if (step >= stepsEnum.six) {
       const isFormTextFieldActive = this.isFormTextFieldActive(this.props.formMeta);
@@ -80,24 +80,20 @@ class Footer extends React.Component {
 
       const isArrivalDataChanged = !isEqual(stepSixArrivalData, prevProps.stepSixArrivalData);
       if (isArrivalDataChanged) {
-        console.log('isArrivalDataChanged');
         this.sendArrivalRequest();
       }
 
       const isDepartingDataChanged = !isEqual(stepSixDepartingData, prevProps.stepSixDepartingData);
       if (isDepartingDataChanged) {
-        console.log('isDepartingDataChanged');
         this.sendDepartingRequest();
       }
 
       const isUnaccompaniedDataChanged = !isEqual(stepSixUnaccompaniedData, prevProps.stepSixUnaccompaniedData);
       if (isUnaccompaniedDataChanged) {
-        console.log('isUnaccompaniedDataChanged');
         this.sendUnaccompaniedRequest();
       }
 
       if (!hasMessage) {
-        console.log('???');
         this.props.stepsActions.setStepsCounter(stepsEnum.seven);
       }
     }

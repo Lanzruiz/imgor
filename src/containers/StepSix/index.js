@@ -47,8 +47,6 @@ import { sportSelector, businessTypeSelector, packageTypeSelector } from '../Ini
 // Constants
 import { stepsEnum } from '../../constants/steps';
 import { stepSixFormFieldNames, airportPickupInformation } from './selectors';
-// Helpers
-import validation from '../../helpers/validate';
 // Styles
 import './styles.scss';
 
@@ -447,7 +445,6 @@ export default reduxForm({
   form: 'wizard', // <------ same form name
   destroyOnUnmount: false, // <------ preserve form data
   forceUnregisterOnUnmount: true, // <------ unregister fields on unmount
-  validate: validation, // <------ validation
 })(
   connect(mapStateToProps, mapDispatchToProps)(StepSix)
 );

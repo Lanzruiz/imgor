@@ -200,10 +200,7 @@ class Api {
 
   async putCartCartId({ cartId, ...rest }) {
     return await instance.put(`cart/${cartId}`, {
-      first_name: rest.first_name,
-      last_name: rest.last_name,
-      email: rest.email,
-      contact_number: rest.contact_number,
+      ...rest,
     })
   }
 }
