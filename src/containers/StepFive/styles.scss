@@ -6,6 +6,10 @@
             flex: 1 1 auto;
         }
 
+        & .card-content__row {
+            flex-direction: row;
+        }
+
         &__no-items {
             color: $card-red-color;
             font-size: 18px;
