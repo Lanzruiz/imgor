@@ -3,6 +3,7 @@ import isEqual from 'lodash/isEqual';
 import assign from 'lodash/assign';
 import findIndex from 'lodash/findIndex';
 import isNumber from 'lodash/isNumber';
+import { PURGE } from 'redux-persist';
 // Constants
 import * as stepOneTypes from '../constants/step.one';
 // Helpers
@@ -61,6 +62,10 @@ export default function(state = initialState, action) {
         return state;
       }
       return assign({}, state, { lengthProgram: payload });
+    }
+
+    case PURGE: {
+      return assign({}, initialState);
     }
 
     default:

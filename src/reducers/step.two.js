@@ -1,5 +1,7 @@
 // Modules
 import isEqual from 'lodash/isEqual';
+import assign from 'lodash/assign';
+import { PURGE } from 'redux-persist';
 // Constants
 import * as stepTwoTypes from '../constants/step.two';
 
@@ -50,6 +52,10 @@ export default function(state = initialState, action) {
         ...state,
         stepTwoCampDaysLength: payload,
       };
+    }
+
+    case PURGE: {
+      return assign({}, initialState);
     }
 
     default:

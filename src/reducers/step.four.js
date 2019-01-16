@@ -2,6 +2,7 @@
 import isEqual from 'lodash/isEqual';
 import assign from 'lodash/assign';
 import concat from 'lodash/concat';
+import { PURGE } from 'redux-persist';
 // Constants
 import * as stepFourTypes from '../constants/step.four';
 
@@ -162,6 +163,10 @@ export default function(state = initialState, action) {
       }
       const week_12_data = concat(results, emptyConcentration);
       return assign({}, state, { week_12_data });
+    }
+
+    case PURGE: {
+      return assign({}, initialState);
     }
 
     default:

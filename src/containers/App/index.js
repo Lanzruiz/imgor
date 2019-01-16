@@ -5,6 +5,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import isEqual from 'lodash/isEqual';
 import { reduxForm, change } from 'redux-form';
+import toNumber from 'lodash/toNumber';
+import { PURGE } from 'redux-persist';
+import { reset } from 'redux-form';
 // Providers
 import ReactLocalization from '../../providers/ReactLocalization';
 // Components
@@ -17,7 +20,7 @@ import StepFive from '../StepFive';
 import StepSix from '../StepSix';
 import StepFinal from '../StepFinal';
 // Selectors
-import { languageSelelector } from '../InitialComponent/selectors';
+import { languageSelelector, lastChangedSelector } from '../InitialComponent/selectors';
 // Actions
 import { setMaxStepValue } from '../../actions/steps';
 import { createCartRequest } from '../../actions/cart';
@@ -76,14 +79,30 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    const { maxStepValue, cartId, gender, group, secondaryGroup, redirectUrlShopify, sport, businessType, urlToNoProps } = this.props;
+    const {
+      maxStepValue, cartId, gender, group, secondaryGroup, dataLastChanged, dataAppKey,
+      redirectUrlShopify, sport, businessType, urlToNoProps, lastChanged, dispatch,
+    } = this.props;
+
     const currentMaxStepValue = this.wizardFormChildren.length;
+    const dataLastChangedNumder = toNumber(dataLastChanged);
+    const lastChangedNumber = toNumber(lastChanged);
+    const shouldPurgeState = (dataLastChangedNumder - lastChangedNumber) > 0;
+
+    if (shouldPurgeState) {
+      console.log('here?');
+      dispatch({ type: PURGE, key: dataAppKey, result: () => null });
+      dispatch( reset('wizard'), );
+    }
+
     if (!isEqual(maxStepValue, currentMaxStepValue)) {
       this.props.stepActions.setMaxStepValue(currentMaxStepValue);
     }
+
     if (!cartId) {
       this.props.cartActions.createCartRequest();
     }
+
     const initialSettings = {
       gender,
       group,
@@ -92,8 +111,17 @@ class App extends React.Component {
       sport,
       businessType,
       urlToNoProps,
+      lastChanged: dataLastChanged,
     };
+
     this.setInitialSettings(initialSettings);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { cartId } = this.props;
+    if (cartId !== prevProps.cartId && !cartId) {
+      this.props.cartActions.createCartRequest();
+    }
   }
 
   render() {
@@ -126,6 +154,7 @@ function mapStateToProps(state) {
     participantId: state.participant.id,
     lang: languageSelelector(state),
     initialValues: { gender: state.initialSettings.gender },
+    lastChanged: lastChangedSelector(state),
   };
 };
 

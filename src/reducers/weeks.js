@@ -2,6 +2,7 @@
 import isEqual from 'lodash/isEqual';
 import assign from 'lodash/assign';
 import concat from 'lodash/concat';
+import { PURGE } from 'redux-persist';
 // Constants
 import * as weeksTypes from '../constants/weeks';
 
@@ -70,6 +71,10 @@ export default function(state = initialState, action) {
       const weeks = concat(state.weeks);
       weeks[state.selectedWeekId].price = payload;
       return assign({}, state, { weeks });
+    }
+
+    case PURGE: {
+      return assign({}, initialState);
     }
 
     default: {

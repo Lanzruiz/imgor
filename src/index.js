@@ -14,11 +14,22 @@ import configStore, { history } from './store';
 // Styles
 import './index.scss';
 
-const { store, persistor } = configStore;
-
 const imgorRootContainer = document.getElementById('imgor-root');
 
-const { sport, gender, group, secondary_group, business_type, apiUrl, redirectUrlShopify, urlToNoProps } = imgorRootContainer.dataset;
+const {
+  sport,
+  gender,
+  group,
+  secondary_group,
+  business_type,
+  apiUrl,
+  redirectUrlShopify,
+  urlToNoProps,
+  appKey,
+  last_changed,
+} = imgorRootContainer.dataset;
+
+const { store, persistor } = configStore(appKey);
 
 export const instance = axios.create({
   baseURL: apiUrl || process.env.REACT_APP_API_URL,
@@ -59,6 +70,8 @@ ReactDOM.render(
                   dataSecondaryGroup={secondary_group}
                   dataBusinessType={business_type}
                   dataGender={gender}
+                  dataLastChanged={last_changed}
+                  dataAppKey={appKey}
                 />
               );
             }} />

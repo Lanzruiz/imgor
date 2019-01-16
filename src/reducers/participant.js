@@ -1,3 +1,6 @@
+// Modules
+import assign from 'lodash/assign';
+import { PURGE } from 'redux-persist';
 // Constants
 import * as participantTypes from '../constants/participant';
 
@@ -32,6 +35,11 @@ export default function(state = initialState, action) {
         ...participant,
       };
     }
+
+    case PURGE: {
+      return assign({}, initialState);
+    }
+
     default:
       return state;
   }

@@ -3,6 +3,7 @@ import assign from 'lodash/assign';
 import map from 'lodash/map';
 import isEqual from 'lodash/isEqual';
 import find from 'lodash/find';
+import { PURGE } from 'redux-persist';
 // Constants
 import * as stepFiveTypes from '../constants/step.five';
 
@@ -259,6 +260,10 @@ export default function(state = initialState, action) {
       const excursionsItemsPerPage = state.excursionsItemsStepCounter + state.itemsStepCounter;
       const maxItemsCount = state.excursions.length;
       return assign({}, state, { excursionsItemsStepCounter: (excursionsItemsPerPage <= maxItemsCount) ? excursionsItemsPerPage : maxItemsCount });
+    }
+
+    case PURGE: {
+      return assign({}, initialState);
     }
 
     default:

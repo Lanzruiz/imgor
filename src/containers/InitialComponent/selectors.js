@@ -32,3 +32,10 @@ export const sportSelector = createSelector(
     return initialState.sport;
   }
 );
+
+export const lastChangedSelector = createSelector(
+  initialSettingsSelector,
+  function(initialState = {}) {
+    return initialState.lastChanged;
+  }
+);

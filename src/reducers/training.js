@@ -1,5 +1,7 @@
 // Modules
 import isEqual from 'lodash/isEqual';
+import assign from 'lodash/assign';
+import { PURGE } from 'redux-persist';
 // Constants
 import * as trainingTypes from '../constants/training';
 
@@ -45,6 +47,10 @@ export default function(state = initialState, action) {
         ...state,
         secondaryProgramId: payload,
       };
+    }
+
+    case PURGE: {
+      return assign({}, initialState);
     }
 
     default:

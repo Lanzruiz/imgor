@@ -1,6 +1,7 @@
 // Modules
 import isEqual from 'lodash/isEqual';
 import assign from 'lodash/assign';
+import { PURGE } from 'redux-persist';
 // Constants
 import * as stepThreeTypes from '../constants/step.three';
 
@@ -41,6 +42,10 @@ export default function(state = initialState, action) {
     case stepThreeTypes.STEP_THREE_POST_CART_CART_ID_PARTICIPANT_ID_PRODUCT: {
       const { participant_product_id } = payload;
       return assign({}, state, { participantProductId: participant_product_id });
+    }
+
+    case PURGE: {
+      return assign({}, initialState);
     }
 
     default:

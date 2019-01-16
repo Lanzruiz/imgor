@@ -11,12 +11,11 @@ import rootReducer from '../reducers';
 
 export const history = createBrowserHistory();
 
-const persistConfig = {
-  key: 'root',
-  storage: localForage,
-};
-
-const configureStore = () => {
+const configureStore = (persistKey) => {
+  const persistConfig = {
+    key: persistKey || 'root',
+    storage: localForage,
+  };
   const persistedReducer = persistReducer(persistConfig, rootReducer(history));
   const store = createStore(persistedReducer, {}, composeWithDevTools(
     applyMiddleware(thunk, routerMiddleware(history)),
@@ -25,4 +24,4 @@ const configureStore = () => {
   return { store, persistor };
 }
 
-export default configureStore();
+export default configureStore;

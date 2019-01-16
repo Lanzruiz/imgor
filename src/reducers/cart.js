@@ -1,6 +1,7 @@
 // Modules
 import assign from 'lodash/assign';
 import isEqual from 'lodash/isEqual';
+import { PURGE } from 'redux-persist';
 // Constants
 import * as cartTypes from '../constants/cart';
 
@@ -36,6 +37,10 @@ export default function(state = initialState, action) {
         return state;
       }
       return assign({}, state, payload);
+    }
+
+    case PURGE: {
+      return assign({}, initialState);
     }
 
     default: {
