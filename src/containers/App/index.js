@@ -90,7 +90,6 @@ class App extends React.Component {
     const shouldPurgeState = (dataLastChangedNumder - lastChangedNumber) > 0;
 
     if (shouldPurgeState) {
-      console.log('here?');
       dispatch({ type: PURGE, key: dataAppKey, result: () => null });
       dispatch( reset('wizard'), );
     }

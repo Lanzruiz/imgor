@@ -2,6 +2,8 @@
 import React from 'react';
 import LocalizedStrings from 'react-localization';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+import assign from 'lodash/assign';
 
 const ReactLocalizationContext = React.createContext();
 
@@ -19,19 +21,30 @@ export default class ReactLocalization extends React.Component {
     lang: 'en',
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     const { lang } = this.props;
+
     let locale;
     let localizedStrings;
+    let userSettings = {};
+    let computedLocale;
+
+    await axios(`${process.env.PUBLIC_URL}/settings/locale.${lang}.json`)
+        .then(res => res.data)
+        .then((data) => { userSettings = data; });
+
     try {
       locale = require(`../../assets/lang/${lang}.json`);
-      localizedStrings = new LocalizedStrings({ [lang]: locale });
+      computedLocale = assign({}, locale, userSettings);
+      localizedStrings = new LocalizedStrings({ [lang]: computedLocale });
     } catch (err) {
       console.warn(err.message);
       console.log(`Set default language "${this.state.defaultLang}".`);
-      locale = require(`../../assets/lang/${this.defaultProps.lang}.json`);
-      localizedStrings = new LocalizedStrings({ [this.defaultProps.lang]: locale });
+      locale = require(`../../assets/lang/${this.state.defaultLang}.json`);
+      computedLocale = assign({}, locale, userSettings);
+      localizedStrings = new LocalizedStrings({ [this.state.defaultLang]: computedLocale });
     }
+    console.log(computedLocale);
     this.setState({ strings: localizedStrings });
   }
 
