@@ -9,7 +9,6 @@ import PropTypes from 'prop-types';
 import scrollToComponent from 'react-scroll-to-component';
 import isEqual from 'lodash/isEqual';
 import find from 'lodash/find';
-import ScrollAnimation from 'react-animate-on-scroll';
 // Components
 import Header from '../../components/Header';
 import LocaleString from '../../components/LocaleString';
@@ -17,6 +16,7 @@ import StepFourWeekConcentrationComponent from '../../components/StepFourWeekCon
 import StepFourEslSecondaryProgram from './components/StepFourEslSecondaryProgram';
 import StepFourPerformanceSecondaryProgram from './components/StepFourPerformanceSecondaryProgram';
 import StepFourSatSecondaryProgram from './components/StepFourSatSecondaryProgram';
+import AOSFadeInContainer from '../../components/AOSFadeInContainer';
 // Action
 import * as weeksActions from '../../actions/weeks';
 import * as stepsActions from '../../actions/steps';
@@ -116,7 +116,7 @@ class StepFour extends React.Component {
 
     if (hasSecondaryProgram) {
       return (
-        <ScrollAnimation className="step-four" ref={this.stepFour} animateIn='fadeIn' animateOut='fadeOut'>
+        <AOSFadeInContainer className="step-four" ref={this.stepFour}>
           <Container>
             <Row>
               <Col>
@@ -140,7 +140,7 @@ class StepFour extends React.Component {
               </Col>
             </Row>
           </Container>
-        </ScrollAnimation>
+        </AOSFadeInContainer>
       );
     }
 
@@ -170,7 +170,7 @@ class StepFour extends React.Component {
       );
     });
     return (
-      <ScrollAnimation className="step-four" ref={this.stepFour} animateIn="fadeIn">
+      <AOSFadeInContainer className="step-four" ref={this.stepFour}>
         <Container style={{ marginBottom: '65px' }}>
           <Row>
             <Col>
@@ -197,7 +197,7 @@ class StepFour extends React.Component {
             </Col>
           </Row>
         </Container>
-      </ScrollAnimation>
+      </AOSFadeInContainer>
     );
   }
 

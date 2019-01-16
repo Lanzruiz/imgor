@@ -7,12 +7,12 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import moment from 'moment';
 import isEqual from 'lodash/isEqual';
-import ScrollAnimation from 'react-animate-on-scroll';
 // Components
 import Header from '../../components/Header';
 import LocaleString from '../../components/LocaleString';
 import Carousel, { CarouselItem } from '../../components/Carousel';
 import { Default, Mobile } from '../../components/Responsive';
+import AOSFadeInContainer from '../../components/AOSFadeInContainer';
 // Actions
 import * as stepOneActions from '../../actions/step.one';
 import * as stepTwoActions from '../../actions/step.two';
@@ -204,7 +204,7 @@ class StepTwo extends React.Component {
     }, []);
 
     return (
-      <ScrollAnimation className="step-two" animateIn='fadeInUp' animateOut='fadeOut'>
+      <AOSFadeInContainer className="step-two">
         <Container style={{ marginBottom: `${(!selectedDate.capacity_start_date && !selectedDate.capacity_end_date) ? 130 : 30}px` }}>
           <Row>
             <Col>
@@ -306,7 +306,7 @@ class StepTwo extends React.Component {
           </Row>
           {this.renderSelectedDate(selectedDate)}
         </Container>
-      </ScrollAnimation>
+      </AOSFadeInContainer>
     );
   }
 

@@ -9,13 +9,13 @@ import scrollToComponent from 'react-scroll-to-component';
 import isNumber from 'lodash/isNumber';
 import isEqual from 'lodash/isEqual';
 import toLower from 'lodash/toLower';
-import ScrollAnimation from 'react-animate-on-scroll';
 // Components
 import Header from '../../components/Header';
 import BreakthroughCard from '../../components/BreakthroughCard';
 import CoreCard from '../../components/CoreCard';
 import TotalAthleteCard from '../../components/TotalAthleteCard';
 import GameChangerCard from '../../components/GameChangerCard';
+import AOSFadeInContainer from '../../components/AOSFadeInContainer';
 // Actions
 import * as trainingActions from '../../actions/training';
 import * as stepThreeActions from '../../actions/step.three';
@@ -120,7 +120,7 @@ class StepThree extends React.Component {
   render() {
     const { selectedId, data, selectedCardWithSecondaryProgramsId } = this.props;
     return (
-      <ScrollAnimation className="step-three" animateIn='fadeInUp' animateOut='fadeOut' ref={this.stepThree}>
+      <AOSFadeInContainer className="step-three" ref={this.stepThree}>
         <Container>
           <Row>
             <Col>
@@ -151,7 +151,7 @@ class StepThree extends React.Component {
             })}
           </Row>
         </Container>
-      </ScrollAnimation>
+      </AOSFadeInContainer>
     );
   }
 

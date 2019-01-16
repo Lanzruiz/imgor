@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
-import ScrollAnimation from 'react-animate-on-scroll';
 // Components
 import Header from '../../components/Header';
 import Card, { CardContent, CardContentRow, CardContentCol } from '../../components/Card';
@@ -15,6 +14,7 @@ import LocaleString from '../../components/LocaleString';
 import Input from '../../components/Input';
 import Radio from '../../components/Radio';
 import InputBirthDayMask from '../../components/InputBirthDayMask';
+import AOSFadeInContainer from '../../components/AOSFadeInContainer';
 // Actions
 import * as finalStepActions from '../../actions/final.step';
 // Selectors
@@ -22,8 +22,6 @@ import { finalStepPositionsSelector, finalStepSelectedPositionSelector, finalSte
 import { sportSelector, businessTypeSelector, packageTypeSelector } from '../InitialComponent/selectors';
 // Constants
 import { stepFinalFormFieldNames } from './selectors';
-// Helpers
-import validation from '../../helpers/validate';
 // Styles
 import './styles.scss';
 
@@ -60,16 +58,14 @@ class StepFinal extends React.Component {
   render() {
     const { positions, selectedPosition, shirtSize } = this.props;
     return (
-      <ScrollAnimation className="step-final" animateIn='fadeIn' animateOut='fadeOut'>
+      <AOSFadeInContainer className="step-final">
         <Container style={{ marginBottom: '65px' }}>
           <Row>
             <Col>
-              <ScrollAnimation animateIn='bounceInRight' animateOut='fadeOut' animateOnce={true}>
-                <Header
-                  header="step_final.header"
-                  subHeader="step_final.subHeader"
-                />
-              </ScrollAnimation>
+              <Header
+                header="step_final.header"
+                subHeader="step_final.subHeader"
+              />
             </Col>
           </Row>
           <Row>
@@ -218,7 +214,7 @@ class StepFinal extends React.Component {
             </Col>
           </Row>
         </Container>
-      </ScrollAnimation>
+      </AOSFadeInContainer>
     );
   }
 
@@ -340,7 +336,6 @@ export default reduxForm({
   form: 'wizard', // <------ same form name
   destroyOnUnmount: false, // <------ preserve form data
   forceUnregisterOnUnmount: true, // <------ unregister fields on unmount
-  validate: validation, // <------ validation
 })(
   connect(mapStateToProps, mapDispatchToProps)(StepFinal)
 );

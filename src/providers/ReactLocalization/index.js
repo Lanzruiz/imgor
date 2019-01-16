@@ -44,7 +44,6 @@ export default class ReactLocalization extends React.Component {
       computedLocale = assign({}, locale, userSettings);
       localizedStrings = new LocalizedStrings({ [this.state.defaultLang]: computedLocale });
     }
-    console.log(computedLocale);
     this.setState({ strings: localizedStrings });
   }
 

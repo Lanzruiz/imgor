@@ -10,7 +10,6 @@ import cx from 'classnames';
 import include from 'lodash/includes';
 import toLower from 'lodash/toLower';
 import isEqual from 'lodash/isEqual';
-import ScrollAnimation from 'react-animate-on-scroll';
 // Components
 import EmailModal from '../../components/EmailModal';
 import Header from '../../components/Header';
@@ -20,6 +19,7 @@ import Button from '../../components/Button';
 import LocaleString from '../../components/LocaleString';
 import Radio from '../../components/Radio';
 import Dropdown from '../../components/Dropdown';
+import AOSFadeInContainer from '../../components/AOSFadeInContainer';
 // Actions
 import * as weeksActions from '../../actions/weeks';
 import * as stepOneActions from '../../actions/step.one';
@@ -119,7 +119,7 @@ class StepOne extends React.Component {
   render() {
     const { weeksCounter, participantId, data, tabIndex, group } = this.props;
     return (
-      <ScrollAnimation className="step-one" animateIn='fadeIn' animateOut='fadeOut'>
+      <AOSFadeInContainer className="step-one">
         <EmailModal
           onSubmit={this.closeEmailModal}
           shouldShowEmailModal={!participantId}
@@ -340,7 +340,7 @@ class StepOne extends React.Component {
             );
           })}
         </Container>
-      </ScrollAnimation>
+      </AOSFadeInContainer>
     );
   }
 

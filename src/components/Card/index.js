@@ -212,9 +212,9 @@ class Card extends React.Component {
 
   renderButtonBlock = (buttonClassNames, isCurrentCardSelected) => {
     const { buttonBlock, soldOut, customButtonTitle, tooltipMessage } = this.props;
-    
+
     const onClickHandler = soldOut && !isCurrentCardSelected ? null : this.onClickHandler;
-  
+
     const buttonTitle = (
       soldOut
         ? <LocaleString stringKey="sold_out" />

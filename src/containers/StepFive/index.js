@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import scrollToComponent from 'react-scroll-to-component';
-import ScrollAnimation from 'react-animate-on-scroll';
 // Containers
 import StepFiveCatalogGear from '../StepFiveCatalogGear';
 import StepFiveCatalogGearUpsellNew from '../StepFiveCatalogGearUpsellNew';
@@ -13,6 +12,7 @@ import StepFiveCatalogExcursionsNew from '../StepFiveCatalogExcursionsNew';
 // Components
 import Header from '../../components/Header';
 import LoadMoreButton from '../../components/LoadMoreButton';
+import AOSFadeInContainer from '../../components/AOSFadeInContainer';
 // Selectors
 import {
   stepFiveShouldRenderLoadMoreButtonSelector, stepFiveShouldRenderUpsellLoadMoreButtonSelector, stepFiveShouldRenderExcursionsLoadMoreButtonSelector,
@@ -59,7 +59,7 @@ class StepFive extends React.Component {
       || shouldRenderExcursionsLoadMoreButton
     );
     return (
-      <ScrollAnimation className="step-five" ref={this.stepFive} animateIn='fadeIn' animateOut='fadeOut'>
+      <AOSFadeInContainer className="step-five" ref={this.stepFive}>
         <Container style={{ marginBottom: '65px' }}>
           <Row>
             <Col>
@@ -77,7 +77,7 @@ class StepFive extends React.Component {
             onClick={this.increaseItemsPerPage}
           />
         </Container>
-      </ScrollAnimation>
+      </AOSFadeInContainer>
     );
   }
 

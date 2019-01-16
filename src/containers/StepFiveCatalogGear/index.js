@@ -175,7 +175,7 @@ class StepFiveCatalogGear extends React.Component {
             <CardContentRow>
               <CardContentCol className="card-content__img-container">
                 <VisibilitySensor>
-                  <Img className="card-content__img" src={image_url} />
+                  <Img className="card-content__img" src={image_url} data-aos="flip-left" data-aos-duration="600" />
                 </VisibilitySensor>
               </CardContentCol>
               <CardContentCol className="center-center flex-1">

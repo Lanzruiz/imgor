@@ -8,6 +8,7 @@ import { reduxForm, change } from 'redux-form';
 import toNumber from 'lodash/toNumber';
 import { PURGE } from 'redux-persist';
 import { reset } from 'redux-form';
+import AOS from 'aos';
 // Providers
 import ReactLocalization from '../../providers/ReactLocalization';
 // Components
@@ -114,6 +115,7 @@ class App extends React.Component {
     };
 
     this.setInitialSettings(initialSettings);
+    AOS.init();
   }
 
   componentDidUpdate(prevProps) {

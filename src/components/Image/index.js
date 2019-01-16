@@ -28,6 +28,8 @@ export default class Image extends React.Component {
           onLoad={this.onImgLoad}
           src={src}
           alt={alt}
+          data-aos="zoom-in"
+          data-delay="800"
         />
       </VisibilitySensor>
     );

@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 import { reduxForm } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import isEqual from 'lodash/isEqual';
-import ScrollAnimation from 'react-animate-on-scroll';
 // Components
 import Header from '../../components/Header';
 import Card, { CardContent, CardContentRow, CardContentCol, CardContentText } from '../../components/Card';
@@ -30,6 +29,7 @@ import TransportRadioContainer from './components/TransportRadioContainer';
 import DepartingTransportRadioContainer from './components/DepartingTransportRadioContainer';
 import AirlinesDepartingDropdownContainer from './components/AirlinesDepartingDropdownContainer';
 import AirlinesDropdownContainer from './components/AirlinesDropdownContainer';
+import AOSFadeInContainer from '../../components/AOSFadeInContainer';
 // Images
 import stubImage from '../../assets/img/2018-Suburban.png';
 // Actions
@@ -145,8 +145,8 @@ class StepSix extends React.Component {
     );
 
     return (
-      <ScrollAnimation className="step-six" animateIn='fadeIn' animateOut='fadeOut'>
-        <Container style={{ marginBottom: '65px' }} ref={this.stepSix}>
+      <AOSFadeInContainer className="step-six" ref={this.stepSix}>
+        <Container style={{ marginBottom: '65px' }}>
           <Row>
             <Col>
               <Header
@@ -375,7 +375,7 @@ class StepSix extends React.Component {
             </Col>
           </Row>
         </Container>
-      </ScrollAnimation>
+      </AOSFadeInContainer>
     );
   }
 
