@@ -444,6 +444,7 @@ class StepTwo extends React.Component {
                   </h2>
                   <div className="current-selected__days">
                     <span>{startDateDay}</span>
+                    <span />
                     <span>{endDateDay}</span>
                   </div>
                   <div className="current-selected__dates">

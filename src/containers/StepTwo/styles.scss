@@ -39,11 +39,7 @@
             display: flex;
             flex-direction: column;
             padding: 15px;
-            width: 75%;
-
-            @include breakpoint($tablet){
-              width: 67%;
-            }
+            width: 100%;
 
             @include breakpoint($mobile){
                 width: 100%;
@@ -248,11 +244,7 @@
             display: flex;
             justify-content: center;
             position: relative;
-            width: 75%;
-
-            @include breakpoint($tablet){
-                width: 100%;
-            }
+            width: 100%;
 
             @include breakpoint($mobile){
                 width: calc(100% + 30px);
@@ -280,11 +272,7 @@
             display: flex;
             flex-direction: row;
             justify-content: space-between;
-            width: 66%;
-
-            @include breakpoint($tablet){
-                width: 100%;
-            }
+            width: 100%;
         }
 
         &__check-in {
@@ -313,8 +301,12 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 5px 10px 10px 10px;
+            padding: 5px 50px 10px 50px;
             width: 100%;
+
+            @include breakpoint($mobile){
+                padding: 5px 10px 10px 10px;
+            }
         }
     }
 
@@ -337,11 +329,13 @@
     }
 
     .current-selected {
+        max-width: 870px;
+
         &__header {
             color: $white;
             font-family: $header-font;
-            font-size: 15px;
-            font-weight: 700;
+            font-size: 22px;
+            font-weight: normal;
             text-align: center;
             text-transform: uppercase;
             width: 100%;
@@ -353,7 +347,7 @@
             display: flex;
             flex-direction: row;
             font-family: $trade-gothic;
-            font-size: 15px;
+            font-size: 18px;
             justify-content: space-between;
             text-transform: uppercase;
             width: 100%;
@@ -368,8 +362,8 @@
             color: $white;
             display: flex;
             font-family: $header-font;
-            font-size: 32px;
-            font-weight: 700;
+            font-size: 42px;
+            font-weight: normal;
             justify-content: space-between;
             text-transform: uppercase;
             width: 100%;
