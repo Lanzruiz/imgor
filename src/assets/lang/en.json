@@ -231,5 +231,6 @@
     "step_six_departing_pick_up_location_message": "Please choose pick up location",
     "please_first_choose_size": "Please first choose size",
     "please_choose_quantity": "Please choose quantity",
-    "please_choose_date": "Please first choose date"
+    "please_choose_date": "Please first choose date",
+    "sold-out": "sold out"
 }

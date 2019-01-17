@@ -10,6 +10,48 @@
                 max-height: 180px;
             }
         }
+
+        .content__label--disabled {
+            text-decoration: none;
+
+            & .content__radio-btn--sold-out {
+                display: inline-block;
+                font-size: 12px;
+                line-height: 10px;
+                text-align: center;
+                text-transform: uppercase;
+                width: 35px;
+            }
+
+            & .radio-btn__container {
+                text-decoration: line-through;
+            }
+
+            & .radio-btn__btn {
+                background-color: transparent;
+            }
+        }
+
+        .content__sleepaway-label--disabled {
+            text-decoration: none;
+
+            & .content__radio-btn--sold-out {
+                display: inline-block;
+                font-size: 12px;
+                line-height: 10px;
+                text-align: center;
+                text-transform: uppercase;
+                width: 35px;
+            }
+
+            & .radio-btn__container {
+                text-decoration: line-through;
+            }
+
+            & .radio-btn__btn {
+                background-color: transparent;
+            }
+        }
     }
 
     .tab-row {
@@ -213,6 +255,8 @@
         &__tab-list {
             display: flex;
             width: 100%;
+            padding-left: 0;
+            margin: 0;
 
             @include breakpoint($mobile){
                 flex-wrap: wrap;

@@ -536,7 +536,7 @@ function SleepawayRadioBtn({ options, sleepaway, possibleValues }) {
       component={({ input, options }) => (
         options.map(({ value, stringKey }) => {
           const isDisabled = !include(possibleValues, value);
-          const radioBtnClassNames = cx('content__sleepaway-label mb-10', {
+          const radioBtnClassNames = cx('content__sleepaway-label react-mb-10', {
             'content__sleepaway-label--disabled': isDisabled,
           });
           return (
@@ -547,8 +547,14 @@ function SleepawayRadioBtn({ options, sleepaway, possibleValues }) {
                 value={value}
                 checked={isEqual(sleepaway, value)}
                 disabled={isDisabled}
-                children={<LocaleString stringKey={`step_one.sleepaway_${stringKey}`} />}
-              />
+              >
+                <LocaleString stringKey={`step_one.sleepaway_${stringKey}`} />{' '}
+                {isDisabled && (
+                  <span className="content__radio-btn--sold-out">
+                    <LocaleString stringKey="sold-out" />
+                  </span>
+                )}
+              </Radio>
             </div>
           );
       }))}
@@ -604,8 +610,14 @@ function GenderRadioBtnContainer ({ options, value, possibleValues }) {
                   value={lowerCaseOptionValue}
                   checked={isEqual(lowerCaseOptionValue, toLower(value))}
                   disabled={isDisabled}
-                  children={<LocaleString stringKey={lowerCaseOptionValue} />}
-                />
+                >
+                  <LocaleString stringKey={lowerCaseOptionValue} />
+                  {isDisabled && (
+                    <span className="content__radio-btn--sold-out">
+                      <LocaleString stringKey="sold-out" />
+                    </span>
+                  )}
+                </Radio>
               </div>
             );
           })
