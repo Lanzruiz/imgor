@@ -211,6 +211,7 @@ class StepTwo extends React.Component {
               <Header
                 header="step_two.header"
                 subHeader="step_two.sub_header"
+                formatString={{ stepNumber: stepsEnum.two }}
               />
             </Col>
           </Row>

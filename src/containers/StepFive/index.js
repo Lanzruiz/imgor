@@ -14,12 +14,15 @@ import Header from '../../components/Header';
 import LoadMoreButton from '../../components/LoadMoreButton';
 import AOSFadeInContainer from '../../components/AOSFadeInContainer';
 // Selectors
+import { stepFourDataSelector } from '../StepFour/selectors';
 import {
   stepFiveShouldRenderLoadMoreButtonSelector, stepFiveShouldRenderUpsellLoadMoreButtonSelector, stepFiveShouldRenderExcursionsLoadMoreButtonSelector,
 } from './selectors';
 import { sportSelector, businessTypeSelector, packageTypeSelector } from '../InitialComponent/selectors';
 // Actions
 import * as stepFiveActions from '../../actions/step.five';
+// Constants
+import { stepsEnum } from '../../constants/steps';
 // Styles
 import './styles.scss';
 
@@ -52,12 +55,16 @@ class StepFive extends React.Component {
   }
 
   render() {
-    const { sport, shouldRenderGearLoadMoreButton, shouldRenderUpsellLoadMoreButton, shouldRenderExcursionsLoadMoreButton } = this.props;
+    const { sport, shouldRenderGearLoadMoreButton, shouldRenderUpsellLoadMoreButton, shouldRenderExcursionsLoadMoreButton, stepFourData } = this.props;
+
     const shouldRenderLoadMoreButton = (
-      shouldRenderGearLoadMoreButton
+         shouldRenderGearLoadMoreButton
       || shouldRenderUpsellLoadMoreButton
       || shouldRenderExcursionsLoadMoreButton
     );
+
+    const currentStepNumber = (stepFourData.length > 0) ? stepsEnum.five : stepsEnum.four;
+
     return (
       <AOSFadeInContainer className="step-five" ref={this.stepFive}>
         <Container style={{ marginBottom: '65px' }}>
@@ -66,6 +73,7 @@ class StepFive extends React.Component {
               <Header
                 header="step_five.header"
                 subHeader="step_five.sub_header"
+                formatString={{ stepNumber: currentStepNumber }}
               />
             </Col>
           </Row>
@@ -117,6 +125,7 @@ function mapStateToProps(state) {
     sport: sportSelector(state),
     businessType: businessTypeSelector(state),
     packageType: packageTypeSelector(state),
+    stepFourData: stepFourDataSelector(state),
   };
 }
 

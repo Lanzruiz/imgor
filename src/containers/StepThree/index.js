@@ -32,6 +32,8 @@ import {
   cartStepThreeProductIdSelector,
 } from '../StepOne/selectors';
 import { stepTwoStartDateSelector, stepTwoSelectedDateSelector } from '../StepTwo/selectors';
+// Constants
+import { stepsEnum } from '../../constants/steps';
 // Styles
 import './styles.scss';
 
@@ -127,6 +129,7 @@ class StepThree extends React.Component {
               <Header
                 header="step_three.header"
                 subHeader="step_three.sub_header"
+                formatString={{ stepNumber: stepsEnum.three }}
               />
             </Col>
           </Row>

@@ -39,6 +39,8 @@ import {
   stepOneAgeSelector, stepOneGenderSelector, stepOneSleepawaySelector,
 } from './selectors';
 import { sportSelector, businessTypeSelector, packageTypeSelector } from '../InitialComponent/selectors';
+// Constants
+import { stepsEnum } from '../../constants/steps';
 // Styles
 import './styles.scss';
 
@@ -147,6 +149,7 @@ class StepOne extends React.Component {
               <Header
                 header="step_one.header"
                 subHeader="step_one.sub_header"
+                formatString={{ stepNumber: stepsEnum.one }}
               />
             </Col>
           </Row>

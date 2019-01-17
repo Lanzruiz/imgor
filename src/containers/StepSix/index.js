@@ -45,6 +45,7 @@ import {
 } from './selectors';
 import { stepFiveDataPerPageSelector } from '../StepFive/selectors';
 import { sportSelector, businessTypeSelector, packageTypeSelector } from '../InitialComponent/selectors';
+import { stepFourDataSelector } from '../StepFour/selectors';
 // Constants
 import { stepsEnum } from '../../constants/steps';
 import { stepSixFormFieldNames, airportPickupInformation } from './selectors';
@@ -129,7 +130,7 @@ class StepSix extends React.Component {
   render() {
     const {
       airlines, airportPickup, transport, unaccompanied, dropoff, departing, transportUnaccompanied, transportationId,
-      departingTransport, selectedTransportValue,
+      departingTransport, selectedTransportValue, stepFourData,
     } = this.props;
 
     const airportPickupArrivalAndDeparting = isEqual(airportPickup, airportPickupInformation.both);
@@ -144,6 +145,8 @@ class StepSix extends React.Component {
           : 1
     );
 
+    const currentStepNumber = (stepFourData.length > 0) ? stepsEnum.six : stepsEnum.five;
+
     return (
       <AOSFadeInContainer className="step-six" ref={this.stepSix}>
         <Container style={{ marginBottom: '65px' }}>
@@ -152,6 +155,7 @@ class StepSix extends React.Component {
               <Header
                 header="step_six.header"
                 subHeader="step_six.sub_header"
+                formatString={{ stepNumber: currentStepNumber }}
               />
             </Col>
           </Row>
@@ -432,6 +436,7 @@ function mapStateToProps(state) {
     packageType: packageTypeSelector(state),
     transportationId: stepSixTransportationIdSelector(state),
     step: state.steps.currentStep,
+    stepFourData: stepFourDataSelector(state),
   };
 };
 

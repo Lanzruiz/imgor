@@ -123,6 +123,7 @@ class StepFour extends React.Component {
                 <Header
                   header="step_four.header"
                   subHeader="step_four.secondary_programs.sub_header"
+                  formatString={{ stepNumber: stepsEnum.four }}
                 />
               </Col>
             </Row>
@@ -177,6 +178,7 @@ class StepFour extends React.Component {
               <Header
                 header="step_four.header"
                 subHeader="step_four.sub_header"
+                formatString={{ stepNumber: stepsEnum.four }}
               />
             </Col>
           </Row>

@@ -6,11 +6,14 @@ import LocaleString from '../LocaleString';
 import './styles.scss';
 
 const Header = (props) => {
-  const { header, subHeader } = props;
+  const { header, subHeader, formatString } = props;
   return (
     <div className="header__container">
       <h2 className="header__h2">
-        <LocaleString stringKey={header} />
+        <LocaleString
+          stringKey={header}
+          formatString={formatString}
+        />
       </h2>
       <h6 className="header__h6">
         <LocaleString stringKey={subHeader} />
