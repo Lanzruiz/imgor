@@ -40,7 +40,8 @@ $proxima-nova: Proxima Nova, Helvetica Neue, Helvetica, Arial, sans-serif;
 $serifa-bold: Serifa Bold, Serifa, Proxima Nova, Helvetica Neue, Helvetica, Arial, sans-serif ;
 $serifa-light: Serifa Light, Serifa, Proxima Nova, Helvetica Neue, Helvetica, Arial, sans-serif;
 $serifa-roman: Serifa Roman, Serifa, Proxima Nova, Helvetica Neue, Helvetica, Arial, sans-serif;
-$trade-gothic: Trade Gothic, Proxima Nova, Helvetica Neue, Helvetica, Arial, sans-serif;
+//$trade-gothic: Trade Gothic, Proxima Nova, Helvetica Neue, Helvetica, Arial, sans-serif;
+$trade-gothic: #{$trade-gothic-bold}, Proxima Nova, Helvetica Neue, Helvetica, Arial, sans-serif;
 
 $header-font: Trade Gothic Bold Cn\ 20, Proxima Nova, Helvetica Neue, Helvetica, Arial, sans-serif;
 $normal-font: Proxima Nova, Helvetica Neue, Helvetica, Arial, sans-serif;
