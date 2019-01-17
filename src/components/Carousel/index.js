@@ -2,6 +2,7 @@
 import React from 'react';
 import Slider from 'react-slick';
 import { CSSTransitionGroup } from 'react-transition-group';
+import { FaLongArrowAltRight, FaLongArrowAltLeft } from 'react-icons/fa';
 // Styles
 import './styles.scss';
 
@@ -14,6 +15,8 @@ export default class Carousel extends React.Component {
       slidesToShow: 1,
       slidesToScroll: 1,
       draggable: false,
+      nextArrow: <NextArrow />,
+      prevArrow: <PrevArrow />,
     };
 
     return (
@@ -25,7 +28,7 @@ export default class Carousel extends React.Component {
         transitionLeaveTimeout={300}
       >
         {this.props.render && (
-          <div className="carousel__container">
+          <div className="carousel carousel__container">
             <Slider {...settings}>
               {this.props.children}
             </Slider>
@@ -43,3 +46,29 @@ export function CarouselItem(props) {
     </div>
   );
 };
+
+function NextArrow({ onClick, style, className }) {
+  return (
+    <button
+      type="button"
+      data-role="none"
+      style={style}
+      className={className}
+      children={<FaLongArrowAltRight className="button-arrow" />}
+      onClick={onClick}
+    />
+  );
+};
+
+function PrevArrow({ onClick, style, className }) {
+  return (
+    <button
+      type="button"
+      data-role="none"
+      style={style}
+      className={className}
+      children={<FaLongArrowAltLeft className="button-arrow" />}
+      onClick={onClick}
+    />
+  );
+}

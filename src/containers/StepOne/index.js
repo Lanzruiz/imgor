@@ -113,7 +113,23 @@ class StepOne extends React.Component {
       businessType: dataBusinessType,
       secondaryGroup: dataSecondaryGroup,
     };
-    this.props.stepOneActions.getCatalogCampsGroup(args);
+
+    this.getCatalogCampsGroup(args);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { sport, dataGender, dataGroup, dataBusinessType, dataSecondaryGroup } = this.props;
+    const isSportChanged = !isStringsEqual(sport, prevProps.sport);
+    if (isSportChanged) {
+      const args = {
+        sport,
+        gender: dataGender,
+        group: dataGroup,
+        businessType: dataBusinessType,
+        secondaryGroup: dataSecondaryGroup,
+      };
+      this.getCatalogCampsGroup(args);
+    }
   }
 
   render() {
@@ -343,6 +359,17 @@ class StepOne extends React.Component {
       </AOSFadeInContainer>
     );
   }
+
+  getCatalogCampsGroup = (args) => {
+    for (let key in args) {
+      if (!args[key]) {
+        delete args[key];
+      }
+    }
+    if (args.sport) {
+      this.props.stepOneActions.getCatalogCampsGroup(args);
+    }
+  };
 
   closeEmailModal = () => {
     const { cartId, email } = this.props;

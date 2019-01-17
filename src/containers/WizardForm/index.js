@@ -779,7 +779,7 @@ class WizardForm extends React.Component {
 
   stepSixValidation = () => {
     const {
-      stepSixAirportPickup, stepSixUnaccompanied, stepSixSelectedTransport, stepSixArrivalFlightNumber,
+      stepSixAirportPickup, stepSixUnaccompanied, stepSixSelectedTransport,
       stepSixArrivalDateTime, stepSixDropoff, stepSixDropoffOtherLocation, stepSixDepartingTransport,
       stepSixPickUpOtherLocation, stepSixDepartingFlightNumber, stepSixDepartingDateTime,
       stepSixDeparting, stepSixTransportationId, stepSixAirportPickupAirline, stepSixDepartingAirline,
@@ -808,12 +808,6 @@ class WizardForm extends React.Component {
         case (airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && !stepSixAirportPickupAirline: {
           return 'step_six_airlines_message';
         }
-        case (airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && !stepSixArrivalFlightNumber: {
-          return 'step_six_arrival_flight_number_message';
-        }
-        case (airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && !stepSixArrivalDateTime: {
-          return 'step_six_arrival_flight_date_and_time_message';
-        }
         case (airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && !stepSixDropoff:
         case (airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && (stepSixDropoff === other) && !stepSixDropoffOtherLocation: {
           return 'step_six_dropoff_location_message';
@@ -823,12 +817,6 @@ class WizardForm extends React.Component {
         }
         case (airportPickupArrivalAndDeparting || airportPickupDepartingOnly) && !stepSixDepartingAirline: {
           return 'step_six_departing_airline_message';
-        }
-        case (airportPickupArrivalAndDeparting || airportPickupDepartingOnly) && !stepSixDepartingFlightNumber: {
-          return 'step_six_departing_flight_number_message';
-        }
-        case (airportPickupArrivalAndDeparting || airportPickupDepartingOnly) && !stepSixDepartingDateTime: {
-          return 'step_six_departing_date_time_message';
         }
         case (airportPickupArrivalAndDeparting || airportPickupDepartingOnly) && !stepSixDeparting:
         case (airportPickupArrivalAndDeparting || airportPickupDepartingOnly) && (stepSixDeparting === other) && !stepSixPickUpOtherLocation: {

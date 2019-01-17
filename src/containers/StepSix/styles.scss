@@ -11,6 +11,10 @@
             flex-direction: column;
             height: 100%;
             justify-content: space-between;
+
+            @include breakpoint($mobile) {
+                padding: 20px;
+            }
         }
 
         &__slide-header {
@@ -18,7 +22,7 @@
             display: block;
             font-family: $header-font;
             font-size: 24px;
-            font-weight: 700;
+            font-weight: normal;
             text-transform: uppercase;
             margin-bottom: 15px;
         }
@@ -28,7 +32,7 @@
             display: block;
             font-family: $header-font;
             font-size: 20px;
-            font-weight: 700;
+            font-weight: normal;
             text-transform: uppercase;
             margin-bottom: 10px;
         }
@@ -77,8 +81,7 @@
 
             &-question {
                 margin: 40px 0 80px;
-                padding-left: 15px;
-                padding-right: 35px;
+                padding: 0;
             }
 
             &-checkbox {
@@ -103,13 +106,15 @@
         }
 
         &__text-input {
-            width: 285px;
+            max-width: 285px;
             height: 38px;
             border: 1px solid $gray;
             background-color: $white;
+            width: 100%;
 
             & > input {
                 box-sizing: border-box;
+                font-family: $normal-font;
                 padding: 10px 15px;
                 width: 100%;
             }
@@ -123,6 +128,7 @@
 
                 & > input {
                     box-sizing: border-box;
+                    font-family: $normal-font;
                     padding: 10px 15px;
                     width: 100%;
                 }
@@ -164,6 +170,32 @@
 
         & .card-body__body {
             flex: 1 1 auto;
+        }
+
+        .card-content__row {
+            @include breakpoint($mobile) {
+                flex-direction: row;
+            }
+
+            .radio-btn__container {
+                margin-bottom: 10px;
+            }
+
+            .card-content__col {
+                width: 50%;
+            }
+        }
+
+        .step-six__card-content {
+            padding: 30px 20px 10px;
+
+            @include breakpoint($mobile) {
+                justify-content: space-evenly;
+            }
+        }
+
+        .dropdown__option {
+            font-family: $normal-font;
         }
     }
 }

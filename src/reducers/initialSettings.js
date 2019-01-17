@@ -5,9 +5,9 @@ import { PURGE } from 'redux-persist';
 import * as initialSettingsTypes from '../constants/initialSettings';
 
 const initialSettings = {
-  businessType: 'Youth Camp',
+  businessType: '',
   packageType: 'Sport',
-  sport: 'Soccer',
+  sport: '',
   lang: 'en',
   gender: '',
 };

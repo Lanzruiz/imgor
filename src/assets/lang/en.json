@@ -222,8 +222,6 @@
     "step_six_airport_transportation_message": "Please choose airport transportation",
     "step_six_unaccompanied_message": "Please choose unaccompanied option",
     "step_six_arrival_flight_information_message": "Please choose arrival flight information",
-    "step_six_arrival_flight_number_message": "Please choose arrival flight number",
-    "step_six_arrival_flight_date_and_time_message": "Please choose arrival flight date and time",
     "step_six_airlines_message": "Please choose arrival airline",
     "step_six_dropoff_location_message": "Please choose dropoff location",
     "step_six_departing_location_message": "Please choose departing location",

@@ -27,6 +27,7 @@ const {
   urlToNoProps,
   appKey,
   last_changed,
+  contentPath,
 } = imgorRootContainer.dataset;
 
 const { store, persistor } = configStore(appKey);
@@ -72,6 +73,7 @@ ReactDOM.render(
                   dataGender={gender}
                   dataLastChanged={last_changed}
                   dataAppKey={appKey}
+                  contentPath={contentPath}
                 />
               );
             }} />

@@ -158,7 +158,7 @@ class StepSix extends React.Component {
           <Row>
             <Col>
               <Row style={{ marginLeft: 0, overflow: 'hidden' }}>
-                <Col md={4} style={{ paddingRight: 0, paddingLeft: 0, marginBottom: 15, zIndex: 15 }}>
+                <Col md={5} lg={4} style={{ paddingRight: 0, paddingLeft: 0, marginBottom: 15, zIndex: 15 }}>
                   <Card
                     id={0}
                     className="step-six__transportation-card-container"
@@ -194,7 +194,7 @@ class StepSix extends React.Component {
                     </CardContent>
                   </Card>
                 </Col>
-                <Col md={8} style={{ padding: 0, marginBottom: '15px', marginTop: '30px' }}>
+                <Col md={7} lg={8} style={{ padding: 0, marginBottom: '15px', marginTop: '30px' }}>
                   <Carousel render={!!airportPickup}>
                     <CarouselItem>
                       <SlideHeader>
@@ -232,7 +232,7 @@ class StepSix extends React.Component {
                           </Col>
                         </Row>
                         <Row>
-                          <Col>
+                          <Col md={12} lg={5} xl={6}>
                             <SliderSubHeader>
                               <LocaleString stringKey="step_six.arrival_flight_information" />
                             </SliderSubHeader>
@@ -241,7 +241,7 @@ class StepSix extends React.Component {
                               value={selectedTransportValue}
                             />
                           </Col>
-                          <Col>
+                          <Col md={12} lg={7} xl={6}>
                             <AirlinesDropdownContainer airlines={airlines} />
                             <ArrivalFlightNumberTextInput />
                             <DatePickerReduxForm
@@ -273,14 +273,14 @@ class StepSix extends React.Component {
                           </Col>
                         </Row>
                         <Row>
-                          <Col>
+                          <Col md={12} lg={6}>
                             <SliderSubHeader>
                               <LocaleString stringKey="step_six.dropoff_location" />
                             </SliderSubHeader>
                             <DropoffCheckboxContainer dropoff={dropoff} />
                             <DropoffLocationTextField dropoff={dropoff} />
                           </Col>
-                          <Col>
+                          <Col md={12} lg={6}>
                             <Paragraph medium className="step-six__step-paragraph">
                             <LocaleString
                               stringKey="step_six.schedule"
@@ -307,7 +307,7 @@ class StepSix extends React.Component {
                           </Col>
                         </Row>
                         <Row>
-                          <Col>
+                          <Col md={12} lg={5} xl={6}>
                             <SliderSubHeader>
                               <LocaleString stringKey="step_six.departing_airport_location" />
                             </SliderSubHeader>
@@ -316,7 +316,7 @@ class StepSix extends React.Component {
                               value={departingTransport}
                             />
                           </Col>
-                          <Col>
+                          <Col md={12} lg={7} xl={6}>
                             <AirlinesDepartingDropdownContainer airlines={airlines} />
                             <FlightNumberDepartingTextInput />
                             <DatePickerReduxForm
@@ -351,14 +351,14 @@ class StepSix extends React.Component {
                           </Col>
                         </Row>
                         <Row>
-                          <Col>
+                          <Col md={12} lg={6}>
                             <SliderSubHeader>
                               <LocaleString stringKey="step_six.pick_up_location" />
                             </SliderSubHeader>
                             <DepartingCheckboxContainer departing={departing} />
                             <PickUpLocationTextField departing={departing} />
                           </Col>
-                          <Col>
+                          <Col md={12} lg={6}>
                             <Paragraph medium className="step-six__step-paragraph">
                             <LocaleString
                               stringKey="step_six.schedule"
