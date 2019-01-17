@@ -121,7 +121,7 @@ class StepFiveCatalogExcursionsNew extends React.Component {
               <CardContentCol className="card-content__img-container">
                 <Image className="card-content__img" src={image_url} />
               </CardContentCol>
-              <CardContentCol className="center-center flex-1">
+              <CardContentCol className="react-center-center react-flex-1">
                 {this.renderDates(dates, id)}
               </CardContentCol>
             </CardContentRow>

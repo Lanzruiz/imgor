@@ -20,6 +20,7 @@ import LocaleString from '../../components/LocaleString';
 import Radio from '../../components/Radio';
 import Dropdown from '../../components/Dropdown';
 import AOSFadeInContainer from '../../components/AOSFadeInContainer';
+import TabRowHeader from './components/TabRowHeader';
 // Actions
 import * as weeksActions from '../../actions/weeks';
 import * as stepOneActions from '../../actions/step.one';
@@ -193,21 +194,14 @@ class StepOne extends React.Component {
                   })}>
                     <TabList className="tab-row__tab-list">
                       <Tab
-                        className="tab-row__section tab-row__section--bg-transparent center-left mb-w100"
+                        className="tab-row__section tab-row__section--bg-transparent react-center-left react-mb-w100"
                         onClick={() => {
                           this.selectGroup({ group: null, secondary_group: null });
                           this.setWeeksCounter(0);
                           this.setPrice(0);
                         }}
                       >
-                        <span children={row.name} className={cx(`
-                            tab-row__group-header
-                            tab-row__header
-                            tab-row__header--regular
-                            tab-row__header--mw-initial
-                            text-left
-                            white`)}
-                        />
+                        <TabRowHeader children={row.name} />
                       </Tab>
                       {
                         isStringsEqual(row.name, weekly_camp)
@@ -218,14 +212,14 @@ class StepOne extends React.Component {
                                 tab-row__section
                                 tab-row__section--bg-white
                                 tab-row__section--center
-                                w-75
-                                d-flex
-                                d-flex--mb-column
-                                align-center
-                                justify-evenly`
+                                react-w-75
+                                react-d-flex
+                                react-d-flex--mb-column
+                                react-align-center
+                                react-justify-evenly`
                               )}
                             >
-                              <div className="d-flex align-center justify-end w-35  tab-row__header--font-18 tab-row__header--trade-gothic-bold">
+                              <div className="react-d-flex react-align-center react-justify-end w-35 tab-row__header--font-18 tab-row__header--trade-gothic-bold">
                                 <Button
                                   onClick={() => {
                                     this.setWeeksCounter(minWeekCount);
@@ -238,7 +232,7 @@ class StepOne extends React.Component {
                                 </Button>
                                 <span className="tab-row__separator" style={{ marginLeft: '20px' }} />
                               </div>
-                              <div className="d-flex align-center justify-center w-30 tab-row__header--trade-gothic-bold">
+                              <div className="react-d-flex react-align-center react-justify-center react-w-30 tab-row__header--trade-gothic-bold">
                                 <Button
                                   style={{ marginRight: '20px', padding: '4px' }}
                                   className="tab-row__header tab-row__header--font-80"
@@ -261,10 +255,10 @@ class StepOne extends React.Component {
                                   children="+"
                                 />
                               </div>
-                              <div className="d-flex align-center justify-start w-35 tab-row__header--font-18 tab-row__header--trade-gothic-bold">
+                              <div className="react-d-flex react-align-center react-justify-start react-w-35 tab-row__header--font-18 tab-row__header--trade-gothic-bold">
                                 <span className="tab-row__separator" style={{ marginRight: '20px' }} />
                                 <Button
-                                  buttonClassName="d-flex f-direction-column"
+                                  buttonClassName="react-d-flex react-f-direction-column"
                                   onClick={() => {
                                     this.setWeeksCounter(maxWeekCount);
                                     this.setPrice(row.price);
@@ -297,7 +291,7 @@ class StepOne extends React.Component {
                                         tab-row__section
                                         tab-row__section--bg-white
                                         tab-row__section--center
-                                        center-center
+                                        react-center-center
                                         tab-row__secondary-group-header`
                                       )}
                                     >
@@ -571,7 +565,7 @@ function AgeRadioBtnContainer ({ range, age }) {
         options={range}
         component={({ input, options }) => (
           options.map((value) => (
-            <div key={value} className="content__age text-left mb-10">
+            <div key={value} className="content__age react-text-left react-mb-10">
               <Radio
                 {...input}
                 className="content__radio-btn--font-16"

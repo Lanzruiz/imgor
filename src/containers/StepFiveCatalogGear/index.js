@@ -178,7 +178,7 @@ class StepFiveCatalogGear extends React.Component {
                   <Img className="card-content__img" src={image_url} data-aos="flip-left" data-aos-duration="600" />
                 </VisibilitySensor>
               </CardContentCol>
-              <CardContentCol className="center-center flex-1">
+              <CardContentCol className="react-center-center react-flex-1">
                 {attributes.map(attribute => this.renderCardAttributes(attribute, id, selected_option_id))}
                 {(selected_option_id || !attributes.length) && (
                   <CardCounter

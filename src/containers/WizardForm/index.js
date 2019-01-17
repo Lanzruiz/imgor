@@ -779,9 +779,8 @@ class WizardForm extends React.Component {
 
   stepSixValidation = () => {
     const {
-      stepSixAirportPickup, stepSixUnaccompanied, stepSixSelectedTransport,
-      stepSixArrivalDateTime, stepSixDropoff, stepSixDropoffOtherLocation, stepSixDepartingTransport,
-      stepSixPickUpOtherLocation, stepSixDepartingFlightNumber, stepSixDepartingDateTime,
+      stepSixAirportPickup, stepSixUnaccompanied, stepSixSelectedTransport, stepSixDropoff,
+      stepSixDropoffOtherLocation, stepSixDepartingTransport, stepSixPickUpOtherLocation,
       stepSixDeparting, stepSixTransportationId, stepSixAirportPickupAirline, stepSixDepartingAirline,
     } = this.props;
 

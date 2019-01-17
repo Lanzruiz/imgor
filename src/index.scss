@@ -25,172 +25,174 @@
     display: block;
   }
 
-  .upper-case {
-    text-transform: uppercase;
-  }
-
-  .text-center {
-    text-align: center;
-  }
-
-  .text-left {
-    text-align: left;
-  }
-
-  .mr {
-    &-auto {
-      margin-right: auto;
+  .react {
+    &-upper-case {
+      text-transform: uppercase;
     }
 
-    &-0 {
-      margin-right: 0!important;
-    }
-  }
-
-  .w {
-    &-100 {
-      width: 100%;
+    &-text-center {
+      text-align: center;
     }
 
-    &-75 {
-      width: 75%;
+    &-text-left {
+      text-align: left;
     }
 
-    &-40 {
-      width: 40%;
+    &-mr {
+      &-auto {
+        margin-right: auto;
+      }
+
+      &-0 {
+        margin-right: 0!important;
+      }
     }
 
-    &-35 {
-      width: 35%;
+    &-w {
+      &-100 {
+        width: 100%;
+      }
+
+      &-75 {
+        width: 75%;
+      }
+
+      &-40 {
+        width: 40%;
+      }
+
+      &-35 {
+        width: 35%;
+      }
+
+      &-30 {
+        width: 30%;
+      }
+
+      &-25 {
+        width: 25%;
+      }
+
+      &-20 {
+        width: 20%;
+      }
     }
 
-    &-30 {
-      width: 30%;
+    &-h {
+      &-100 {
+        height: 100%;
+      }
     }
 
-    &-25 {
-      width: 25%;
+    &-d {
+      &-flex {
+        display: flex;
+      }
+
+      &-block {
+        display: block;
+      }
     }
 
-    &-20 {
-      width: 20%;
-    }
-  }
+    &-align {
+      &-center {
+        align-items: center;
+      }
 
-  .h {
-    &-100 {
-      height: 100%;
-    }
-  }
-
-  .d {
-    &-flex {
-      display: flex;
+      &-initial {
+        align-items: initial;
+      }
     }
 
-    &-block {
-      display: block;
-    }
-  }
+    &-justify {
+      &-around {
+        justify-content: space-around;
+      }
 
-  .align {
+      &-center {
+        justify-content: center;
+      }
+
+      &-between {
+        justify-content: space-between;
+      }
+
+      &-evenly {
+        justify-content: space-evenly;
+      }
+
+      &-end {
+        justify-content: flex-end;
+      }
+
+      &-start {
+        justify-content: flex-start;
+      }
+    }
+
+    &-f {
+      &-direction {
+        &-column {
+          flex-direction: column;
+        }
+
+        &-row {
+          flex-direction: row;
+        }
+      }
+    }
+
+    &-mb {
+      &-0 {
+        margin-bottom: 0;
+      }
+
+      &-10 {
+        margin-bottom: 10px;
+      }
+    }
+
+    &-bold {
+      font-weight: bold;
+    }
+
+    &-white {
+      color: $white;
+    }
+
+    &-p-1 {
+      padding: 1rem;
+    }
+
     &-center {
-      align-items: center;
-    }
-
-    &-initial {
-      align-items: initial;
-    }
-  }
-
-  .justify {
-    &-around {
-      justify-content: space-around;
-    }
-
-    &-center {
-      justify-content: center;
-    }
-
-    &-between {
-      justify-content: space-between;
-    }
-
-    &-evenly {
-      justify-content: space-evenly;
-    }
-
-    &-end {
-      justify-content: flex-end;
-    }
-
-    &-start {
-      justify-content: flex-start;
-    }
-  }
-
-  .f {
-    &-direction {
-      &-column {
+      &-center {
+        align-items: center;
+        display: flex;
         flex-direction: column;
+        justify-content: center;
       }
 
-      &-row {
-        flex-direction: row;
+      &-left {
+        align-items: flex-start;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
       }
     }
-  }
 
-  .mb {
-    &-0 {
-      margin-bottom: 0;
+    &-hidden {
+      display: none!important;
     }
 
-    &-10 {
-      margin-bottom: 10px;
-    }
-  }
-
-  .bold {
-    font-weight: bold;
-  }
-
-  .white {
-    color: #fff;
-  }
-
-  .p-1 {
-    padding: 1rem;
-  }
-
-  .center {
-    &-center {
-      align-items: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+    &-flex {
+      &-1 {
+        flex: 1;
+      }
     }
 
-    &-left {
-      align-items: flex-start;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+    &-align-items-stretch {
+      align-items: stretch;
     }
-  }
-
-  .hidden {
-    display: none!important;
-  }
-
-  .flex {
-    &-1 {
-      flex: 1;
-    }
-  }
-
-  .align-items-stretch {
-    align-items: stretch;
   }
 }
 
