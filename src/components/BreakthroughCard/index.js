@@ -18,7 +18,8 @@ const BreakthroughCard = (props) => {
       header={header}
       headerSize="large"
       id={id}
-      imgSrc={footballGameChanger}
+      defaultImageSrc={footballGameChanger}
+      imgSrc="step_three.breakthrough.image_path"
       label={label}
       onClick={onClick}
       onRemove={onRemove}

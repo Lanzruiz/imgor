@@ -143,7 +143,7 @@ class StepOne extends React.Component {
           onSubmit={this.closeEmailModal}
           shouldShowEmailModal={!participantId}
         />
-        <Container style={{ marginBottom: '71px' }}>
+        <Container>
           <Row>
             <Col>
               <Header

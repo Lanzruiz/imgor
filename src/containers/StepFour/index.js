@@ -77,8 +77,8 @@ class StepFour extends React.Component {
   };
 
   componentDidMount() {
-    const { hasSecondaryProgram } = this.props;
-    if (!hasSecondaryProgram) {
+    const { hasSecondaryProgram, currentStep } = this.props;
+    if (!hasSecondaryProgram && isEqual(currentStep, stepsEnum.four)) {
       this.getCatalogCamp();
     }
     this.scrollToCurrentComponent();

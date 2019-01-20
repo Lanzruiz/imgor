@@ -18,7 +18,8 @@ const GameChangerCard = (props) => {
       header={header}
       headerSize="large"
       id={id}
-      imgSrc={footballGameChanger}
+      defaultImageSrc={footballGameChanger}
+      imgSrc="step_three.game_changer_card.image_path"
       label={label}
       onClick={onClick}
       onRemove={onRemove}

@@ -2,6 +2,20 @@
 
 #{$root} {
     .step-final {
+        margin-bottom: 65px;
+
+        .card-body__head {
+            padding-left: 14px;
+        }
+
+        .card-body__body {
+            flex: 1 1 auto;
+        }
+
+        .card-body__head--light-blue {
+            background-color: $step-final-light-blue-colog;
+        }
+
         &__form {
             box-sizing: border-box;
             display: block;
@@ -12,7 +26,7 @@
 
             @include breakpoint($mobile) {
                 min-height: 10px;
-                padding: 10px;
+                padding: 10px 20px 10px 10px;
                 max-width: 100% !important;
                 margin-bottom: 20px;
             }

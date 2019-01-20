@@ -18,7 +18,8 @@ const CoreCard = (props) => {
       header={header}
       headerSize="large"
       id={id}
-      imgSrc={footballCore}
+      defaultImageSrc={footballCore}
+      imgSrc="step_three.core.image_path"
       label={label}
       onClick={onClick}
       onRemove={onRemove}

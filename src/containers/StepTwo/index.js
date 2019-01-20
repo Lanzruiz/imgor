@@ -205,7 +205,7 @@ class StepTwo extends React.Component {
 
     return (
       <AOSFadeInContainer className="step-two">
-        <Container style={{ marginBottom: `${(!selectedDate.capacity_start_date && !selectedDate.capacity_end_date) ? 130 : 30}px` }}>
+        <Container>
           <Row>
             <Col>
               <Header

@@ -13,8 +13,14 @@
             align-content: center;
         }
 
+        &__wrapper {
+            height: 71px;
+        }
+
         &__container {
             background-color: $green-block-bg;
+            border-top: 1px solid $white;
+            box-sizing: border-box;
             height: 71px;
 
             @include breakpoint($mobile){

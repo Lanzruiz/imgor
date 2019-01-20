@@ -187,7 +187,11 @@ class Card extends React.Component {
 
   renderImage = (src) => src && (
     <div className="card-body__image">
-      <Image className="card-body__image-item" src={src} />
+      <Image
+        className="card-body__image-item"
+        src={src}
+        defaultSrc={this.props.defaultImageSrc}
+      />
     </div>
   );
 

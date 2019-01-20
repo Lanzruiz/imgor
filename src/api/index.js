@@ -138,8 +138,9 @@ class Api {
     return await instance.delete(`cart/${cartId}/participant/${participantId}/product/${productId}`);
   };
 
-  async putCartCartIdParticipantParticipantIdProductId({ cartId, participantId, productId, product, type }) {
+  async putCartCartIdParticipantParticipantIdProductId({ attributes, cartId, participantId, productId, product, type }) {
     return await instance.put(`cart/${cartId}/participant/${participantId}/product/${productId}`, {
+      attributes,
       product,
       type,
       quantity: 1,

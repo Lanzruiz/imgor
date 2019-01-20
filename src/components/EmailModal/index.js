@@ -33,7 +33,7 @@ class EmailModal extends React.Component {
             </div>
             <Button
               buttonClassName="email-modal__button"
-              className="email-modal__button-block upper-case"
+              className="email-modal__button-block react-upper-case"
               children="build a camp now"
               type="submit"
             />

@@ -232,5 +232,10 @@
     "please_first_choose_size": "Please first choose size",
     "please_choose_quantity": "Please choose quantity",
     "please_choose_date": "Please first choose date",
-    "sold-out": "sold out"
+    "sold-out": "sold out",
+    "step_three.breakthrough.image_path": "",
+    "step_three.core.image_path": "",
+    "step_three.total_athlete_card.image_path": "",
+    "step_three.game_changer_card.image_path": "",
+    "step_six.transport.image_path": ""
 }

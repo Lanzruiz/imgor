@@ -141,7 +141,7 @@ export function stepThreeDeleteProductFromCartAndDiscardCard({ campId, cartId, p
     dispatch( setStepsCounter(stepsEnum.three), );
     dispatch( stepThreeSetSecondaryPrograms({ id: null, secondary_programs: [] }), );
     dispatch( setSecondaryProgramId(null), );
-    
+
     Api.req({
       apiCall: Api.deleteCartCartIdParticipantParticipantIdProductId,
       res200: ({ cart }) => {

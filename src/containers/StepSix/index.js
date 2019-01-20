@@ -180,7 +180,11 @@ class StepSix extends React.Component {
                     <CardContent className="step-six__transportation-card">
                       <CardContentRow>
                         <CardContentCol>
-                          <Image className="card-content__img" src={stubImage} />
+                          <Image
+                            className="card-content__img"
+                            defaultSrc={stubImage}
+                            src="step_six.transport.image_path"
+                          />
                         </CardContentCol>
                         <CardContentCol>
                           <AirportPickupCheckboxContainer airportPickup={airportPickup} />

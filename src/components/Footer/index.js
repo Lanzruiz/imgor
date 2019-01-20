@@ -79,6 +79,7 @@ class Footer extends React.Component {
       }
 
       const isArrivalDataChanged = !isEqual(stepSixArrivalData, prevProps.stepSixArrivalData);
+      isArrivalDataChanged && console.log(stepSixArrivalData);
       if (isArrivalDataChanged) {
         this.sendArrivalRequest();
       }
@@ -105,54 +106,56 @@ class Footer extends React.Component {
     const isCurrentStepEqualToSix = isEqual(step, stepsEnum.six);
 
     return (
-      <div className="footer__container footer__container--fixed">
-        <Container style={{ height: '100%' }}>
-          <Row style={{ height: '100%' }}>
-            <Col>
-              <footer className="footer">
-                <div className="footer__image-container">
-                  <Img className="footer__image" src={shopImg} alt="" />
-                </div>
-                <div className="footer__price-container">
-                  <span className="footer__price">
-                    &#36;{formatMoney(price, 0)}
-                  </span>
-                  <span className="footer__price-total">
-                    <LocaleString stringKey="camp_subtotal" />
-                  </span>
-                </div>
-                {hasMessage
-                  ? (
-                    <div className="footer__text">
-                      <span>{message}</span>{' '}
-                      <span>
-                        {arrowPositinon}
-                      </span>
-                    </div>
-                  ) : !isCurrentStepEqualToSix && (
-                    <div className="footer__btn-container">
-                      <FooterButton
-                        purchase
-                        stringKey="purchase_on_shop_img"
-                        onClick={purchaseOnClickHandler}
-                      />
-                      <FooterButton
-                        save
-                        stringKey="save_camp"
-                        onClick={saveCampOnClickHandler}
-                      />
-                      <FooterButton
-                        share
-                        stringKey="share_camp"
-                        onClick={shareOnClickHandler}
-                      />
-                    </div>
-                  )
-                }
-              </footer>
-            </Col>
-          </Row>
-        </Container>
+      <div className="footer__wrapper">
+        <div className="footer__container footer__container--fixed">
+          <Container style={{ height: '100%' }}>
+            <Row style={{ height: '100%' }}>
+              <Col>
+                <footer className="footer">
+                  <div className="footer__image-container">
+                    <Img className="footer__image" src={shopImg} alt="" />
+                  </div>
+                  <div className="footer__price-container">
+                    <span className="footer__price">
+                      &#36;{formatMoney(price, 0)}
+                    </span>
+                    <span className="footer__price-total">
+                      <LocaleString stringKey="camp_subtotal" />
+                    </span>
+                  </div>
+                  {hasMessage
+                    ? (
+                      <div className="footer__text">
+                        <span>{message}</span>{' '}
+                        <span>
+                          {arrowPositinon}
+                        </span>
+                      </div>
+                    ) : !isCurrentStepEqualToSix && (
+                      <div className="footer__btn-container">
+                        <FooterButton
+                          purchase
+                          stringKey="purchase_on_shop_img"
+                          onClick={purchaseOnClickHandler}
+                        />
+                        <FooterButton
+                          save
+                          stringKey="save_camp"
+                          onClick={saveCampOnClickHandler}
+                        />
+                        <FooterButton
+                          share
+                          stringKey="share_camp"
+                          onClick={shareOnClickHandler}
+                        />
+                      </div>
+                    )
+                  }
+                </footer>
+              </Col>
+            </Row>
+          </Container>
+        </div>
       </div>
     );
   }

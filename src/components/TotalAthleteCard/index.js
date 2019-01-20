@@ -18,7 +18,8 @@ const TotalAthleteCard = (props) => {
       header={header}
       headerSize="large"
       id={id}
-      imgSrc={footballCore}
+      defaultImageSrc={footballCore}
+      imgSrc="step_three.total_athlete_card.image_path"
       label={label}
       onClick={onClick}
       onRemove={onRemove}
