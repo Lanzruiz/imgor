@@ -11,6 +11,18 @@ const initialState = {
   secondary_programs: [],
   selected_card_with_secondary_programs_id: null,
   participantProductId: null,
+  stepThreeWeek_1_data: null,
+  stepThreeWeek_2_data: null,
+  stepThreeWeek_3_data: null,
+  stepThreeWeek_4_data: null,
+  stepThreeWeek_5_data: null,
+  stepThreeWeek_6_data: null,
+  stepThreeWeek_7_data: null,
+  stepThreeWeek_8_data: null,
+  stepThreeWeek_9_data: null,
+  stepThreeWeek_10_data: null,
+  stepThreeWeek_11_data: null,
+  stepThreeWeek_12_data: null,
 };
 
 export default function(state = initialState, action) {
@@ -22,6 +34,15 @@ export default function(state = initialState, action) {
         return state;
       }
       return assign({}, state, { data: results });
+    }
+
+    case stepThreeTypes.STEP_THREE_SET_WEEKLY_CATALOG_DATA: {
+      const { weekId, data } = payload;
+      const currentData = state[`stepThreeWeek_${weekId}_data`]
+      if (isEqual(currentData, data)) {
+        return state;
+      }
+      return assign({}, state, { [`stepThreeWeek_${weekId}_data`]: data });
     }
 
     case stepThreeTypes.STEP_THREE_SET_DEFAULT_STATE: {

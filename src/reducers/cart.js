@@ -7,6 +7,18 @@ import * as cartTypes from '../constants/cart';
 
 const initialState = {
   id: null,
+  stepOneSelectedProductWeek_1: null,
+  stepOneSelectedProductWeek_2: null,
+  stepOneSelectedProductWeek_3: null,
+  stepOneSelectedProductWeek_4: null,
+  stepOneSelectedProductWeek_5: null,
+  stepOneSelectedProductWeek_6: null,
+  stepOneSelectedProductWeek_7: null,
+  stepOneSelectedProductWeek_8: null,
+  stepOneSelectedProductWeek_9: null,
+  stepOneSelectedProductWeek_10: null,
+  stepOneSelectedProductWeek_11: null,
+  stepOneSelectedProductWeek_12: null,
   stepThreeProductId: null,
   stepSixUnnacompaniedProductId: null,
   stepSixDepartingProductId: null,

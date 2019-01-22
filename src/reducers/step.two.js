@@ -20,38 +20,25 @@ export default function(state = initialState, action) {
   switch(type) {
     case stepTwoTypes.GET_CATALOG_CAMPS_CALENDAR: {
       const { results, starting_price } = payload;
-      return {
-        ...state,
-        stepTwoStartingPrice: starting_price,
-        data: results,
-      };
+      return assign({}, state, { stepTwoStartingPrice: starting_price, data: results });
     }
 
     case stepTwoTypes.STEP_TWO_SELECT_DATE: {
       if (isEqual(state.selectedDate, payload)) {
         return state;
       }
-      return {
-        ...state,
-        selectedDate: payload,
-      }
+      return assign({}, state, { selectedDate: payload, });
     }
 
     case stepTwoTypes.STEP_TWO_SET_DEFAULT_STATE: {
-      return {
-        ...state,
-        ...initialState,
-      };
+      return assign({}, state, initialState);
     }
 
     case stepTwoTypes.STEP_TWO_SET_CAMP_DAYS_LENGTH: {
-      if (payload === state.stepTwoCampDaysLength) {
+      if (isEqual(payload, state.stepTwoCampDaysLength)) {
         return state;
       }
-      return {
-        ...state,
-        stepTwoCampDaysLength: payload,
-      };
+      return assign({}, state, { stepTwoCampDaysLength: payload, });
     }
 
     case PURGE: {

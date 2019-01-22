@@ -2,6 +2,7 @@
 import isEqual from 'lodash/isEqual';
 import assign from 'lodash/assign';
 import concat from 'lodash/concat';
+import find from 'lodash/find';
 import { PURGE } from 'redux-persist';
 // Constants
 import * as weeksTypes from '../constants/weeks';
@@ -63,7 +64,8 @@ export default function(state = initialState, action) {
 
     case weeksTypes.REMOVE_CUSTOMIZED_WEEK: {
       const weeks = concat(state.weeks);
-      weeks[state.selectedWeekId].customize_id = null;
+      const currentWeek = find(weeks, ['id', payload]);
+      currentWeek.customize_id = null;
       return assign({}, state, { weeks });
     }
 

@@ -9,6 +9,7 @@ import scrollToComponent from 'react-scroll-to-component';
 import isNumber from 'lodash/isNumber';
 import isEqual from 'lodash/isEqual';
 import toLower from 'lodash/toLower';
+import find from 'lodash/find';
 // Components
 import Header from '../../components/Header';
 import BreakthroughCard from '../../components/BreakthroughCard';
@@ -22,14 +23,14 @@ import * as stepThreeActions from '../../actions/step.three';
 import * as stepsActions from '../../actions/steps';
 // Selectors
 import {
-  stepThreeDataSelector, stepTreeSelectedIdSelector, stepThreeSelectedProductSelector,
+  stepThreeDataSelector, stepTreeSelectedIdSelector, stepThreeSelectedProductSelector, stepThreeSelector,
   stepThreeSelectedCardWithSecondaryProgramsIdSelector, stepThreeParticipantProductIdSelector,
 } from './selector';
 import { sportSelector, businessTypeSelector, packageTypeSelector } from '../InitialComponent/selectors';
 import {
   isWeeklyCampSelector, stepOneAgeSelector, stepOneGenderSelector, cartIdSelector, participantIdSelector,
-  stepOneBoardingBooleanSelector, stepOneGroupSelector, stepOneSecondaryGroupSelector,
-  cartStepThreeProductIdSelector,
+  stepOneBoardingBooleanSelector, stepOneGroupSelector, stepOneSecondaryGroupSelector, weeksItemsSelector,
+  cartStepThreeProductIdSelector, cartSelector,
 } from '../StepOne/selectors';
 import { stepTwoStartDateSelector, stepTwoSelectedDateSelector } from '../StepTwo/selectors';
 // Constants
@@ -92,6 +93,10 @@ class StepThree extends React.Component {
     secondaryGroup: PropTypes.string,
     isWeeklyCamp: PropTypes.bool,
     selectedCardWithSecondaryProgramsId: PropTypes.number,
+  };
+
+  static defaultProps = {
+    data: [],
   };
 
   componentDidMount() {
@@ -211,13 +216,27 @@ class StepThree extends React.Component {
   };
 
   selectCard = (id) => {
-    const { cartId, participantId, cartStepThreeProductId } = this.props;
+    const { cartId, participantId, cartStepThreeProductId, isWeeklyCamp, weeks, stepThree } = this.props;
 
     if (cartStepThreeProductId) {
       this.props.stepThreeActions.stepThreeDeleteProductFromCartAndSetNew({ campId: id, cartId, participantId, productId: cartStepThreeProductId });
     }
     if (cartId && participantId && !cartStepThreeProductId) {
-      this.props.stepThreeActions.stepThreeSetProductToTheCart({ cartId, participantId, campId: id });
+      if (isWeeklyCamp) {
+        const firstWeekData = stepThree['stepThreeWeek_1_data'];
+        const selectedItem = find(firstWeekData, ['id', id]);
+        if (selectedItem) {
+          const data = [];
+          weeks.forEach((weekItem) => {
+            const currentWeekData = stepThree[`stepThreeWeek_${weekItem.id}_data`];
+            const currentWeekId = find(currentWeekData, ['name', selectedItem.name]);
+            data.push({ cartId, participantId, campId: currentWeekId.id, weekId: weekItem.id });
+          });
+          this.props.stepThreeActions.stepThreeAddWeeklyCampToTheCart(data);
+        }
+      } else {
+        this.props.stepThreeActions.stepThreeSetProductToTheCart({ cartId, participantId, campId: id });
+      }
     }
   };
 
@@ -226,9 +245,28 @@ class StepThree extends React.Component {
   };
 
   discardCard = (id) => {
-    const { cartId, participantId, cartStepThreeProductId } = this.props;
+    const { cartId, participantId, cart, isWeeklyCamp, cartStepThreeProductId } = this.props;
 
-    this.props.stepThreeActions.stepThreeDeleteProductFromCartAndDiscardCard({ campId: id, cartId, participantId, productId: cartStepThreeProductId})
+    if (isWeeklyCamp) {
+      const data = [
+        cart['stepOneSelectedProductWeek_1'],
+        cart['stepOneSelectedProductWeek_2'],
+        cart['stepOneSelectedProductWeek_3'],
+        cart['stepOneSelectedProductWeek_4'],
+        cart['stepOneSelectedProductWeek_5'],
+        cart['stepOneSelectedProductWeek_6'],
+        cart['stepOneSelectedProductWeek_7'],
+        cart['stepOneSelectedProductWeek_8'],
+        cart['stepOneSelectedProductWeek_9'],
+        cart['stepOneSelectedProductWeek_10'],
+        cart['stepOneSelectedProductWeek_11'],
+        cart['stepOneSelectedProductWeek_12'],
+      ];
+
+      this.props.stepThreeActions.stepThreeDeleteWeeklyCampProductsFromCartAndDiscardCard({ cartId, participantId, productIds: data });
+    } else {
+      this.props.stepThreeActions.stepThreeDeleteProductFromCartAndDiscardCard({ cartId, participantId, productId: cartStepThreeProductId });
+    }
   };
 
   saveTrainingId = (id) => {
@@ -248,7 +286,7 @@ class StepThree extends React.Component {
 
   getCatalogCampsLevels = () => {
     const {
-      sport, packageType, businessType, gender, boarding,
+      sport, packageType, businessType, gender, boarding, weeks,
       age, group, secondaryGroup, isWeeklyCamp, startDate,
     } = this.props;
 
@@ -266,6 +304,20 @@ class StepThree extends React.Component {
 
     if (isWeeklyCamp) {
       delete getCatalogCampsLevelsRequestArgs.secondary_group;
+      weeks.forEach((weekItem) => {
+        this.props.stepThreeActions.stepThreeGetWeeklyCatalogCamps({
+          age,
+          sport,
+          gender,
+          boarding,
+          group,
+          businessType,
+          packageType,
+          secondaryGroup,
+          weekId: weekItem.id,
+          startDate: weekItem.start_date,
+        });
+      });
     }
 
     this.props.stepThreeActions.getCatalogCampsLevelsRequest(getCatalogCampsLevelsRequestArgs);
@@ -310,6 +362,9 @@ function mapStateToProps(state) {
     sport: sportSelector(state),
     businessType: businessTypeSelector(state),
     packageType: packageTypeSelector(state),
+    weeks: weeksItemsSelector(state),
+    stepThree: stepThreeSelector(state),
+    cart: cartSelector(state),
   };
 };
 

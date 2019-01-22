@@ -6,7 +6,7 @@ function trainingSelector(state = {}) {
   return state.training;
 };
 
-function stepThreeSelector(state = {}) {
+export function stepThreeSelector(state = {}) {
   return state.stepThree;
 };
 

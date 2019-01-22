@@ -67,6 +67,19 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
     this.getCatalogGearUpsellNew();
   }
 
+  componentWillUnmount() {
+    const { upsellNewSelectedProducts, cartId, participantId, } = this.props;
+    for (let key in upsellNewSelectedProducts) {
+      const args = {
+        cartId,
+        participantId,
+        productId: upsellNewSelectedProducts[key].productId,
+        cardId: upsellNewSelectedProducts[key].dateId,
+      };
+      this.props.stepFiveActions.stepFiveDeleteUpsellGearItemRequest(args);
+    }
+  }
+
   render() {
     const { stepFiveGearUpsellNew } = this.props;
     const shouldRenderCatalogGearItem = stepFiveGearUpsellNew.length > 0;
@@ -132,7 +145,7 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
           <CardContent>
             <CardContentRow>
               <CardContentCol className="card-content__img-container">
-                <Image className="card-content__img" src={image_url} />
+                <Image className="card-content__img" defaultSrc={image_url} />
               </CardContentCol>
               <CardContentCol className="react-center-center react-flex-1">
                 {this.renderDates(dates, id)}

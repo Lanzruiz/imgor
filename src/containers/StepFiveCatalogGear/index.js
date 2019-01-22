@@ -84,6 +84,13 @@ class StepFiveCatalogGear extends React.Component {
     this.getCatalogGear({ gender });
   }
 
+  componentWillUnmount() {
+    const { selectedGear } = this.props;
+    for (let key in selectedGear) {
+      this.removeGear(key);
+    }
+  }
+
   render() {
     const { data } = this.props;
     const isCatalogGearDataAvailable = data.length > 0;

@@ -77,7 +77,9 @@ export function deleteSelectedConcentration({ cartId, participantId, productId, 
           }
           return;
         }
-        dispatch( removeCustomizedWeek(id), );
+        if (isNumber(id)) {
+          dispatch( removeCustomizedWeek(id), );
+        }
       },
       res404: () => console.log('Api.deleteCartCartIdParticipantParticipantIdProductId => 404'),
       reject: console.error,

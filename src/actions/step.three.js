@@ -1,5 +1,6 @@
 // Modules
 import assign from 'lodash/assign';
+import isNumber from 'lodash/isNumber';
 // Constants
 import * as stepThreeTypes from '../constants/step.three';
 import { stepsEnum } from '../constants/steps';
@@ -136,7 +137,7 @@ export function stepThreeDiscardCardWithSecondProgram() {
   }
 }
 
-export function stepThreeDeleteProductFromCartAndDiscardCard({ campId, cartId, participantId, productId }) {
+export function stepThreeDeleteProductFromCartAndDiscardCard({ cartId, participantId, productId }) {
   return function(dispatch) {
     dispatch( setStepsCounter(stepsEnum.three), );
     dispatch( stepThreeSetSecondaryPrograms({ id: null, secondary_programs: [] }), );
@@ -151,6 +152,99 @@ export function stepThreeDeleteProductFromCartAndDiscardCard({ campId, cartId, p
       res404: console.log,
       reject: console.error,
       apiCallParams: { cartId, participantId, productId },
+    });
+  }
+}
+
+export function stepThreeDeleteWeeklyCampProductsFromCartAndDiscardCard({ cartId, participantId, productIds }) {
+  return function(dispatch) {
+    dispatch( setStepsCounter(stepsEnum.three), );
+    dispatch( stepThreeSetSecondaryPrograms({ id: null, secondary_programs: [] }), );
+    dispatch( setSecondaryProgramId(null), );
+
+    Promise.all(
+      productIds.map((productId) => {
+        if ( isNumber(productId) ) {
+          return (
+            Api.deleteCartCartIdParticipantParticipantIdProductId({ cartId, participantId, productId })
+              .then(res => res.data)
+          );
+        } else {
+          return Promise.resolve(null);
+        }
+      })
+    )
+      .then((data) => {
+        const computedCart = {};
+        let cart;
+        data.forEach((item, idx) => {
+          const weekId = idx + 1;
+          if (item) {
+            cart = item.cart;
+          }
+          if (weekId === 1) {
+            assign(computedCart, { stepThreeProductId: null });
+          }
+          assign(computedCart, { [`stepOneSelectedProductWeek_${weekId}`]: null });
+        });
+        dispatch( updateCart( assign({}, cart, computedCart) ) );
+        dispatch( saveTrainingId(null), );
+      })
+      .catch(console.error);
+  }
+}
+
+function stepThreeSetWeeklyCatalogData({ weekId, data }) {
+  return {
+    type: stepThreeTypes.STEP_THREE_SET_WEEKLY_CATALOG_DATA,
+    payload: { weekId, data },
+  };
+}
+
+export function stepThreeAddWeeklyCampToTheCart(data) {
+  return function(dispatch) {
+    dispatch( stepThreeSetSecondaryPrograms({ id: null, secondary_programs: [] }), );
+    dispatch( setSecondaryProgramId(null), );
+
+    Promise.all(
+      data.map(({ cartId, participantId, campId, weekId }) => (
+        Api.getCatalogCampCampId(campId)
+          .then(data => data.data.results[0])
+          .then(product => Api.postCartCartIdParticipantIdProduct({ cartId, participantId, product, quantity: 1, productId: product.id, type: 'camp' }))
+          .then(data => data.data)
+          .then(({ cart, participant_product_id }) => {
+            dispatch( updateCart(assign({}, cart, { [`stepOneSelectedProductWeek_${weekId}`]: participant_product_id })), );
+            if (weekId === 1) {
+              dispatch( saveTrainingId(campId), );
+            }
+          })
+      ))
+    )
+      .then(() => dispatch( setStepsCounter(stepsEnum.four) ))
+      .catch(console.error);
+  }
+}
+
+export function stepThreeGetWeeklyCatalogCamps(args) {
+  return function(dispatch) {
+    Api.req({
+      res200: (data) => {
+        dispatch( stepThreeSetWeeklyCatalogData({ weekId: args.weekId, data: data.results }) );
+      },
+      res404: () => console.log('stepThreeGetWeeklyCatalogCamps() => 404'),
+      reject: console.error,
+      apiCall: Api.getCatalogCampsLevels,
+      apiCallParams: {
+        sport: args.sport,
+        business_type: args.businessType,
+        package_type: args.packageType,
+        gender: args.gender,
+        boarding: args.boarding,
+        group: args.group,
+        secondary_group: args.secondaryGroup,
+        age: args.age,
+        date: args.startDate,
+      },
     });
   }
 }

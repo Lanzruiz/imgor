@@ -1,6 +1,7 @@
 // Modules
 import { createSelector } from 'reselect';
 import moment from 'moment';
+import find from 'lodash/find';
 // Constants
 import { daysInWeek } from '../../constants/weeks';
 import { weekly_camp } from '../StepOne/index';
@@ -89,7 +90,9 @@ function findWeeksDurations(arr = []) {
     const computedData = moment(arr[i].capacity_start_date, dateFormat).add(daysInWeek, 'days').format(dateFormat);
     const nextWeek = arr.find(({ capacity_start_date }) => (computedData === capacity_start_date));
     if (nextWeek) {
-      result.push(arr[i]);
+      if (!find(nextWeek.program_types, ['sold_out', true])) {
+        result.push(arr[i]);
+      }
     }
   }
   return result;

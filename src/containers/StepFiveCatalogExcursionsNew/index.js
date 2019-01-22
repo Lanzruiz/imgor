@@ -61,6 +61,18 @@ class StepFiveCatalogExcursionsNew extends React.Component {
     this.getCatalogExcursionsNew({ startDate, endDate });
   }
 
+  componentWillUnmount() {
+    const { selectedExcurcionGear, cartId, participantId } = this.props;
+    for (let key in selectedExcurcionGear) {const args = {
+      cartId,
+      participantId,
+      productId: selectedExcurcionGear[key].productId,
+      cardId: selectedExcurcionGear[key].dateId,
+    };
+      this.props.stepFiveActions.stepFiveDeleteExcursionGearItemRequest(args);
+    }
+  }
+
   render() {
     const { excursions } = this.props;
     if (isEqual(excursions.length, 0)) return null;
@@ -119,7 +131,7 @@ class StepFiveCatalogExcursionsNew extends React.Component {
           <CardContent>
             <CardContentRow>
               <CardContentCol className="card-content__img-container">
-                <Image className="card-content__img" src={image_url} />
+                <Image className="card-content__img" defaultSrc={image_url} />
               </CardContentCol>
               <CardContentCol className="react-center-center react-flex-1">
                 {this.renderDates(dates, id)}

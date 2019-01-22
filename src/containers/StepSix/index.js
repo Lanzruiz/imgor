@@ -4,7 +4,7 @@ import { Container, Row, Col } from 'react-grid-system';
 import { connect } from 'react-redux';
 import scrollToComponent from 'react-scroll-to-component';
 import PropTypes from 'prop-types';
-import { reduxForm } from 'redux-form';
+import { reduxForm, change } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import isEqual from 'lodash/isEqual';
 // Components
@@ -36,6 +36,10 @@ import stubImage from '../../assets/img/2018-Suburban.png';
 import * as stepSixActions from '../../actions/step.six';
 import * as stepsActions from '../../actions/steps';
 // Selectors
+import {
+  participantIdSelector, cartIdSelector, cartStepSixUnnacompaniedProductIdSelector, cartStepSixDepartingProductIdSelector,
+  cartStepSixArrivalProductIdSelector,
+} from '../../containers/StepOne/selectors';
 import {
   stepSixAirportPickupSelector, stepSixTransportSelector,
   stepSixUnaccompaniedSelector, stepSixAirlinesSelector, stepSixDropoffSelector,
@@ -392,6 +396,22 @@ class StepSix extends React.Component {
   };
 
   setDefaultState = () => {
+    const {
+      dispatch, cartId, participantId, cartStepSixArrivalProductId, cartStepSixDepartingProductId, cartStepSixUnnacompaniedProductId,
+    } = this.props;
+    for (let key in stepSixFormFieldNames) {
+      dispatch( change('wizard', stepSixFormFieldNames[key], ''), );
+    }
+    if (cartStepSixArrivalProductId) {
+      this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixArrivalProductId, type: 'arrival_transport' });
+    }
+    if (cartStepSixDepartingProductId) {
+      this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixDepartingProductId, type: 'departing_transport' });
+    }
+    if (cartStepSixUnnacompaniedProductId) {
+      this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixUnnacompaniedProductId, type: 'unacompannied' });
+    }
+
     this.props.stepSixActions.stepSixSetDefaultState();
   };
 
@@ -441,6 +461,11 @@ function mapStateToProps(state) {
     transportationId: stepSixTransportationIdSelector(state),
     step: state.steps.currentStep,
     stepFourData: stepFourDataSelector(state),
+    cartId: cartIdSelector(state),
+    participantId: participantIdSelector(state),
+    cartStepSixUnnacompaniedProductId: cartStepSixUnnacompaniedProductIdSelector(state),
+    cartStepSixDepartingProductId: cartStepSixDepartingProductIdSelector(state),
+    cartStepSixArrivalProductId: cartStepSixArrivalProductIdSelector(state),
   };
 };
 

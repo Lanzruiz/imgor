@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import scrollToComponent from 'react-scroll-to-component';
 import isEqual from 'lodash/isEqual';
 import find from 'lodash/find';
+import isNumber from 'lodash/isNumber';
 // Components
 import Header from '../../components/Header';
 import LocaleString from '../../components/LocaleString';
@@ -26,7 +27,7 @@ import { stepThreeHasSecondaryProgram, stepThreeSecondaryProgramsSelector } from
 import { stepTwoStartDateSelector, stepTwoEndDateSelector } from '../StepTwo/selectors';
 import {
   weeksItemsSelector, stepOneAgeSelector, stepOneGenderSelector, weeksSelectedWeekIdSelector,
-  cartIdSelector, participantIdSelector,
+  cartIdSelector, participantIdSelector, cartSelector,
 } from '../StepOne/selectors';
 import { sportSelector, businessTypeSelector, packageTypeSelector } from '../InitialComponent/selectors';
 import { stepFourDataSelector } from './selectors';
@@ -112,7 +113,7 @@ class StepFour extends React.Component {
     const tabsList = [];
     const tabPanels = [];
 
-    const tabListClassName = cx('step-four-tabs__tab-list', { 'hidden': isEqual(weeks.length, 1) });
+    const tabListClassName = cx('step-four-tabs__tab-list', { 'react-hidden': isEqual(weeks.length, 1) });
 
     if (hasSecondaryProgram) {
       return (
@@ -172,7 +173,7 @@ class StepFour extends React.Component {
     });
     return (
       <AOSFadeInContainer className="step-four" ref={this.stepFour}>
-        <Container style={{ marginBottom: '65px' }}>
+        <Container>
           <Row>
             <Col>
               <Header
@@ -230,6 +231,53 @@ class StepFour extends React.Component {
   };
 
   setDefaultProps = () => {
+    const { weeks, cart, participantId } = this.props;
+
+    if (weeks.length > 0) {
+      weeks.forEach(({ id }) => {
+        if (cart[`stepFourConcentrationProduct_${id}`]) {
+          const args = {
+            cartId: cart.id,
+            participantId,
+            nextWeekId: 0,
+            productId: cart[`stepFourConcentrationProduct_${id}`],
+            id,
+            currentWeekId: id,
+          };
+          this.props.weeksActions.deleteSelectedConcentration(args);
+        }
+      });
+    } else {
+      const data = [
+        cart['stepFourConcentrationProduct_1'],
+        cart['stepFourConcentrationProduct_2'],
+        cart['stepFourConcentrationProduct_3'],
+        cart['stepFourConcentrationProduct_4'],
+        cart['stepFourConcentrationProduct_5'],
+        cart['stepFourConcentrationProduct_6'],
+        cart['stepFourConcentrationProduct_7'],
+        cart['stepFourConcentrationProduct_8'],
+        cart['stepFourConcentrationProduct_9'],
+        cart['stepFourConcentrationProduct_10'],
+        cart['stepFourConcentrationProduct_11'],
+        cart['stepFourConcentrationProduct_12'],
+      ];
+      data.forEach((selectedConcentration, idx) => {
+        if (isNumber(selectedConcentration)) {
+          const currentWeekId = idx + 1;
+          const args = {
+            currentWeekId,
+            participantId,
+            cartId: cart.id,
+            nextWeekId: 0,
+            productId: selectedConcentration,
+            id: currentWeekId,
+          };
+          this.props.weeksActions.deleteSelectedConcentration(args);
+        }
+      });
+    }
+
     this.props.stepFourActions.stepFourSetDefaultState();
     this.selectWeek(0);
   };
@@ -282,6 +330,7 @@ function mapStateToProps(state) {
     sport: sportSelector(state),
     businessType: businessTypeSelector(state),
     packageType: packageTypeSelector(state),
+    cart: cartSelector(state),
   };
 };
 
