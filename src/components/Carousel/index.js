@@ -2,7 +2,6 @@
 import React from 'react';
 import Slider from 'react-slick';
 import { CSSTransitionGroup } from 'react-transition-group';
-import { FaLongArrowAltRight, FaLongArrowAltLeft } from 'react-icons/fa';
 // Styles
 import './styles.scss';
 
@@ -54,7 +53,7 @@ function NextArrow({ onClick, style, className }) {
       data-role="none"
       style={style}
       className={className}
-      children={<FaLongArrowAltRight className="button-arrow" />}
+      children={<span className="icon-arrow-right"/>}
       onClick={onClick}
     />
   );
@@ -67,7 +66,7 @@ function PrevArrow({ onClick, style, className }) {
       data-role="none"
       style={style}
       className={className}
-      children={<FaLongArrowAltLeft className="button-arrow" />}
+      children={<span className="icon-arrow-left"/>}
       onClick={onClick}
     />
   );
