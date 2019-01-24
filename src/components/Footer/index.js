@@ -101,7 +101,7 @@ class Footer extends React.Component {
   }
 
   render() {
-    const { price, message, arrowUp, hasMessage, purchaseOnClickHandler, saveCampOnClickHandler, shareOnClickHandler, step } = this.props;
+    const { totalPrice, price, message, arrowUp, hasMessage, purchaseOnClickHandler, saveCampOnClickHandler, shareOnClickHandler, step } = this.props;
     const arrowPositinon = arrowUp ? <span className="icon-arrow-up" /> : <span className="icon-arrow-down" />;
     const isCurrentStepEqualToSix = isEqual(step, stepsEnum.six);
 
@@ -116,9 +116,10 @@ class Footer extends React.Component {
                     <Img className="footer__image" src={shopImg} alt="" />
                   </div>
                   <div className="footer__price-container">
-                    <span className="footer__price">
-                      &#36;{formatMoney(price, 0)}
-                    </span>
+                    {totalPrice === 0
+                      ? (<span className="footer__price">&#36;{formatMoney(price, 0)}</span>)
+                      : (<span className="footer__price">&#36;{formatMoney(totalPrice, 0)}</span>)
+                    }
                     <span className="footer__price-total">
                       <LocaleString stringKey="camp_subtotal" />
                     </span>
@@ -300,6 +301,7 @@ function mapStateToProps(state) {
     cartStepSixArrivalProductId: cartStepSixArrivalProductIdSelector(state),
     formMeta: formMetaSelector(state),
     airportPickup: stepSixAirportPickupSelector(state),
+    totalPrice: state.cart['price_total']
   };
 }
 
