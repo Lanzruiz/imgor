@@ -10,6 +10,7 @@ const initialSettings = {
   sport: '',
   lang: 'en',
   gender: '',
+  concentrationOrdering: null
 };
 
 export default function(state = initialSettings, action) {
@@ -29,6 +30,13 @@ export default function(state = initialSettings, action) {
         lang: lang || state.lang,
       };
       return assign({}, state, settings);
+    }
+    
+    case initialSettingsTypes.UPDATE_INITIAL_SETTINGS: {
+      return {
+        ...state,
+        ...action.payload
+      }
     }
 
     case PURGE: {

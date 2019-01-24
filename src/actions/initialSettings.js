@@ -10,6 +10,15 @@ export function setInitialSettings(initialSettings) {
   };
 }
 
+export function updateInitialSettings(settings) {
+  
+  
+  return {
+    type: initialSettingsTypes.UPDATE_INITIAL_SETTINGS,
+    payload: settings,
+  };
+}
+
 export function redirectToMainPage(initialSettings) {
   return function(dispatch) {
     const { lang, sport, packageType, businessType, urlToNoProps } = initialSettings;
