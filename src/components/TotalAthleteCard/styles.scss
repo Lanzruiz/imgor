@@ -27,7 +27,6 @@
             display: flex;
             color: $subheader-text-color;
             text-transform: uppercase;
-            font-weight: 400;
             flex-direction: column;
             height: 100%;
             justify-content: center;
@@ -40,7 +39,6 @@
             &--core {
                 font-family: $serifa-bold;
                 font-size: 28px;
-                font-weight: 700;
             }
 
             &--group {
@@ -56,21 +54,18 @@
             &--daily-training-concentration {
                 font-family: $serifa-bold;
                 font-size: 15px;
-                font-weight: 700;
                 max-width: 145px;
             }
 
             &--or {
                 font-family: $serifa-roman;
                 font-size: 13px;
-                font-weight: 400;
             }
 
             &--education-class {
                 max-width: 155px;
                 font-family: $serifa-bold;
                 font-size: 15px;
-                font-weight: 700;
             }
 
             &--lh-20 {

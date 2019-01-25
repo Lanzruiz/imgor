@@ -27,7 +27,6 @@
             display: flex;
             color: $subheader-text-color;
             text-transform: uppercase;
-            font-weight: 400;
             flex-direction: column;
             height: 100%;
             justify-content: center;
@@ -39,7 +38,6 @@
             &--core {
                 font-family: $serifa-bold;
                 font-size: 28px;
-                font-weight: 700;
             }
 
             &--group {
@@ -65,7 +63,6 @@
             &--coaching {
                 font-family: $serifa-bold;
                 font-size: 16px;
-                font-weight: 700;
             }
 
             &--small-group {
@@ -76,13 +73,11 @@
             &--skills {
                 font-family: $serifa-light;
                 font-size: 27px;
-                font-weight: 300;
             }
 
             &--training {
                 font-family: $serifa-bold;
                 font-size: 16px;
-                font-weight: 700;
             }
 
             &--lh-20 {
