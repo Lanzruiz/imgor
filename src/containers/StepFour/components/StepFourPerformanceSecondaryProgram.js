@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 // Components
 import Card, { CardContent, CardContentRow, CardContentCol, ImagePlus } from '../../../components/Card';
 import LocaleString from '../../../components/LocaleString';
-import { OneHourSentence, TrainingSentence, PerWeekSentence, DailySessionsSentence } from '../index';
+import { OneHourSentence, PerWeekSentence, DailySessionsSentence, EducationSentence } from '../index';
 // Actions
 import * as stepFourActions from '../../../actions/step.four';
 // Selectors
@@ -47,7 +47,7 @@ class StepFourPerformanceSecondaryProgram extends React.Component {
               </div>
               <div className="step-four__performance-content-container">
                 <OneHourSentence />
-                <TrainingSentence />
+                <EducationSentence />
                 <PerWeekSentence />
               </div>
             </div>
