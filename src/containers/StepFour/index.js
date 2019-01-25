@@ -110,26 +110,16 @@ class StepFour extends React.Component {
     
     if(!concentrationOrdering) return items;
     
-    //TODO FIX orders
-    
-    const sortedGroups = concentrationOrdering.reduce((acc, concentration) => {
-      items.forEach(v => {
-        const notUsed = !acc.sorted.find(t => t === v) && !acc.rest.find(t => t === v);
-        if(v.name === concentration){
-          if(notUsed){
-            acc.sorted = [...acc.sorted, v];
-          }
-        } else {
-          if(notUsed){
-            acc.rest = [...acc.rest, v];
-          }
-        }
-      });
+    const sortedGroups = concentrationOrdering.reduce((acc, conc) => {
+      const s = acc.data.filter(v => v.name === conc);
+      const r = acc.data.filter(v => v.name !== conc);
+      acc.sorted = [...acc.sorted, ...s];
+      acc.data = [...r];
+      
       return acc;
-    }, { sorted: [], rest: [] });
+    }, { sorted: [], data: [...items] });
     
-    console.log(sortedGroups);
-    return [...sortedGroups.sorted, ...sortedGroups.rest];
+    return [...sortedGroups.sorted, ...sortedGroups.data];
   };
 
   render() {
