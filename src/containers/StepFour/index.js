@@ -121,7 +121,7 @@ class StepFour extends React.Component {
     
     return [...sortedGroups.sorted, ...sortedGroups.data];
   };
-
+  
   render() {
     const {
       age, businessType, gender, weeks, selectedWeekId, sport, programType, data, hasSecondaryProgram,
