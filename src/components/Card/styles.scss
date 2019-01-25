@@ -102,7 +102,6 @@
             padding: 2px 5px;
             color: $tab-row-bg;
             font-family: $header-font;
-            font-weight: 700;
             text-transform: uppercase;
 
             &--small {
@@ -123,7 +122,6 @@
         &__text {
             color: $tab-row-bg;
             font-family: $header-font;
-            font-weight: 700;
             text-transform: uppercase;
 
             &--small {
@@ -192,7 +190,6 @@
             color: $white;
             font-family: $header-font;
             font-size: 20px;
-            font-weight: 500;
             text-transform: uppercase;
 
             @include breakpoint($mobile){
@@ -267,7 +264,6 @@
             box-sizing: border-box;
             font-family: $serifa-bold;
             font-size: 14px;
-            font-weight: 700;
             line-height: 21px;
             padding: 5px;
             text-transform: uppercase;
@@ -303,7 +299,6 @@
             color: $white;
             font-family: $header-font;
             font-size: 11px;
-            font-weight: 700;
             margin-top: -5px;
             text-transform: uppercase;
         }

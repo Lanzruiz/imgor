@@ -134,42 +134,36 @@
         &__fifteen-hours {
             font-family: $serifa-bold;
             font-size: 19px;
-            font-weight: 700;
             text-transform: uppercase;
         }
 
         &__education {
             font-family: $serifa-roman;
             font-size: 15px;
-            font-weight: 400;
             text-transform: uppercase;
         }
 
         &__per-week {
             font-family: $serifa-bold;
             font-size: 17px;
-            font-weight: 700;
             text-transform: uppercase;
         }
 
         &__one-hour {
             font-family: $serifa-bold;
             font-size: 23px;
-            font-weight: 700;
             text-transform: uppercase;
         }
 
         &__training {
             font-family: $serifa-roman;
             font-size: 17px;
-            font-weight: 400;
             text-transform: uppercase;
         }
 
         &__daily-sessions {
             font-family: $header-font;
             font-size: 15px;
-            font-weight: 700;
         }
     }
 
@@ -186,7 +180,6 @@
             display: flex;
             font-family: $header-font;
             font-size: 26px;
-            font-weight: 700;
             justify-content: center;
             opacity: 0.5;
             padding: 10px 10px 5px;
