@@ -67,6 +67,7 @@ class StepFour extends React.Component {
         customize_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       }),
     ),
+    concentrationOrdering: PropTypes.array,
   };
 
   static defaultProps = {
@@ -103,6 +104,23 @@ class StepFour extends React.Component {
   componentWillUnmount() {
     this.setDefaultProps();
   }
+  
+  reorderConcentrations = (items) => {
+    const { concentrationOrdering } = this.props;
+    
+    if(!concentrationOrdering) return items;
+    
+    const sortedGroups = concentrationOrdering.reduce((acc, conc) => {
+      const s = acc.data.filter(v => v.name === conc);
+      const r = acc.data.filter(v => v.name !== conc);
+      acc.sorted = [...acc.sorted, ...s];
+      acc.data = [...r];
+      
+      return acc;
+    }, { sorted: [], data: [...items] });
+    
+    return [...sortedGroups.sorted, ...sortedGroups.data];
+  };
 
   render() {
     const {
@@ -114,7 +132,7 @@ class StepFour extends React.Component {
     const tabPanels = [];
 
     const tabListClassName = cx('step-four-tabs__tab-list', { 'react-hidden': isEqual(weeks.length, 1) });
-
+  
     if (hasSecondaryProgram) {
       return (
         <AOSFadeInContainer className="step-four" ref={this.stepFour}>
@@ -132,7 +150,7 @@ class StepFour extends React.Component {
               <Col>
                 <div className="step-four__secondary-programs">
                   <Row className="align-items-stretch">
-                    {stepThreeSecondaryPrograms.map((item) => (
+                    {this.reorderConcentrations(stepThreeSecondaryPrograms).map((item) => (
                       <Col lg={4} key={item.id} className="card-column">
                         {this.renderSecondaryPrograms(item)}
                       </Col>
@@ -147,7 +165,7 @@ class StepFour extends React.Component {
     }
 
     if (isEqual(data.length, 0)) return false;
-
+    
     weeks.forEach(({ id, customize_id, end_date, start_date }) => {
       tabsList.push(
         <Tab key={id} className="step-four-tabs__tab">
@@ -331,6 +349,7 @@ function mapStateToProps(state) {
     businessType: businessTypeSelector(state),
     packageType: packageTypeSelector(state),
     cart: cartSelector(state),
+    concentrationOrdering: state.initialSettings.concentrationOrdering
   };
 };
 

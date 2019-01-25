@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 // Modules
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -25,7 +27,7 @@ import { languageSelelector, lastChangedSelector } from '../InitialComponent/sel
 // Actions
 import { setMaxStepValue } from '../../actions/steps';
 import { createCartRequest } from '../../actions/cart';
-import { setInitialSettings } from '../../actions/initialSettings';
+import { setInitialSettings, updateInitialSettings } from '../../actions/initialSettings';
 import { selectGroup } from '../../actions/step.one';
 // Styles
 import './styles.scss';
@@ -48,6 +50,7 @@ class App extends React.Component {
     packageType: PropTypes.string.isRequired,
     businessType: PropTypes.string.isRequired,
     redirectUrlShopify: PropTypes.string,
+    extraSettingsPath: PropTypes.string,
   };
 
   static defaultProps = {
@@ -115,6 +118,7 @@ class App extends React.Component {
     };
 
     this.setInitialSettings(initialSettings);
+    this.getExtraSettings();
     AOS.init();
   }
 
@@ -124,6 +128,26 @@ class App extends React.Component {
       this.props.cartActions.createCartRequest();
     }
   }
+  
+  setInitialSettings = (initialSettings) => {
+    const { gender, group, secondaryGroup } = initialSettings;
+    if (gender) {
+      this.props.dispatch( change('wizard', 'gender', gender), );
+    }
+    if (group || secondaryGroup) {
+      this.props.stepOneActions.selectGroup({ group, secondary_group: secondaryGroup });
+    }
+    this.props.initialSettingsActions.setInitialSettings(initialSettings);
+  };
+
+  getExtraSettings = () =>{
+    const { extraSettingsPath } = this.props;
+    
+    axios(extraSettingsPath).then(res => res.data)
+    .then((data) => {
+      this.props.initialSettingsActions.updateInitialSettings(data);
+    })
+  };
 
   render() {
     const { lang, redirectUrlShopify, contentPath } = this.props;
@@ -136,16 +160,6 @@ class App extends React.Component {
     );
   }
 
-  setInitialSettings = (initialSettings) => {
-    const { gender, group, secondaryGroup } = initialSettings;
-    if (gender) {
-      this.props.dispatch( change('wizard', 'gender', gender), );
-    }
-    if (group || secondaryGroup) {
-      this.props.stepOneActions.selectGroup({ group, secondary_group: secondaryGroup });
-    }
-    this.props.initialSettingsActions.setInitialSettings(initialSettings);
-  };
 }
 
 function mapStateToProps(state) {
@@ -163,7 +177,7 @@ function mapDispatchToProps(dispatch) {
   return {
     stepActions: bindActionCreators({ setMaxStepValue }, dispatch),
     cartActions: bindActionCreators({ createCartRequest }, dispatch),
-    initialSettingsActions: bindActionCreators({ setInitialSettings }, dispatch),
+    initialSettingsActions: bindActionCreators({ setInitialSettings, updateInitialSettings }, dispatch),
     stepOneActions: bindActionCreators({ selectGroup }, dispatch),
   };
 };

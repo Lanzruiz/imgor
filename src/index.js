@@ -28,6 +28,7 @@ const {
   appKey,
   last_changed,
   contentPath,
+  settingsPath,
 } = imgorRootContainer.dataset;
 
 const { store, persistor } = configStore(appKey);
@@ -74,6 +75,8 @@ ReactDOM.render(
                   dataLastChanged={last_changed}
                   dataAppKey={appKey}
                   contentPath={contentPath}
+                  settingsPath={contentPath}
+                  extraSettingsPath={settingsPath}
                 />
               );
             }} />
