@@ -110,8 +110,6 @@ class StepFour extends React.Component {
     
     if(!concentrationOrdering) return items;
     
-    console.log('concentrationOrdering', concentrationOrdering);
-    
     
     const parsedConcentrationOrdering = concentrationOrdering.map(v => v.toLowerCase());
     const parsedItems = [ ...items ].map(v => ({
