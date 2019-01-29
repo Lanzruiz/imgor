@@ -79,50 +79,52 @@ class renderDatePicker extends React.Component {
     const { selectedDate } = this.state;
     const selected = (selectedDate && selectedDate._d) ? selectedDate._d : selectedDate;
     return (
-      <ScreenClassRender render={(screenClass) => {
-        const config = {
-          xl: { offset: '-40px, 10px', popperPlacement: 'left' },
-          lg: { offset: '-80px, -160px', popperPlacement: 'top' },
-          md: { offset: '10px, -30px', popperPlacement: 'top' },
-          sm: { offset: '10px, -30px', popperPlacement: 'top' },
-          xs: { offset: '0, 0', popperPlacement: 'top' },
-        };
-        return (
-          <div className={datePickerContainerClassName}>
-            <DatePicker
-              {...input}
-              fixedHeight
-              withPortal={withPortal}
-              isClearable={isClearable}
-              showTimeSelect={showTimeSelect}
-              dateForm={dateFormat}
-              selected={selected}
-              placeholderText={placeholder}
-              popperPlacement={config[screenClass] ? config[screenClass].popperPlacement : 'top'}
-              onChange={this.handleChange}
-              onBlur={() => { input.onBlur(); }}
-              timeFormat="HH:mm"
-              timeIntervals={5}
-              timeCaption="time"
-              popperModifiers={{
-                offset: {
-                  enabled: true,
-                  offset: config[screenClass] ? config[screenClass].offset : '',
-                },
-                preventOverflow: {
-                  enabled: true,
-                  escapeWithReference: false,
-                  boundariesElement: 'viewport'
-                }
-              }}
-              showYearDropdown={showYearDropdown}
-              scrollableYearDropdown={true}
-              yearDropdownItemNumber={50}
-            />
-            {touched && error && <span>{error}</span>}
-          </div>
-        );
-      }} />
+      <div className="datetime-picker-container">
+        <ScreenClassRender render={(screenClass) => {
+          const config = {
+            xl: { offset: '-40px, 10px', popperPlacement: 'left' },
+            lg: { offset: '-80px, -160px', popperPlacement: 'top' },
+            md: { offset: '10px, -30px', popperPlacement: 'top' },
+            sm: { offset: '10px, -30px', popperPlacement: 'top' },
+            xs: { offset: '0, 0', popperPlacement: 'top' },
+          };
+          return (
+            <div className={datePickerContainerClassName}>
+              <DatePicker
+                {...input}
+                fixedHeight
+                withPortal={withPortal}
+                isClearable={isClearable}
+                showTimeSelect={showTimeSelect}
+                dateForm={dateFormat}
+                selected={selected}
+                placeholderText={placeholder}
+                popperPlacement={config[screenClass] ? config[screenClass].popperPlacement : 'top'}
+                onChange={this.handleChange}
+                onBlur={() => { input.onBlur(); }}
+                timeFormat="HH:mm"
+                timeIntervals={5}
+                timeCaption="time"
+                popperModifiers={{
+                  offset: {
+                    enabled: true,
+                    offset: config[screenClass] ? config[screenClass].offset : '',
+                  },
+                  preventOverflow: {
+                    enabled: true,
+                    escapeWithReference: false,
+                    boundariesElement: 'viewport'
+                  }
+                }}
+                showYearDropdown={showYearDropdown}
+                scrollableYearDropdown={true}
+                yearDropdownItemNumber={50}
+              />
+              {touched && error && <span>{error}</span>}
+            </div>
+          );
+        }} />
+      </div>
     );
   }
 
