@@ -2,17 +2,6 @@
 
 #{$root} {
   @import 'react-datepicker/src/stylesheets/datepicker.scss';
-  // .react-datepicker__time-container {
-  //     & .react-datepicker__time {
-  //         & .react-datepicker__time-box {
-  //             & ul.react-datepicker__time-list {
-  //                 & li.react-datepicker__time-list-item {
-  //                     display: list-item;
-  //                 }
-  //             }
-  //         }
-  //     }
-  // }
 
   .react-datepicker-popper{
     .react-datepicker{
