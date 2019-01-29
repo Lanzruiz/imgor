@@ -154,7 +154,7 @@ class StepFinal extends React.Component {
                   >
                     <CardContent>
                       <CardContentRow>
-                        <CardContentCol>
+                        <CardContentCol className="step-final__position">
                           <PositionRadioBtn
                             options={positions}
                             position={selectedPosition}
