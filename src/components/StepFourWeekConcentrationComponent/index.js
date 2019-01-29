@@ -11,7 +11,7 @@ import { ReactHeight } from 'react-height';
 import isEqual from 'lodash/isEqual';
 // Components
 import Card, { CardContent, CardContentRow, CardContentCol, ImagePlus } from '../../components/Card';
-import { EducationSentence, FifteenHoursSentence, OneHourSentence, PerWeekSentence, TrainingSentence } from '../../containers/StepFour';
+import { EducationSentence, FifteenHoursSentence, OneHourSentence, PerWeekSentence } from '../../containers/StepFour';
 import LocaleString from '../LocaleString';
 // Actions
 import * as weeksActions from '../../actions/weeks';
@@ -165,7 +165,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
                     </div>
                     <div className="step-four__esl-content-container">
                       <OneHourSentence />
-                      <TrainingSentence />
+                      <EducationSentence />
                       <PerWeekSentence />
                     </div>
                   </div>
