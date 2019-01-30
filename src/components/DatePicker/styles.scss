@@ -8,15 +8,16 @@
       display: flex;
       flex-direction: row;
       border: none;
-      box-shadow: 0 0 5px rgba(black, 0.2);
+      box-shadow: 0 0 5px rgba(black, 0.4);
       border-radius: 0;
       &__triangle{
-        border-bottom-color: $card-dark-blue-color !important;
+        border-bottom-color: $card-blue-color !important;
       }
       &__header{
-        background: $card-dark-blue-color;
+        background: $card-blue-color;
         color: white;
         border-radius: 0;
+        border-bottom: none;
       }
       &__current-month{
         color: white;
@@ -25,7 +26,7 @@
       &__navigation{
         &--next{
           border-left-color: white;
-          right: 70px;
+          right: 0;
         }
         &--previous{
           border-right-color: white;
@@ -36,10 +37,19 @@
         font-family: $proxima-nova;
         color: white;
       }
+      &__weeks{
+        margin: 0;
+      }
       &__day{
+        border-radius: 0;
         &--selected{
+          background-color: $card-blue-color;
+          font-weight: bold;
           border-radius: 0;
         }
+      }
+      &__time-container{
+        border-left: 1px solid $card-blue-color;
       }
     }
     .react-datepicker-time {
@@ -50,9 +60,28 @@
       &-list-item{
         &--selected{
           border-radius: 0;
-          background-color: $card-dark-blue-color;
+          background-color: $card-blue-color;
         }
       }
+    }
+  }
+  .with-time-select{
+    .react-datepicker__navigation{
+      &--next{
+        border-left-color: white;
+        right: 70px;
+      }
+      &--previous{
+        border-right-color: white;
+        left: 0;
+      }
+    }
+  }
+
+  .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item--selected {
+    background-color: $card-blue-color;
+    &:hover{
+      background-color: $card-blue-color;
     }
   }
 

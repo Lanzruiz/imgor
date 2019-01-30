@@ -94,14 +94,14 @@ class renderDatePicker extends React.Component {
             xs: { offset: '0, 0', popperPlacement: 'top' },
           };
           return (
-            <div className={datePickerContainerClassName}>
+            <div className={`${datePickerContainerClassName} ${showTimeSelect ? 'with-time-select' : ''}`}>
               <DatePicker
                 {...input}
                 fixedHeight
                 withPortal={withPortal}
                 isClearable={isClearable}
                 showTimeSelect={showTimeSelect}
-                dateForm={dateFormat}
+                dateFormat={dateFormat || 'MM/DD/YYYY'}
                 selected={selected}
                 placeholderText={placeholder}
                 popperPlacement={config[screenClass] ? config[screenClass].popperPlacement : 'top'}
@@ -109,7 +109,7 @@ class renderDatePicker extends React.Component {
                 onBlur={() => { input.onBlur(); }}
                 timeFormat="HH:mm"
                 timeIntervals={5}
-                timeCaption="time"
+                timeCaption="Time"
                 maxDate={this.props.maxDate}
                 minDate={this.props.minDate}
                 popperModifiers={{

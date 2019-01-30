@@ -15,6 +15,7 @@ import LocaleString from '../../components/LocaleString';
 import Input from '../../components/Input';
 import Radio from '../../components/Radio';
 import InputBirthDayMask from '../../components/InputBirthDayMask';
+import DatePickerReduxForm from '../../components/DatePicker';
 import AOSFadeInContainer from '../../components/AOSFadeInContainer';
 // Actions
 import * as finalStepActions from '../../actions/final.step';
@@ -112,6 +113,13 @@ class StepFinal extends React.Component {
                               />
                             </label>
                             <label className="step-final__form-control">
+                              <DatePickerReduxForm
+                                placeholder="Date Of Birth"
+                                name={stepFinalFormFieldNames.dateOfBirth}
+                                inputClassName="step-final__input"
+                                showTimeSelect={false}
+                                dateFormat="MM/DD/YYYY"
+                              />
                               <InputBirthDayMask
                                 inputClassName="step-final__input"
                                 name={stepFinalFormFieldNames.dateOfBirth}
