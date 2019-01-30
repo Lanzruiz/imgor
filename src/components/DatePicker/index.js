@@ -95,6 +95,23 @@ class renderDatePicker extends React.Component {
             sm: { offset: '10px, -30px', popperPlacement: 'top' },
             xs: { offset: '0, 0', popperPlacement: 'top' },
           };
+          
+          const popperModifiers = {
+            offset: {
+              enabled: false,
+              offset: config[screenClass] ? config[screenClass].offset : '',
+            },
+            preventOverflow: {
+              enabled: !this.props.withPopperPlacement,
+              escapeWithReference: false,
+              boundariesElement: 'viewport'
+            }
+          };
+          
+          const popperPlacement = this.props.withPopperPlacement
+            ? config[screenClass] ? config[screenClass].popperPlacement : 'top'
+            : 'bottom';
+          
           return (
             <div className={`${datePickerContainerClassName} ${showTimeSelect ? 'with-time-select' : ''}`}>
               <DatePicker
@@ -106,7 +123,8 @@ class renderDatePicker extends React.Component {
                 dateFormat={dateFormat || 'MM/DD/YYYY'}
                 selected={selected}
                 placeholderText={placeholder}
-                popperPlacement={config[screenClass] ? config[screenClass].popperPlacement : 'top'}
+                popperPlacement={popperPlacement}
+                // popperPlacement={'bottom'}
                 onChange={this.handleChange}
                 onBlur={() => { input.onBlur(); }}
                 timeFormat="HH:mm"
@@ -114,17 +132,7 @@ class renderDatePicker extends React.Component {
                 timeCaption="Time"
                 maxDate={this.props.maxDate}
                 minDate={this.props.minDate}
-                popperModifiers={{
-                  offset: {
-                    enabled: true,
-                    offset: config[screenClass] ? config[screenClass].offset : '',
-                  },
-                  preventOverflow: {
-                    enabled: true,
-                    escapeWithReference: false,
-                    boundariesElement: 'viewport'
-                  }
-                }}
+                popperModifiers={popperModifiers}
                 showYearDropdown={showYearDropdown}
                 scrollableYearDropdown={true}
                 yearDropdownItemNumber={50}
