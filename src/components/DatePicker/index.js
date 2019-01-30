@@ -21,6 +21,7 @@ class DatePickerReduxForm extends React.Component {
     showYearDropdown: PropTypes.bool,
     maxDate: PropTypes.instanceOf(Date),
     minDate: PropTypes.instanceOf(Date),
+    withPopperPlacement: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -29,7 +30,8 @@ class DatePickerReduxForm extends React.Component {
     isClearable: true,
     showYearDropdown: false,
     maxDate: null,
-    minDate: null
+    minDate: null,
+    withPopperPlacement: true
   };
 
   render() {

@@ -14,7 +14,7 @@ import Card, { CardContent, CardContentRow, CardContentCol } from '../../compone
 import LocaleString from '../../components/LocaleString';
 import Input from '../../components/Input';
 import Radio from '../../components/Radio';
-import InputBirthDayMask from '../../components/InputBirthDayMask';
+// import InputBirthDayMask from '../../components/InputBirthDayMask';
 import DatePickerReduxForm from '../../components/DatePicker';
 import AOSFadeInContainer from '../../components/AOSFadeInContainer';
 // Actions
@@ -116,15 +116,21 @@ class StepFinal extends React.Component {
                               <DatePickerReduxForm
                                 placeholder="Date Of Birth"
                                 name={stepFinalFormFieldNames.dateOfBirth}
-                                inputClassName="step-final__input"
+                                inputClassName="step-final__input cursor-pointer"
+                                className="step-final__input"
                                 showTimeSelect={false}
+                                isClearable={false}
                                 dateFormat="MM/DD/YYYY"
+                                maxDate={new Date()}
+                                withPopperPlacement={false}
+                                showYearDropdown
+                                yearDropdownItemNumber={90}
                               />
-                              <InputBirthDayMask
-                                inputClassName="step-final__input"
-                                name={stepFinalFormFieldNames.dateOfBirth}
-                                label="date of birth"
-                              />
+                              {/*<InputBirthDayMask*/}
+                                {/*inputClassName="step-final__input"*/}
+                                {/*name={stepFinalFormFieldNames.dateOfBirth}*/}
+                                {/*label="date of birth"*/}
+                              {/*/>*/}
                             </label>
                             <label className="step-final__form-control">
                               <Input
