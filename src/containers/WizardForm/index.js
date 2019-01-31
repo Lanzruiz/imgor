@@ -328,7 +328,6 @@ class WizardForm extends React.Component {
   };
 
   goingToStepByStepNymber = (stepNumber) => {
-    console.log('nooo')
     this.props.stepActions.setStepsCounter(stepNumber);
   };
 

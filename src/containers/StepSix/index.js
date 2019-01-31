@@ -1,5 +1,5 @@
 // Modules
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Container, Row, Col } from 'react-grid-system';
 import { connect } from 'react-redux';
 import scrollToComponent from 'react-scroll-to-component';
@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import { reduxForm, change } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import isEqual from 'lodash/isEqual';
+import isEmpty from 'lodash/isEmpty';
 // Components
 import Header from '../../components/Header';
 import Card, { CardContent, CardContentRow, CardContentCol, CardContentText } from '../../components/Card';
@@ -41,11 +42,20 @@ import {
   cartStepSixArrivalProductIdSelector,
 } from '../../containers/StepOne/selectors';
 import {
-  stepSixAirportPickupSelector, stepSixTransportSelector,
-  stepSixUnaccompaniedSelector, stepSixAirlinesSelector, stepSixDropoffSelector,
-  stepSixDepartingSelector, stepSixDepartingTransportSelector, stepSixPickUpOtherLocationSelector,
-  stepSixSelectedArrivalAirlineSelector, stepSixSelectedDepartingAirlineSelector,
-  stepSixSelectedTransportSelector, stepSixTransportUnaccompaniedSelector, stepSixTransportationIdSelector,
+  stepSixAirportPickupSelector,
+  stepSixTransportSelector,
+  stepSixUnaccompaniedSelector,
+  stepSixAirlinesSelector,
+  stepSixDropoffSelector,
+  stepSixDepartingSelector,
+  stepSixDepartingTransportSelector,
+  stepSixPickUpOtherLocationSelector,
+  stepSixSelectedArrivalAirlineSelector,
+  stepSixSelectedDepartingAirlineSelector,
+  stepSixSelectedTransportSelector,
+  stepSixTransportUnaccompaniedSelector,
+  stepSixTransportationIdSelector,
+  stepSixAirportPickupAirlineSelector, stepSixDepartingAirlineSelector,
 } from './selectors';
 import { stepFiveDataPerPageSelector } from '../StepFive/selectors';
 import { sportSelector, businessTypeSelector, packageTypeSelector } from '../InitialComponent/selectors';
@@ -75,6 +85,7 @@ class StepSix extends React.Component {
       stepSixGetCatalogTransportUnaccompaniedRequest: PropTypes.func.isRequired,
       stepSixSelectTransportationOption: PropTypes.func.isRequired,
       stepSixUnselectTransportationOption: PropTypes.func.isRequired,
+      stepSixDeleteProductInTheCart: PropTypes.func.isRequired,
     }),
     transport: PropTypes.arrayOf(
       PropTypes.shape({
@@ -133,7 +144,6 @@ class StepSix extends React.Component {
     this.setDefaultState();
   }
   
-  
   setDepartingAirlines = (id) => {
     this.props.stepSixActions.stepSixSetDepartingAirlines(id);
   };
@@ -185,7 +195,7 @@ class StepSix extends React.Component {
   render() {
     const {
       airlines, airportPickup, transport, unaccompanied, dropoff, departing, transportUnaccompanied, transportationId,
-      departingTransport, selectedTransportValue, stepFourData,
+      departingTransport, selectedTransportValue, stepFourData, airportPickupAirline, departingPickupAirline
     } = this.props;
 
     const airportPickupArrivalAndDeparting = isEqual(airportPickup, airportPickupInformation.both);
@@ -295,24 +305,28 @@ class StepSix extends React.Component {
                           </Col>
                           <Col md={12} lg={7} xl={6}>
                             <AirlinesDropdownContainer airlines={airlines} />
-                            <ArrivalFlightNumberTextInput />
-                            <DatePickerReduxForm
-                              isClearable
-                              name={stepSixFormFieldNames.arrivalDateTime}
-                              className="step-six__text-input step-six__form-field"
-                              placeholder="Arrival Date & Time"
-                            />
-                            <Paragraph medium className="step-six__step-paragraph">
-                              <LocaleString
-                                stringKey="step_six.schedule"
-                                formatString={{ phone: '941-840-8092' }}
-                              />
-                            </Paragraph>
+                            {!isEmpty(airportPickupAirline) && (
+                              <Fragment>
+                                <ArrivalFlightNumberTextInput />
+                                <DatePickerReduxForm
+                                  isClearable
+                                  name={stepSixFormFieldNames.arrivalDateTime}
+                                  className="step-six__text-input step-six__form-field"
+                                  placeholder="Arrival Date & Time"
+                                />
+                                <Paragraph medium className="step-six__step-paragraph">
+                                  <LocaleString
+                                    stringKey="step_six.schedule"
+                                    formatString={{ phone: '941-840-8092' }}
+                                  />
+                                </Paragraph>
+                              </Fragment>
+                            )}
                           </Col>
                         </Row>
                       </CarouselItem>
                     )}
-                    {(airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && (
+                    {(airportPickupArrivalAndDeparting && !airportPickupDepartingOnly) && (
                       <CarouselItem>
                         <Row>
                           <Col>
@@ -370,24 +384,60 @@ class StepSix extends React.Component {
                           </Col>
                           <Col md={12} lg={7} xl={6}>
                             <AirlinesDepartingDropdownContainer airlines={airlines} />
-                            <FlightNumberDepartingTextInput />
-                            <DatePickerReduxForm
-                              isClearable
-                              name={stepSixFormFieldNames.departingDateTime}
-                              className="step-six__text-input step-six__form-field"
-                              placeholder="Departing Date & Time"
-                            />
+  
+                            {!isEmpty(departingPickupAirline) && (
+                              <Fragment>
+                                <FlightNumberDepartingTextInput />
+                                <DatePickerReduxForm
+                                  isClearable
+                                  name={stepSixFormFieldNames.departingDateTime}
+                                  className="step-six__text-input step-six__form-field"
+                                  placeholder="Departing Date & Time"
+                                />
+                                <Paragraph medium className="step-six__step-paragraph">
+                                  <LocaleString
+                                    stringKey="step_six.schedule"
+                                    formatString={{ phone: '941-840-8092' }}
+                                  />
+                                </Paragraph>
+                              </Fragment>
+                            )}
+                          </Col>
+                        </Row>
+                      </CarouselItem>
+                    )}
+                    {(!airportPickupArrivalAndDeparting && airportPickupDepartingOnly) && (
+                      <CarouselItem>
+                        <Row>
+                          <Col>
+                            <SlideHeader>
+                              <LocaleString
+                                stringKey="step_six.step_of"
+                                formatString={{ current: 3, max: maxStepCount }}
+                              />
+                            </SlideHeader>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col md={12} lg={6}>
+                            <SliderSubHeader>
+                              <LocaleString stringKey="step_six.dropoff_location" />
+                            </SliderSubHeader>
+                            <DropoffCheckboxContainer dropoff={dropoff} />
+                            <DropoffLocationTextField dropoff={dropoff} />
+                          </Col>
+                          <Col md={12} lg={6}>
                             <Paragraph medium className="step-six__step-paragraph">
-                            <LocaleString
-                              stringKey="step_six.schedule"
-                              formatString={{ phone: '941-840-8092' }}
-                            />
+                              <LocaleString
+                                stringKey="step_six.schedule"
+                                formatString={{ phone: '941-840-8092' }}
+                              />
                             </Paragraph>
                           </Col>
                         </Row>
                       </CarouselItem>
                     )}
-                    {(airportPickupArrivalAndDeparting || airportPickupDepartingOnly) && (
+                    {(airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && (
                       <CarouselItem>
                         <Row>
                           <Col>
@@ -458,6 +508,8 @@ function mapStateToProps(state) {
     cartStepSixUnnacompaniedProductId: cartStepSixUnnacompaniedProductIdSelector(state),
     cartStepSixDepartingProductId: cartStepSixDepartingProductIdSelector(state),
     cartStepSixArrivalProductId: cartStepSixArrivalProductIdSelector(state),
+    airportPickupAirline: stepSixAirportPickupAirlineSelector(state),
+    departingPickupAirline: stepSixDepartingAirlineSelector(state),
   };
 };
 

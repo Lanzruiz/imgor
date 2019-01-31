@@ -8,9 +8,9 @@ import Input from '../../../components/Input';
 import { stepSixFormFieldNames, departingFormFieldNames } from '../selectors';
 
 const DropoffLocationTextField = (props) => {
-  const { dropoff } = props;
-  const isDisabled = !isEqual(dropoff, departingFormFieldNames.other);
-  return (
+  const isDisabled = !isEqual(props.dropoff, departingFormFieldNames.other);
+  
+  return isEqual(props.dropoff, departingFormFieldNames.other) && (
     <div className="step-six__text-input step-six__form-field">
       <Input
         name={stepSixFormFieldNames.dropoffOtherLocation}
