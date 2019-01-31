@@ -191,6 +191,7 @@ export function stepSixUnselectTransportationOption() {
       stepSixFormFieldNames.pickUpOtherLocation,
       stepSixFormFieldNames.airportPickupAirline,
       stepSixFormFieldNames.departingAirline,
+      stepSixFormFieldNames.hasBookedFlight,
     ];
     fields.forEach((fieldName) => {
       dispatch( change('wizard', fieldName, null), );

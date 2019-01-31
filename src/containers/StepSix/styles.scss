@@ -2,6 +2,21 @@
 
 #{$root} {
     .step-six {
+        .radio-btn__container{
+            &--checkbox{
+                color: #083451;
+                font-size: 15px;
+                cursor: pointer;
+                input{
+                    //background: red;
+                }
+            }
+        }
+
+        .has-booked-description{
+          margin-top: 10px;
+        }
+
         .h-100{
           height: 100%;
         }
