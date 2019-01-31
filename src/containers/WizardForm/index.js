@@ -237,10 +237,10 @@ class WizardForm extends React.Component {
         break;
       }
 
-      case (isEqual(step, stepsEnum.seven)): {
-        this.goingToStepSixFromFinalStep(prevProps);
-        break;
-      }
+      // case (isEqual(step, stepsEnum.seven)): {
+      //   this.goingToStepSixFromFinalStep(prevProps);
+      //   break;
+      // }
 
       default:
         return;
@@ -328,6 +328,7 @@ class WizardForm extends React.Component {
   };
 
   goingToStepByStepNymber = (stepNumber) => {
+    console.log('nooo')
     this.props.stepActions.setStepsCounter(stepNumber);
   };
 
@@ -632,22 +633,22 @@ class WizardForm extends React.Component {
     }
   };
 
-  goingToStepSixFromFinalStep = (prevProps = {}) => {
-    const { stepSixTransportationId } = this.props;
-    const isStepSixDataChanged = this.isStepSixDataChanged(prevProps);
-
-    if (isStepSixDataChanged) {
-      this.goingToFinalStep(prevProps);
-      this.goingToStepByStepNymber(stepsEnum.six);
-      return;
-    }
-
-    const isStepSixTransportationIdSelected = isNumber(stepSixTransportationId);
-
-    if (isStepSixTransportationIdSelected && !isEqual(stepSixTransportationId, prevProps.stepSixTransportationId)) {
-      this.goingToStepByStepNymber(stepsEnum.six);
-    }
-  };
+  // goingToStepSixFromFinalStep = (prevProps = {}) => {
+    // const { stepSixTransportationId } = this.props;
+    // const isStepSixDataChanged = this.isStepSixDataChanged(prevProps);
+    
+    // if (isStepSixDataChanged) {
+    //   this.goingToFinalStep(prevProps);
+    //   this.goingToStepByStepNymber(stepsEnum.six);
+    //   return;
+    // }
+    //
+    // const isStepSixTransportationIdSelected = isNumber(stepSixTransportationId);
+    //
+    // if (isStepSixTransportationIdSelected && !isEqual(stepSixTransportationId, prevProps.stepSixTransportationId)) {
+    //   this.goingToStepByStepNymber(stepsEnum.six);
+    // }
+  // };
 
   stepOneValidation = () => {
     const { age, gender, group, participantId, sleepaway, weeksCounter } = this.props;

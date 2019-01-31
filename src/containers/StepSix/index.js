@@ -73,6 +73,8 @@ class StepSix extends React.Component {
       stepSixSetArrivalAirlines: PropTypes.func.isRequired,
       stepSixSetDepartingAirlines: PropTypes.func.isRequired,
       stepSixGetCatalogTransportUnaccompaniedRequest: PropTypes.func.isRequired,
+      stepSixSelectTransportationOption: PropTypes.func.isRequired,
+      stepSixUnselectTransportationOption: PropTypes.func.isRequired,
     }),
     transport: PropTypes.arrayOf(
       PropTypes.shape({
@@ -130,6 +132,55 @@ class StepSix extends React.Component {
   componentWillUnmount() {
     this.setDefaultState();
   }
+  
+  
+  setDepartingAirlines = (id) => {
+    this.props.stepSixActions.stepSixSetDepartingAirlines(id);
+  };
+  
+  setDefaultState = () => {
+    const {
+      dispatch, cartId, participantId, cartStepSixArrivalProductId, cartStepSixDepartingProductId, cartStepSixUnnacompaniedProductId,
+    } = this.props;
+    for (let key in stepSixFormFieldNames) {
+      dispatch( change('wizard', stepSixFormFieldNames[key], ''), );
+    }
+    if (cartStepSixArrivalProductId) {
+      this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixArrivalProductId, type: 'arrival_transport' });
+    }
+    if (cartStepSixDepartingProductId) {
+      this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixDepartingProductId, type: 'departing_transport' });
+    }
+    if (cartStepSixUnnacompaniedProductId) {
+      this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixUnnacompaniedProductId, type: 'unacompannied' });
+    }
+    
+    this.props.stepSixActions.stepSixSetDefaultState();
+  };
+  
+  getCatalogTransport = () => {
+    this.props.stepSixActions.stepSixGetCatalogTransportRequest();
+  };
+  
+  getCatalogAirlines = () => {
+    this.props.stepSixActions.stepSixGetCatalogAirlinesRequest();
+  };
+  
+  goingToFinalStep = () => {
+    this.props.stepsActions.setStepsCounter(stepsEnum.seven);
+  };
+  
+  stepSixGetCatalogTransportUnaccompanied = () => {
+    this.props.stepSixActions.stepSixGetCatalogTransportUnaccompaniedRequest();
+  };
+  
+  selectTransportationOption = (id) => {
+    this.props.stepSixActions.stepSixSelectTransportationOption(id);
+  };
+  
+  unselectTransportationOption = () => {
+    this.props.stepSixActions.stepSixUnselectTransportationOption();
+  };
 
   render() {
     const {
@@ -142,11 +193,7 @@ class StepSix extends React.Component {
     const airportPickupDepartingOnly = isEqual(airportPickup, airportPickupInformation.departing);
 
     const maxStepCount = (
-      airportPickupArrivalAndDeparting
-        ? 5
-        : airportPickup
-          ? 3
-          : 1
+      airportPickupArrivalAndDeparting ? 5 : airportPickup ? 3 : 1
     );
 
     const currentStepNumber = (stepFourData.length > 0) ? stepsEnum.six : stepsEnum.five;
@@ -165,7 +212,7 @@ class StepSix extends React.Component {
           </Row>
           <Row>
             <Col>
-              <Row style={{ marginLeft: 0, overflow: 'hidden' }}>
+              <Row style={{display: 'flex'}}>
                 <Col md={5} lg={4} style={{ paddingRight: 0, paddingLeft: 0, marginBottom: 15, zIndex: 15 }}>
                   <Card
                     id={0}
@@ -195,13 +242,6 @@ class StepSix extends React.Component {
                         </CardContentCol>
                       </CardContentRow>
                       <CardContentText>
-                        {/*
-                        // TODO: rewrite that!
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi viverra mattis sapien sed sollicitudin.
-                        Phasellus id massa ac sapien gravida bibendum. Nulla pellentesque hendrerit turpis, in cursus eros lacinia
-                        sit amet. Morbi consectetur nibh ut eros luctus, nec consectetur nibh rhoncus. Pellentesque at diam ante.
-                        Nullam sagittis tempor nibh sit amet eleifend. Vestibulum eu commodo ex, ut pretium nulla.
-                        */}
                       </CardContentText>
                     </CardContent>
                   </Card>
@@ -390,54 +430,6 @@ class StepSix extends React.Component {
       </AOSFadeInContainer>
     );
   }
-
-  setDepartingAirlines = (id) => {
-    this.props.stepSixActions.stepSixSetDepartingAirlines(id);
-  };
-
-  setDefaultState = () => {
-    const {
-      dispatch, cartId, participantId, cartStepSixArrivalProductId, cartStepSixDepartingProductId, cartStepSixUnnacompaniedProductId,
-    } = this.props;
-    for (let key in stepSixFormFieldNames) {
-      dispatch( change('wizard', stepSixFormFieldNames[key], ''), );
-    }
-    if (cartStepSixArrivalProductId) {
-      this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixArrivalProductId, type: 'arrival_transport' });
-    }
-    if (cartStepSixDepartingProductId) {
-      this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixDepartingProductId, type: 'departing_transport' });
-    }
-    if (cartStepSixUnnacompaniedProductId) {
-      this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixUnnacompaniedProductId, type: 'unacompannied' });
-    }
-
-    this.props.stepSixActions.stepSixSetDefaultState();
-  };
-
-  getCatalogTransport = () => {
-    this.props.stepSixActions.stepSixGetCatalogTransportRequest();
-  };
-
-  getCatalogAirlines = () => {
-    this.props.stepSixActions.stepSixGetCatalogAirlinesRequest();
-  };
-
-  goingToFinalStep = () => {
-    this.props.stepsActions.setStepsCounter(stepsEnum.seven);
-  };
-
-  stepSixGetCatalogTransportUnaccompanied = () => {
-    this.props.stepSixActions.stepSixGetCatalogTransportUnaccompaniedRequest();
-  };
-
-  selectTransportationOption = (id) => {
-    this.props.stepSixActions.stepSixSelectTransportationOption(id);
-  };
-
-  unselectTransportationOption = () => {
-    this.props.stepSixActions.stepSixUnselectTransportationOption();
-  };
 }
 
 function mapStateToProps(state) {
