@@ -8,9 +8,8 @@ import Input from '../../../components/Input';
 import { stepSixFormFieldNames, departingFormFieldNames } from '../selectors';
 
 const PickUpLocationTextField = (props) => {
-  const { departing } = props;
-  const isDisabled = !isEqual(departing, departingFormFieldNames.other);
-  return (
+  const isDisabled = !isEqual(props.departing, departingFormFieldNames.other);
+  return isEqual(props.departing, departingFormFieldNames.other) && (
     <div className="step-six__text-input step-six__form-field">
       <Input
         name={stepSixFormFieldNames.pickUpOtherLocation}

@@ -121,6 +121,8 @@
     "step_six.yes": "Yes",
     "step_six.no": "No",
     "step_six.roundtrip": "Roundtrip",
+    "step_six.has_booked_flight": "Have you booked this flight yet?",
+    "step_six.has_booked_flight.description": "If you haven't booked your flight(s) yet, don't worry! We'll send you information on how to provide flight information at a later date after you checkout.",
     "step_six.pickup": "Pickup only",
     "step_six.dropoff": "Dropoff only",
     "step_six.no_pickup": "No pickup",
