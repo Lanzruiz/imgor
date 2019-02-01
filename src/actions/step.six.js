@@ -165,7 +165,38 @@ export function stepSixDeleteProductInTheCart(args) {
       apiCallParams: args,
     });
   }
-};
+}
+
+
+export function stepSixAddTransportToCart(){
+  return(dispatch, getState) => {
+    
+    const { form: { wizard: { values } } } = getState();
+    
+    const cartPayload = {
+      [stepSixFormFieldNames.airportPickup]: values[stepSixFormFieldNames.airportPickup],
+      [stepSixFormFieldNames.unaccompanied]: values[stepSixFormFieldNames.unaccompanied],
+      [stepSixFormFieldNames.transport]: values[stepSixFormFieldNames.transport],
+      [stepSixFormFieldNames.arrivalFlightNumber]: values[stepSixFormFieldNames.arrivalFlightNumber],
+      [stepSixFormFieldNames.arrivalDateTime]: values[stepSixFormFieldNames.arrivalDateTime],
+      [stepSixFormFieldNames.dropoff]: values[stepSixFormFieldNames.dropoff],
+      [stepSixFormFieldNames.dropoffOtherLocation]: values[stepSixFormFieldNames.dropoffOtherLocation],
+      [stepSixFormFieldNames.departingTransport]: values[stepSixFormFieldNames.departingTransport],
+      [stepSixFormFieldNames.departingFlightNumber]: values[stepSixFormFieldNames.departingFlightNumber],
+      [stepSixFormFieldNames.departingDateTime]: values[stepSixFormFieldNames.departingDateTime],
+      [stepSixFormFieldNames.departing]: values[stepSixFormFieldNames.departing],
+      [stepSixFormFieldNames.pickUpOtherLocation]: values[stepSixFormFieldNames.pickUpOtherLocation],
+      [stepSixFormFieldNames.airportPickupAirline]: values[stepSixFormFieldNames.airportPickupAirline],
+      [stepSixFormFieldNames.departingAirline]: values[stepSixFormFieldNames.departingAirline],
+      [stepSixFormFieldNames.hasBookedFlight]: values[stepSixFormFieldNames.hasBookedFlight],
+    };
+    
+    dispatch({
+      type: stepSixTypes.STEP_SIX_ADD_TRANSPORTATION_TO_CART,
+      payload: cartPayload
+    })
+  }
+}
 
 export function stepSixSelectTransportationOption(id) {
   return {

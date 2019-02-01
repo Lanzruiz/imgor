@@ -14,6 +14,7 @@ const initialState = {
   departingData: null,
   arrivalData: null,
   unnacompaniedData: null,
+  transportationCartData: null,
 };
 
 export default function(state = initialState, action) {
@@ -96,7 +97,16 @@ export default function(state = initialState, action) {
       if (isEqual(state.transportationId, null)) {
         return state;
       }
-      return assign({}, state, { transportationId: null });
+      return assign({}, state, { transportationId: null, transportationCartData: {} });
+    }
+  
+    case stepSixTypes.STEP_SIX_ADD_TRANSPORTATION_TO_CART: {
+      return {
+        ...state,
+        transportationCartData: {
+          ...payload
+        }
+      }
     }
 
     case PURGE: {

@@ -215,5 +215,37 @@
         .dropdown__option {
             font-family: $normal-font;
         }
+
+      &__summary{
+        &__box{
+          color: $tab-row-bg;
+          padding: 8px 0;
+          &__unaccompanied-price{
+            margin-left: 10px;
+            font-family: $trade-gothic-bold;
+          }
+
+          .box-item{
+            display: flex;
+            justify-content: space-between;
+            padding: 3px 0;
+            font-family: $proxima-nova;
+
+            div:first-child{
+              color: $tab-row-bg;
+            }
+          }
+        }
+      }
+
+      .add-to-cart{
+        display: flex;
+        justify-content: flex-start;
+        margin-top: 10px;
+        &__button{
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+      }
     }
 }
