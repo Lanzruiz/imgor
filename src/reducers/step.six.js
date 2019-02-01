@@ -108,6 +108,13 @@ export default function(state = initialState, action) {
         }
       }
     }
+    
+    case stepSixTypes.STEP_SIX_CLEAR_TRANSPORTATION_CART: {
+      return {
+        ...state,
+        transportationCartData: {}
+      }
+    }
 
     case PURGE: {
       return assign({}, initialState);

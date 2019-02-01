@@ -96,6 +96,7 @@ class StepSix extends React.Component {
       stepSixUnselectTransportationOption: PropTypes.func.isRequired,
       stepSixDeleteProductInTheCart: PropTypes.func.isRequired,
       stepSixAddTransportToCart: PropTypes.func.isRequired,
+      stepSixClearTransportCart: PropTypes.func.isRequired,
     }),
     transport: PropTypes.arrayOf(
       PropTypes.shape({
@@ -203,7 +204,14 @@ class StepSix extends React.Component {
   };
   
   addTransportDataToCart = () => {
-    this.props.stepSixActions.stepSixAddTransportToCart();
+    this.props.stepSixActions.stepSixAddTransportToCart({
+      cartId: this.props.cartId,
+      participantId: this.props.participantId
+    });
+  };
+  
+  handlePickupChange = () => {
+    this.props.stepSixActions.stepSixClearTransportCart();
   };
 
   render() {
@@ -263,6 +271,7 @@ class StepSix extends React.Component {
                     <CardContent className="step-six__transportation-card">
                       <CardContentRow>
                         <CardContentCol>
+                          
                           <Image
                             className="card-content__img"
                             defaultSrc={stubImage}
@@ -270,7 +279,10 @@ class StepSix extends React.Component {
                           />
                         </CardContentCol>
                         <CardContentCol>
-                          <AirportPickupCheckboxContainer airportPickup={airportPickup} />
+                          <AirportPickupCheckboxContainer
+                            handleChange={this.handlePickupChange}
+                            airportPickup={airportPickup}
+                          />
                         </CardContentCol>
                       </CardContentRow>
                       <CardContentText>

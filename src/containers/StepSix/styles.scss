@@ -225,6 +225,13 @@
             font-family: $trade-gothic-bold;
           }
 
+          &:first-child{
+            border-right: 1px solid $card-blue-color;
+          }
+          &:last-child{
+            border-right: none;
+          }
+
           .box-item{
             display: flex;
             justify-content: space-between;

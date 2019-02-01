@@ -21,7 +21,7 @@ class AirportPickupCheckboxContainer extends React.Component {
   static defaultProps = {};
 
   render() {
-    const { airportPickup, transportationId } = this.props;
+    const { airportPickup, transportationId, handleChange } = this.props;
     const { both, arrival, departing } = airportPickupInformation;
     const options = [
       { value: both, stringKey: 'step_six.roundtrip' },
@@ -45,6 +45,7 @@ class AirportPickupCheckboxContainer extends React.Component {
                   checked={isEqual(airportPickup, value)}
                   children={<LocaleString stringKey={stringKey} />}
                   disabled={!isNumber(transportationId)}
+                  handleChange={handleChange}
                 />
               );
             })

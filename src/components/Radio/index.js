@@ -6,7 +6,7 @@ import cx from 'classnames';
 import './styles.scss';
 
 const Radio = (props) => {
-  const { children, name, value, className, ...rest } = props;
+  const { children, name, value, className, onChange, handleChange, ...rest } = props;
   const radioBtnContainer = cx('radio-btn__container radio-btn__container--regular', {
     'radio-btn__container--not-allowed': rest.disabled,
     'radio-btn__container--pointer': !rest.disabled,
@@ -20,6 +20,7 @@ const Radio = (props) => {
         type="radio"
         name={name}
         value={value}
+        onChange={(v) => {onChange(v); handleChange && handleChange(v);}}
       />
       {children}
     </label>

@@ -85,26 +85,29 @@ export function stepSixGetCatalogTransportUnaccompaniedRequest() {
 };
 
 export function stepSixSendProductToTheCart(args) {
+  
+  console.log('send data to cart', args);
+  
   return function(dispatch) {
-    Api.req({
-      apiCall: Api.postCartCartIdParticipantIdProduct,
-      res200: (data) => {
-        let cartObject;
-        if (isEqual(args.attributes.type, 'arrival_transport')) {
-          cartObject = assign({}, data.cart, { stepSixArrivalProductId: data.participant_product_id });
-        }
-        if (isEqual(args.attributes.type, 'departing_transport')) {
-          cartObject = assign({}, data.cart, { stepSixDepartingProductId: data.participant_product_id });
-        }
-        if (isEqual(args.attributes.type, 'unacompannied')) {
-          cartObject = assign({}, data.cart, { stepSixUnnacompaniedProductId: data.participant_product_id });
-        }
-        dispatch( updateCart(cartObject), );
-      },
-      res404: () => console.log('Api.postCartCartIdParticipantIdProduct() => 404'),
-      reject: console.error, // TODO: Add error handler
-      apiCallParams: args,
-    });
+    // Api.req({
+    //   apiCall: Api.postCartCartIdParticipantIdProduct,
+    //   res200: (data) => {
+    //     let cartObject;
+    //     if (isEqual(args.attributes.type, 'arrival_transport')) {
+    //       cartObject = assign({}, data.cart, { stepSixArrivalProductId: data.participant_product_id });
+    //     }
+    //     if (isEqual(args.attributes.type, 'departing_transport')) {
+    //       cartObject = assign({}, data.cart, { stepSixDepartingProductId: data.participant_product_id });
+    //     }
+    //     if (isEqual(args.attributes.type, 'unacompannied')) {
+    //       cartObject = assign({}, data.cart, { stepSixUnnacompaniedProductId: data.participant_product_id });
+    //     }
+    //     dispatch( updateCart(cartObject), );
+    //   },
+    //   res404: () => console.log('Api.postCartCartIdParticipantIdProduct() => 404'),
+    //   reject: console.error, // TODO: Add error handler
+    //   apiCallParams: args,
+    // });
   }
 };
 
@@ -168,7 +171,7 @@ export function stepSixDeleteProductInTheCart(args) {
 }
 
 
-export function stepSixAddTransportToCart(){
+export function stepSixAddTransportToCart({ cartId, participantId }){
   return(dispatch, getState) => {
     
     const { form: { wizard: { values } } } = getState();
@@ -188,8 +191,9 @@ export function stepSixAddTransportToCart(){
       [stepSixFormFieldNames.pickUpOtherLocation]: values[stepSixFormFieldNames.pickUpOtherLocation],
       [stepSixFormFieldNames.airportPickupAirline]: values[stepSixFormFieldNames.airportPickupAirline],
       [stepSixFormFieldNames.departingAirline]: values[stepSixFormFieldNames.departingAirline],
-      [stepSixFormFieldNames.hasBookedFlight]: values[stepSixFormFieldNames.hasBookedFlight],
     };
+    
+    console.log(cartPayload, {cartId, participantId});
     
     dispatch({
       type: stepSixTypes.STEP_SIX_ADD_TRANSPORTATION_TO_CART,
@@ -197,6 +201,13 @@ export function stepSixAddTransportToCart(){
     })
   }
 }
+
+export function stepSixClearTransportCart(){
+  return {
+    type: stepSixTypes.STEP_SIX_CLEAR_TRANSPORTATION_CART
+  }
+}
+
 
 export function stepSixSelectTransportationOption(id) {
   return {
