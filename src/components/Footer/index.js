@@ -99,7 +99,25 @@ class Footer extends React.Component {
       }
     }
   }
-
+  
+  isFormTextFieldActive = (formMeta) => {
+    const textFields = [
+      stepSixFormFieldNames.arrivalDateTime,
+      stepSixFormFieldNames.arrivalFlightNumber,
+      stepSixFormFieldNames.departingDateTime,
+      stepSixFormFieldNames.departingFlightNumber,
+      stepSixFormFieldNames.dropoffOtherLocation,
+      stepSixFormFieldNames.pickUpOtherLocation,
+    ];
+    let hasActiveTextField = false;
+    textFields.forEach((textFieldName) => {
+      if (formMeta[textFieldName] && formMeta[textFieldName].active) {
+        hasActiveTextField = true;
+      }
+    });
+    return hasActiveTextField;
+  };
+  
   render() {
     const { totalPrice, price, message, arrowUp, hasMessage, purchaseOnClickHandler, saveCampOnClickHandler, shareOnClickHandler, step } = this.props;
     const arrowPositinon = arrowUp ? <span className="icon-arrow-up" /> : <span className="icon-arrow-down" />;
@@ -161,23 +179,6 @@ class Footer extends React.Component {
     );
   }
 
-  isFormTextFieldActive = (formMeta) => {
-    const textFields = [
-      stepSixFormFieldNames.arrivalDateTime,
-      stepSixFormFieldNames.arrivalFlightNumber,
-      stepSixFormFieldNames.departingDateTime,
-      stepSixFormFieldNames.departingFlightNumber,
-      stepSixFormFieldNames.dropoffOtherLocation,
-      stepSixFormFieldNames.pickUpOtherLocation,
-    ];
-    let hasActiveTextField = false;
-    textFields.forEach((textFieldName) => {
-      if (formMeta[textFieldName] && formMeta[textFieldName].active) {
-        hasActiveTextField = true;
-      }
-    });
-    return hasActiveTextField;
-  };
 
   sendArrivalRequest = () => {
     const { cartStepSixArrivalProductId, stepSixArrivalData, cartId, participantId } = this.props;

@@ -200,11 +200,14 @@ class StepSix extends React.Component {
   };
   
   unselectTransportationOption = () => {
-    this.props.stepSixActions.stepSixUnselectTransportationOption();
+    this.props.stepSixActions.stepSixUnselectTransportationOption({
+      cartId: this.props.cartId,
+      participantId: this.props.participantId
+    });
   };
   
-  addTransportDataToCart = () => {
-    this.props.stepSixActions.stepSixAddTransportToCart({
+  addTransportDataToCart = async () => {
+    await this.props.stepSixActions.stepSixAddTransportToCart({
       cartId: this.props.cartId,
       participantId: this.props.participantId
     });
@@ -562,7 +565,7 @@ class StepSix extends React.Component {
                                 )}
                                 <Col md={12} className="box-item">
                                   <div>Dropoff Location:</div>
-                                  <div>{ dropoff !== 'other' ? dropoff : `Other: ${dropoffOtherLocation}` }</div>
+                                  <div>{ departing !== 'other' ? departing : `Other: ${departingOtherLocation}` }</div>
                                 </Col>
                               </Row>
                             </Col>
@@ -597,7 +600,7 @@ class StepSix extends React.Component {
                                 )}
                                 <Col md={12} className="box-item">
                                   <div>Dropoff Location:</div>
-                                  <div>{ departing !== 'other' ? departing : `Other: ${departingOtherLocation}` }</div>
+                                  <div>{ dropoff !== 'other' ? dropoff : `Other: ${dropoffOtherLocation}` }</div>
                                 </Col>
                               </Row>
                             </Col>
