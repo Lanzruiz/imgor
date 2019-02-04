@@ -2,6 +2,7 @@
 import { createSelector } from 'reselect';
 import { formValueSelector } from 'redux-form';
 import isEqual from 'lodash/isEqual';
+import isEmpty from 'lodash/isEmpty';
 // Helpers
 import stringToNumber from '../../helpers/stringToNumber';
 // Constants
@@ -108,6 +109,13 @@ export const stepSixTransportSelector = createSelector(
   stepSixSelector,
   function(stepSix = {}) {
     return stepSix.transport;
+  }
+);
+
+export const stepSixTransportCartData = createSelector(
+  stepSixSelector,
+  function(stepSix = {}) {
+    return !isEmpty(stepSix.transportationCartData)
   }
 );
 
