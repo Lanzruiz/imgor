@@ -154,6 +154,7 @@ class Card extends React.Component {
 
   renderViaBlock = () => {
     const { via, headerSize } = this.props;
+    
     const cardLabelViaClassName = cx('card-label__text card-label__text--serifa-bold', {
       'card-label__text--regular': headerSize === headerSizeEnum.small,
       'card-label__text--medium': headerSize === headerSizeEnum.large,
@@ -179,7 +180,9 @@ class Card extends React.Component {
     });
     return label && (
       <GreenBlock className="card__label card-label">
-        <span className={cardLabelHeaderClassNames}>{label}</span>
+        <span className={cardLabelHeaderClassNames}>
+          {label}
+        </span>
         {this.renderViaBlock()}
       </GreenBlock>
     );

@@ -125,7 +125,8 @@ class StepThree extends React.Component {
   }
 
   render() {
-    const { selectedId, data, selectedCardWithSecondaryProgramsId } = this.props;
+    const { selectedId, data, selectedCardWithSecondaryProgramsId, campersAge } = this.props;
+    
     return (
       <AOSFadeInContainer className="step-three" ref={this.stepThree}>
         <Container>
@@ -139,6 +140,8 @@ class StepThree extends React.Component {
             </Col>
           </Row>
           <Row className="align-items-stretch">
+            
+            
             {data.map(({ age_range, display_name, price, id, name, sold_out, has_secondary_program, secondary_programs, starting_price, display_via_label }, idx) => {
               return (
                 <Col lg={6} key={idx} className="card-column">
@@ -152,7 +155,7 @@ class StepThree extends React.Component {
                     id: has_secondary_program ? idx : id,
                     secondaryPrograms: secondary_programs,
                     soldOut: sold_out,
-                    displayViaLabel: display_via_label,
+                    displayViaLabel: display_via_label || campersAge < 13,
                   })}
                 </Col>
               );
@@ -365,6 +368,7 @@ function mapStateToProps(state) {
     weeks: weeksItemsSelector(state),
     stepThree: stepThreeSelector(state),
     cart: cartSelector(state),
+    campersAge: Number(((state.form.wizard || {}).values || {}).age)
   };
 };
 
