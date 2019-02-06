@@ -45,8 +45,8 @@ class Footer extends React.Component {
     price: 0,
     arrowUp: false,
     hasMessage: true,
-    purchaseOnClickHandler: () => { console.warn('Where is your purchaseOnClickHandler?'); },
-    saveCampOnClickHandler: () => { console.log('Where is your saveCampOnClickHandler?'); },
+    // purchaseOnClickHandler: () => { console.warn('Where is your purchaseOnClickHandler?'); },
+    // saveCampOnClickHandler: () => { console.log('Where is your saveCampOnClickHandler?'); },
     shareOnClickHandler: () => { console.log('Where is your shareOnClickHandler?'); }
   };
 
@@ -118,8 +118,86 @@ class Footer extends React.Component {
     return hasActiveTextField;
   };
   
+  
+  
+  sendArrivalRequest = () => {
+    const { cartStepSixArrivalProductId, stepSixArrivalData, cartId, participantId } = this.props;
+    // If arrival product id exist
+    if (cartStepSixArrivalProductId) {
+      // If arrival data exist update project else delete project
+      if (stepSixArrivalData) {
+        this.props.stepSixActions.stepSixUpdateProductInTheCart( assign({}, stepSixArrivalData, { cartId, participantId, productId: cartStepSixArrivalProductId }), );
+      } else {
+        this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixArrivalProductId, type: 'arrival_transport' });
+      }
+    } else {
+      // If arrival data exist create project
+      if (stepSixArrivalData) {
+        this.props.stepSixActions.stepSixSendProductToTheCart( assign({}, stepSixArrivalData, { cartId, participantId }), );
+      }
+    }
+  };
+  
+  sendDepartingRequest = () => {
+    const { cartStepSixDepartingProductId, stepSixDepartingData, cartId, participantId } = this.props;
+    // If departing product id exist
+    if (cartStepSixDepartingProductId) {
+      // If departing data exist update project else delete project
+      if (stepSixDepartingData) {
+        this.props.stepSixActions.stepSixUpdateProductInTheCart( assign({}, stepSixDepartingData, { cartId, participantId, productId: cartStepSixDepartingProductId }), );
+      } else {
+        this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixDepartingProductId, type: 'departing_transport' });
+      }
+    } else {
+      // If departing data exist create project
+      if (stepSixDepartingData) {
+        this.props.stepSixActions.stepSixSendProductToTheCart( assign({}, stepSixDepartingData, { cartId, participantId }), );
+      }
+    }
+  };
+  
+  sendUnaccompaniedRequest = () => {
+    const { cartStepSixUnnacompaniedProductId, stepSixUnaccompaniedData, cartId, participantId } = this.props;
+    // If unaccompanied product id exist
+    if (cartStepSixUnnacompaniedProductId) {
+      // If unaccompanied data exist update project else delete project
+      if (stepSixUnaccompaniedData) {
+        this.props.stepSixActions.stepSixUpdateProductInTheCart( assign({}, stepSixUnaccompaniedData, { cartId, participantId, productId: cartStepSixUnnacompaniedProductId }), );
+      } else {
+        this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixUnnacompaniedProductId, type: 'unacompannied' });
+      }
+    } else {
+      // If unaccompanied data exist create project
+      if (stepSixUnaccompaniedData) {
+        this.props.stepSixActions.stepSixSendProductToTheCart( assign({}, stepSixUnaccompaniedData, { cartId, participantId }), );
+      }
+    }
+  };
+  
+  stepSixDeleteArrivalProductInTheCart = () => {
+    const { cartId, participantId, cartStepSixArrivalProductId } = this.props;
+    if (cartStepSixArrivalProductId) {
+      this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixArrivalProductId, type: 'arrival_transport' });
+    }
+  };
+  
+  stepSixDeleteUnaccompaniedProductInTheCart = () => {
+    const { cartId, participantId, cartStepSixUnnacompaniedProductId } = this.props;
+    if (cartStepSixUnnacompaniedProductId) {
+      this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixUnnacompaniedProductId, type: 'unacompannied' });
+    }
+  };
+  
+  stepSixDeleteDepartingProductInTheCart = () => {
+    const { cartId, participantId, cartStepSixDepartingProductId } = this.props;
+    if (cartStepSixDepartingProductId) {
+      this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixDepartingProductId, type: 'departing_transport' });
+    }
+  };
+  
   render() {
-    const { totalPrice, price, message, arrowUp, hasMessage, purchaseOnClickHandler, saveCampOnClickHandler, shareOnClickHandler, step } = this.props;
+    const { totalPrice, price, message, arrowUp, hasMessage, purchaseOnClickHandler, step } = this.props;
+    // const { saveCampOnClickHandler, shareOnClickHandler } = this.props;
     const arrowPositinon = arrowUp ? <span className="icon-arrow-up" /> : <span className="icon-arrow-down" />;
     const isCurrentStepEqualToSix = isEqual(step, stepsEnum.six);
 
@@ -157,16 +235,16 @@ class Footer extends React.Component {
                           stringKey="purchase_on_shop_img"
                           onClick={purchaseOnClickHandler}
                         />
-                        <FooterButton
-                          save
-                          stringKey="save_camp"
-                          onClick={saveCampOnClickHandler}
-                        />
-                        <FooterButton
-                          share
-                          stringKey="share_camp"
-                          onClick={shareOnClickHandler}
-                        />
+                        {/*<FooterButton*/}
+                          {/*save*/}
+                          {/*stringKey="save_camp"*/}
+                          {/*onClick={saveCampOnClickHandler}*/}
+                        {/*/>*/}
+                        {/*<FooterButton*/}
+                          {/*share*/}
+                          {/*stringKey="share_camp"*/}
+                          {/*onClick={shareOnClickHandler}*/}
+                        {/*/>*/}
                       </div>
                     )
                   }
@@ -178,82 +256,6 @@ class Footer extends React.Component {
       </div>
     );
   }
-
-
-  sendArrivalRequest = () => {
-    const { cartStepSixArrivalProductId, stepSixArrivalData, cartId, participantId } = this.props;
-    // If arrival product id exist
-    if (cartStepSixArrivalProductId) {
-      // If arrival data exist update project else delete project
-      if (stepSixArrivalData) {
-        this.props.stepSixActions.stepSixUpdateProductInTheCart( assign({}, stepSixArrivalData, { cartId, participantId, productId: cartStepSixArrivalProductId }), );
-      } else {
-        this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixArrivalProductId, type: 'arrival_transport' });
-      }
-    } else {
-      // If arrival data exist create project
-      if (stepSixArrivalData) {
-        this.props.stepSixActions.stepSixSendProductToTheCart( assign({}, stepSixArrivalData, { cartId, participantId }), );
-      }
-    }
-  };
-
-  sendDepartingRequest = () => {
-    const { cartStepSixDepartingProductId, stepSixDepartingData, cartId, participantId } = this.props;
-    // If departing product id exist
-    if (cartStepSixDepartingProductId) {
-      // If departing data exist update project else delete project
-      if (stepSixDepartingData) {
-        this.props.stepSixActions.stepSixUpdateProductInTheCart( assign({}, stepSixDepartingData, { cartId, participantId, productId: cartStepSixDepartingProductId }), );
-      } else {
-        this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixDepartingProductId, type: 'departing_transport' });
-      }
-    } else {
-      // If departing data exist create project
-      if (stepSixDepartingData) {
-        this.props.stepSixActions.stepSixSendProductToTheCart( assign({}, stepSixDepartingData, { cartId, participantId }), );
-      }
-    }
-  };
-
-  sendUnaccompaniedRequest = () => {
-    const { cartStepSixUnnacompaniedProductId, stepSixUnaccompaniedData, cartId, participantId } = this.props;
-    // If unaccompanied product id exist
-    if (cartStepSixUnnacompaniedProductId) {
-      // If unaccompanied data exist update project else delete project
-      if (stepSixUnaccompaniedData) {
-        this.props.stepSixActions.stepSixUpdateProductInTheCart( assign({}, stepSixUnaccompaniedData, { cartId, participantId, productId: cartStepSixUnnacompaniedProductId }), );
-      } else {
-        this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixUnnacompaniedProductId, type: 'unacompannied' });
-      }
-    } else {
-      // If unaccompanied data exist create project
-      if (stepSixUnaccompaniedData) {
-        this.props.stepSixActions.stepSixSendProductToTheCart( assign({}, stepSixUnaccompaniedData, { cartId, participantId }), );
-      }
-    }
-  };
-
-  stepSixDeleteArrivalProductInTheCart = () => {
-    const { cartId, participantId, cartStepSixArrivalProductId } = this.props;
-    if (cartStepSixArrivalProductId) {
-      this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixArrivalProductId, type: 'arrival_transport' });
-    }
-  };
-
-  stepSixDeleteUnaccompaniedProductInTheCart = () => {
-    const { cartId, participantId, cartStepSixUnnacompaniedProductId } = this.props;
-    if (cartStepSixUnnacompaniedProductId) {
-      this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixUnnacompaniedProductId, type: 'unacompannied' });
-    }
-  };
-
-  stepSixDeleteDepartingProductInTheCart = () => {
-    const { cartId, participantId, cartStepSixDepartingProductId } = this.props;
-    if (cartStepSixDepartingProductId) {
-      this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixDepartingProductId, type: 'departing_transport' });
-    }
-  };
 };
 
 function formatMoney(amount, decimalCount = 2, decimal = ".", thousands = ",") {
