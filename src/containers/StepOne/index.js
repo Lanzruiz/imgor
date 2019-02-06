@@ -134,6 +134,132 @@ class StepOne extends React.Component {
       this.getCatalogCampsGroup(args);
     }
   }
+  
+  getCatalogCampsGroup = (args) => {
+    for (let key in args) {
+      if (!args[key]) {
+        delete args[key];
+      }
+    }
+    if (args.sport) {
+      this.props.stepOneActions.getCatalogCampsGroup(args);
+    }
+  };
+  
+  closeEmailModal = () => {
+    const { cartId, email } = this.props;
+    if (cartId && email) {
+      this.props.participantActions.addParticipantByCardId({ cartId, email });
+      
+      if(window.reactAppStart && typeof window.reactAppStart === 'function'){
+        window.reactAppStart({ cartId, email });
+      }
+    }
+  };
+  
+  incrementWeeksCounter = () => {
+    this.props.weeksActions.incrementWeeksCounter();
+  };
+  
+  decrementWeeksCounter = () => {
+    this.props.weeksActions.decrementWeeksCounter();
+  };
+  
+  setWeeksCounter = (count) => {
+    this.props.weeksActions.setWeeksCounter(count);
+  };
+  
+  renderTabPanel = ({ range = [], boardingOptions = [], genderOptions = [] }) => {
+    const { sleepaway, age, gender } = this.props;
+    return (
+      <div className="tab-content__container tab-row__container content">
+        <div className="content__first-col">
+          {/*// TODO: rewrite that! */}
+          <H2>{/* our most popular camp */}</H2>
+          <Paragraph>
+            {/* Perfect for campers ages 10-18. Expand upon your current knowledge of the game while increasing
+            your position-specific scills and profisiency through the best progressive youth football camp setting
+            that also introduces 1-on-1 completion. Discover the ideal environment for growth and maturity both
+            on the field and as an overall athlete. */}
+          </Paragraph>
+          <H4>{/*week 1: technical skill development*/}</H4>
+          <Paragraph>
+            {/* QB: Throwing mechanics; 3- and 5- step drops. RB/WR: Footwork; agility; ball catching and route
+            running. DB/LB: Alignment; coverage and taskling fundamentals. OL/DL: Stance/start; pass rush and
+            pro technique; run blocking. K/P: Leg swing; ball striking; stride; short and long distance kicking. */}
+          </Paragraph>
+          <H4>{/* week 2: pre-competition */}</H4>
+          <Paragraph>
+            {/* Position specific refinement of mechanics and footwork, classroom instruction and understanding
+            critical fundamental aspects. */}
+          </Paragraph>
+          <H4>{/* week 3: competition */}</H4>
+          <Paragraph>
+            {/* 1-on-1 competitive drills and video analysis/classroom discussion of individual technique. QB: Half-
+            field routes and reads; 1-on-1 drills RB/WB: Post-snap adjustments; 1-on-1s vs. DB/LB: pattern
+            reads; 1-on-1s vs. RB/WR & OL/DL: Post snap reactions,; understanding stunts/blitzes; 1-on-1 pass
+            pro and pass rush competition K/P: Situational kicking and punting; directional kicking; pooch punts;
+            goal line punting; on-side kicks */}
+          </Paragraph>
+        </div>
+        <div className="content__second-col">
+          <Form onSubmit={this.props.handleSubmit(() => {})}>
+            <div className="content__form-control">
+              <H3>
+                <LocaleString stringKey="step_one.choose_sleepaway" />
+              </H3>
+              <SleepawayRadioBtn
+                options={[{ value: 'Boarding', stringKey: 'yes' },{ value: 'Non-Boarding', stringKey: 'no' }]}
+                sleepaway={sleepaway}
+                possibleValues={boardingOptions}
+              />
+            </div>
+            <div className="content__form-control">
+              <H3>
+                <LocaleString stringKey="step_one.select_camper_age" />
+              </H3>
+              {(range.length <= 15)
+                ? (
+                  <AgeRadioBtnContainer
+                    age={age}
+                    range={range}
+                  />
+                )
+                : (
+                  <Field
+                    name={stepOneFormFieldsName.age}
+                    component={args => <StepOneAgeDropdown {...args} range={range} />}
+                  />
+                )
+              }
+            </div>
+            <div className="content__form-control">
+              <H3>
+                <LocaleString stringKey="step_one.gender" />
+              </H3>
+              <GenderRadioBtnContainer
+                options={['Male', 'Female']}
+                value={gender}
+                possibleValues={genderOptions}
+              />
+            </div>
+          </Form>
+        </div>
+      </div>
+    );
+  }
+  
+  selectGroup = ({ group, secondary_group }) => {
+    this.props.stepOneActions.selectGroup({ group, secondary_group });
+  };
+  
+  setTabIndex = (tabIndex) => {
+    this.props.stepOneActions.setTabIndex(tabIndex);
+  };
+  
+  setPrice = (price) => {
+    this.props.stepOneActions.stepOneSetPrice(price);
+  };
 
   render() {
     const { weeksCounter, participantId, data, tabIndex, group } = this.props;
@@ -355,128 +481,6 @@ class StepOne extends React.Component {
         </Container>
       </AOSFadeInContainer>
     );
-  }
-
-  getCatalogCampsGroup = (args) => {
-    for (let key in args) {
-      if (!args[key]) {
-        delete args[key];
-      }
-    }
-    if (args.sport) {
-      this.props.stepOneActions.getCatalogCampsGroup(args);
-    }
-  };
-
-  closeEmailModal = () => {
-    const { cartId, email } = this.props;
-    if (cartId && email) {
-      this.props.participantActions.addParticipantByCardId({ cartId, email });
-    }
-  };
-
-  incrementWeeksCounter = () => {
-    this.props.weeksActions.incrementWeeksCounter();
-  };
-
-  decrementWeeksCounter = () => {
-    this.props.weeksActions.decrementWeeksCounter();
-  };
-
-  setWeeksCounter = (count) => {
-    this.props.weeksActions.setWeeksCounter(count);
-  };
-
-  renderTabPanel = ({ range = [], boardingOptions = [], genderOptions = [] }) => {
-    const { sleepaway, age, gender } = this.props;
-    return (
-      <div className="tab-content__container tab-row__container content">
-        <div className="content__first-col">
-          {/*// TODO: rewrite that! */}
-          <H2>{/* our most popular camp */}</H2>
-          <Paragraph>
-            {/* Perfect for campers ages 10-18. Expand upon your current knowledge of the game while increasing
-            your position-specific scills and profisiency through the best progressive youth football camp setting
-            that also introduces 1-on-1 completion. Discover the ideal environment for growth and maturity both
-            on the field and as an overall athlete. */}
-          </Paragraph>
-          <H4>{/*week 1: technical skill development*/}</H4>
-          <Paragraph>
-            {/* QB: Throwing mechanics; 3- and 5- step drops. RB/WR: Footwork; agility; ball catching and route
-            running. DB/LB: Alignment; coverage and taskling fundamentals. OL/DL: Stance/start; pass rush and
-            pro technique; run blocking. K/P: Leg swing; ball striking; stride; short and long distance kicking. */}
-          </Paragraph>
-          <H4>{/* week 2: pre-competition */}</H4>
-          <Paragraph>
-            {/* Position specific refinement of mechanics and footwork, classroom instruction and understanding
-            critical fundamental aspects. */}
-          </Paragraph>
-          <H4>{/* week 3: competition */}</H4>
-          <Paragraph>
-            {/* 1-on-1 competitive drills and video analysis/classroom discussion of individual technique. QB: Half-
-            field routes and reads; 1-on-1 drills RB/WB: Post-snap adjustments; 1-on-1s vs. DB/LB: pattern
-            reads; 1-on-1s vs. RB/WR & OL/DL: Post snap reactions,; understanding stunts/blitzes; 1-on-1 pass
-            pro and pass rush competition K/P: Situational kicking and punting; directional kicking; pooch punts;
-            goal line punting; on-side kicks */}
-          </Paragraph>
-        </div>
-        <div className="content__second-col">
-          <Form onSubmit={this.props.handleSubmit(() => {})}>
-            <div className="content__form-control">
-              <H3>
-                <LocaleString stringKey="step_one.choose_sleepaway" />
-              </H3>
-              <SleepawayRadioBtn
-                options={[{ value: 'Boarding', stringKey: 'yes' },{ value: 'Non-Boarding', stringKey: 'no' }]}
-                sleepaway={sleepaway}
-                possibleValues={boardingOptions}
-              />
-            </div>
-            <div className="content__form-control">
-              <H3>
-                <LocaleString stringKey="step_one.select_camper_age" />
-              </H3>
-              {(range.length <= 15)
-                ? (
-                    <AgeRadioBtnContainer
-                      age={age}
-                      range={range}
-                    />
-                  )
-                : (
-                  <Field
-                    name={stepOneFormFieldsName.age}
-                    component={args => <StepOneAgeDropdown {...args} range={range} />}
-                  />
-                )
-              }
-            </div>
-            <div className="content__form-control">
-              <H3>
-                <LocaleString stringKey="step_one.gender" />
-              </H3>
-              <GenderRadioBtnContainer
-                options={['Male', 'Female']}
-                value={gender}
-                possibleValues={genderOptions}
-              />
-            </div>
-          </Form>
-        </div>
-      </div>
-    );
-  }
-
-  selectGroup = ({ group, secondary_group }) => {
-    this.props.stepOneActions.selectGroup({ group, secondary_group });
-  };
-
-  setTabIndex = (tabIndex) => {
-    this.props.stepOneActions.setTabIndex(tabIndex);
-  };
-
-  setPrice = (price) => {
-    this.props.stepOneActions.stepOneSetPrice(price);
   }
 }
 
