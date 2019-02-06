@@ -12,7 +12,7 @@ import { stepSixFormFieldNames } from '../selectors';
 // Selectors
 import { stepSixTransportationIdSelector } from '../selectors';
 
-class AirportHasFlightBookedCheckbox extends React.Component {
+class AirportHasArrivalFlightBookedCheckbox extends React.Component {
   static propTypes = {
     airportPickup: PropTypes.string,
   };
@@ -24,7 +24,7 @@ class AirportHasFlightBookedCheckbox extends React.Component {
     
     return (
       <Field
-        name={stepSixFormFieldNames.hasBookedFlight}
+        name={stepSixFormFieldNames.hasDepartingBookedFlight}
         type="checkbox"
         component={({ input }) => {
           return (
@@ -52,4 +52,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(AirportHasFlightBookedCheckbox);
+export default connect(mapStateToProps)(AirportHasArrivalFlightBookedCheckbox);
