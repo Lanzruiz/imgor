@@ -555,7 +555,7 @@ class StepSix extends React.Component {
                                    { (transport.find(v => Number(v.id) === Number(selectedTransportValue)) || {}).airport }
                                   </div>
                                 </Col>
-                                {!hasArrivalBookedFlight && (
+                                {hasArrivalBookedFlight && (
                                   <Fragment>
                                     <Col md={12} className="box-item">
                                       <div>Airline: </div>
@@ -590,7 +590,7 @@ class StepSix extends React.Component {
                                     { (transport.find(v => Number(v.id) === Number(departingTransport)) || {}).airport }
                                   </div>
                                 </Col>
-                                {!hasDepartingBookedFlight && (
+                                {hasDepartingBookedFlight && (
                                   <Fragment>
                                     <Col md={12} className="box-item">
                                       <div>Airline: </div>
