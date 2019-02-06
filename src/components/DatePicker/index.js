@@ -89,7 +89,7 @@ class renderDatePicker extends React.Component {
       <div className="datetime-picker-container">
         <ScreenClassRender render={(screenClass) => {
           const config = {
-            xl: { offset: '-40px, 10px', popperPlacement: 'left' },
+            xl: { offset: '-40px, 10px', popperPlacement: 'top' },
             lg: { offset: '-80px, -160px', popperPlacement: 'top' },
             md: { offset: '10px, -30px', popperPlacement: 'top' },
             sm: { offset: '10px, -30px', popperPlacement: 'top' },

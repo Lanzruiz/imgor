@@ -254,7 +254,7 @@ export function stepSixAddTransportToCart({ cartId, participantId }){
       arrival: {
         transport: Number(values[stepSixFormFieldNames.transport] || 0),
         flight: {
-          booked: values[stepSixFormFieldNames.hasBookedFlight],
+          booked: values[stepSixFormFieldNames.hasArrivalBookedFlight],
           airline: values[stepSixFormFieldNames.airportPickupAirline] || null,
           number: values[stepSixFormFieldNames.arrivalFlightNumber] || null,
           date: values[stepSixFormFieldNames.arrivalDateTime] || null,
@@ -265,7 +265,7 @@ export function stepSixAddTransportToCart({ cartId, participantId }){
       departing:{
         transport: Number(values[stepSixFormFieldNames.departingTransport] || 0),
         flight: {
-          booked: values[stepSixFormFieldNames.hasBookedFlight],
+          booked: values[stepSixFormFieldNames.hasDepartingBookedFlight],
           airline: values[stepSixFormFieldNames.departingAirline] || null,
           number: values[stepSixFormFieldNames.departingFlightNumber] || null,
           date: values[stepSixFormFieldNames.departingDateTime] || null,

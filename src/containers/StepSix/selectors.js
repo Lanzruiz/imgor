@@ -7,7 +7,8 @@ import isEmpty from 'lodash/isEmpty';
 import stringToNumber from '../../helpers/stringToNumber';
 // Constants
 export const stepSixFormFieldNames = {
-  hasBookedFlight: 'has_booked_flight',
+  hasArrivalBookedFlight: 'has_arrival_booked_flight',
+  hasDepartingBookedFlight: 'has_departing_booked_flight',
   airportPickup: 'airport_pickup',
   transport: 'transport',
   transportation: 'transportation',
@@ -263,6 +264,10 @@ export function stepSixDepartingAirlineSelector(state = {}) {
   return selector(state, stepSixFormFieldNames.departingAirline);
 };
 
-export function stepSixHasBookedFlightSelector(state = {}){
-  return selector(state, stepSixFormFieldNames.hasBookedFlight);
+export function stepSixHasArrivalBookedFlightSelector(state = {}){
+  return selector(state, stepSixFormFieldNames.hasArrivalBookedFlight);
+}
+
+export function stepSixHasDepartingBookedFlightSelector(state = {}){
+  return selector(state, stepSixFormFieldNames.hasDepartingBookedFlight);
 }

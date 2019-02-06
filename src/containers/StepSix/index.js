@@ -15,7 +15,8 @@ import LocaleString from '../../components/LocaleString';
 import Carousel, { CarouselItem } from '../../components/Carousel';
 import DatePickerReduxForm from '../../components/DatePicker';
 import Image from '../../components/Image';
-import AirportHasFlightBookedCheckbox from './components/AirportHasFlightBookedCheckbox';
+import AirportHasArrivalFlightBookedCheckbox from './components/AirportHasArrivalFlightBookedCheckbox';
+import AirportHasDepartingFlightBookedCheckbox from './components/AirportHasDepartingFlightBookedCheckbox';
 import AirportPickupCheckboxContainer from './components/AirportPickupCheckboxContainer';
 import DropoffLocationTextField from './components/DropoffLocationTextField';
 import PickUpLocationTextField from './components/PickUpLocationTextField';
@@ -58,13 +59,14 @@ import {
   stepSixTransportationIdSelector,
   stepSixAirportPickupAirlineSelector,
   stepSixDepartingAirlineSelector,
-  stepSixHasBookedFlightSelector,
   stepSixArrivalFlightNumberSelector,
   stepSixArrivalDateTimeSelector,
   stepSixDepartingFlightNumberSelector,
   stepSixDepartingDateTimeSelector,
   stepSixDropoffOtherLocationSelector,
   stepSixTransportCartData,
+  stepSixHasArrivalBookedFlightSelector,
+  stepSixHasDepartingBookedFlightSelector,
 } from './selectors';
 import { stepFiveDataPerPageSelector } from '../StepFive/selectors';
 import { sportSelector, businessTypeSelector, packageTypeSelector } from '../InitialComponent/selectors';
@@ -220,9 +222,9 @@ class StepSix extends React.Component {
   render() {
     const {
       airlines, airportPickup, transport, unaccompanied, dropoff, departing, transportUnaccompanied, transportationId,
-      departingTransport, selectedTransportValue, stepFourData, hasBookedFlight, arrivalFlightNumber, arrivalDateTime,
-      airportPickupAirline, airportDepartingAirline, departingFlightNumber, departingDateTime, dropoffOtherLocation,
-      departingOtherLocation, hasTransportationCartData
+      departingTransport, selectedTransportValue, stepFourData, hasArrivalBookedFlight, arrivalFlightNumber,
+      arrivalDateTime, airportPickupAirline, airportDepartingAirline, departingFlightNumber, departingDateTime,
+      dropoffOtherLocation, departingOtherLocation, hasTransportationCartData, hasDepartingBookedFlight
     } = this.props;
     
     const airportPickupArrivalAndDeparting = isEqual(airportPickup, airportPickupInformation.both);
@@ -289,12 +291,7 @@ class StepSix extends React.Component {
                         </CardContentCol>
                       </CardContentRow>
                       <CardContentText>
-                        <Fragment>
-                          <AirportHasFlightBookedCheckbox />
-                          <p className="has-booked-description">
-                            <LocaleString stringKey={'step_six.has_booked_flight.description'} />
-                          </p>
-                        </Fragment>
+                      
                       </CardContentText>
                     </CardContent>
                   </Card>
@@ -347,9 +344,13 @@ class StepSix extends React.Component {
                             />
                           </Col>
                           <Col md={12} lg={7} xl={6}>
+                            <AirportHasArrivalFlightBookedCheckbox />
                             
-                            {!hasBookedFlight && (
+                            {hasArrivalBookedFlight && (
                               <Fragment>
+                                <p className="has-booked-description">
+                                  <LocaleString stringKey={'step_six.has_booked_flight.description'} />
+                                </p>
                                 <AirlinesDropdownContainer airlines={airlines} />
                                 <ArrivalFlightNumberTextInput />
                                 <DatePickerReduxForm
@@ -357,6 +358,7 @@ class StepSix extends React.Component {
                                   name={stepSixFormFieldNames.arrivalDateTime}
                                   className="step-six__text-input step-six__form-field"
                                   placeholder="Arrival Date & Time"
+                                  minDate={new Date()}
                                 />
                               </Fragment>
                             )}
@@ -427,15 +429,21 @@ class StepSix extends React.Component {
                             />
                           </Col>
                           <Col md={12} lg={7} xl={6}>
-                            {!hasBookedFlight && (
+                            <AirportHasDepartingFlightBookedCheckbox />
+                            
+                            {hasDepartingBookedFlight && (
                               <Fragment>
+                                <p className="has-booked-description">
+                                  <LocaleString stringKey={'step_six.has_booked_flight.description'} />
+                                </p>
                                 <AirlinesDepartingDropdownContainer airlines={airlines} />
                                 <FlightNumberDepartingTextInput />
                                 <DatePickerReduxForm
                                   isClearable
                                   name={stepSixFormFieldNames.departingDateTime}
-                                  className="step-six__text-input step-six__form-field"
+                                  className="step-six__text-input step-six_Invalid interval_form-field"
                                   placeholder="Departing Date & Time"
+                                  minDate={new Date()}
                                 />
                               </Fragment>
                             )}
@@ -547,7 +555,7 @@ class StepSix extends React.Component {
                                    { (transport.find(v => Number(v.id) === Number(selectedTransportValue)) || {}).airport }
                                   </div>
                                 </Col>
-                                {!hasBookedFlight && (
+                                {hasArrivalBookedFlight && (
                                   <Fragment>
                                     <Col md={12} className="box-item">
                                       <div>Airline: </div>
@@ -565,7 +573,7 @@ class StepSix extends React.Component {
                                 )}
                                 <Col md={12} className="box-item">
                                   <div>Dropoff Location:</div>
-                                  <div>{ departing !== 'other' ? departing : `Other: ${departingOtherLocation}` }</div>
+                                  <div>{ departing !== 'other' ? departing : `Other: ${departingOtherLocation || ''}` }</div>
                                 </Col>
                               </Row>
                             </Col>
@@ -582,7 +590,7 @@ class StepSix extends React.Component {
                                     { (transport.find(v => Number(v.id) === Number(departingTransport)) || {}).airport }
                                   </div>
                                 </Col>
-                                {!hasBookedFlight && (
+                                {hasDepartingBookedFlight && (
                                   <Fragment>
                                     <Col md={12} className="box-item">
                                       <div>Airline: </div>
@@ -600,7 +608,7 @@ class StepSix extends React.Component {
                                 )}
                                 <Col md={12} className="box-item">
                                   <div>Dropoff Location:</div>
-                                  <div>{ dropoff !== 'other' ? dropoff : `Other: ${dropoffOtherLocation}` }</div>
+                                  <div>{ dropoff !== 'other' ? dropoff : `Other: ${dropoffOtherLocation || ''}` }</div>
                                 </Col>
                               </Row>
                             </Col>
@@ -656,7 +664,8 @@ function mapStateToProps(state) {
     cartStepSixDepartingProductId: cartStepSixDepartingProductIdSelector(state),
     cartStepSixArrivalProductId: cartStepSixArrivalProductIdSelector(state),
     departingPickupAirline: stepSixDepartingAirlineSelector(state),
-    hasBookedFlight: stepSixHasBookedFlightSelector(state),
+    hasArrivalBookedFlight: stepSixHasArrivalBookedFlightSelector(state),
+    hasDepartingBookedFlight: stepSixHasDepartingBookedFlightSelector(state),
     airportPickupAirline: stepSixAirportPickupAirlineSelector(state),
     arrivalFlightNumber :stepSixArrivalFlightNumberSelector(state),
     arrivalDateTime: stepSixArrivalDateTimeSelector(state),
