@@ -22,6 +22,7 @@ class DatePickerReduxForm extends React.Component {
     maxDate: PropTypes.instanceOf(Date),
     minDate: PropTypes.instanceOf(Date),
     withPopperPlacement: PropTypes.bool,
+    openToDate: PropTypes.instanceOf(Date),
   };
 
   static defaultProps = {
@@ -35,7 +36,7 @@ class DatePickerReduxForm extends React.Component {
   };
 
   render() {
-    const { className, name, dateFormat, isClearable, placeholder, portal, showTimeSelect, showYearDropdown } = this.props;
+    const { className, name, dateFormat, isClearable, placeholder, portal, showTimeSelect, showYearDropdown, openToDate } = this.props;
     return (
       <Field
         {...this.props}
@@ -49,6 +50,7 @@ class DatePickerReduxForm extends React.Component {
         normalize={this.normalizeDate}
         showTimeSelect={showTimeSelect}
         showYearDropdown={showYearDropdown}
+        openToDate={openToDate}
       />
     );
   }
@@ -80,6 +82,7 @@ class renderDatePicker extends React.Component {
   render() {
     const {
       className, dateFormat, input, placeholder, showTimeSelect, meta, isClearable, withPortal, showYearDropdown,
+      openToDate
     } = this.props;
     const { touched, error } = meta;
     const datePickerContainerClassName = cx({ [className]: className });
@@ -137,6 +140,7 @@ class renderDatePicker extends React.Component {
                   showYearDropdown={showYearDropdown}
                   scrollableYearDropdown={true}
                   yearDropdownItemNumber={50}
+                  openToDate={openToDate}
                 />
               </div>
             );
