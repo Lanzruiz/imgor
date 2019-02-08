@@ -265,8 +265,11 @@
             font-family: $serifa-bold;
             font-size: 14px;
             line-height: 21px;
-            padding: 5px;
             text-transform: uppercase;
+
+            &--button{
+              padding: 5px;
+            }
 
             &--regular {
                 background-color: $white;

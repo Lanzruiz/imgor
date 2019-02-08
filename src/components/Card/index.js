@@ -233,7 +233,7 @@ class Card extends React.Component {
     );
     return buttonBlock && (
       <div className="card-body__footer">
-        <Button className={buttonClassNames} onClick={onClickHandler}>
+        <Button className={buttonClassNames} onClick={onClickHandler} buttonClassName="card-body__button--button">
           {tooltipMessage
             ? <Tooltip message={tooltipMessage} children={buttonTitle} />
             : buttonTitle

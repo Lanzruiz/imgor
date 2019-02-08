@@ -171,36 +171,37 @@ class StepOne extends React.Component {
   
   renderTabPanel = ({ range = [], boardingOptions = [], genderOptions = [] }) => {
     const { sleepaway, age, gender } = this.props;
+    
     return (
       <div className="tab-content__container tab-row__container content">
         <div className="content__first-col">
           {/*// TODO: rewrite that! */}
-          <H2>{/* our most popular camp */}</H2>
-          <Paragraph>
-            {/* Perfect for campers ages 10-18. Expand upon your current knowledge of the game while increasing
-            your position-specific scills and profisiency through the best progressive youth football camp setting
-            that also introduces 1-on-1 completion. Discover the ideal environment for growth and maturity both
-            on the field and as an overall athlete. */}
-          </Paragraph>
-          <H4>{/*week 1: technical skill development*/}</H4>
-          <Paragraph>
-            {/* QB: Throwing mechanics; 3- and 5- step drops. RB/WR: Footwork; agility; ball catching and route
-            running. DB/LB: Alignment; coverage and taskling fundamentals. OL/DL: Stance/start; pass rush and
-            pro technique; run blocking. K/P: Leg swing; ball striking; stride; short and long distance kicking. */}
-          </Paragraph>
-          <H4>{/* week 2: pre-competition */}</H4>
-          <Paragraph>
-            {/* Position specific refinement of mechanics and footwork, classroom instruction and understanding
-            critical fundamental aspects. */}
-          </Paragraph>
-          <H4>{/* week 3: competition */}</H4>
-          <Paragraph>
-            {/* 1-on-1 competitive drills and video analysis/classroom discussion of individual technique. QB: Half-
-            field routes and reads; 1-on-1 drills RB/WB: Post-snap adjustments; 1-on-1s vs. DB/LB: pattern
-            reads; 1-on-1s vs. RB/WR & OL/DL: Post snap reactions,; understanding stunts/blitzes; 1-on-1 pass
-            pro and pass rush competition K/P: Situational kicking and punting; directional kicking; pooch punts;
-            goal line punting; on-side kicks */}
-          </Paragraph>
+          {/*<H2>our most popular camp</H2>*/}
+          {/*<Paragraph>*/}
+            {/*Perfect for campers ages 10-18. Expand upon your current knowledge of the game while increasing*/}
+            {/*your position-specific scills and profisiency through the best progressive youth football camp setting*/}
+            {/*that also introduces 1-on-1 completion. Discover the ideal environment for growth and maturity both*/}
+            {/*on the field and as an overall athlete.*/}
+          {/*</Paragraph>*/}
+          {/*<H4>week 1: technical skill development</H4>*/}
+          {/*<Paragraph>*/}
+            {/*QB: Throwing mechanics; 3- and 5- step drops. RB/WR: Footwork; agility; ball catching and route*/}
+            {/*running. DB/LB: Alignment; coverage and taskling fundamentals. OL/DL: Stance/start; pass rush and*/}
+            {/*pro technique; run blocking. K/P: Leg swing; ball striking; stride; short and long distance kicking.*/}
+          {/*</Paragraph>*/}
+          {/*<H4>week 2: pre-competition</H4>*/}
+          {/*<Paragraph>*/}
+            {/*Position specific refinement of mechanics and footwork, classroom instruction and understanding*/}
+            {/*critical fundamental aspects.*/}
+          {/*</Paragraph>*/}
+          {/*<H4>week 3: competition</H4>*/}
+          {/*<Paragraph>*/}
+            {/*1-on-1 competitive drills and video analysis/classroom discussion of individual technique. QB: Half-*/}
+            {/*field routes and reads; 1-on-1 drills RB/WB: Post-snap adjustments; 1-on-1s vs. DB/LB: pattern*/}
+            {/*reads; 1-on-1s vs. RB/WR & OL/DL: Post snap reactions,; understanding stunts/blitzes; 1-on-1 pass*/}
+            {/*pro and pass rush competition K/P: Situational kicking and punting; directional kicking; pooch punts;*/}
+            {/*goal line punting; on-side kicks*/}
+          {/*</Paragraph>*/}
         </div>
         <div className="content__second-col">
           <Form onSubmit={this.props.handleSubmit(() => {})}>
@@ -501,13 +502,13 @@ function TabRowHeaderGreenBlock ({ localeKey }) {
   );
 }
 
-function H2({ children }) {
-  return (
-    <h2 className="content__header content__header--h2">
-      {children}
-    </h2>
-  );
-}
+// function H2({ children }) {
+//   return (
+//     <h2 className="content__header content__header--h2">
+//       {children}
+//     </h2>
+//   );
+// }
 
 function H3({ children }) {
   return (
@@ -517,21 +518,21 @@ function H3({ children }) {
   );
 }
 
-function H4({ children }) {
-  return (
-    <h4 className="content__header content__header--h4">
-      {children}
-    </h4>
-  );
-}
-
-function Paragraph({ children }) {
-  return (
-    <p className="content__paragraph">
-      {children}
-    </p>
-  );
-}
+// function H4({ children }) {
+//   return (
+//     <h4 className="content__header content__header--h4">
+//       {children}
+//     </h4>
+//   );
+// }
+//
+// function Paragraph({ children }) {
+//   return (
+//     <p className="content__paragraph">
+//       {children}
+//     </p>
+//   );
+// }
 
 function SleepawayRadioBtn({ options, sleepaway, possibleValues }) {
   return (
