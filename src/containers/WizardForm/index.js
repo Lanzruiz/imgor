@@ -97,6 +97,7 @@ class WizardForm extends React.Component {
     guardianPhone: PropTypes.string,
     isBusinessTypeForAdult: PropTypes.bool,
     valid: PropTypes.bool,
+    dataDisplayFooter: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -251,7 +252,7 @@ class WizardForm extends React.Component {
   }
 
   render() {
-    const { children, step, totalPrice, valid } = this.props;
+    const { children, step, totalPrice, valid, dataDisplayFooter } = this.props;
     
     const startIndex = 0;
     if (typeof children !== 'function') {
@@ -283,6 +284,7 @@ class WizardForm extends React.Component {
           saveCampOnClickHandler={this.saveCampHandler}
           shareOnClickHandler={this.shareHandler}
           valid={valid}
+          dataDisplayFooter={dataDisplayFooter}
         />
       </React.Fragment>
     );

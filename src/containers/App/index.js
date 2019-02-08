@@ -52,6 +52,7 @@ class App extends React.Component {
     redirectUrlShopify: PropTypes.string,
     extraSettingsPath: PropTypes.string,
     dataBusinessType: PropTypes.string,
+    dataDisplayFooter: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -156,7 +157,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { lang, redirectUrlShopify, contentPath, valid, dataBusinessType } = this.props;
+    const { lang, redirectUrlShopify, contentPath, valid, dataBusinessType, dataDisplayFooter } = this.props;
   
     const isBusinessTypeForAdult = (dataBusinessType || '').toLowerCase() === 'Adult Program'.toLowerCase();
     
@@ -166,6 +167,7 @@ class App extends React.Component {
           redirectUrlShopify={redirectUrlShopify}
           valid={valid}
           isBusinessTypeForAdult={isBusinessTypeForAdult}
+          dataDisplayFooter={dataDisplayFooter}
         >
           {() => this.wizardFormChildren}
         </WizardForm>

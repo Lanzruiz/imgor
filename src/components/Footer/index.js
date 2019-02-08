@@ -198,12 +198,12 @@ class Footer extends React.Component {
   };
   
   render() {
-    const { totalPrice, price, message, arrowUp, hasMessage, purchaseOnClickHandler, step, valid } = this.props;
+    const { totalPrice, price, message, arrowUp, hasMessage, purchaseOnClickHandler, step, valid, dataDisplayFooter } = this.props;
     // const { saveCampOnClickHandler, shareOnClickHandler } = this.props;
     const arrowPositinon = arrowUp ? <span className="icon-arrow-up" /> : <span className="icon-arrow-down" />;
     const isCurrentStepEqualToSix = isEqual(step, stepsEnum.six);
 
-    return (
+    return dataDisplayFooter ? (
       <div className="footer__wrapper">
         <div className="footer__container footer__container--fixed">
           <Container style={{ height: '100%' }}>
@@ -257,7 +257,7 @@ class Footer extends React.Component {
           </Container>
         </div>
       </div>
-    );
+    ) : false;
   }
 };
 

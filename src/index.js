@@ -29,6 +29,7 @@ const {
   last_changed,
   contentPath,
   settingsPath,
+  displayFooter
 } = imgorRootContainer.dataset;
 
 const { store, persistor } = configStore(appKey);
@@ -73,6 +74,7 @@ ReactDOM.render(
                   dataBusinessType={business_type}
                   dataGender={gender}
                   dataLastChanged={last_changed}
+                  dataDisplayFooter={displayFooter === 'true'}
                   dataAppKey={appKey}
                   contentPath={contentPath}
                   settingsPath={contentPath}
