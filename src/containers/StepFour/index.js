@@ -112,6 +112,8 @@ class StepFour extends React.Component {
     
     
     const parsedConcentrationOrdering = concentrationOrdering.map(v => v.toLowerCase());
+    
+    
     const parsedItems = [ ...items ].map(v => ({
       ...v,
       nameInLowerCase: v.name.toLowerCase(),
@@ -139,7 +141,7 @@ class StepFour extends React.Component {
       age, businessType, gender, weeks, selectedWeekId, sport, programType, data, hasSecondaryProgram,
       stepThreeSecondaryPrograms,
     } = this.props;
-
+  
     const tabsList = [];
     const tabPanels = [];
 
