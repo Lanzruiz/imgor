@@ -86,61 +86,63 @@ class renderDatePicker extends React.Component {
     const { selectedDate } = this.state;
     const selected = (selectedDate && selectedDate._d) ? selectedDate._d : selectedDate;
     return (
-      <div className="datetime-picker-container">
-        <ScreenClassRender render={(screenClass) => {
-          const config = {
-            xl: { offset: '-40px, 10px', popperPlacement: 'top' },
-            lg: { offset: '-80px, -160px', popperPlacement: 'top' },
-            md: { offset: '10px, -30px', popperPlacement: 'top' },
-            sm: { offset: '10px, -30px', popperPlacement: 'top' },
-            xs: { offset: '0, 0', popperPlacement: 'top' },
-          };
-          
-          const popperModifiers = {
-            offset: {
-              enabled: false,
-              offset: config[screenClass] ? config[screenClass].offset : '',
-            },
-            preventOverflow: {
-              enabled: !this.props.withPopperPlacement,
-              escapeWithReference: false,
-              boundariesElement: 'viewport'
-            }
-          };
-          
-          const popperPlacement = this.props.withPopperPlacement
-            ? config[screenClass] ? config[screenClass].popperPlacement : 'top'
-            : 'bottom';
-          
-          return (
-            <div className={`${datePickerContainerClassName} ${showTimeSelect ? 'with-time-select' : ''}`}>
-              <DatePicker
-                {...input}
-                fixedHeight
-                withPortal={withPortal}
-                isClearable={isClearable}
-                showTimeSelect={showTimeSelect}
-                dateFormat={dateFormat || 'MM/DD/YYYY'}
-                selected={selected}
-                placeholderText={placeholder}
-                popperPlacement={popperPlacement}
-                // popperPlacement={'bottom'}
-                onChange={this.handleChange}
-                onBlur={() => { input.onBlur(); }}
-                timeFormat="HH:mm"
-                timeIntervals={5}
-                timeCaption="Time"
-                maxDate={this.props.maxDate}
-                minDate={this.props.minDate}
-                popperModifiers={popperModifiers}
-                showYearDropdown={showYearDropdown}
-                scrollableYearDropdown={true}
-                yearDropdownItemNumber={50}
-              />
-              {touched && error && <span>{error}</span>}
-            </div>
-          );
-        }} />
+      <div className="input-container">
+        <div className="datetime-picker-container">
+          <ScreenClassRender render={(screenClass) => {
+            const config = {
+              xl: { offset: '-40px, 10px', popperPlacement: 'top' },
+              lg: { offset: '-80px, -160px', popperPlacement: 'top' },
+              md: { offset: '10px, -30px', popperPlacement: 'top' },
+              sm: { offset: '10px, -30px', popperPlacement: 'top' },
+              xs: { offset: '0, 0', popperPlacement: 'top' },
+            };
+            
+            const popperModifiers = {
+              offset: {
+                enabled: false,
+                offset: config[screenClass] ? config[screenClass].offset : '',
+              },
+              preventOverflow: {
+                enabled: !this.props.withPopperPlacement,
+                escapeWithReference: false,
+                boundariesElement: 'viewport'
+              }
+            };
+            
+            const popperPlacement = this.props.withPopperPlacement
+              ? config[screenClass] ? config[screenClass].popperPlacement : 'top'
+              : 'bottom';
+            
+            return (
+              <div className={`${datePickerContainerClassName} ${showTimeSelect ? 'with-time-select' : ''}`}>
+                <DatePicker
+                  {...input}
+                  fixedHeight
+                  withPortal={withPortal}
+                  isClearable={isClearable}
+                  showTimeSelect={showTimeSelect}
+                  dateFormat={dateFormat || 'MM/DD/YYYY'}
+                  selected={selected}
+                  placeholderText={placeholder}
+                  popperPlacement={popperPlacement}
+                  // popperPlacement={'bottom'}
+                  onChange={this.handleChange}
+                  onBlur={() => { input.onBlur(); }}
+                  timeFormat="HH:mm"
+                  timeIntervals={5}
+                  timeCaption="Time"
+                  maxDate={this.props.maxDate}
+                  minDate={this.props.minDate}
+                  popperModifiers={popperModifiers}
+                  showYearDropdown={showYearDropdown}
+                  scrollableYearDropdown={true}
+                  yearDropdownItemNumber={50}
+                />
+              </div>
+            );
+          }} />
+          {touched && error && <span className="error">{error}</span>}
+        </div>
       </div>
     );
   }

@@ -50,7 +50,7 @@ import {
 // Helpers
 import isStringsEqual from '../../helpers/isStringsEqual';
 import stringToNumber from '../../helpers/stringToNumber';
-import calculateAge from '../../helpers/calculateAge';
+// import calculateAge from '../../helpers/calculateAge';
 // Constants
 import { stepsEnum } from '../../constants/steps';
 import { weekly_camp } from '../StepOne';
@@ -95,6 +95,7 @@ class WizardForm extends React.Component {
     guardianLastName: PropTypes.string,
     guardianEmail: PropTypes.string,
     guardianPhone: PropTypes.string,
+    valid: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -248,7 +249,8 @@ class WizardForm extends React.Component {
   }
 
   render() {
-    const { children, step, totalPrice } = this.props;
+    const { children, step, totalPrice, valid } = this.props;
+    
     const startIndex = 0;
     if (typeof children !== 'function') {
       return (
@@ -278,6 +280,7 @@ class WizardForm extends React.Component {
           purchaseOnClickHandler={this.purchaseHandler}
           saveCampOnClickHandler={this.saveCampHandler}
           shareOnClickHandler={this.shareHandler}
+          valid={valid}
         />
       </React.Fragment>
     );
@@ -835,9 +838,9 @@ class WizardForm extends React.Component {
       case finalStepDateOfBirth && !moment(finalStepDateOfBirth, 'MM/DD/YYYY').isValid(): {
         return 'date_is_not_valid';
       }
-      case finalStepDateOfBirth && !isEqual( calculateAge(finalStepDateOfBirth), ageNumber ): {
-        return 'camper_age_is_not_equal';
-      }
+      // case finalStepDateOfBirth && !isEqual( calculateAge(finalStepDateOfBirth), ageNumber ): {
+      //   return 'camper_age_is_not_equal';
+      // }
       case !position: {
         return 'step_final.no_position_message';
       }

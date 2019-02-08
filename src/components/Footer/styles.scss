@@ -151,6 +151,12 @@
             &--share-camp {
                width: 142px;
             }
+
+            &--disabled {
+              color: rgba(#4481a3, 0.4);
+              border: 1px solid rgba(#4481a3, 0.4);
+              cursor: default;
+            }
         }
     }
 }

@@ -196,7 +196,13 @@
   }
 }
 
-button, input, ul, p, {
+.error{
+  color: $card-red-color;
+  font-size: 13px;
+  font-family: $proxima-nova;
+}
+
+button, input, ul, p {
   all: unset;
 }
 

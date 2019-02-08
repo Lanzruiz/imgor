@@ -39,12 +39,14 @@ class Footer extends React.Component {
     saveCampOnClickHandler: PropTypes.func.isRequired,
     shareOnClickHandler: PropTypes.func.isRequired,
     step: PropTypes.number.isRequired,
+    valid: PropTypes.bool,
   };
 
   static defaultProps = {
     price: 0,
     arrowUp: false,
     hasMessage: true,
+    valid: true,
     // purchaseOnClickHandler: () => { console.warn('Where is your purchaseOnClickHandler?'); },
     // saveCampOnClickHandler: () => { console.log('Where is your saveCampOnClickHandler?'); },
     shareOnClickHandler: () => { console.log('Where is your shareOnClickHandler?'); }
@@ -196,7 +198,7 @@ class Footer extends React.Component {
   };
   
   render() {
-    const { totalPrice, price, message, arrowUp, hasMessage, purchaseOnClickHandler, step } = this.props;
+    const { totalPrice, price, message, arrowUp, hasMessage, purchaseOnClickHandler, step, valid } = this.props;
     // const { saveCampOnClickHandler, shareOnClickHandler } = this.props;
     const arrowPositinon = arrowUp ? <span className="icon-arrow-up" /> : <span className="icon-arrow-down" />;
     const isCurrentStepEqualToSix = isEqual(step, stepsEnum.six);
@@ -234,6 +236,7 @@ class Footer extends React.Component {
                           purchase
                           stringKey="purchase_on_shop_img"
                           onClick={purchaseOnClickHandler}
+                          disabled={!valid}
                         />
                         {/*<FooterButton*/}
                           {/*save*/}
@@ -277,15 +280,16 @@ function formatMoney(amount, decimalCount = 2, decimal = ".", thousands = ",") {
 };
 
 function FooterButton(args) {
-  const { stringKey = '', onClick, share = false, save = false, purchase = false } = args;
+  const { stringKey = '', onClick, share = false, save = false, purchase = false, disabled = false } = args;
   const computedClassNames = cx('footer__btn', {
     'footer__btn--share-camp': share,
     'footer__btn footer__btn--save-camp': save,
     'footer__btn footer__btn--purchase': purchase,
+    'footer__btn footer__btn--disabled': disabled
   });
   return (
     <div className={computedClassNames}>
-      <Button onClick={onClick}>
+      <Button onClick={onClick} disabled={disabled}>
         <LocaleString stringKey={stringKey} />
       </Button>
     </div>
