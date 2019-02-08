@@ -150,10 +150,11 @@ class App extends React.Component {
   };
 
   render() {
-    const { lang, redirectUrlShopify, contentPath } = this.props;
+    const { lang, redirectUrlShopify, contentPath, valid } = this.props;
+    
     return (
       <ReactLocalization lang={lang} contentPath={contentPath}>
-        <WizardForm redirectUrlShopify={redirectUrlShopify}>
+        <WizardForm redirectUrlShopify={redirectUrlShopify} valid={valid}>
           {() => this.wizardFormChildren}
         </WizardForm>
       </ReactLocalization>

@@ -6,13 +6,14 @@ import PropTypes from 'prop-types';
 import './styles.scss';
 
 const Button = (props) => {
-  const { className, children, buttonClassName, type, onClick, ...rest } = props;
+  const { className, children, buttonClassName, type, onClick, disabled, ...rest } = props;
   const buttonClassNames = cx('button', {
     [buttonClassName]: buttonClassName,
+    'disabled': disabled,
   });
   return (
     <div className={className} {...rest}>
-      <button type={type} className={buttonClassNames} onClick={onClick}>
+      <button type={type} className={buttonClassNames} onClick={onClick} disabled={disabled}>
         {children}
       </button>
     </div>
