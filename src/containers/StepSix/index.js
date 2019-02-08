@@ -255,382 +255,380 @@ class StepSix extends React.Component {
               />
             </Col>
           </Row>
-          <Row>
-            <Col>
-              <Row style={{display: 'flex'}}>
-                <Col md={5} lg={4} style={{ paddingRight: 0, paddingLeft: 0, marginBottom: 15, zIndex: 15 }}>
-                  <Card
-                    id={0}
-                    className="step-six__transportation-card-container"
-                    cardHeader={<LocaleString stringKey="step_six.travel" />}
-                    color="dark"
-                    header={<LocaleString stringKey="step_six.airport_pickup" />}
-                    label={<LocaleString stringKey="step_five.popular_item" />}
-                    price="99"// TODO: rewrite that!
-                    selectedId={transportationId}
-                    headerSize="extra-small"
-                    priceDescription={<LocaleString stringKey="step_six.starting_at" />}
-                    onClick={this.selectTransportationOption}
-                    onRemove={this.unselectTransportationOption}
-                  >
-                    <CardContent className="step-six__transportation-card">
-                      <CardContentRow>
-                        <CardContentCol>
-                          
-                          <Image
-                            className="card-content__img"
-                            defaultSrc={stubImage}
-                            src="step_six.transport.image_path"
-                          />
-                        </CardContentCol>
-                        <CardContentCol>
-                          <AirportPickupCheckboxContainer
-                            handleChange={this.handlePickupChange}
-                            airportPickup={airportPickup}
-                          />
-                        </CardContentCol>
-                      </CardContentRow>
-                      <CardContentText>
-                      
-                      </CardContentText>
-                    </CardContent>
-                  </Card>
-                </Col>
-                <Col md={7} lg={8} style={{ padding: 0, marginBottom: '15px', marginTop: '30px' }}>
-                  <Carousel render={!!airportPickup}>
-                    <CarouselItem>
-                      <SlideHeader>
-                        <LocaleString
-                          stringKey="step_six.step_of"
-                          formatString={{ current: 1, max: maxStepCount }}
+          <Col>
+            <Row style={{display: 'flex'}}>
+              <Col md={5} lg={4} style={{ paddingRight: 0, paddingLeft: 0, marginBottom: 15, zIndex: 15 }}>
+                <Card
+                  id={0}
+                  className="step-six__transportation-card-container"
+                  cardHeader={<LocaleString stringKey="step_six.travel" />}
+                  color="dark"
+                  header={<LocaleString stringKey="step_six.airport_pickup" />}
+                  label={<LocaleString stringKey="step_five.popular_item" />}
+                  price="99"// TODO: rewrite that!
+                  selectedId={transportationId}
+                  headerSize="extra-small"
+                  priceDescription={<LocaleString stringKey="step_six.starting_at" />}
+                  onClick={this.selectTransportationOption}
+                  onRemove={this.unselectTransportationOption}
+                >
+                  <CardContent className="step-six__transportation-card">
+                    <CardContentRow>
+                      <CardContentCol>
+                        
+                        <Image
+                          className="card-content__img"
+                          defaultSrc={stubImage}
+                          src="step_six.transport.image_path"
                         />
-                      </SlideHeader>
-                      <SliderSubHeader>
-                        <LocaleString stringKey="step_six.unaccompanied" />
-                      </SliderSubHeader>
-                      <UnaccompaniedCheckboxContainer
-                        unaccompanied={unaccompanied}
-                        transportUnaccompanied={transportUnaccompanied}
+                      </CardContentCol>
+                      <CardContentCol>
+                        <AirportPickupCheckboxContainer
+                          handleChange={this.handlePickupChange}
+                          airportPickup={airportPickup}
+                        />
+                      </CardContentCol>
+                    </CardContentRow>
+                    <CardContentText>
+                    
+                    </CardContentText>
+                  </CardContent>
+                </Card>
+              </Col>
+              <Col md={7} lg={8} style={{ padding: 0, marginBottom: '15px', marginTop: '30px' }}>
+                <Carousel render={!!airportPickup}>
+                  <CarouselItem>
+                    <SlideHeader>
+                      <LocaleString
+                        stringKey="step_six.step_of"
+                        formatString={{ current: 1, max: maxStepCount }}
                       />
-                      <div className="step-six__text-container">
-                        <Paragraph>
-                          <LocaleString stringKey="step_six.airlines_service" />
-                        </Paragraph>
-                        <Paragraph>
-                          <LocaleString stringKey="step_six.ages" />
-                        </Paragraph>
-                      </div>
-                    </CarouselItem>
-                    {(airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && (
-                      <CarouselItem>
-                        <Row>
-                          <Col>
-                            <SlideHeader>
-                              <LocaleString
-                                stringKey="step_six.step_of"
-                                formatString={{ current: 2, max: maxStepCount }}
-                              />
-                            </SlideHeader>
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col md={12} lg={5} xl={6}>
-                            <SliderSubHeader>
-                              <LocaleString stringKey="step_six.arrival_flight_information" />
-                            </SliderSubHeader>
-                            <TransportRadioContainer
-                              options={transport}
-                              value={selectedTransportValue}
-                            />
-                          </Col>
-                          <Col md={12} lg={7} xl={6}>
-                            <AirportHasArrivalFlightBookedCheckbox />
-                            
-                            {hasArrivalBookedFlight && (
-                              <Fragment>
-                                <p className="has-booked-description">
-                                  <LocaleString stringKey={'step_six.has_booked_flight.description'} />
-                                </p>
-                                <AirlinesDropdownContainer airlines={airlines} />
-                                <ArrivalFlightNumberTextInput />
-                                <DatePickerReduxForm
-                                  isClearable
-                                  name={stepSixFormFieldNames.arrivalDateTime}
-                                  className="step-six__text-input step-six__form-field"
-                                  placeholder="Arrival Date & Time"
-                                  minDate={new Date()}
-                                />
-                              </Fragment>
-                            )}
-                            <Paragraph medium className="step-six__step-paragraph">
-                              <LocaleString
-                                stringKey="step_six.schedule"
-                                formatString={{ phone: '941-840-8092' }}
-                              />
-                            </Paragraph>
-                          </Col>
-                        </Row>
-                      </CarouselItem>
-                    )}
-                    {(airportPickupArrivalAndDeparting && !airportPickupDepartingOnly) && (
-                      <CarouselItem>
-                        <Row>
-                          <Col>
-                            <SlideHeader>
-                              <LocaleString
-                                stringKey="step_six.step_of"
-                                formatString={{ current: 3, max: maxStepCount }}
-                              />
-                            </SlideHeader>
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col md={12} lg={6}>
-                            <SliderSubHeader>
-                              <LocaleString stringKey="step_six.dropoff_location" />
-                            </SliderSubHeader>
-                            <DropoffCheckboxContainer dropoff={dropoff} />
-                            <DropoffLocationTextField dropoff={dropoff} />
-                          </Col>
-                          <Col md={12} lg={6}>
-                            <Paragraph medium className="step-six__step-paragraph">
-                            <LocaleString
-                              stringKey="step_six.schedule"
-                              formatString={{ phone: '941-840-8092' }}
-                            />
-                            </Paragraph>
-                          </Col>
-                        </Row>
-                      </CarouselItem>
-                    )}
-                    {(airportPickupArrivalAndDeparting || airportPickupDepartingOnly) && (
-                      <CarouselItem>
-                        <Row>
-                          <Col>
-                            <SlideHeader>
-                              <LocaleString
-                                stringKey="step_six.step_of"
-                                formatString={{
-                                  current: airportPickupArrivalAndDeparting ? 4 : 2,
-                                  max: maxStepCount,
-                                }}
-                              />
-                            </SlideHeader>
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col md={12} lg={5} xl={6}>
-                            <SliderSubHeader>
-                              <LocaleString stringKey="step_six.departing_airport_location" />
-                            </SliderSubHeader>
-                            <DepartingTransportRadioContainer
-                              options={transport}
-                              value={departingTransport}
-                            />
-                          </Col>
-                          <Col md={12} lg={7} xl={6}>
-                            <AirportHasDepartingFlightBookedCheckbox />
-                            
-                            {hasDepartingBookedFlight && (
-                              <Fragment>
-                                <p className="has-booked-description">
-                                  <LocaleString stringKey={'step_six.has_booked_flight.description'} />
-                                </p>
-                                <AirlinesDepartingDropdownContainer airlines={airlines} />
-                                <FlightNumberDepartingTextInput />
-                                <DatePickerReduxForm
-                                  isClearable
-                                  name={stepSixFormFieldNames.departingDateTime}
-                                  className="step-six__text-input step-six_Invalid interval_form-field"
-                                  placeholder="Departing Date & Time"
-                                  minDate={new Date()}
-                                />
-                              </Fragment>
-                            )}
-                            <Paragraph medium className="step-six__step-paragraph">
-                              <LocaleString
-                                stringKey="step_six.schedule"
-                                formatString={{ phone: '941-840-8092' }}
-                              />
-                            </Paragraph>
-                          </Col>
-                        </Row>
-                      </CarouselItem>
-                    )}
-                    {(!airportPickupArrivalAndDeparting && airportPickupDepartingOnly) && (
-                      <CarouselItem>
-                        <Row>
-                          <Col>
-                            <SlideHeader>
-                              <LocaleString
-                                stringKey="step_six.step_of"
-                                formatString={{ current: 3, max: maxStepCount }}
-                              />
-                            </SlideHeader>
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col md={12} lg={6}>
-                            <SliderSubHeader>
-                              <LocaleString stringKey="step_six.dropoff_location" />
-                            </SliderSubHeader>
-                            <DropoffCheckboxContainer dropoff={dropoff} />
-                            <DropoffLocationTextField dropoff={dropoff} />
-                          </Col>
-                          <Col md={12} lg={6}>
-                            <Paragraph medium className="step-six__step-paragraph">
-                              <LocaleString
-                                stringKey="step_six.schedule"
-                                formatString={{ phone: '941-840-8092' }}
-                              />
-                            </Paragraph>
-                          </Col>
-                        </Row>
-                      </CarouselItem>
-                    )}
-                    {(airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && (
-                      <CarouselItem>
-                        <Row>
-                          <Col>
-                            <SlideHeader>
-                              <LocaleString
-                                stringKey="step_six.step_of"
-                                formatString={{
-                                  current: airportPickupArrivalAndDeparting ? 5 : 3,
-                                  max: maxStepCount,
-                                }}
-                              />
-                            </SlideHeader>
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col md={12} lg={6}>
-                            <SliderSubHeader>
-                              <LocaleString stringKey="step_six.pick_up_location" />
-                            </SliderSubHeader>
-                            <DepartingCheckboxContainer departing={departing} />
-                            <PickUpLocationTextField departing={departing} />
-                          </Col>
-                          <Col md={12} lg={6}>
-                            <Paragraph medium className="step-six__step-paragraph">
-                            <LocaleString
-                              stringKey="step_six.schedule"
-                              formatString={{ phone: '941-840-8092' }}
-                            />
-                            </Paragraph>
-                          </Col>
-                        </Row>
-                      </CarouselItem>
-                    )}
+                    </SlideHeader>
+                    <SliderSubHeader>
+                      <LocaleString stringKey="step_six.unaccompanied" />
+                    </SliderSubHeader>
+                    <UnaccompaniedCheckboxContainer
+                      unaccompanied={unaccompanied}
+                      transportUnaccompanied={transportUnaccompanied}
+                    />
+                    <div className="step-six__text-container">
+                      <Paragraph>
+                        <LocaleString stringKey="step_six.airlines_service" />
+                      </Paragraph>
+                      <Paragraph>
+                        <LocaleString stringKey="step_six.ages" />
+                      </Paragraph>
+                    </div>
+                  </CarouselItem>
+                  {(airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && (
                     <CarouselItem>
                       <Row>
                         <Col>
                           <SlideHeader>
-                            <LocaleString stringKey="step_six.summary" /> / {typeOfPickupTitle[airportPickup]}
+                            <LocaleString
+                              stringKey="step_six.step_of"
+                              formatString={{ current: 2, max: maxStepCount }}
+                            />
                           </SlideHeader>
                         </Col>
                       </Row>
-                      {unaccompanied === 'true' && (
-                        <Row>
-                          <Col className="step-six__summary__box">
-                            <LocaleString stringKey="step_six.unaccompanied.clear" />:
-                            <span className="step-six__summary__box__unaccompanied-price">
-                              + {`$${transportUnaccompanied && transportUnaccompanied.price}`}
-                            </span>
-                          </Col>
-                        </Row>
-                      )}
-                      
                       <Row>
-                        <Fragment>
-                          {(airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && (
-                            <Col md={12} lg={6} className="step-six__summary__box">
-                              <SliderSubHeader>
-                                Arrival
-                              </SliderSubHeader>
-                              <Row>
-                                <Col md={12} className="box-item">
-                                  <div>Transport:</div>
-                                  <div>
-                                   { (transport.find(v => Number(v.id) === Number(selectedTransportValue)) || {}).airport }
-                                  </div>
-                                </Col>
-                                {hasArrivalBookedFlight && (
-                                  <Fragment>
-                                    <Col md={12} className="box-item">
-                                      <div>Airline: </div>
-                                      <div>{ airportPickupAirline }</div>
-                                    </Col>
-                                    <Col md={12} className="box-item">
-                                      <div>Flight Number: </div>
-                                      <div> { arrivalFlightNumber }</div>
-                                    </Col>
-                                    <Col md={12} className="box-item">
-                                      <div>Arrival Date: </div>
-                                      <div> { arrivalDateTime }</div>
-                                    </Col>
-                                  </Fragment>
-                                )}
-                                <Col md={12} className="box-item">
-                                  <div>Dropoff Location:</div>
-                                  <div>{ departing !== 'other' ? departing : `Other: ${departingOtherLocation || ''}` }</div>
-                                </Col>
-                              </Row>
-                            </Col>
+                        <Col md={12} lg={5} xl={6}>
+                          <SliderSubHeader>
+                            <LocaleString stringKey="step_six.arrival_flight_information" />
+                          </SliderSubHeader>
+                          <TransportRadioContainer
+                            options={transport}
+                            value={selectedTransportValue}
+                          />
+                        </Col>
+                        <Col md={12} lg={7} xl={6}>
+                          <AirportHasArrivalFlightBookedCheckbox />
+                          
+                          {hasArrivalBookedFlight && (
+                            <Fragment>
+                              <p className="has-booked-description">
+                                <LocaleString stringKey={'step_six.has_booked_flight.description'} />
+                              </p>
+                              <AirlinesDropdownContainer airlines={airlines} />
+                              <ArrivalFlightNumberTextInput />
+                              <DatePickerReduxForm
+                                isClearable
+                                name={stepSixFormFieldNames.arrivalDateTime}
+                                className="step-six__text-input step-six__form-field"
+                                placeholder="Arrival Date & Time"
+                                minDate={new Date()}
+                              />
+                            </Fragment>
                           )}
-                          {(airportPickupArrivalAndDeparting || airportPickupDepartingOnly) && (
-                            <Col md={12} lg={6} className="step-six__summary__box">
-                              <SliderSubHeader>
-                                Departing
-                              </SliderSubHeader>
-                              <Row>
-                                <Col md={12} className="box-item">
-                                  <div>Transport:</div>
-                                  <div>
-                                    { (transport.find(v => Number(v.id) === Number(departingTransport)) || {}).airport }
-                                  </div>
-                                </Col>
-                                {hasDepartingBookedFlight && (
-                                  <Fragment>
-                                    <Col md={12} className="box-item">
-                                      <div>Airline: </div>
-                                      <div>{ airportDepartingAirline }</div>
-                                    </Col>
-                                    <Col md={12} className="box-item">
-                                      <div>Flight Number: </div>
-                                      <div> { departingFlightNumber }</div>
-                                    </Col>
-                                    <Col md={12} className="box-item">
-                                      <div>Arrival Date: </div>
-                                      <div> { departingDateTime }</div>
-                                    </Col>
-                                  </Fragment>
-                                )}
-                                <Col md={12} className="box-item">
-                                  <div>Dropoff Location:</div>
-                                  <div>{ dropoff !== 'other' ? dropoff : `Other: ${dropoffOtherLocation || ''}` }</div>
-                                </Col>
-                              </Row>
-                            </Col>
-                          )}
-                        </Fragment>
-                      </Row>
-                      <Row>
-                        <Col className="add-to-cart">
-                          <Button
-                            className="add-to-cart__button card-body__button card-body__button--selected"
-                            onClick={hasTransportationCartData ? this.unselectTransportationOption : this.addTransportDataToCart}
-                          >
-                            { hasTransportationCartData ? 'Remove' : 'Add to cart' }
-                          </Button>
+                          <Paragraph medium className="step-six__step-paragraph">
+                            <LocaleString
+                              stringKey="step_six.schedule"
+                              formatString={{ phone: '941-840-8092' }}
+                            />
+                          </Paragraph>
                         </Col>
                       </Row>
                     </CarouselItem>
-                  </Carousel>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
+                  )}
+                  {(airportPickupArrivalAndDeparting && !airportPickupDepartingOnly) && (
+                    <CarouselItem>
+                      <Row>
+                        <Col>
+                          <SlideHeader>
+                            <LocaleString
+                              stringKey="step_six.step_of"
+                              formatString={{ current: 3, max: maxStepCount }}
+                            />
+                          </SlideHeader>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col md={12} lg={6}>
+                          <SliderSubHeader>
+                            <LocaleString stringKey="step_six.dropoff_location" />
+                          </SliderSubHeader>
+                          <DropoffCheckboxContainer dropoff={dropoff} />
+                          <DropoffLocationTextField dropoff={dropoff} />
+                        </Col>
+                        <Col md={12} lg={6}>
+                          <Paragraph medium className="step-six__step-paragraph">
+                          <LocaleString
+                            stringKey="step_six.schedule"
+                            formatString={{ phone: '941-840-8092' }}
+                          />
+                          </Paragraph>
+                        </Col>
+                      </Row>
+                    </CarouselItem>
+                  )}
+                  {(airportPickupArrivalAndDeparting || airportPickupDepartingOnly) && (
+                    <CarouselItem>
+                      <Row>
+                        <Col>
+                          <SlideHeader>
+                            <LocaleString
+                              stringKey="step_six.step_of"
+                              formatString={{
+                                current: airportPickupArrivalAndDeparting ? 4 : 2,
+                                max: maxStepCount,
+                              }}
+                            />
+                          </SlideHeader>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col md={12} lg={5} xl={6}>
+                          <SliderSubHeader>
+                            <LocaleString stringKey="step_six.departing_airport_location" />
+                          </SliderSubHeader>
+                          <DepartingTransportRadioContainer
+                            options={transport}
+                            value={departingTransport}
+                          />
+                        </Col>
+                        <Col md={12} lg={7} xl={6}>
+                          <AirportHasDepartingFlightBookedCheckbox />
+                          
+                          {hasDepartingBookedFlight && (
+                            <Fragment>
+                              <p className="has-booked-description">
+                                <LocaleString stringKey={'step_six.has_booked_flight.description'} />
+                              </p>
+                              <AirlinesDepartingDropdownContainer airlines={airlines} />
+                              <FlightNumberDepartingTextInput />
+                              <DatePickerReduxForm
+                                isClearable
+                                name={stepSixFormFieldNames.departingDateTime}
+                                className="step-six__text-input step-six_Invalid interval_form-field"
+                                placeholder="Departing Date & Time"
+                                minDate={new Date()}
+                              />
+                            </Fragment>
+                          )}
+                          <Paragraph medium className="step-six__step-paragraph">
+                            <LocaleString
+                              stringKey="step_six.schedule"
+                              formatString={{ phone: '941-840-8092' }}
+                            />
+                          </Paragraph>
+                        </Col>
+                      </Row>
+                    </CarouselItem>
+                  )}
+                  {(!airportPickupArrivalAndDeparting && airportPickupDepartingOnly) && (
+                    <CarouselItem>
+                      <Row>
+                        <Col>
+                          <SlideHeader>
+                            <LocaleString
+                              stringKey="step_six.step_of"
+                              formatString={{ current: 3, max: maxStepCount }}
+                            />
+                          </SlideHeader>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col md={12} lg={6}>
+                          <SliderSubHeader>
+                            <LocaleString stringKey="step_six.dropoff_location" />
+                          </SliderSubHeader>
+                          <DropoffCheckboxContainer dropoff={dropoff} />
+                          <DropoffLocationTextField dropoff={dropoff} />
+                        </Col>
+                        <Col md={12} lg={6}>
+                          <Paragraph medium className="step-six__step-paragraph">
+                            <LocaleString
+                              stringKey="step_six.schedule"
+                              formatString={{ phone: '941-840-8092' }}
+                            />
+                          </Paragraph>
+                        </Col>
+                      </Row>
+                    </CarouselItem>
+                  )}
+                  {(airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && (
+                    <CarouselItem>
+                      <Row>
+                        <Col>
+                          <SlideHeader>
+                            <LocaleString
+                              stringKey="step_six.step_of"
+                              formatString={{
+                                current: airportPickupArrivalAndDeparting ? 5 : 3,
+                                max: maxStepCount,
+                              }}
+                            />
+                          </SlideHeader>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col md={12} lg={6}>
+                          <SliderSubHeader>
+                            <LocaleString stringKey="step_six.pick_up_location" />
+                          </SliderSubHeader>
+                          <DepartingCheckboxContainer departing={departing} />
+                          <PickUpLocationTextField departing={departing} />
+                        </Col>
+                        <Col md={12} lg={6}>
+                          <Paragraph medium className="step-six__step-paragraph">
+                          <LocaleString
+                            stringKey="step_six.schedule"
+                            formatString={{ phone: '941-840-8092' }}
+                          />
+                          </Paragraph>
+                        </Col>
+                      </Row>
+                    </CarouselItem>
+                  )}
+                  <CarouselItem>
+                    <Row>
+                      <Col>
+                        <SlideHeader>
+                          <LocaleString stringKey="step_six.summary" /> / {typeOfPickupTitle[airportPickup]}
+                        </SlideHeader>
+                      </Col>
+                    </Row>
+                    {unaccompanied === 'true' && (
+                      <Row>
+                        <Col className="step-six__summary__box">
+                          <LocaleString stringKey="step_six.unaccompanied.clear" />:
+                          <span className="step-six__summary__box__unaccompanied-price">
+                            + {`$${transportUnaccompanied && transportUnaccompanied.price}`}
+                          </span>
+                        </Col>
+                      </Row>
+                    )}
+                    
+                    <Row>
+                      <Fragment>
+                        {(airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && (
+                          <Col md={12} lg={6} className="step-six__summary__box">
+                            <SliderSubHeader>
+                              Arrival
+                            </SliderSubHeader>
+                            <Row>
+                              <Col md={12} className="box-item">
+                                <div>Transport:</div>
+                                <div>
+                                 { (transport.find(v => Number(v.id) === Number(selectedTransportValue)) || {}).airport }
+                                </div>
+                              </Col>
+                              {hasArrivalBookedFlight && (
+                                <Fragment>
+                                  <Col md={12} className="box-item">
+                                    <div>Airline: </div>
+                                    <div>{ airportPickupAirline }</div>
+                                  </Col>
+                                  <Col md={12} className="box-item">
+                                    <div>Flight Number: </div>
+                                    <div> { arrivalFlightNumber }</div>
+                                  </Col>
+                                  <Col md={12} className="box-item">
+                                    <div>Arrival Date: </div>
+                                    <div> { arrivalDateTime }</div>
+                                  </Col>
+                                </Fragment>
+                              )}
+                              <Col md={12} className="box-item">
+                                <div>Dropoff Location:</div>
+                                <div>{ departing !== 'other' ? departing : `Other: ${departingOtherLocation || ''}` }</div>
+                              </Col>
+                            </Row>
+                          </Col>
+                        )}
+                        {(airportPickupArrivalAndDeparting || airportPickupDepartingOnly) && (
+                          <Col md={12} lg={6} className="step-six__summary__box">
+                            <SliderSubHeader>
+                              Departing
+                            </SliderSubHeader>
+                            <Row>
+                              <Col md={12} className="box-item">
+                                <div>Transport:</div>
+                                <div>
+                                  { (transport.find(v => Number(v.id) === Number(departingTransport)) || {}).airport }
+                                </div>
+                              </Col>
+                              {hasDepartingBookedFlight && (
+                                <Fragment>
+                                  <Col md={12} className="box-item">
+                                    <div>Airline: </div>
+                                    <div>{ airportDepartingAirline }</div>
+                                  </Col>
+                                  <Col md={12} className="box-item">
+                                    <div>Flight Number: </div>
+                                    <div> { departingFlightNumber }</div>
+                                  </Col>
+                                  <Col md={12} className="box-item">
+                                    <div>Arrival Date: </div>
+                                    <div> { departingDateTime }</div>
+                                  </Col>
+                                </Fragment>
+                              )}
+                              <Col md={12} className="box-item">
+                                <div>Dropoff Location:</div>
+                                <div>{ dropoff !== 'other' ? dropoff : `Other: ${dropoffOtherLocation || ''}` }</div>
+                              </Col>
+                            </Row>
+                          </Col>
+                        )}
+                      </Fragment>
+                    </Row>
+                    <Row>
+                      <Col className="add-to-cart">
+                        <Button
+                          className="add-to-cart__button card-body__button card-body__button--selected"
+                          onClick={hasTransportationCartData ? this.unselectTransportationOption : this.addTransportDataToCart}
+                        >
+                          { hasTransportationCartData ? 'Remove' : 'Add to cart' }
+                        </Button>
+                      </Col>
+                    </Row>
+                  </CarouselItem>
+                </Carousel>
+              </Col>
+            </Row>
+          </Col>
         </Container>
       </AOSFadeInContainer>
     );
