@@ -125,7 +125,7 @@ class StepThree extends React.Component {
   }
 
   render() {
-    const { selectedId, data, selectedCardWithSecondaryProgramsId, campersAge } = this.props;
+    const { selectedId, data, selectedCardWithSecondaryProgramsId } = this.props;
     
     return (
       <AOSFadeInContainer className="step-three" ref={this.stepThree}>
@@ -140,9 +140,7 @@ class StepThree extends React.Component {
             </Col>
           </Row>
           <Row className="align-items-stretch">
-            
-            
-            {data.map(({ age_range, display_name, price, id, name, sold_out, has_secondary_program, secondary_programs, starting_price, display_via_label }, idx) => {
+            {data.map(({ age_range, display_name, price, id, name, sold_out, has_secondary_program, secondary_programs, starting_price, display_via_label, via_label }, idx) => {
               return (
                 <Col lg={6} key={idx} className="card-column">
                   {this.renderCurrentCard({
@@ -155,7 +153,7 @@ class StepThree extends React.Component {
                     id: has_secondary_program ? idx : id,
                     secondaryPrograms: secondary_programs,
                     soldOut: sold_out,
-                    displayViaLabel: display_via_label || campersAge < 13,
+                    displayViaLabel: display_via_label || via_label,
                   })}
                 </Col>
               );
@@ -167,7 +165,10 @@ class StepThree extends React.Component {
   }
 
   renderCurrentCard = (args) => {
-    const { age_range, display_name, name = '', price, id, selectedId, soldOut, has_secondary_program, secondaryPrograms, displayViaLabel } = args;
+    const {
+      age_range, display_name, name = '', price, id, selectedId, soldOut, has_secondary_program,
+      secondaryPrograms, displayViaLabel,
+    } = args;
     const computedLabel = age_range ? `ages ${age_range}` : '';
     const nameLowerCase = toLower(name);
 
