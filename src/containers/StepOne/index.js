@@ -1,5 +1,5 @@
 // Modules
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Container, Row, Col } from 'react-grid-system';
@@ -169,39 +169,31 @@ class StepOne extends React.Component {
     this.props.weeksActions.setWeeksCounter(count);
   };
   
-  renderTabPanel = ({ range = [], boardingOptions = [], genderOptions = [] }) => {
+  renderTabPanel = ({ range = [], boardingOptions = [], genderOptions = [], id = '' }) => {
     const { sleepaway, age, gender } = this.props;
     
     return (
       <div className="tab-content__container tab-row__container content">
         <div className="content__first-col">
-          {/*// TODO: rewrite that! */}
-          {/*<H2>our most popular camp</H2>*/}
-          {/*<Paragraph>*/}
-            {/*Perfect for campers ages 10-18. Expand upon your current knowledge of the game while increasing*/}
-            {/*your position-specific scills and profisiency through the best progressive youth football camp setting*/}
-            {/*that also introduces 1-on-1 completion. Discover the ideal environment for growth and maturity both*/}
-            {/*on the field and as an overall athlete.*/}
-          {/*</Paragraph>*/}
-          {/*<H4>week 1: technical skill development</H4>*/}
-          {/*<Paragraph>*/}
-            {/*QB: Throwing mechanics; 3- and 5- step drops. RB/WR: Footwork; agility; ball catching and route*/}
-            {/*running. DB/LB: Alignment; coverage and taskling fundamentals. OL/DL: Stance/start; pass rush and*/}
-            {/*pro technique; run blocking. K/P: Leg swing; ball striking; stride; short and long distance kicking.*/}
-          {/*</Paragraph>*/}
-          {/*<H4>week 2: pre-competition</H4>*/}
-          {/*<Paragraph>*/}
-            {/*Position specific refinement of mechanics and footwork, classroom instruction and understanding*/}
-            {/*critical fundamental aspects.*/}
-          {/*</Paragraph>*/}
-          {/*<H4>week 3: competition</H4>*/}
-          {/*<Paragraph>*/}
-            {/*1-on-1 competitive drills and video analysis/classroom discussion of individual technique. QB: Half-*/}
-            {/*field routes and reads; 1-on-1 drills RB/WB: Post-snap adjustments; 1-on-1s vs. DB/LB: pattern*/}
-            {/*reads; 1-on-1s vs. RB/WR & OL/DL: Post snap reactions,; understanding stunts/blitzes; 1-on-1 pass*/}
-            {/*pro and pass rush competition K/P: Situational kicking and punting; directional kicking; pooch punts;*/}
-            {/*goal line punting; on-side kicks*/}
-          {/*</Paragraph>*/}
+          <H2>
+            <LocaleString stringKey={`step_one.${id}.title`} />
+          </H2>
+          <H4><LocaleString stringKey={`step_one.${id}.paragraph_title_one`}/></H4>
+          <Paragraph>
+            <LocaleString stringKey={`step_one.${id}.paragraph_text_one`} />
+          </Paragraph>
+          <H4><LocaleString stringKey={`step_one.${id}.paragraph_title_two`} /></H4>
+          <Paragraph>
+            <LocaleString stringKey={`step_one.${id}.paragraph_text_two`} />
+          </Paragraph>
+          <H4><LocaleString stringKey={`step_one.${id}.paragraph_title_three`} /></H4>
+          <Paragraph>
+            <LocaleString stringKey={`step_one.${id}.paragraph_text_three`} />
+          </Paragraph>
+          <H4><LocaleString stringKey={`step_one.${id}.paragraph_title_four`} /></H4>
+          <Paragraph>
+            <LocaleString stringKey={`step_one.${id}.paragraph_text_four`} />
+          </Paragraph>
         </div>
         <div className="content__second-col">
           <Form onSubmit={this.props.handleSubmit(() => {})}>
@@ -264,6 +256,9 @@ class StepOne extends React.Component {
 
   render() {
     const { weeksCounter, participantId, data, tabIndex, group } = this.props;
+    
+    const parsedData = data.map(v => ({...v, id: (v.name || '').toLowerCase().replace(/\s/g, '_')}));
+    
     return (
       <AOSFadeInContainer className="step-one">
         <EmailModal
@@ -301,7 +296,7 @@ class StepOne extends React.Component {
               </GreenBlock>
             </TabRowSection>
           </TabRow>
-          {data.map((row, idx) => {
+          {parsedData.map((row, idx) => {
             const selectedIndex = (
               isStringsEqual(row.name, group)
                 ? isStringsEqual(row.name, weekly_camp)
@@ -331,7 +326,14 @@ class StepOne extends React.Component {
                           this.setPrice(0);
                         }}
                       >
-                        <TabRowHeader children={row.name} />
+                        <TabRowHeader >
+                          <Fragment>
+                            <div>{row.name}</div>
+                            <div className="tab-row__header--subtitle">
+                              <LocaleString stringKey={`step_one.${row.id}.under_tab_title`}/>
+                            </div>
+                          </Fragment>
+                        </TabRowHeader>
                       </Tab>
                       {
                         isStringsEqual(row.name, weekly_camp)
@@ -458,6 +460,7 @@ class StepOne extends React.Component {
                                 range: createNumbersArray({ from: 8, to: 18 }),
                                 boardingOptions: ['Boarding', 'Non-Boarding'],
                                 genderOptions: ['Male', 'Female'],
+                                id: row.id
                               })}
                             </TabPanel>
                         ) : (
@@ -467,7 +470,7 @@ class StepOne extends React.Component {
                               const range = createNumbersArray({ from: age_from, to: age_to });
                               return (
                                 <TabPanel key={idx}>
-                                  {this.renderTabPanel({ range, boardingOptions: boarding_options, genderOptions: gender_options })}
+                                  {this.renderTabPanel({ range, boardingOptions: boarding_options, genderOptions: gender_options, id: row.id })}
                                 </TabPanel>
                               );
                             })
@@ -502,13 +505,13 @@ function TabRowHeaderGreenBlock ({ localeKey }) {
   );
 }
 
-// function H2({ children }) {
-//   return (
-//     <h2 className="content__header content__header--h2">
-//       {children}
-//     </h2>
-//   );
-// }
+function H2({ children }) {
+  return (
+    <h2 className="content__header content__header--h2">
+      {children}
+    </h2>
+  );
+}
 
 function H3({ children }) {
   return (
@@ -518,21 +521,21 @@ function H3({ children }) {
   );
 }
 
-// function H4({ children }) {
-//   return (
-//     <h4 className="content__header content__header--h4">
-//       {children}
-//     </h4>
-//   );
-// }
-//
-// function Paragraph({ children }) {
-//   return (
-//     <p className="content__paragraph">
-//       {children}
-//     </p>
-//   );
-// }
+function H4({ children }) {
+  return (
+    <h4 className="content__header content__header--h4">
+      {children}
+    </h4>
+  );
+}
+
+function Paragraph({ children }) {
+  return (
+    <p className="content__paragraph">
+      {children}
+    </p>
+  );
+}
 
 function SleepawayRadioBtn({ options, sleepaway, possibleValues }) {
   return (
