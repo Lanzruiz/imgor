@@ -4,10 +4,20 @@ import * as cartTypes from '../constants/cart';
 import Api from '../api';
 
 export function updateCart(cart) {
-  return {
-    type: cartTypes.UPDATE_CART,
-    payload: cart,
-  };
+  return (dispatch, getState) => {
+    const { form } = getState();
+  
+    const email = ((form.wizard || {}).values || {}).email || '';
+    
+    if(window.reactAppUpdate && typeof window.reactAppUpdate === 'function' ){
+      window.reactAppUpdate({email: email, cart: cart, price: cart.price_total || 0 });
+    }
+    
+    dispatch({
+      type: cartTypes.UPDATE_CART,
+      payload: cart,
+    });
+  }
 };
 
 export function deleteCart() {
@@ -39,13 +49,25 @@ export function purchaseRequest(args, stubData) {
     Api.req({
       res200: (data) => {
         dispatch( updateCart(data.cart), );
+        
+        if(window.reactAppUpdate && typeof window.reactAppUpdate === 'function' ){
+          window.reactAppUpdate(data.cart);
+        }
 
         Api.req({
           res200: (data) => {
             dispatch( updateCart(data.cart), );
+  
+            if(window.reactAppUpdate && typeof window.reactAppUpdate === 'function' ){
+              window.reactAppUpdate(data.cart);
+            }
 
             if (window && args.cartId) {
               window.location = `${args.shopifyUrl}?order=${args.cartId}`;
+            }
+  
+            if(window.reactAppUpdate && typeof window.reactAppUpdate === 'function' ){
+              window.reactAppUpdate(data.cart);
             }
 
           },
