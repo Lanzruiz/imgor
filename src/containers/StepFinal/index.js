@@ -19,6 +19,7 @@ import DatePickerReduxForm from '../../components/DatePicker';
 import AOSFadeInContainer from '../../components/AOSFadeInContainer';
 // Actions
 import * as finalStepActions from '../../actions/final.step';
+import { stepOneAgeSelector } from '../StepOne/selectors';
 // Selectors
 import { finalStepPositionsSelector, finalStepSelectedPositionSelector, finalStepShirtSizeSelector } from './selectors';
 import { sportSelector, businessTypeSelector, packageTypeSelector } from '../InitialComponent/selectors';
@@ -58,7 +59,7 @@ class StepFinal extends React.Component {
   }
 
   render() {
-    const { positions, selectedPosition, shirtSize } = this.props;
+    const { positions, selectedPosition, shirtSize, age } = this.props;
     return (
       <ScreenClassRender render={(screenClass) => {
         let isMobile = false;
@@ -126,6 +127,7 @@ class StepFinal extends React.Component {
                                   withPopperPlacement={false}
                                   showYearDropdown
                                   yearDropdownItemNumber={90}
+                                  openToDate={new Date((new Date().getFullYear() - age), 0)}
                                 />
                                 {/*<InputBirthDayMask*/}
                                   {/*inputClassName="step-final__input"*/}
@@ -362,6 +364,7 @@ function mapStateToProps(state) {
     sport: sportSelector(state),
     businessType: businessTypeSelector(state),
     packageType: packageTypeSelector(state),
+    age: stepOneAgeSelector(state),
   };
 }
 
