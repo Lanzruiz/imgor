@@ -95,6 +95,7 @@ class WizardForm extends React.Component {
     guardianLastName: PropTypes.string,
     guardianEmail: PropTypes.string,
     guardianPhone: PropTypes.string,
+    isBusinessTypeForAdult: PropTypes.bool,
     valid: PropTypes.bool,
   };
 
@@ -106,6 +107,7 @@ class WizardForm extends React.Component {
     stepThreePrice: 0,
     guardianEmail: '',
     guardianPhone: '',
+    dataBusinessTypeForAdult: false
   };
 
   componentDidMount() {
@@ -820,7 +822,7 @@ class WizardForm extends React.Component {
   stepFinalValidation = () => {
     const {
       ageNumber, finalStepDateOfBirth, firstName, lastName, position, shirtSize, guardianFirstName,
-      guardianLastName, guardianEmail, guardianPhone,
+      guardianLastName, guardianEmail, guardianPhone, isBusinessTypeForAdult
     } = this.props;
     const adultAge = 18;
     const isAdult = ageNumber <= adultAge;
@@ -847,16 +849,16 @@ class WizardForm extends React.Component {
       case !shirtSize: {
         return 'step_final.no_shirt_size_message';
       }
-      case isAdult && !guardianFirstName: {
+      case !isBusinessTypeForAdult && isAdult && !guardianFirstName: {
         return 'step_final.no_guardian_first_name_message';
       }
-      case isAdult && !guardianLastName: {
+      case !isBusinessTypeForAdult && isAdult && !guardianLastName: {
         return 'step_final.no_guardian_last_name_message';
       }
-      case isAdult && !isEmail(guardianEmail): {
+      case !isBusinessTypeForAdult && isAdult && !isEmail(guardianEmail): {
         return 'step_final.no_guardian_email_message';
       }
-      case isAdult && !isMobilePhone(guardianPhone): {
+      case !isBusinessTypeForAdult && isAdult && !isMobilePhone(guardianPhone): {
         return 'step_final.no_guardian_phone_message';
       }
       default:

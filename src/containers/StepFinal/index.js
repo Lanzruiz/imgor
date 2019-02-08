@@ -43,10 +43,12 @@ class StepFinal extends React.Component {
     ).isRequired,
     selectedPosition: PropTypes.string,
     shirtSize: PropTypes.string,
+    isBusinessTypeForAdult: PropTypes.bool,
   };
 
   static defaultProps = {
     positions: [],
+    dataBusinessTypeForAdult: false,
   };
 
   componentDidMount() {
@@ -59,7 +61,7 @@ class StepFinal extends React.Component {
   }
 
   render() {
-    const { positions, selectedPosition, shirtSize, age } = this.props;
+    const { positions, selectedPosition, shirtSize, age, isBusinessTypeForAdult } = this.props;
     return (
       <ScreenClassRender render={(screenClass) => {
         let isMobile = false;
@@ -203,54 +205,57 @@ class StepFinal extends React.Component {
                     </Card>
                   </Col>
                 </Row>
-                <Row>
-                  <Col sm={12} style={{ padding: isMobile ? '0 15px' : 0, borderRight: '1px solid #fff' }}>
-                    <Card
-                      buttonBlock={false}
-                      cardHeader={<LocaleString stringKey="step_final.guardian_information" />}
-                      cardHeaderCapitalize={true}
-                      id={3}
-                      priceBlock={false}
-                    >
-                      <CardContent>
-                        <CardContentRow>
-                          <CardContentCol>
-                            <Form className="step-final__form" style={{ maxWidth: (!isMobile && isTablet) ? '100%' : 'calc(100%/3)', marginRight: 'auto' }} onSubmit={() => {}}>
-                              <label className="step-final__form-control">
-                                <Input
-                                  inputClassName="step-final__input"
-                                  name={stepFinalFormFieldNames.guardianInformationFirstName}
-                                  label="first name"
-                                />
-                              </label>
-                              <label className="step-final__form-control">
-                                <Input
-                                  inputClassName="step-final__input"
-                                  name={stepFinalFormFieldNames.guardianInformationLastName}
-                                  label="last name"
-                                />
-                              </label>
-                              <label className="step-final__form-control">
-                                <Input
-                                  inputClassName="step-final__input"
-                                  name={stepFinalFormFieldNames.guardianInformationEmail}
-                                  label="email"
-                                />
-                              </label>
-                              <label className="step-final__form-control">
-                                <Input
-                                  inputClassName="step-final__input"
-                                  name={stepFinalFormFieldNames.guardianInformationPhone}
-                                  label="phone number"
-                                />
-                              </label>
-                            </Form>
-                          </CardContentCol>
-                        </CardContentRow>
-                      </CardContent>
-                    </Card>
-                  </Col>
-                </Row>
+                
+                {!isBusinessTypeForAdult && (
+                  <Row>
+                    <Col sm={12} style={{ padding: isMobile ? '0 15px' : 0, borderRight: '1px solid #fff' }}>
+                      <Card
+                        buttonBlock={false}
+                        cardHeader={<LocaleString stringKey="step_final.guardian_information" />}
+                        cardHeaderCapitalize={true}
+                        id={3}
+                        priceBlock={false}
+                      >
+                        <CardContent>
+                          <CardContentRow>
+                            <CardContentCol>
+                              <Form className="step-final__form" style={{ maxWidth: (!isMobile && isTablet) ? '100%' : 'calc(100%/3)', marginRight: 'auto' }} onSubmit={() => {}}>
+                                <label className="step-final__form-control">
+                                  <Input
+                                    inputClassName="step-final__input"
+                                    name={stepFinalFormFieldNames.guardianInformationFirstName}
+                                    label="first name"
+                                  />
+                                </label>
+                                <label className="step-final__form-control">
+                                  <Input
+                                    inputClassName="step-final__input"
+                                    name={stepFinalFormFieldNames.guardianInformationLastName}
+                                    label="last name"
+                                  />
+                                </label>
+                                <label className="step-final__form-control">
+                                  <Input
+                                    inputClassName="step-final__input"
+                                    name={stepFinalFormFieldNames.guardianInformationEmail}
+                                    label="email"
+                                  />
+                                </label>
+                                <label className="step-final__form-control">
+                                  <Input
+                                    inputClassName="step-final__input"
+                                    name={stepFinalFormFieldNames.guardianInformationPhone}
+                                    label="phone number"
+                                  />
+                                </label>
+                              </Form>
+                            </CardContentCol>
+                          </CardContentRow>
+                        </CardContent>
+                      </Card>
+                    </Col>
+                  </Row>
+                )}
               </Col>
             </Container>
           </AOSFadeInContainer>

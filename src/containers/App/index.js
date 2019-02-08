@@ -51,6 +51,7 @@ class App extends React.Component {
     businessType: PropTypes.string.isRequired,
     redirectUrlShopify: PropTypes.string,
     extraSettingsPath: PropTypes.string,
+    dataBusinessType: PropTypes.string,
   };
 
   static defaultProps = {
@@ -62,6 +63,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     // To add more steps just add component into this array
+    const isBusinessTypeForAdult = (props.dataBusinessType || '').toLowerCase() === 'Adult Program'.toLowerCase();
+    
     this.wizardFormChildren = [
       <StepOne
         key="0"
@@ -78,7 +81,10 @@ class App extends React.Component {
       />,
       <StepFive key="4" />,
       <StepSix key="5" />,
-      <StepFinal key="6" />,
+      <StepFinal
+        key="6"
+        isBusinessTypeForAdult={isBusinessTypeForAdult}
+      />,
     ];
   }
 
@@ -150,11 +156,17 @@ class App extends React.Component {
   };
 
   render() {
-    const { lang, redirectUrlShopify, contentPath, valid } = this.props;
+    const { lang, redirectUrlShopify, contentPath, valid, dataBusinessType } = this.props;
+  
+    const isBusinessTypeForAdult = (dataBusinessType || '').toLowerCase() === 'Adult Program'.toLowerCase();
     
     return (
       <ReactLocalization lang={lang} contentPath={contentPath}>
-        <WizardForm redirectUrlShopify={redirectUrlShopify} valid={valid}>
+        <WizardForm
+          redirectUrlShopify={redirectUrlShopify}
+          valid={valid}
+          isBusinessTypeForAdult={isBusinessTypeForAdult}
+        >
           {() => this.wizardFormChildren}
         </WizardForm>
       </ReactLocalization>
