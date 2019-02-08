@@ -168,6 +168,10 @@
             justify-content: space-around;
         }
 
+        &__column{
+          margin: 5px 0;
+        }
+
         &__item {
             cursor: pointer;
             font-family: $trade-gothic;
