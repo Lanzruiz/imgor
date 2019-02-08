@@ -98,18 +98,50 @@ class StepFourWeekConcentrationComponent extends React.Component {
       stepFourCustomizeWeekRequest: PropTypes.func.isRequired,
     }),
     maxWeekCounter: PropTypes.number.isRequired,
+    concentrationOrdering: PropTypes.array,
   };
 
   componentDidMount() {
     this.getWeekData();
   }
+  
+  
+  reorderConcentrations = (items) => {
+    const { concentrationOrdering } = this.props;
+    
+    if(!concentrationOrdering) return items;
+    
+    const parsedConcentrationOrdering = concentrationOrdering.map(v => v.toLowerCase());
+    
+    const parsedItems = [ ...items ].map(v => ({
+      ...v,
+      nameInLowerCase: v.secondary_program_type.toLowerCase(),
+      displayNameInLowerCase: v.name.toLowerCase()
+    }));
+    
+    const sortedGroups = parsedConcentrationOrdering.reduce((acc, conc) => {
+      
+      const s = acc.data.filter(v => v.nameInLowerCase === conc || v.displayNameInLowerCase === conc);
+      const r = acc.data.filter(v => v.nameInLowerCase !== conc && v.displayNameInLowerCase !== conc);
+      acc.sorted = [ ...acc.sorted, ...s ];
+      acc.data = [ ...r ];
+      
+      return acc;
+    }, {
+      sorted: [],
+      data: parsedItems
+    });
+    
+    return [...sortedGroups.sorted, ...sortedGroups.data];
+  };
 
   render() {
     const { weekId, customizeId } = this.props;
     const data = this.props[`week_${weekId}_data`];
+    
     return (
       <Row>
-        {data.map(({ id, price, age_range, secondary_program_type, sold_out }) => {
+        {this.reorderConcentrations(data).map(({ id, price, age_range, secondary_program_type, sold_out }) => {
           const computedLabel = age_range ? `ages ${age_range}` : '';
           const cardContentProps = assign({}, { sold_out, secondary_program_type });
           const customButtonTitle = (
@@ -354,6 +386,7 @@ function mapStateToProps(state) {
     participantId: participantIdSelector(state),
     stepThreeParticipantProductId: stepThreeParticipantProductIdSelector(state),
     stepFourConcentrationProductId: stepFourConcentrationProductIdSelector(state),
+    concentrationOrdering: state.initialSettings.concentrationOrdering
   };
 };
 
