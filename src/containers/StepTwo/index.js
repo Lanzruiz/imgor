@@ -188,7 +188,7 @@ class StepTwo extends React.Component {
   render() {
     const { data, weeksCounter, sport, selectedDate } = this.props;
 
-    const groupSize = 10;
+    const groupSize = 5;
     const perPage = 2;
 
     const dataGrouped = data.reduce((acc, v, index) => {
