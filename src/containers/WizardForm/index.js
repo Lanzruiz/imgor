@@ -264,6 +264,9 @@ class WizardForm extends React.Component {
     const arrowPosition = true;
     const message = this.renderMessage();
     const hasMessage = !isEqual(message.props.stringKey, '');
+  
+    //SendingData outside app
+    this.props.cartActions.sendCartData(this.props);
     
     return (
       <React.Fragment>
