@@ -144,6 +144,10 @@ class WizardForm extends React.Component {
       default:
         return;
     }
+    
+    window.reactAppFinish = () => {
+      this.purchaseHandler();
+    };
   }
 
   componentDidUpdate(prevProps) {
