@@ -1,16 +1,137 @@
 // Constants
-import * as cartTypes from '../constants/cart';
+import isEqual from 'lodash/isEqual';
+import isNumber from 'lodash/isNumber';
+import isString from 'lodash/isString';
+import isEmail from 'validator/lib/isEmail';
+import isMobilePhone from 'validator/lib/isMobilePhone';
+import moment from 'moment';
 // Api
 import Api from '../api';
+import { stepsEnum } from '../constants/steps';
+import {
+  finalStepDateOfBirthSelector,
+  finalStepFirstNameSelector,
+  finalStepGuardianEmailSelector,
+  finalStepGuardianFirstNameSelector,
+  finalStepGuardianLastNameSelector, finalStepGuardianPhoneSelector,
+  finalStepLastNameSelector, finalStepPhoneSelector,
+  finalStepPositionSelector,
+  finalStepShirtSizeSelector
+} from '../containers/StepFinal/selectors';
+import { stepFourSecondaryProgramIdSelector } from '../containers/StepFour/selectors';
+import {
+  isWeeklyCampSelector, stepOneAgeNumberSelector,
+  stepOneAgeSelector, stepOneEmailSelector,
+  stepOneGenderSelector,
+  stepOneGroupSelector, stepOneSecondaryGroupSelector,
+  stepOneSleepawaySelector, weeksCounterSelector, weeksItemsSelector
+} from '../containers/StepOne/selectors';
+import {
+  stepThreeHasSecondaryProgram, stepThreeParticipantProductIdSelector,
+  stepThreeSecondaryProgramIdSelector,
+  stepThreeSelectedCardWithSecondaryProgramsIdSelector, stepThreeSelectedProductSelector,
+  stepTreeSelectedIdSelector
+} from '../containers/StepThree/selector';
+import { stepTwoEndDateSelector, stepTwoStartDateSelector } from '../containers/StepTwo/selectors';
+import { currentStepSelector, totalPriceSelector } from '../containers/WizardForm/selectors';
+import isStringsEqual from '../helpers/isStringsEqual';
+import * as cartTypes from '../constants/cart';
+import { weekly_camp } from '../containers/StepOne';
+import {
+  airportPickupInformation,
+  departingFormFieldNames, stepSixAirportPickupAirlineSelector,
+  stepSixAirportPickupSelector,
+  stepSixArrivalDateTimeSelector,
+  stepSixArrivalFlightNumberSelector, stepSixArrivalTransportObjectSelector, stepSixDepartingAirlineSelector,
+  stepSixDepartingDateTimeSelector,
+  stepSixDepartingFlightNumberSelector, stepSixDepartingSelector, stepSixDepartingTransportObjectSelector,
+  stepSixDepartingTransportSelector,
+  stepSixDropoffOtherLocationSelector,
+  stepSixDropoffSelector,
+  stepSixPickUpOtherLocationSelector,
+  stepSixSelectedArrivalAirlineSelector,
+  stepSixSelectedDepartingAirlineSelector,
+  stepSixSelectedTransportSelector, stepSixTransportationIdSelector, stepSixTransportUnaccompaniedSelector,
+  stepSixUnaccompaniedSelector
+} from '../containers/StepSix/selectors';
 
 export function updateCart(cart) {
   return (dispatch, getState) => {
+    
+    const state = getState();
+    
+    // From wizard form selectors
+    const data = {
+      step: currentStepSelector(state),
+      participantId: state.participant.id,
+      sleepaway: stepOneSleepawaySelector(state),
+      age: stepOneAgeSelector(state),
+      gender: stepOneGenderSelector(state),
+      group: stepOneGroupSelector(state),
+      weeksCounter: weeksCounterSelector(state),
+      cartId: state.cart.id,
+      secondaryGroup: stepOneSecondaryGroupSelector(state),
+      startDate: stepTwoStartDateSelector(state),
+      endDate: stepTwoEndDateSelector(state),
+      stepTreeSelectedId: stepTreeSelectedIdSelector(state),
+      stepThreeSecondaryProgramId: stepThreeSecondaryProgramIdSelector(state),
+      totalPrice: totalPriceSelector(state),
+      isWeeklyCamp: isWeeklyCampSelector(state),
+      stepThreeSelectedCardWithSecondaryProgramsId: stepThreeSelectedCardWithSecondaryProgramsIdSelector(state),
+      hasSecondaryProgram: stepThreeHasSecondaryProgram(state),
+      stepFourSecondaryProgramId: stepFourSecondaryProgramIdSelector(state),
+      weeksItems: weeksItemsSelector(state),
+      firstName: finalStepFirstNameSelector(state),
+      lastName: finalStepLastNameSelector(state),
+      position: finalStepPositionSelector(state),
+      shirtSize: finalStepShirtSizeSelector(state),
+      ageNumber: stepOneAgeNumberSelector(state),
+      guardianFirstName: finalStepGuardianFirstNameSelector(state),
+      guardianLastName: finalStepGuardianLastNameSelector(state),
+      guardianEmail: finalStepGuardianEmailSelector(state),
+      guardianPhone: finalStepGuardianPhoneSelector(state),
+      stepSixAirportPickup: stepSixAirportPickupSelector(state),
+      stepSixUnaccompanied: stepSixUnaccompaniedSelector(state),
+      stepSixSelectedTransport: stepSixSelectedTransportSelector(state),
+      stepSixArrivalFlightNumber: stepSixArrivalFlightNumberSelector(state),
+      stepSixArrivalDateTime: stepSixArrivalDateTimeSelector(state),
+      stepSixSelectedArrivalAirline: stepSixSelectedArrivalAirlineSelector(state),
+      stepSixDropoff: stepSixDropoffSelector(state),
+      stepSixDropoffOtherLocation: stepSixDropoffOtherLocationSelector(state),
+      stepSixDepartingTransport: stepSixDepartingTransportSelector(state),
+      stepSixPickUpOtherLocation: stepSixPickUpOtherLocationSelector(state),
+      stepSixSelectedDepartingAirline: stepSixSelectedDepartingAirlineSelector(state),
+      stepSixDepartingFlightNumber: stepSixDepartingFlightNumberSelector(state),
+      stepSixDepartingDateTime: stepSixDepartingDateTimeSelector(state),
+      stepSixDeparting: stepSixDepartingSelector(state),
+      product: stepThreeSelectedProductSelector(state),
+      participantProductId: stepThreeParticipantProductIdSelector(state),
+      stepSixTransportUnaccompanied: stepSixTransportUnaccompaniedSelector(state),
+      stepSixDepartingTransportObject: stepSixDepartingTransportObjectSelector(state),
+      stepSixArrivalTransportObject: stepSixArrivalTransportObjectSelector(state),
+      finalStepDateOfBirth: finalStepDateOfBirthSelector(state),
+      stepSixTransportationId: stepSixTransportationIdSelector(state),
+      stepSixAirportPickupAirline: stepSixAirportPickupAirlineSelector(state),
+      stepSixDepartingAirline: stepSixDepartingAirlineSelector(state),
+      finalStepPhone: finalStepPhoneSelector(state),
+      email: stepOneEmailSelector(state),
+    };
+    
     const { form } = getState();
   
     const email = ((form.wizard || {}).values || {}).email || '';
     
+    const hasFormValid = cartValidData(data);
+    
+    console.log(hasFormValid);
+    
     if(window.reactAppUpdate && typeof window.reactAppUpdate === 'function' ){
-      window.reactAppUpdate({email: email, cart: cart, price: cart.price_total || 0 });
+      window.reactAppUpdate({
+        email: email,
+        cart: cart,
+        price: cart.price_total || 0,
+        checkout_ready: false
+      });
     }
     
     dispatch({
@@ -49,27 +170,14 @@ export function purchaseRequest(args, stubData) {
     Api.req({
       res200: (data) => {
         dispatch( updateCart(data.cart), );
-        
-        if(window.reactAppUpdate && typeof window.reactAppUpdate === 'function' ){
-          window.reactAppUpdate(data.cart);
-        }
 
         Api.req({
           res200: (data) => {
-            dispatch( updateCart(data.cart), );
-  
-            if(window.reactAppUpdate && typeof window.reactAppUpdate === 'function' ){
-              window.reactAppUpdate(data.cart);
-            }
-
+            // dispatch( updateCart({ ...data.cart }), );
+            
             if (window && args.cartId) {
               window.location = `${args.shopifyUrl}?order=${args.cartId}`;
             }
-  
-            if(window.reactAppUpdate && typeof window.reactAppUpdate === 'function' ){
-              window.reactAppUpdate(data.cart);
-            }
-
           },
           res404: () => { console.log('Api.putCartCartId => 404'); },
           reject: console.error,
@@ -90,5 +198,262 @@ export function purchaseRequest(args, stubData) {
       apiCall: Api.putCartCartIdParticipantParticipantId,
       apiCallParams: args,
     });
+  }
+}
+
+function cartValidData(props) {
+  const { step } = props;
+  let stringKey;
+  
+  switch(step) {
+    case stepsEnum.one: {
+      stringKey = stepOneValidation(props);
+      break;
+    }
+    case stepsEnum.two: {
+      stringKey = stepTwoValidation(props);
+      break;
+    }
+    case stepsEnum.three: {
+      stringKey = stepThreeValidation(props);
+      break;
+    }
+    case stepsEnum.four: {
+      stringKey = stepFourValidation(props);
+      break;
+    }
+    case stepsEnum.five: {
+      stringKey = stepFiveValidation(props);
+      break;
+    }
+    case stepsEnum.six: {
+      stringKey = stepSixValidation(props);
+      break;
+    }
+    case stepsEnum.seven: {
+      stringKey = stepFinalValidation(props);
+      break;
+    }
+    default:
+      break;
+  }
+  
+  return !stringKey;
+}
+
+export function stepOneValidation (props) {
+  const { age, gender, group, participantId, sleepaway, weeksCounter } = props;
+  
+  switch(true) {
+    case (!isString(participantId) && !isNumber(participantId)): {
+      return 'enter_email';
+    }
+    case (!isString(age) && !isString(gender) && !isString(sleepaway)): {
+      return 'choose_sleepaway_age_and_gender';
+    }
+    case (!isString(age) && !isString(sleepaway)): {
+      return 'choose_age_sleepaway';
+    }
+    case (isString(age) && !isString(gender) && !isString(sleepaway)): {
+      
+      return 'choose_sleepaway_and_gender';
+    }
+    case (isString(sleepaway) && !isString(gender) && !isString(age)): {
+      return 'choose_age_and_gender';
+    }
+    case (isString(sleepaway) && isString(gender) && !isString(age)): {
+      return 'choose_age';
+    }
+    case (!isString(sleepaway) && isString(gender) && isString(age)): {
+      return 'choose_sleepaway';
+    }
+    case (isString(sleepaway) && !isString(gender) && isString(age)): {
+      return 'choose_gender';
+    }
+    case (isString(sleepaway) && isString(gender) && isString(age)) && isStringsEqual(weekly_camp, group) && isEqual(weeksCounter, 0): {
+      
+      return 'choose_weeks';
+    }
+    case !group: {
+      return 'choose_group';
+    }
+    default:
+      return '';
+  }
+}
+
+export function stepTwoValidation (props) {
+  const { startDate } = props;
+  switch(true) {
+    case !startDate: {
+      return 'choose_date';
+    }
+    default:
+      return '';
+  }
+}
+
+export function stepThreeValidation (props) {
+  const { participantProductId } = props;
+  switch(true) {
+    case !participantProductId: {
+      return 'step_three_choose_training_message';
+    }
+    default:
+      return '';
+  }
+}
+
+export function stepFourValidation (props) {
+  const { stepFourSecondaryProgramId, weeksItems, hasSecondaryProgram, stepThreeSecondaryProgramId } = props;
+  
+  switch(true) {
+    case hasSecondaryProgram && !stepThreeSecondaryProgramId && !isNumber(stepFourSecondaryProgramId): {
+      return 'step_four_make_selection_for_entire_camp_stay';
+    }
+    case !hasSecondaryProgram && weeksItems[0] && isEqual(weeksItems[0].customize_id, null): {
+      return 'step_four_week_one_message';
+    }
+    case !hasSecondaryProgram && weeksItems[1] && isEqual(weeksItems[1].customize_id, null): {
+      return 'step_four_week_two_message';
+    }
+    case !hasSecondaryProgram && weeksItems[2] && isEqual(weeksItems[2].customize_id, null): {
+      return 'step_four_week_three_message';
+    }
+    case !hasSecondaryProgram && weeksItems[3] && isEqual(weeksItems[3].customize_id, null): {
+      return 'step_four_week_four_message';
+    }
+    case !hasSecondaryProgram && weeksItems[4] && isEqual(weeksItems[4].customize_id, null): {
+      return 'step_four_week_five_message';
+    }
+    case !hasSecondaryProgram && weeksItems[5] && isEqual(weeksItems[5].customize_id, null): {
+      return 'step_four_week_six_message';
+    }
+    case !hasSecondaryProgram && weeksItems[6] && isEqual(weeksItems[6].customize_id, null): {
+      return 'step_four_week_seven_message';
+    }
+    case !hasSecondaryProgram && weeksItems[7] && isEqual(weeksItems[7].customize_id, null): {
+      return 'step_four_week_eight_message';
+    }
+    case !hasSecondaryProgram && weeksItems[8] && isEqual(weeksItems[8].customize_id, null): {
+      return 'step_four_week_nine_message';
+    }
+    case !hasSecondaryProgram && weeksItems[9] && isEqual(weeksItems[9].customize_id, null): {
+      return 'step_four_week_ten_message';
+    }
+    case !hasSecondaryProgram && weeksItems[10] && isEqual(weeksItems[10].customize_id, null): {
+      return 'step_four_week_eleven_message';
+    }
+    case !hasSecondaryProgram && weeksItems[11] && isEqual(weeksItems[11].customize_id, null): {
+      return 'step_four_week_twelve_message';
+    }
+    default:
+      return '';
+  }
+}
+
+export function stepFiveValidation () {
+  switch(true) {
+    default:
+      return '';
+  }
+}
+
+export function stepSixValidation (props) {
+  const {
+    stepSixAirportPickup, stepSixUnaccompanied, stepSixSelectedTransport, stepSixDropoff,
+    stepSixDropoffOtherLocation, stepSixDepartingTransport, stepSixPickUpOtherLocation,
+    stepSixDeparting, stepSixTransportationId, stepSixAirportPickupAirline, stepSixDepartingAirline,
+  } = props;
+  
+  const { both, arrival, departing } = airportPickupInformation;
+  const { other } = departingFormFieldNames;
+  
+  const airportPickupArrivalAndDeparting = isEqual(stepSixAirportPickup, both);
+  const airportPickupArrivalOnly = isEqual(stepSixAirportPickup, arrival);
+  const airportPickupDepartingOnly = isEqual(stepSixAirportPickup, departing);
+  
+  const isStepSixTransportationSelected = isNumber(stepSixTransportationId);
+  
+  if (isStepSixTransportationSelected) {
+    switch(true) {
+      case !stepSixAirportPickup: {
+        return 'step_six_airport_transportation_message';
+      }
+      case !stepSixUnaccompanied: {
+        return 'step_six_unaccompanied_message';
+      }
+      case (airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && !stepSixSelectedTransport: {
+        return 'step_six_arrival_flight_information_message';
+      }
+      case (airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && !stepSixAirportPickupAirline: {
+        return 'step_six_airlines_message';
+      }
+      case (airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && !stepSixDropoff:
+      case (airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && (stepSixDropoff === other) && !stepSixDropoffOtherLocation: {
+        return 'step_six_dropoff_location_message';
+      }
+      case (airportPickupArrivalAndDeparting || airportPickupDepartingOnly) && !stepSixDepartingTransport: {
+        return 'step_six_departing_location_message';
+      }
+      case (airportPickupArrivalAndDeparting || airportPickupDepartingOnly) && !stepSixDepartingAirline: {
+        return 'step_six_departing_airline_message';
+      }
+      case (airportPickupArrivalAndDeparting || airportPickupDepartingOnly) && !stepSixDeparting:
+      case (airportPickupArrivalAndDeparting || airportPickupDepartingOnly) && (stepSixDeparting === other) && !stepSixPickUpOtherLocation: {
+        return 'step_six_departing_pick_up_location_message';
+      }
+      default:
+        return '';
+    }
+  }
+  return '';
+}
+
+export function stepFinalValidation (props) {
+  const {
+    ageNumber, finalStepDateOfBirth, firstName, lastName, position, shirtSize, guardianFirstName,
+    guardianLastName, guardianEmail, guardianPhone, isBusinessTypeForAdult
+  } = props;
+  
+  const adultAge = 18;
+  const isAdult = ageNumber <= adultAge;
+  
+  switch(true) {
+    case !firstName: {
+      return 'step_final.no_first_name_message';
+    }
+    case !lastName: {
+      return 'step_final.no_last_name_message';
+    }
+    case !finalStepDateOfBirth: {
+      return 'enter_day_of_birth';
+    }
+    case finalStepDateOfBirth && !moment(finalStepDateOfBirth, 'MM/DD/YYYY').isValid(): {
+      return 'date_is_not_valid';
+    }
+    // case finalStepDateOfBirth && !isEqual( calculateAge(finalStepDateOfBirth), ageNumber ): {
+    //   return 'camper_age_is_not_equal';
+    // }
+    case !position: {
+      return 'step_final.no_position_message';
+    }
+    case !shirtSize: {
+      return 'step_final.no_shirt_size_message';
+    }
+    case !isBusinessTypeForAdult && isAdult && !guardianFirstName: {
+      return 'step_final.no_guardian_first_name_message';
+    }
+    case !isBusinessTypeForAdult && isAdult && !guardianLastName: {
+      return 'step_final.no_guardian_last_name_message';
+    }
+    case !isBusinessTypeForAdult && isAdult && !isEmail(guardianEmail): {
+      return 'step_final.no_guardian_email_message';
+    }
+    case !isBusinessTypeForAdult && isAdult && !isMobilePhone(guardianPhone): {
+      return 'step_final.no_guardian_phone_message';
+    }
+    default:
+      return '';
   }
 }

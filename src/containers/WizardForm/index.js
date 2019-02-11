@@ -254,6 +254,7 @@ class WizardForm extends React.Component {
   render() {
     const { children, step, totalPrice, valid, dataDisplayFooter } = this.props;
     
+    
     const startIndex = 0;
     if (typeof children !== 'function') {
       return (
@@ -263,6 +264,7 @@ class WizardForm extends React.Component {
     const arrowPosition = true;
     const message = this.renderMessage();
     const hasMessage = !isEqual(message.props.stringKey, '');
+    
     return (
       <React.Fragment>
         <CSSTransitionGroup

@@ -202,7 +202,7 @@ class Footer extends React.Component {
     // const { saveCampOnClickHandler, shareOnClickHandler } = this.props;
     const arrowPositinon = arrowUp ? <span className="icon-arrow-up" /> : <span className="icon-arrow-down" />;
     const isCurrentStepEqualToSix = isEqual(step, stepsEnum.six);
-
+    
     return dataDisplayFooter ? (
       <div className="footer__wrapper">
         <div className="footer__container footer__container--fixed">
