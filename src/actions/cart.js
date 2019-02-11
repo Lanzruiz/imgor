@@ -123,14 +123,12 @@ export function updateCart(cart) {
     
     const hasFormValid = cartValidData(data);
     
-    console.log(hasFormValid);
-    
     if(window.reactAppUpdate && typeof window.reactAppUpdate === 'function' ){
       window.reactAppUpdate({
         email: email,
         cart: cart,
         price: cart.price_total || 0,
-        checkout_ready: false
+        checkout_ready: hasFormValid
       });
     }
     
