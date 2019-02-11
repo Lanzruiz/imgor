@@ -147,9 +147,13 @@ class StepFourWeekConcentrationComponent extends React.Component {
     
     return (
       <Row>
-        {this.reorderConcentrations(data).map(({ id, price, age_range, secondary_program_type, sold_out }) => {
+        {this.reorderConcentrations(data).map(({ id, price, age_range, secondary_program_type, sold_out, via_label }) => {
+
+          const secondaryProgram = (secondary_program_type || '').toLowerCase();
+          const hasElsOrSat = secondaryProgram === 'esl' || secondaryProgram === 'sat';
+          
           const computedLabel = age_range ? `ages ${age_range}` : '';
-          const cardContentProps = assign({}, { sold_out, secondary_program_type });
+          const cardContentProps = assign({}, { sold_out, secondary_program_type, hasElsOrSat });
           const customButtonTitle = (
             customizeId
               ? <LocaleString stringKey="remove" />
@@ -159,7 +163,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
             <Col md={6} lg={4} key={id} className="card-column">
               <Card
                 id={id}
-                cardHeader="training"
+                cardHeader={!hasElsOrSat ? 'Education' : 'Training'}
                 color="dark"
                 header={secondary_program_type}
                 label={computedLabel}
@@ -168,6 +172,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
                 onRemove={this.deleteSelectedConcentration}
                 selectedId={customizeId}
                 customButtonTitle={customButtonTitle}
+                via={via_label}
               >
                 {this.renderCardContent(cardContentProps)}
               </Card>
@@ -179,7 +184,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
   }
 
   renderCardContent = (secondaryProgramType) => {
-    const { secondary_program_type, sold_out } = secondaryProgramType;
+    const { secondary_program_type, sold_out, hasElsOrSat } = secondaryProgramType;
     const { height } = this.state;
     
 
@@ -204,7 +209,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
                     </div>
                     <div className="step-four__esl-content-container">
                       <OneHourSentence />
-                      <TrainingSentence />
+                      {hasElsOrSat ? <EducationSentence /> : <TrainingSentence />}
                       <PerWeekSentence />
                     </div>
                   </div>
@@ -232,7 +237,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
                     </div>
                     <div className="step-four__esl-content-container">
                       <FifteenHoursSentence />
-                      <EducationSentence />
+                      {hasElsOrSat ? <EducationSentence /> : <TrainingSentence />}
                       <PerWeekSentence />
                     </div>
                   </div>
