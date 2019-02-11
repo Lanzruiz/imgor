@@ -87,13 +87,12 @@ export function purchaseRequest(args, stubData) {
 
 export function sendCartData(props){
   return (dispatch, getState) => {
-    const { form, cart } = getState();
-  
-    const email = ((form.wizard || {}).values || {}).email || '';
-  
-    const message = getValidationMessage(props);
-  
     if(window.reactAppUpdate && typeof window.reactAppUpdate === 'function' ){
+      const { form, cart } = getState();
+      const email = ((form.wizard || {}).values || {}).email || '';
+    
+      const message = getValidationMessage(props);
+  
       window.reactAppUpdate({
         email: email,
         cart: cart,
