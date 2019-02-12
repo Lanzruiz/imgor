@@ -105,6 +105,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
     }),
     maxWeekCounter: PropTypes.number.isRequired,
     concentrationOrdering: PropTypes.array,
+    isFirstWeek: PropTypes.bool,
   };
 
   componentDidMount() {
@@ -142,7 +143,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
   };
 
   render() {
-    const { weekId, customizeId } = this.props;
+    const { weekId, customizeId, isFirstWeek } = this.props;
     const data = this.props[`week_${weekId}_data`];
     
     return (
@@ -152,6 +153,10 @@ class StepFourWeekConcentrationComponent extends React.Component {
           const secondaryProgram = (secondary_program_type || '').toLowerCase();
           const hasElsOrSat = secondaryProgram === 'esl' || secondaryProgram === 'sat';
           
+          const isNotSkipWeek = secondary_program_type !== 'Skip this week';
+          
+          const isSkipWeekAndFirst = secondary_program_type === 'Skip this week' && isFirstWeek;
+          
           const computedLabel = age_range ? `ages ${age_range}` : '';
           const cardContentProps = assign({}, { sold_out, secondary_program_type, hasElsOrSat });
           const customButtonTitle = (
@@ -159,7 +164,8 @@ class StepFourWeekConcentrationComponent extends React.Component {
               ? <LocaleString stringKey="remove" />
               : <LocaleString stringKey="select" />
           );
-          return (
+          
+          return (isNotSkipWeek || isSkipWeekAndFirst) &&  (
             <Col md={6} lg={4} key={id} className="card-column">
               <Card
                 id={id}
@@ -253,7 +259,21 @@ class StepFourWeekConcentrationComponent extends React.Component {
           <CardContent>
             <CardContentRow>
               <CardContentCol>
-                <div style={{ height }} />
+                
+                <ReactHeight onHeightReady={this.setMinHeight} style={{ height }}>
+                  <div className={'step-four__esl-secondary-program step-four__secondary-program--available'}>
+                    <div className="step-four__esl-image-container">
+                    </div>
+                    <div className="step-four__esl-content-container">
+                      <span className="step-four__education">
+                        Skip adding weekly training concentrations. I'm fine with the standard training program that I selected.
+                      </span>
+                    </div>
+                  </div>
+                </ReactHeight>
+                
+                {/*<div style={{ height }} >*/}
+                {/*</div>*/}
               </CardContentCol>
             </CardContentRow>
           </CardContent>
@@ -336,7 +356,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
     const selectedItem = find(data, ['id', id]);
     const price = selectedItem && selectedItem.price;
     this.props.weeksActions.setWeekPrice(price);
-
+    
     const args = {
       cartId,
       participantId,
@@ -347,7 +367,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
       nextWeekId: weekId >= maxWeekCounter ? null : weekId,
       currentWeekId: weekId,
     };
-
+    
     if (stepFourConcentrationProductId) {
       if (isEqual(emptyConcentrationId, id)) {
         this.deleteSelectedConcentration(id);
@@ -357,7 +377,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
       this.props.weeksActions.updateSelectedConcentration(args);
       return;
     }
-
+    
     this.props.stepFourActions.stepFourCustomizeWeekRequest(args);
   };
 
@@ -371,7 +391,11 @@ class StepFourWeekConcentrationComponent extends React.Component {
     const { cartId, stepFourConcentrationProductId, participantId, weekId, maxWeekCounter } = this.props;
     if (stepFourConcentrationProductId) {
       const nextWeekId = weekId >= maxWeekCounter ? null : weekId;
-      this.props.weeksActions.deleteSelectedConcentration({ cartId, participantId, nextWeekId, productId: stepFourConcentrationProductId, id, currentWeekId: weekId });
+      this.props.weeksActions.deleteSelectedConcentration({
+        cartId, participantId, nextWeekId,
+        productId: stepFourConcentrationProductId, id,
+        currentWeekId: weekId,
+      });
       return;
     }
     if (isEqual(emptyConcentrationId, id)) {

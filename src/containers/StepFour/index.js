@@ -180,7 +180,7 @@ class StepFour extends React.Component {
 
     if (isEqual(data.length, 0)) return false;
     
-    weeks.forEach(({ id, customize_id, end_date, start_date }) => {
+    weeks.forEach(({ id, customize_id, end_date, start_date }, index) => {
       tabsList.push(
         <Tab key={id} className="step-four-tabs__tab">
           <LocaleString stringKey="week" /> {id}
@@ -199,6 +199,7 @@ class StepFour extends React.Component {
             programType={programType}
             weekId={id}
             maxWeekCounter={weeks.length}
+            isFirstWeek={index === 0}
           />
         </TabPanel>
       );

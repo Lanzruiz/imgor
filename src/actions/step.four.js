@@ -405,12 +405,14 @@ export function stepFourSetSecondaryProgramIdRequest({ campId, cartId, participa
 export function stepFourCustomizeWeekRequest({ cartId, product, participantId, quantity, productId, type, nextWeekId, currentWeekId }) {
   return function(dispatch) {
     dispatch( customizeWeek(productId), );
+
     if (isEqual(productId, emptyConcentrationId)) {
       if (isNumber(nextWeekId)) {
         dispatch( selectWeek(nextWeekId), );
       }
       return;
     }
+
     Api.req({
       apiCall: Api.postCartCartIdParticipantIdProduct,
       apiCallParams: { cartId, participantId, product, quantity, productId, type },
