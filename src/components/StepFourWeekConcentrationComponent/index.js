@@ -163,7 +163,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
             <Col md={6} lg={4} key={id} className="card-column">
               <Card
                 id={id}
-                cardHeader={!hasElsOrSat ? 'Education' : 'Training'}
+                cardHeader={hasElsOrSat ? 'Education' : 'Training'}
                 color="dark"
                 header={secondary_program_type}
                 label={computedLabel}
