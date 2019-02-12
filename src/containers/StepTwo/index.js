@@ -1,6 +1,6 @@
 // Modules
-import React from 'react';
-import { Container, Row, Col } from 'react-grid-system';
+import React, { Fragment } from 'react';
+import { Container, Row, Col, ScreenClassRender } from 'react-grid-system';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -188,20 +188,7 @@ class StepTwo extends React.Component {
   render() {
     const { data, weeksCounter, sport, selectedDate } = this.props;
 
-    const groupSize = 5;
-    const perPage = 4;
-
-    const dataGrouped = data.reduce((acc, v, index) => {
-      const i = Math.floor(index / groupSize);
-      acc[i] = [...(acc[i] || []), v];
-      return acc;
-    }, []);
-
-    const dataGroupedAndPaged = dataGrouped.reduce((acc, v, index) => {
-      const i = Math.floor(index / perPage);
-      acc[i] = [...(acc[i] || []), v];
-      return acc;
-    }, []);
+    
 
     return (
       <AOSFadeInContainer className="step-two">
@@ -257,41 +244,65 @@ class StepTwo extends React.Component {
                     />&#42;
                   </h2>
                   <div className="dates">
-                    <Mobile>
-                      {(dataGroupedAndPaged && dataGroupedAndPaged.length > 0) ?
-                        (
-                        <Carousel render={true} className="test">
-                          {dataGroupedAndPaged.map((page, index) => (
-                            <CarouselItem key={index}>
-                              <h2 className="header__h6">
-                                <LocaleString stringKey="step_two.page_of" formatString={{ current: ++index, max: dataGroupedAndPaged.length }} />
-                              </h2>
-                              <div className="dates__container">
-                                {this.newRenderDates(page)}
-                              </div>
-                            </CarouselItem>
-                          ))}
-                        </Carousel>
-                        ) : (
-                          <div className="dates__no-data">
-                            <LocaleString stringKey="step_two.dates.no-data" />
-                          </div>
-                        )
-                      }
-                    </Mobile>
-                    <Default>
-                      {data.length
-                        ? (
-                          <div className="dates__container ">
-                            {this.newRenderDates(dataGrouped)}
-                          </div>
-                        ) : (
-                          <div className="dates__no-data">
-                            <LocaleString stringKey="step_two.dates.no-data" />
-                          </div>
-                        )
-                      }
-                    </Default>
+                    <ScreenClassRender render={(cl) => {
+                      const groupSize = 5;
+                      const perPage = cl === 'xs' ? 3 : 4;
+  
+                      const dataGrouped = data.reduce((acc, v, index) => {
+                        const i = Math.floor(index / groupSize);
+                        acc[i] = [...(acc[i] || []), v];
+                        return acc;
+                      }, []);
+  
+                      const dataGroupedAndPaged = dataGrouped.reduce((acc, v, index) => {
+                        const i = Math.floor(index / perPage);
+                        acc[i] = [...(acc[i] || []), v];
+                        return acc;
+                      }, []);
+                      
+                      return (
+                        <Fragment>
+                          <Mobile>
+                            {(dataGroupedAndPaged && dataGroupedAndPaged.length > 0) ?
+                              (
+                                <Carousel render={true} className="test">
+                                  {dataGroupedAndPaged.map((page, index) => (
+                                    <CarouselItem key={index}>
+                                      <h2 className="header__h6">
+                                        <LocaleString stringKey="step_two.page_of" formatString={{
+                                          current: ++index,
+                                          max: dataGroupedAndPaged.length
+                                        }}/>
+                                      </h2>
+                                      <div className="dates__container">
+                                        {this.newRenderDates(page)}
+                                      </div>
+                                    </CarouselItem>
+                                  ))}
+                                </Carousel>
+                              ) : (
+                                <div className="dates__no-data">
+                                  <LocaleString stringKey="step_two.dates.no-data"/>
+                                </div>
+                              )
+                            }
+                          </Mobile>
+                          <Default>
+                            {data.length
+                              ? (
+                                <div className="dates__container ">
+                                  {this.newRenderDates(dataGrouped)}
+                                </div>
+                              ) : (
+                                <div className="dates__no-data">
+                                  <LocaleString stringKey="step_two.dates.no-data" />
+                                </div>
+                              )
+                            }
+                          </Default>
+                        </Fragment>
+                      );
+                    }}/>
                   </div>
                   <div className="step-two__description description">
                     <span className="description__info">
