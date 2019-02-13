@@ -145,7 +145,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
   render() {
     const { weekId, customizeId, isFirstWeek } = this.props;
     const data = this.props[`week_${weekId}_data`];
-    
+  
     return (
       <Row>
         {this.reorderConcentrations(data).map(({ id, price, age_range, secondary_program_type, sold_out, via_label }) => {
@@ -266,7 +266,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
                     </div>
                     <div className="step-four__esl-content-container">
                       <span className="step-four__education">
-                        Skip adding weekly training concentrations. I'm fine with the standard training program that I selected.
+                        <LocaleString stringKey="step_four.skip_week_description"/>
                       </span>
                     </div>
                   </div>
@@ -374,6 +374,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
         return;
       }
       args.productId = stepFourConcentrationProductId;
+  
       this.props.weeksActions.updateSelectedConcentration(args);
       return;
     }
@@ -387,15 +388,17 @@ class StepFourWeekConcentrationComponent extends React.Component {
     }
   };
 
-  deleteSelectedConcentration = (id) => {
+  deleteSelectedConcentration = async (id) => {
     const { cartId, stepFourConcentrationProductId, participantId, weekId, maxWeekCounter } = this.props;
     if (stepFourConcentrationProductId) {
+  
       const nextWeekId = weekId >= maxWeekCounter ? null : weekId;
-      this.props.weeksActions.deleteSelectedConcentration({
+      await this.props.weeksActions.deleteSelectedConcentration({
         cartId, participantId, nextWeekId,
         productId: stepFourConcentrationProductId, id,
         currentWeekId: weekId,
       });
+      
       return;
     }
     if (isEqual(emptyConcentrationId, id)) {

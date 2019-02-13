@@ -73,16 +73,19 @@ export function deleteSelectedConcentration({ cartId, participantId, productId, 
       res200: (data) => {
         dispatch( updateCart(assign({}, data.cart, { [`stepFourConcentrationProduct_${currentWeekId}`]: null })) );
         if (isEqual(emptyConcentrationId, id)) {
-          dispatch( customizeWeek(id), );
+          dispatch( customizeWeek(id) );
+          
           if (isNumber(nextWeekId) && (nextWeekId > (currentWeekId - 1))) {
-            dispatch( selectWeek(nextWeekId), );
+            // dispatch( selectWeek(nextWeekId), );
           }
-          dispatch( setStepsCounter(stepsEnum.seven) );
+          
+          dispatch(setStepsCounter(stepsEnum.seven));
           return;
         }
         if (isNumber(id)) {
           dispatch( removeCustomizedWeek(id), );
         }
+  
       },
       res404: () => console.log('Api.deleteCartCartIdParticipantParticipantIdProductId => 404'),
       reject: console.error,
