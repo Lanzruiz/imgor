@@ -169,7 +169,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
             <Col md={6} lg={4} key={id} className="card-column">
               <Card
                 id={id}
-                cardHeader={hasElsOrSat ? 'Education' : 'Training'}
+                cardHeader={isNotSkipWeek ? hasElsOrSat ? 'Education' : 'Training' : ''}
                 color="dark"
                 header={secondary_program_type}
                 label={computedLabel}
@@ -178,6 +178,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
                 onRemove={this.deleteSelectedConcentration}
                 selectedId={customizeId}
                 customButtonTitle={customButtonTitle}
+                customNonSelectedButtonTitle={isNotSkipWeek ? null : <LocaleString stringKey="no-thanks" />}
                 via={via_label}
               >
                 {this.renderCardContent(cardContentProps)}

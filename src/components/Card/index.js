@@ -74,6 +74,7 @@ class Card extends React.Component {
     cardHeaderCapitalize: PropTypes.bool,
     soldOut: PropTypes.bool,
     customButtonTitle: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+    customNonSelectedButtonTitle: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     onRemove: PropTypes.func,
     tooltipMessage: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
   };
@@ -96,6 +97,7 @@ class Card extends React.Component {
     cardHeaderCapitalize: false,
     soldOut: false,
     customButtonTitle: '',
+    customNonSelectedButtonTitle: '',
   };
 
   render() {
@@ -218,7 +220,7 @@ class Card extends React.Component {
   };
 
   renderButtonBlock = (buttonClassNames, isCurrentCardSelected) => {
-    const { buttonBlock, soldOut, customButtonTitle, tooltipMessage } = this.props;
+    const { buttonBlock, soldOut, customButtonTitle, customNonSelectedButtonTitle, tooltipMessage } = this.props;
 
     const onClickHandler = soldOut && !isCurrentCardSelected ? null : this.onClickHandler;
 
@@ -229,7 +231,7 @@ class Card extends React.Component {
           ? customButtonTitle
             ? customButtonTitle
             : <LocaleString stringKey="card.remove" />
-          : <LocaleString stringKey="card.select" />
+          :  customNonSelectedButtonTitle ? customNonSelectedButtonTitle : <LocaleString stringKey="card.select" />
     );
     return buttonBlock && (
       <div className="card-body__footer">
