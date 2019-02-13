@@ -19,6 +19,20 @@
                 height: 100%;
                 width: 100%;
             }
+
+            &__image {
+                max-height: 36px;
+                max-width: 89px;
+                display: block;
+                width: auto;
+                height: 100%;
+                padding: 15px 20px;
+                box-sizing: content-box;
+
+                @include breakpoint($mobile){
+                    padding: 3px 20px 3px 0;
+                }
+            }
         }
     }
 }

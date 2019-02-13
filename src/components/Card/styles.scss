@@ -50,11 +50,12 @@
             }
 
             &--large {
-                font-size: 40px;
+                font-size: 36px;
                 line-height: 30px;
+                max-width: 70%;
 
                 @include breakpoint($mobile){
-                    font-size: 30px;
+                    font-size: 27px;
                     line-height: 20px;
                 }
             }
@@ -96,6 +97,16 @@
     }
 
     .card-label {
+        .label_via_container {
+            width: 40px;
+            display: inline-block;
+            vertical-align: top;
+            .label_via_img {
+                max-width: 100%;
+                height: auto;
+            }
+        }
+
         &__header {
             margin: auto;
             box-sizing: border-box;

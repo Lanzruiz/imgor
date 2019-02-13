@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import Img from 'react-image';
 // Components
 import Button from '../Button';
 import GreenBlock from '../GreenBlock';
@@ -10,6 +11,8 @@ import Tooltip from '../Tooltip';
 import Image from '../Image';
 // Styles
 import './styles.scss';
+// Image
+import viaImg from '../../assets/img/via-approved.png';
 
 const headerSizeEnum = {
   extraSmall: 'extra-small',
@@ -160,14 +163,9 @@ class Card extends React.Component {
       'card-label__text--medium': headerSize === headerSizeEnum.large,
     });
     return via && (
-      <span className="card-label__via">
-        <span className={cardLabelViaClassName}>
-          <LocaleString stringKey="via" />
-        </span>
-        <span className="card-label__text card-label__text--small card-label__text--serifa-roman">
-          <LocaleString stringKey="approved" />
-        </span>
-      </span>
+      <div className='label_via_container'>
+        <Img className="label_via_img" src={viaImg} alt=""/>
+      </div>
     );
   };
 
