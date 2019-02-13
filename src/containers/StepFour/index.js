@@ -14,6 +14,7 @@ import isNumber from 'lodash/isNumber';
 import Header from '../../components/Header';
 import LocaleString from '../../components/LocaleString';
 import StepFourWeekConcentrationComponent from '../../components/StepFourWeekConcentrationComponent';
+import { emptyConcentrationId } from '../../reducers/step.four';
 import StepFourEslSecondaryProgram from './components/StepFourEslSecondaryProgram';
 import StepFourPerformanceSecondaryProgram from './components/StepFourPerformanceSecondaryProgram';
 import StepFourSatSecondaryProgram from './components/StepFourSatSecondaryProgram';
@@ -88,11 +89,13 @@ class StepFour extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { data, weeks, currentStep } = this.props;
+    // const { data, currentStep } = this.props;
+    
     const shouldRenderStepFour = data.length > 0;
     const currentStepGreatherThenFour = currentStep > stepsEnum.four;
     if (shouldRenderStepFour && currentStepGreatherThenFour) {
       const unselectedWeek = find(weeks, ({ customize_id }) => !customize_id);
-      if (unselectedWeek) {
+      if (unselectedWeek && prevProps.weeks[0].customize_id !== emptyConcentrationId) {
         this.props.stepsActions.setStepsCounter(stepsEnum.four);
       }
     }
@@ -180,7 +183,7 @@ class StepFour extends React.Component {
 
     if (isEqual(data.length, 0)) return false;
     
-    weeks.forEach(({ id, customize_id, end_date, start_date }) => {
+    weeks.forEach(({ id, customize_id, end_date, start_date }, index) => {
       tabsList.push(
         <Tab key={id} className="step-four-tabs__tab">
           <LocaleString stringKey="week" /> {id}
@@ -199,6 +202,7 @@ class StepFour extends React.Component {
             programType={programType}
             weekId={id}
             maxWeekCounter={weeks.length}
+            isFirstWeek={index === 0}
           />
         </TabPanel>
       );
@@ -309,7 +313,7 @@ class StepFour extends React.Component {
         }
       });
     }
-
+    
     this.props.stepFourActions.stepFourSetDefaultState();
     this.selectWeek(0);
   };

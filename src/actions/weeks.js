@@ -2,6 +2,7 @@
 import assign from 'lodash/assign';
 import isNumber from 'lodash/isNumber';
 import isEqual from 'lodash/isEqual';
+import { stepsEnum } from '../constants/steps';
 // Constants
 import * as weeksTypes from '../constants/weeks';
 import { emptyConcentrationId } from '../reducers/step.four';
@@ -9,6 +10,7 @@ import { emptyConcentrationId } from '../reducers/step.four';
 import Api from '../api';
 // Actions
 import { updateCart } from './cart';
+import { setStepsCounter } from './steps';
 
 export function incrementWeeksCounter() {
   return {
@@ -71,15 +73,19 @@ export function deleteSelectedConcentration({ cartId, participantId, productId, 
       res200: (data) => {
         dispatch( updateCart(assign({}, data.cart, { [`stepFourConcentrationProduct_${currentWeekId}`]: null })) );
         if (isEqual(emptyConcentrationId, id)) {
-          dispatch( customizeWeek(id), );
+          dispatch( customizeWeek(id) );
+          
           if (isNumber(nextWeekId) && (nextWeekId > (currentWeekId - 1))) {
-            dispatch( selectWeek(nextWeekId), );
+            // dispatch( selectWeek(nextWeekId), );
           }
+          
+          dispatch(setStepsCounter(stepsEnum.seven));
           return;
         }
         if (isNumber(id)) {
           dispatch( removeCustomizedWeek(id), );
         }
+  
       },
       res404: () => console.log('Api.deleteCartCartIdParticipantParticipantIdProductId => 404'),
       reject: console.error,
