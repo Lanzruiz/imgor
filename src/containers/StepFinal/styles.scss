@@ -20,6 +20,56 @@
       cursor: pointer;
     }
 
+    &__form-insurance{
+      box-sizing: border-box;
+      width: 100%;
+      display: block;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+
+      &__container{
+        padding: 18px 42px 9px 14px;
+      }
+
+      &__radio-button{
+        margin: 0 0 20px 0;
+        height: unset;
+        display: block;
+
+        .header{
+          color: $card-dark-blue-color;
+          font-size: 16px;
+          font-family: $proxima-nova;
+        }
+
+        .description{
+          color: $card-blue-color;
+          font-family: $proxima-nova;
+          margin-top: 3px;
+        }
+      }
+
+      &__confirm-button {
+        margin: 0 0 10px 0;
+        max-width: 230px;
+        border: 1px solid $header-text-color;
+        box-sizing: border-box;
+        font-family: $serifa-bold;
+        font-size: 14px;
+        line-height: 21px;
+        text-transform: uppercase;
+        color: $header-text-color;
+        padding: 5px;
+
+        &:hover{
+          border: 1px solid $header-text-color;
+          background: $header-text-color;
+          color: white;
+        }
+      }
+    }
+
     &__form {
       box-sizing: border-box;
       display: block;

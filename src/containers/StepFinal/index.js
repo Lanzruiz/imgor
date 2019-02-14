@@ -1,5 +1,5 @@
 // Modules
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Container, Row, Col } from 'react-grid-system';
 import { Form, Field, reduxForm } from 'redux-form';
 import scrollToComponent from 'react-scroll-to-component';
@@ -19,7 +19,7 @@ import DatePickerReduxForm from '../../components/DatePicker';
 import AOSFadeInContainer from '../../components/AOSFadeInContainer';
 // Actions
 import * as finalStepActions from '../../actions/final.step';
-import { stepOneAgeSelector } from '../StepOne/selectors';
+import { cartIdSelector, participantIdSelector, stepOneAgeSelector } from '../StepOne/selectors';
 // Selectors
 import { finalStepPositionsSelector, finalStepSelectedPositionSelector, finalStepShirtSizeSelector } from './selectors';
 import { sportSelector, businessTypeSelector, packageTypeSelector } from '../InitialComponent/selectors';
@@ -33,6 +33,8 @@ class StepFinal extends React.Component {
     finalStepActions: PropTypes.shape({
       finalStepGetCatalogPositionsRequest: PropTypes.func.isRequired,
       finalStepSetDefaultState: PropTypes.func.isRequired,
+      updateAllProductsForRefundableInfo: PropTypes.func,
+      finalStepRefundableUpdate: PropTypes.func,
     }),
     sport: PropTypes.string.isRequired,
     positions: PropTypes.arrayOf(
@@ -52,16 +54,48 @@ class StepFinal extends React.Component {
   };
 
   componentDidMount() {
-    const { sport, participant } = this.props;
+    const { sport, participant, initRefundable } = this.props;
+    this.props.finalStepActions.finalStepRefundableUpdate(initRefundable);
+    
     this.finalStepGetCatalogPositions({ sport, participant });
   }
 
   componentWillMount() {
     this.setDefaultState();
   }
+  
+  handleConfirmRefundable = () => {
+    const { cartId, participantId, refundable } = this.props;
+    
+    const data = {
+      cartId,
+      participantId,
+      refundable
+    };
+    
+    this.props.finalStepActions.updateAllProductsForRefundableInfo(data);
+  };
+  
+  handleRadioButtonRefundableChange = (refundable = false) => {
+    this.props.finalStepActions.finalStepRefundableUpdate(refundable);
+  };
 
   render() {
-    const { positions, selectedPosition, shirtSize, age, isBusinessTypeForAdult } = this.props;
+    const { positions, selectedPosition, shirtSize, age, isBusinessTypeForAdult, refundable, refundableLoading } = this.props;
+    
+    const options = [
+      {
+        stringKey: 'step_final.required_insurance_yes_title',
+        stringKeyDesc: 'step_final.required_insurance_yes_description',
+        value: true
+      },
+      {
+        stringKey: 'step_final.required_insurance_no_title',
+        stringKeyDesc: 'step_final.required_insurance_no_description',
+        value: false
+      }
+    ];
+    
     return (
       <ScreenClassRender render={(screenClass) => {
         let isMobile = false;
@@ -82,6 +116,71 @@ class StepFinal extends React.Component {
                   />
                 </Col>
               </Row>
+  
+  
+              <Card
+                buttonBlock={false}
+                cardHeader={<LocaleString stringKey="step_final.required_insurance" />}
+                cardHeaderCapitalize={true}
+                priceBlock={false}
+                id={223232323}
+              >
+                <CardContent>
+                  <CardContentRow>
+                    <CardContentCol>
+                      <div className="step-final__form-insurance">
+                        <div className="step-final__form-insurance__container">
+  
+                          <Radio
+                            name="refundable"
+                            className="step-final__form-insurance__radio-button"
+                            onChange={() => {this.handleRadioButtonRefundableChange(true)}}
+                            checked={refundable}
+                            children={(
+                              <Fragment>
+                                <div className="header">
+                                  <LocaleString stringKey={options[0].stringKey} />
+                                </div>
+                                <div className="description">
+                                  <LocaleString stringKey={options[0].stringKeyDesc} />
+                                </div>
+                              </Fragment>
+                            )}
+                          />
+  
+                          <Radio
+                            name="refundable"
+                            className="step-final__form-insurance__radio-button"
+                            onChange={() => {this.handleRadioButtonRefundableChange(false)}}
+                            checked={!refundable}
+                            children={(
+                              <Fragment>
+                                <div className="header">
+                                  <LocaleString stringKey={options[1].stringKey} />
+                                </div>
+                                <div className="description">
+                                  <LocaleString stringKey={options[1].stringKeyDesc} />
+                                </div>
+                              </Fragment>
+                            )}
+                          />
+                          <button
+                            className="button step-final__form-insurance__confirm-button"
+                            onClick={this.handleConfirmRefundable}
+                            disabled={refundableLoading}
+                          >
+                            {refundableLoading
+                              ? <LocaleString stringKey={"loading"} />
+                              : <LocaleString stringKey={"confirm"} />
+                            }
+                          </button>
+                        </div>
+                      </div>
+                    </CardContentCol>
+                  </CardContentRow>
+                </CardContent>
+              </Card>
+              
               <Col>
                 <Row>
                   <Col
@@ -362,6 +461,21 @@ function ShirtSizeRadioBtn({ shirtSize }) {
 }
 
 function mapStateToProps(state) {
+  const { cart: { participants } } = state;
+  
+  const products = (participants || []).reduce((acc, v) => {
+    acc = [...acc, ...v.products];
+    return acc;
+  }, []);
+  
+  const initRefundable = products.reduce((acc, v) => {
+    if(v.refundable){
+      acc = true;
+      console.log('hej!!!')
+    }
+    return acc;
+  }, false);
+  
   return {
     positions: finalStepPositionsSelector(state),
     selectedPosition: finalStepSelectedPositionSelector(state),
@@ -370,6 +484,11 @@ function mapStateToProps(state) {
     businessType: businessTypeSelector(state),
     packageType: packageTypeSelector(state),
     age: stepOneAgeSelector(state),
+    cartId: cartIdSelector(state),
+    participantId: participantIdSelector(state),
+    initRefundable: initRefundable,
+    refundable: state.finalStep.refundable,
+    refundableLoading: state.finalStep.refundableLoading,
   };
 }
 

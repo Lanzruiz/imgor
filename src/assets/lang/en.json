@@ -118,6 +118,13 @@
     "step_final.shirt_size.large": "large",
     "step_final.shirt_size.xx-large": "xx-large",
     "step_final.guardian_information": "Parent / Guardian Information",
+
+    "step_final.required_insurance": "Do you required insurance?",
+    "step_final.required_insurance_yes_title": "Yes, I'd like insurance at $170",
+    "step_final.required_insurance_yes_description": "Lorem ipsum",
+    "step_final.required_insurance_no_title": "No, I am set with my camp reservation.",
+    "step_final.required_insurance_no_description": "Lorem ipsum",
+
     "enter_email": "Enter email to build a camp",
     "enter_day_of_birth": "Please enter day of birth",
     "date_is_not_valid": "Date is not valid",
@@ -245,6 +252,8 @@
     "date": "Date",
     "select": "select",
     "no-thanks":"NO THANKS",
+    "confirm": "Confirm",
+    "loading": "Loading",
     "step_three_choose_training_message": "Please choose your training",
     "step_four_make_selection_for_entire_camp_stay": "Make selection for entire camp stay",
     "step_four_week_one_message": "Make a selection for week one",

@@ -137,14 +137,21 @@ class Api {
   async deleteCartCartIdParticipantParticipantIdProductId({ cartId, participantId, productId }) {
     return await instance.delete(`cart/${cartId}/participant/${participantId}/product/${productId}`);
   };
+  
+  async updateCartCartParticipantProductRefundable({ cartId, participantId, productId, product, refundable = false }) {
+    return await instance.put(`cart/${cartId}/participant/${participantId}/product/${productId}`, {
+      ...product,
+      refundable,
+    });
+  }
 
-  async putCartCartIdParticipantParticipantIdProductId({ attributes, cartId, participantId, productId, product, type }) {
+  async putCartCartIdParticipantParticipantIdProductId({ attributes, cartId, participantId, productId, product, type, refundable = false }) {
     return await instance.put(`cart/${cartId}/participant/${participantId}/product/${productId}`, {
       attributes,
       product,
       type,
       quantity: 1,
-      refundable: false,
+      refundable,
     });
   }
 
@@ -205,6 +212,8 @@ class Api {
       ...rest,
     })
   }
+  
+  
 }
 
 export default Api.getInstance();
