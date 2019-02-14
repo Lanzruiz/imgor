@@ -277,5 +277,6 @@
     "step_three.core.image_path": "",
     "step_three.total_athlete_card.image_path": "",
     "step_three.game_changer_card.image_path": "",
-    "step_six.transport.image_path": ""
+    "step_six.transport.image_path": "",
+    "via.image_path": ""
 }
