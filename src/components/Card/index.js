@@ -156,12 +156,13 @@ class Card extends React.Component {
   }
 
   renderViaBlock = () => {
-    const { via, headerSize } = this.props;
+    const { via } = this.props;
+    // const { via, headerSize } = this.props;
     
-    const cardLabelViaClassName = cx('card-label__text card-label__text--serifa-bold', {
-      'card-label__text--regular': headerSize === headerSizeEnum.small,
-      'card-label__text--medium': headerSize === headerSizeEnum.large,
-    });
+    // const cardLabelViaClassName = cx('card-label__text card-label__text--serifa-bold', {
+    //   'card-label__text--regular': headerSize === headerSizeEnum.small,
+    //   'card-label__text--medium': headerSize === headerSizeEnum.large,
+    // });
     return via && (
       <div className='label_via_container'>
         <Img className="label_via_img" src={viaImg} alt=""/>
