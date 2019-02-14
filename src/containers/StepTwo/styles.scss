@@ -54,7 +54,10 @@
             display: flex;
             justify-content: flex-end;
             margin-top: 15px;
-            width: 100%;
+            width: calc(100% - 10%);
+            @include breakpoint($tablet){
+                width: 100%;
+            }
         }
 
         &__description {
@@ -247,11 +250,12 @@
             display: flex;
             justify-content: center;
             position: relative;
-            width: 100%;
-
+            width: 65%;
+            @include breakpoint($tablet){
+                width: 100%;
+            }
             @include breakpoint($mobile){
-                width: calc(100% + 30px);
-                margin: 0 -15px;
+                margin: 0 -20px;
             }
 
             &:before {
@@ -364,7 +368,7 @@
             color: $white;
             display: flex;
             font-family: $header-font;
-            font-size: 42px;
+            font-size: 29px;
             font-weight: normal;
             justify-content: space-between;
             text-transform: uppercase;
