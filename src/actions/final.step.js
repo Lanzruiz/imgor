@@ -52,7 +52,9 @@ export const updateAllProductsForRefundableInfo = (props) => async (dispatch, ge
           participantId,
           refundable,
           productId: v.id,
-          product: {}
+          product: {
+            ...v
+          }
         },
       })
     );

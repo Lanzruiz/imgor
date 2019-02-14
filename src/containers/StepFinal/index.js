@@ -471,7 +471,6 @@ function mapStateToProps(state) {
   const initRefundable = products.reduce((acc, v) => {
     if(v.refundable){
       acc = true;
-      console.log('hej!!!')
     }
     return acc;
   }, false);
