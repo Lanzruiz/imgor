@@ -75,7 +75,7 @@
             }
 
             @include breakpoint($mobile){
-                flex: 2;
+                flex: 1;
                 &.mb-w100{
                     flex: 1 1 auto;
                     width: 100%;

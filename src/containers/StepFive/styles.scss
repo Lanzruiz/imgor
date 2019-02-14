@@ -4,7 +4,6 @@
     .step-five {
         & .card-body__body {
             flex: 1 1 auto;
-
         }
 
         & .card-content__row {
@@ -42,6 +41,7 @@
             color: $white;
             text-transform: uppercase;
             font-family: $serifa-bold;
+            white-space: nowrap;
 
             & .button {
                 box-sizing: border-box;
