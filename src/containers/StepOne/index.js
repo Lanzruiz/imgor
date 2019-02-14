@@ -62,6 +62,7 @@ class StepOne extends React.Component {
     }),
     participantActions: PropTypes.shape({
       addParticipantByCardId: PropTypes.func.isRequired,
+      setRefundablePropsForCart: PropTypes.func,
     }),
     participantId: PropTypes.oneOfType([
       PropTypes.string,
@@ -116,7 +117,7 @@ class StepOne extends React.Component {
       businessType: dataBusinessType,
       secondaryGroup: dataSecondaryGroup,
     };
-
+    
     this.getCatalogCampsGroup(args);
   }
 

@@ -35,6 +35,7 @@ const initialState = {
   stepFourConcentrationProduct_10: null,
   stepFourConcentrationProduct_11: null,
   stepFourConcentrationProduct_12: null,
+  refundable: false
 };
 
 export default function(state = initialState, action) {
