@@ -216,6 +216,12 @@ class StepSix extends React.Component {
   };
   
   handlePickupChange = () => {
+    const { airportPickup } = this.props;
+    
+    if(!airportPickup){
+      this.selectTransportationOption(0);
+    }
+    
     this.props.stepSixActions.stepSixClearTransportCart();
   };
 
@@ -276,7 +282,6 @@ class StepSix extends React.Component {
                   <CardContent className="step-six__transportation-card">
                     <CardContentRow>
                       <CardContentCol>
-                        
                         <Image
                           className="card-content__img"
                           defaultSrc={stubImage}
@@ -675,14 +680,14 @@ function mapStateToProps(state) {
     departingOtherLocation: stepSixPickUpOtherLocationSelector(state),
     hasTransportationCartData: stepSixTransportCartData(state)
   };
-};
+}
 
 function mapDispatchToProps(dispatch) {
   return {
     stepSixActions: bindActionCreators(stepSixActions, dispatch),
     stepsActions: bindActionCreators(stepsActions, dispatch),
   };
-};
+}
 
 export default reduxForm({
   form: 'wizard', // <------ same form name
