@@ -194,19 +194,18 @@
       align-items: stretch;
     }
   }
-}
+  .error{
+    color: $card-red-color;
+    font-size: 13px;
+    font-family: $proxima-nova;
+  }
 
-.error{
-  color: $card-red-color;
-  font-size: 13px;
-  font-family: $proxima-nova;
-}
+  button, input, ul, p {
+    all: unset;
+  }
 
-button, input, ul, p {
-  all: unset;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: $header-font!important;
-  margin: 0;
+  h1, h2, h3, h4, h5, h6 {
+    font-family: $header-font!important;
+    margin: 0;
+  }
 }
