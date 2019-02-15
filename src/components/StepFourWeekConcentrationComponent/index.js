@@ -87,6 +87,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
     weeksActions: PropTypes.shape({
       customizeWeek: PropTypes.func.isRequired,
       setWeekPrice: PropTypes.func.isRequired,
+      removeCustomizedWeek: PropTypes.func,
     }),
     stepFourActions: PropTypes.shape({
       getCatalogCampWeekOneRequest: PropTypes.func.isRequired,
@@ -153,9 +154,9 @@ class StepFourWeekConcentrationComponent extends React.Component {
           const secondaryProgram = (secondary_program_type || '').toLowerCase();
           const hasElsOrSat = secondaryProgram === 'esl' || secondaryProgram === 'sat';
           
-          const isNotSkipWeek = secondary_program_type !== 'Skip this week';
+          const isNotSkipWeek = secondary_program_type !== 'props week';
           
-          const isSkipWeekAndFirst = secondary_program_type === 'Skip this week' && isFirstWeek;
+          const isSkipWeekAndFirst = secondary_program_type === 'props week' && isFirstWeek;
           
           const computedLabel = age_range ? `ages ${age_range}` : '';
           const cardContentProps = assign({}, { sold_out, secondary_program_type, hasElsOrSat });
@@ -171,7 +172,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
                 id={id}
                 cardHeader={isNotSkipWeek ? hasElsOrSat ? 'Education' : 'Training' : ''}
                 color="dark"
-                header={secondary_program_type}
+                header={isSkipWeekAndFirst ? 'No Additional Training' : secondary_program_type}
                 label={computedLabel}
                 price={price}
                 onClick={this.customizeWeek}
@@ -255,7 +256,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
         );
       }
 
-      case 'Skip this week': {
+      case 'props week': {
         return (
           <CardContent>
             <CardContentRow>
@@ -273,8 +274,6 @@ class StepFourWeekConcentrationComponent extends React.Component {
                   </div>
                 </ReactHeight>
                 
-                {/*<div style={{ height }} >*/}
-                {/*</div>*/}
               </CardContentCol>
             </CardContentRow>
           </CardContent>
@@ -368,18 +367,18 @@ class StepFourWeekConcentrationComponent extends React.Component {
       nextWeekId: weekId >= maxWeekCounter ? null : weekId,
       currentWeekId: weekId,
     };
-    
+  
     if (stepFourConcentrationProductId) {
       if (isEqual(emptyConcentrationId, id)) {
         this.deleteSelectedConcentration(id);
         return;
       }
       args.productId = stepFourConcentrationProductId;
-  
+
       this.props.weeksActions.updateSelectedConcentration(args);
       return;
     }
-    
+
     this.props.stepFourActions.stepFourCustomizeWeekRequest(args);
   };
 
@@ -391,8 +390,8 @@ class StepFourWeekConcentrationComponent extends React.Component {
 
   deleteSelectedConcentration = async (id) => {
     const { cartId, stepFourConcentrationProductId, participantId, weekId, maxWeekCounter } = this.props;
+    
     if (stepFourConcentrationProductId) {
-  
       const nextWeekId = weekId >= maxWeekCounter ? null : weekId;
       await this.props.weeksActions.deleteSelectedConcentration({
         cartId, participantId, nextWeekId,

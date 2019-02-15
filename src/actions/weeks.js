@@ -60,10 +60,16 @@ export function setWeekPrice(price) {
 }
 
 export function removeCustomizedWeek(id) {
-  return {
-    type: weeksTypes.REMOVE_CUSTOMIZED_WEEK,
-    payload: id,
-  };
+  return function (dispatch){
+    dispatch({
+      type: weeksTypes.REMOVE_CUSTOMIZED_WEEK,
+      payload: id,
+    });
+    
+    if(isEqual(id, emptyConcentrationId)){
+      dispatch(setStepsCounter(stepsEnum.four));
+    }
+  }
 }
 
 export function deleteSelectedConcentration({ cartId, participantId, productId, id, currentWeekId, nextWeekId }) {

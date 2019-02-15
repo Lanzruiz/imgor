@@ -404,12 +404,13 @@ export function stepFourSetSecondaryProgramIdRequest({ campId, cartId, participa
 
 export function stepFourCustomizeWeekRequest({ cartId, product, participantId, quantity, productId, type, nextWeekId, currentWeekId }) {
   return function(dispatch) {
-    dispatch( customizeWeek(productId), );
+    dispatch( customizeWeek(productId) );
 
     if (isEqual(productId, emptyConcentrationId)) {
-      if (isNumber(nextWeekId)) {
-        dispatch( selectWeek(nextWeekId), );
-      }
+      dispatch( setStepsCounter(stepsEnum.seven), );
+      // if (isNumber(nextWeekId)) {
+      //   dispatch( selectWeek(nextWeekId) );
+      // }
       return;
     }
 

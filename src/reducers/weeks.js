@@ -64,7 +64,7 @@ export default function(state = initialState, action) {
 
     case weeksTypes.REMOVE_CUSTOMIZED_WEEK: {
       const weeks = concat(state.weeks);
-      const currentWeek = find(weeks, ['id', payload]) || {};
+      const currentWeek = find(weeks, (v) => v.customize_id === payload || v.id === payload) || {};
       currentWeek.customize_id = null;
       return assign({}, state, { weeks });
     }

@@ -31,15 +31,15 @@ const emptyConcentration = {
   display_description: '',
   display_gender: 'All',
   display_length: '1 Week',
-  display_length_program: 'Skip this week',
+  display_length_program: 'props week',
   display_name: 'Skip this week',
   display_package_type: 'Sport',
   display_program_type: 'Concentration',
   length_program: 'Skip this week',
   name: 'Skip this week',
   program_type: 'Concentration',
-  raw_name: 'Skip this week',
-  secondary_program_type: 'Skip this week',
+  raw_name: 'props week',
+  secondary_program_type: 'props week',
 };
 
 export default function(state = initialState, action) {

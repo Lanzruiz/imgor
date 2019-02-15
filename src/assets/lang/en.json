@@ -10,9 +10,8 @@
     "step_one.sleepaway_yes": "Yes, sleepaway camp with room in an IMG Academy residence hall",
     "step_one.sleepaway_no": "No, I'll arrange housing myself",
     "step_one.select_camper_age": "select camper age",
-    "step_one.tabs.programm": "programm",
+    "step_one.tabs.programm": "program",
     "step_one.gender": "select camper gender",
-
     "step_one.year-round_weekly_camps.under_tab_title": "My tab subtitle",
     "step_one.year-round_weekly_camps.title": "Our Most Popular Camp",
     "step_one.year-round_weekly_camps.paragraph_title_one": "",
@@ -23,7 +22,6 @@
     "step_one.year-round_weekly_camps.paragraph_text_three": "Position-specific refinement of mechanics and footwork, classroom instruction and understanding critical fundamental aspects.",
     "step_one.year-round_weekly_camps.paragraph_title_four": "WEEK 3: COMPETITION",
     "step_one.year-round_weekly_camps.paragraph_text_four": "1-on-1 competitive drills and video analysis/classroom discussion of individual technique. QB: Half-field routes and reads; 1-on-1 drills RB/WR: Post-snap adjustments; 1-on-1s vs. DB/LB: Pattern reads; 1-on-1s vs. RB/WR & OL/DL: Post-snap reactions,; understanding stunts/blitzes; 1-on-1 pass pro and pass rush competition K/P: Situational kicking and punting; directional kicking; pooch punts; goal line punting; on-side kicks",
-
     "step_one.training_programs.under_tab_title": "My tab subtitle 2",
     "step_one.training_programs.title": "Our Most Popular Camp",
     "step_one.training_programs.paragraph_title_one": "",
@@ -34,7 +32,6 @@
     "step_one.training_programs.paragraph_text_three": "Position-specific refinement of mechanics and footwork, classroom instruction and understanding critical fundamental aspects.",
     "step_one.training_programs.paragraph_title_four": "WEEK 3: COMPETITION",
     "step_one.training_programs.paragraph_text_four": "1-on-1 competitive drills and video analysis/classroom discussion of individual technique. QB: Half-field routes and reads; 1-on-1 drills RB/WR: Post-snap adjustments; 1-on-1s vs. DB/LB: Pattern reads; 1-on-1s vs. RB/WR & OL/DL: Post-snap reactions,; understanding stunts/blitzes; 1-on-1 pass pro and pass rush competition K/P: Situational kicking and punting; directional kicking; pooch punts; goal line punting; on-side kicks",
-
     "step_one.specialty_camps.under_tab_title": "My tab subtitle 3",
     "step_one.specialty_camps.title": "test",
     "step_one.specialty_camps.paragraph_title_one": "Lorem ipsum",
@@ -73,6 +70,7 @@
     "step_four.per_week": "per Week",
     "step_four.daily_sessions": "Daily Sessions",
     "step_four.skip_week_description": "I’m set with the basic camp training. Do not add any training concentrations.",
+    "step_four.skip_this_week": "Skip this.week",
     "class": "Class",
     "week": "week",
     "up_to": "up to",

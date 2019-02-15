@@ -95,6 +95,7 @@ class StepFour extends React.Component {
     const currentStepGreatherThenFour = currentStep > stepsEnum.four;
     if (shouldRenderStepFour && currentStepGreatherThenFour) {
       const unselectedWeek = find(weeks, ({ customize_id }) => !customize_id);
+      
       if (unselectedWeek && prevProps.weeks[0].customize_id !== emptyConcentrationId) {
         this.props.stepsActions.setStepsCounter(stepsEnum.four);
       }
