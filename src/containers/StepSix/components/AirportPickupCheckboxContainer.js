@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
 import { Field } from 'redux-form';
 import { connect } from 'react-redux';
-import isNumber from 'lodash/isNumber';
 // Components
 import LocaleString from '../../../components/LocaleString';
 import Radio from '../../../components/Radio';
@@ -21,7 +20,7 @@ class AirportPickupCheckboxContainer extends React.Component {
   static defaultProps = {};
 
   render() {
-    const { airportPickup, transportationId, handleChange } = this.props;
+    const { airportPickup, handleChange } = this.props;
     const { both, arrival, departing } = airportPickupInformation;
     
     const options = [
@@ -45,7 +44,6 @@ class AirportPickupCheckboxContainer extends React.Component {
                   value={value}
                   checked={isEqual(airportPickup, value)}
                   children={<LocaleString stringKey={stringKey} />}
-                  // disabled={!isNumber(transportationId)}
                   handleChange={handleChange}
                 />
               );
