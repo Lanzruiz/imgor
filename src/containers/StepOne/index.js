@@ -365,10 +365,9 @@ class StepOne extends React.Component {
                                 </Button>
                                 <span className="tab-row__separator" style={{ marginLeft: '20px' }} />
                               </div>
-                              <div className="react-d-flex react-align-center react-justify-center react-w-30 tab-row__header--trade-gothic-bold">
+                              <div className="react-d-flex react-align-center react-justify-center tab-row__header--trade-gothic-bold">
                                 <Button
-                                  style={{ marginRight: '20px', padding: '4px' }}
-                                  className="tab-row__header tab-row__header--font-80"
+                                  className="tab-row__header tab-row__header--font-80 minus"
                                   onClick={() => {
                                     this.decrementWeeksCounter();
                                     this.setPrice(row.price);
@@ -379,8 +378,7 @@ class StepOne extends React.Component {
                                   {weeksCounter}
                                 </span>
                                 <Button
-                                  style={{ marginLeft: '20px', padding: '4px' }}
-                                  className="tab-row__header tab-row__header--font-50"
+                                  className="tab-row__header tab-row__header--font-50 plus"
                                   onClick={() => {
                                     this.incrementWeeksCounter();
                                     this.setPrice(row.price);

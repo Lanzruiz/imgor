@@ -61,9 +61,41 @@
             font-family: $serifa-bold;
         }
 
+
         &__secondary-group-header {
             font-family: $header-font;
         }
+
+        &__separator{
+          width: 0 !important;
+          @media screen and (min-width: $mobile) {
+            width: 60px !important;
+          }
+        }
+
+        &__header{
+          &.plus {
+            margin-left: 5px;
+            margin-right: 10px;
+            padding: 4px;
+
+            @media screen and (min-width: $small-mobile) {
+              margin-left: 20px;
+              margin-right: 0;
+            }
+          }
+          &.minus {
+            margin-right: 5px;
+            margin-left: 10px;
+            padding: 4px;
+
+            @media screen and (min-width: $small-mobile) {
+              margin-right: 20px;
+              margin-left: 0;
+            }
+          }
+        }
+
         &__section {
             margin: 1px 0 1px 1px;
             width: 25%;
