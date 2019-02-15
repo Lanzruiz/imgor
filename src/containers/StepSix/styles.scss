@@ -123,6 +123,9 @@
 
             &-label {
                 margin-right: 20px;
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 10px;
             }
         }
 
@@ -157,6 +160,7 @@
         }
 
         &__form-field {
+            margin-top: 10px;
             margin-bottom: 10px;
         }
 

@@ -271,6 +271,7 @@ class StepSix extends React.Component {
                   priceDescription={<LocaleString stringKey="step_six.starting_at" />}
                   onClick={this.selectTransportationOption}
                   onRemove={this.unselectTransportationOption}
+                  customNonSelectedButtonTitle={<LocaleString stringKey="step_six.configure_travel" />}
                 >
                   <CardContent className="step-six__transportation-card">
                     <CardContentRow>
