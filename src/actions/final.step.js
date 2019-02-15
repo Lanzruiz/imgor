@@ -26,43 +26,42 @@ export function finalStepGetCatalogPositionsRequest({ sport, participant }) {
   }
 }
 
-export const updateAllProductsForRefundableInfo = (props) => async (dispatch, getState) => {
-  const { cartId, participantId, refundable } = props;
+export const updateAllProductsForRefundableInfo = (props) => async (dispatch) => {
+  const { cartId, refundable } = props;
   
   dispatch({ type: finalStepTypes.FINAL_STEP_REFUNDABLE_LOADING_TRUE });
-  
-  const { cart: { participants } } = getState();
-  
-  const products = participants.reduce((acc, v) => {
-    acc = [...acc, ...v.products];
-    return acc;
-  }, []);
-  
-  const jobs = [];
-  
-  products.forEach(v => {
-    jobs.push(
-      Api.req({
-        apiCall: Api.updateCartCartParticipantProductRefundable,
-        res200: data => { dispatch(updateCart(data.cart)); },
-        res404: () => console.log('Api.getCatalogPositions => 404'), // TODO: write handler for error
-        reject: err => console.log(err),
-        apiCallParams: {
-          cartId,
-          participantId,
-          refundable,
-          productId: v.id,
-          product: {
-            ...v
-          }
-        },
-      })
-    );
+
+  await Api.req({
+    apiCall: Api.updateCartCartParticipantProductRefundable,
+    res200: data => { dispatch(updateCart(data.cart)); },
+    res404: () => console.log('Api.getCatalogPositions => 404'), // TODO: write handler for error
+    reject: err => console.log(err),
+    apiCallParams: {
+      cartId,
+      refundable,
+    },
   });
   
-  await Promise.all(jobs);
-  
   dispatch({ type: finalStepTypes.FINAL_STEP_REFUNDABLE_LOADING_FALSE });
+};
+
+export const recalculateInsurancePrice = () => async (dispatch, getState) => {
+  const { cart: { id } } = getState();
+  
+  await Api.req({
+    apiCall: Api.recalculateInsurancePrice,
+    res200: data => {
+      dispatch({
+        type: finalStepTypes.FINAL_STEP_INSURANCE_PRICE_UPDATE,
+        payload: Number(data.total_price_difference)
+      });
+    },
+    res404: () => console.log('Api.getCatalogPositions => 404'), // TODO: write handler for error
+    reject: err => console.log(err),
+    apiCallParams: {
+      cartId: id,
+    },
+  });
 };
 
 export function finalStepRefundableUpdate(refundable) {

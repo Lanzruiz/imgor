@@ -35,6 +35,7 @@ class StepFinal extends React.Component {
       finalStepSetDefaultState: PropTypes.func.isRequired,
       updateAllProductsForRefundableInfo: PropTypes.func,
       finalStepRefundableUpdate: PropTypes.func,
+      recalculateInsurancePrice: PropTypes.func,
     }),
     sport: PropTypes.string.isRequired,
     positions: PropTypes.arrayOf(
@@ -56,6 +57,7 @@ class StepFinal extends React.Component {
   componentDidMount() {
     const { sport, participant, initRefundable } = this.props;
     this.props.finalStepActions.finalStepRefundableUpdate(initRefundable);
+    this.props.finalStepActions.recalculateInsurancePrice();
     
     this.finalStepGetCatalogPositions({ sport, participant });
   }
@@ -81,12 +83,13 @@ class StepFinal extends React.Component {
   };
 
   render() {
-    const { positions, selectedPosition, shirtSize, age, isBusinessTypeForAdult, refundable, refundableLoading } = this.props;
+    const { positions, selectedPosition, shirtSize, age, isBusinessTypeForAdult, refundable, refundableLoading, insurancePrice } = this.props;
     
     const options = [
       {
         stringKey: 'step_final.required_insurance_yes_title',
         stringKeyDesc: 'step_final.required_insurance_yes_description',
+        formatString: { price: insurancePrice },
         value: true
       },
       {
@@ -139,7 +142,7 @@ class StepFinal extends React.Component {
                             children={(
                               <Fragment>
                                 <div className="header">
-                                  <LocaleString stringKey={options[0].stringKey} />
+                                  <LocaleString stringKey={options[0].stringKey} formatString={options[0].formatString} />
                                 </div>
                                 <div className="description">
                                   <LocaleString stringKey={options[0].stringKeyDesc} />
@@ -488,6 +491,7 @@ function mapStateToProps(state) {
     initRefundable: initRefundable,
     refundable: state.finalStep.refundable,
     refundableLoading: state.finalStep.refundableLoading,
+    insurancePrice: state.finalStep.insurancePrice
   };
 }
 

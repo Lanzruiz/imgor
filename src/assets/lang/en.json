@@ -121,7 +121,7 @@
     "step_final.guardian_information": "Parent / Guardian Information",
 
     "step_final.required_insurance": "Do you required insurance?",
-    "step_final.required_insurance_yes_title": "Yes, I'd like insurance at $170",
+    "step_final.required_insurance_yes_title": "Yes, I'd like insurance at ${price}",
     "step_final.required_insurance_yes_description": "Refundable camps allow registrants a full refund for any cancellation made before noon the day prior to camp check-in, minus a 2% cancellation fee.",
     "step_final.required_insurance_no_title": "No, I am set with my camp reservation.",
     "step_final.required_insurance_no_description": "Great! Please remember any changes made to non-refundable reservations come with a $75 change fee, as well as a charge for the difference due to an increase rate or credit on file for any decreased program rates.",

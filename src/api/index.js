@@ -138,11 +138,19 @@ class Api {
     return await instance.delete(`cart/${cartId}/participant/${participantId}/product/${productId}`);
   };
   
-  async updateCartCartParticipantProductRefundable({ cartId, participantId, productId, product, refundable = false }) {
-    return await instance.put(`cart/${cartId}/participant/${participantId}/product/${productId}`, {
-      ...product,
-      refundable,
-    });
+  // async updateCartCartParticipantProductRefundable({ cartId, participantId, productId, product, refundable = false }) {
+  //   return await instance.put(`cart/${cartId}/participant/${participantId}/product/${productId}`, {
+  //     ...product,
+  //     refundable,
+  //   });
+  // }
+  
+  async updateCartCartParticipantProductRefundable({ cartId, refundable = false }) {
+    return await instance.get(`cart/${cartId}/refundable/process/${refundable}`);
+  }
+  
+  async recalculateInsurancePrice({ cartId }) {
+    return await instance.get(`cart/${cartId}/refundable/calculate`);
   }
 
   async putCartCartIdParticipantParticipantIdProductId({ attributes, cartId, participantId, productId, product, type, refundable = false }) {

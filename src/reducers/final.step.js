@@ -9,6 +9,7 @@ const initialState = {
   positions: [],
   refundable: false,
   refundableLoading: false,
+  insurancePrice: 0
 };
 
 export default function(state = initialState, action) {
@@ -60,7 +61,14 @@ export default function(state = initialState, action) {
         refundable: action.payload
       }
     }
-
+  
+    case finalStepTypes.FINAL_STEP_INSURANCE_PRICE_UPDATE: {
+      return {
+        ...state,
+        insurancePrice: action.payload || 0
+      }
+    }
+    
     default: {
       return state;
     }

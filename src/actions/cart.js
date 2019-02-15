@@ -12,12 +12,11 @@ import isStringsEqual from '../helpers/isStringsEqual';
 import * as cartTypes from '../constants/cart';
 import { weekly_camp } from '../containers/StepOne';
 import { airportPickupInformation, departingFormFieldNames } from '../containers/StepSix/selectors';
+import { recalculateInsurancePrice } from './final.step';
 
 export function updateCart(cart) {
   return (dispatch) => {
-    
-    // dispatch(sendCartData(cart));
-    
+    dispatch(recalculateInsurancePrice());
     dispatch({
       type: cartTypes.UPDATE_CART,
       payload: cart,
