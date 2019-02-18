@@ -184,6 +184,9 @@
             justify-content: center;
             min-height: 18px;
             padding: 0 10px;
+            @include breakpoint($mobile){
+                padding: 0 13px;
+            }
 
             &:hover{
                 background-color: $date-block-selected-bg;
