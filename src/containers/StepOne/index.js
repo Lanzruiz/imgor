@@ -231,11 +231,11 @@ class StepOne extends React.Component {
               <H3>
                 <LocaleString stringKey="step_one.gender" />
               </H3>
-              <GenderRadioBtnContainer
-                options={['Male', 'Female']}
-                value={gender}
-                possibleValues={genderOptions}
-              />
+                <GenderRadioBtnContainer
+                  options={['Male', 'Female']}
+                  value={gender}
+                  possibleValues={genderOptions}
+                />
             </div>
           </Form>
         </div>
