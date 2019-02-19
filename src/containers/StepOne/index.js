@@ -423,7 +423,8 @@ class StepOne extends React.Component {
                                         tab-row__section--bg-white
                                         tab-row__section--center
                                         react-center-center
-                                        tab-row__secondary-group-header`
+                                        tab-row__secondary-group-header
+                                        tab-row__hover`
                                       )}
                                     >
                                       <div className={cx('tab-row__wrapper', {
