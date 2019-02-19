@@ -99,7 +99,7 @@ class StepFiveCatalogGear extends React.Component {
         <CSSTransitionGroup
           className="align-items-stretch"
           component={Row}
-          transitionName="slide"
+          transitionName="slide-top"
           transitionEnterTimeout={500}
           transitionLeaveTimeout={300}
         >
