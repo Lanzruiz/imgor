@@ -185,6 +185,11 @@
             padding: 10px 10px 5px;
             text-transform: uppercase;
             margin-bottom: 15px;
+            
+            @include breakpoint($mobile) {
+                white-space: nowrap;
+                font-size: 12px;
+            }
 
             &--selected {
                 background-color: $date-block-selected-bg;
