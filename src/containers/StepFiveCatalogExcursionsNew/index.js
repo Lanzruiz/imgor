@@ -80,7 +80,7 @@ class StepFiveCatalogExcursionsNew extends React.Component {
       <div className="excursions">
         <CSSTransitionGroup
           component={Row}
-          transitionName="slide"
+          transitionName="slide-top"
           transitionEnterTimeout={500}
           transitionLeaveTimeout={300}
         >
