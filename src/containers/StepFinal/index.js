@@ -19,6 +19,7 @@ import DatePickerReduxForm from '../../components/DatePicker';
 import AOSFadeInContainer from '../../components/AOSFadeInContainer';
 // Actions
 import * as finalStepActions from '../../actions/final.step';
+import { gtmStateChange, stateChangeTypes } from '../../helpers/GTMService';
 import { cartIdSelector, participantIdSelector, stepOneAgeSelector } from '../StepOne/selectors';
 // Selectors
 import { finalStepPositionsSelector, finalStepSelectedPositionSelector, finalStepShirtSizeSelector } from './selectors';
@@ -64,6 +65,16 @@ class StepFinal extends React.Component {
 
   componentWillMount() {
     this.setDefaultState();
+  }
+
+  componentWillReceiveProps(nextProps, nextContext) {
+    const { email, last_name, phone, first_name } = nextProps.guradianInfo;
+    
+    const differentData = JSON.stringify(nextProps.guradianInfo) !== JSON.stringify(this.props.guradianInfo);
+    
+    if( email && last_name && phone && first_name && differentData){
+      this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_INFORMATION);
+    }
   }
   
   handleConfirmRefundable = () => {
@@ -464,7 +475,7 @@ function ShirtSizeRadioBtn({ shirtSize }) {
 }
 
 function mapStateToProps(state) {
-  const { cart: { participants } } = state;
+  const { cart: { participants }, form: { wizard } } = state;
   
   const products = (participants || []).reduce((acc, v) => {
     acc = [...acc, ...v.products];
@@ -491,13 +502,15 @@ function mapStateToProps(state) {
     initRefundable: initRefundable,
     refundable: state.finalStep.refundable,
     refundableLoading: state.finalStep.refundableLoading,
-    insurancePrice: state.finalStep.insurancePrice
+    insurancePrice: state.finalStep.insurancePrice,
+    guradianInfo: ((wizard || {}).values || {}).guardian_information || {}
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     finalStepActions: bindActionCreators(finalStepActions, dispatch),
+    gtmStateChange: bindActionCreators(gtmStateChange, dispatch)
   };
 }
 

@@ -27,7 +27,7 @@ class StepFiveCatalogGear extends React.Component {
     data: PropTypes.arrayOf(
       PropTypes.shape({
         price: PropTypes.number,
-        image_url: PropTypes.string,
+        image_url: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
         id: PropTypes.number,
         categories: PropTypes.arrayOf(
           PropTypes.shape({
