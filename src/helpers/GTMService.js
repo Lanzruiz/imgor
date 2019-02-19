@@ -92,7 +92,5 @@ function gtmStateChangeHandler(pageType = '', state) {
     },
   };
   
-  console.log('<-- GTM -->', gtmParams);
-  
   pushToDataLayer(gtmParams);
 }
