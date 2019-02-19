@@ -73,6 +73,19 @@
           }
         }
 
+        &__hover {
+            background:  $white;
+
+            &:hover {
+                background: $tab-selected-bg;
+                cursor: pointer;
+
+                & .tab-row__header {
+                    color: $white;
+                }
+            }
+        }
+
         &__header{
           &.plus {
             margin-left: 5px;
