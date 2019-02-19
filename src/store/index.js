@@ -6,6 +6,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import localForage from 'localforage';
 import { createBrowserHistory } from 'history';
 import { routerMiddleware } from 'connected-react-router';
+import { gtmReduxMiddleware } from '../helpers/GTMService';
 // Reducers
 import rootReducer from '../reducers';
 
@@ -18,10 +19,10 @@ const configureStore = (persistKey) => {
   };
   const persistedReducer = persistReducer(persistConfig, rootReducer(history));
   const store = createStore(persistedReducer, {}, composeWithDevTools(
-    applyMiddleware(thunk, routerMiddleware(history)),
+    applyMiddleware(thunk, routerMiddleware(history), gtmReduxMiddleware),
   ));
   const persistor = persistStore(store);
   return { store, persistor };
-}
+};
 
 export default configureStore;

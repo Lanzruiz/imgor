@@ -20,6 +20,7 @@ import LocaleString from '../../components/LocaleString';
 import Radio from '../../components/Radio';
 import Dropdown from '../../components/Dropdown';
 import AOSFadeInContainer from '../../components/AOSFadeInContainer';
+import { gtmStateChange, stateChangeTypes } from '../../helpers/GTMService';
 import TabRowHeader from './components/TabRowHeader';
 // Actions
 import * as weeksActions from '../../actions/weeks';
@@ -206,6 +207,7 @@ class StepOne extends React.Component {
                 options={[{ value: 'Boarding', stringKey: 'yes' },{ value: 'Non-Boarding', stringKey: 'no' }]}
                 sleepaway={sleepaway}
                 possibleValues={boardingOptions}
+                handleChange={() => { this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_BOARDING); }}
               />
             </div>
             <div className="content__form-control">
@@ -241,7 +243,7 @@ class StepOne extends React.Component {
         </div>
       </div>
     );
-  }
+  };
   
   selectGroup = ({ group, secondary_group }) => {
     this.props.stepOneActions.selectGroup({ group, secondary_group });
@@ -537,7 +539,7 @@ function Paragraph({ children }) {
   );
 }
 
-function SleepawayRadioBtn({ options, sleepaway, possibleValues }) {
+function SleepawayRadioBtn({ options, sleepaway, possibleValues, handleChange }) {
   return (
     <Field
       className="content__radio-btn"
@@ -558,6 +560,7 @@ function SleepawayRadioBtn({ options, sleepaway, possibleValues }) {
                 value={value}
                 checked={isEqual(sleepaway, value)}
                 disabled={isDisabled}
+                handleChange={handleChange}
               >
                 <LocaleString stringKey={`step_one.sleepaway_${stringKey}`} />{' '}
                 {isDisabled && (
@@ -679,6 +682,7 @@ function mapDispatchToProps(dispatch) {
     stepOneActions: bindActionCreators(stepOneActions, dispatch),
     participantActions: bindActionCreators({ addParticipantByCardId }, dispatch),
     stepsActions: bindActionCreators(stepsActions, dispatch),
+    gtmStateChange: bindActionCreators(gtmStateChange, dispatch)
   };
 };
 
