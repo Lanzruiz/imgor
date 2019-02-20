@@ -1,5 +1,6 @@
 // Modules
 import React, { Fragment } from 'react';
+import ReactDOMServer from 'react-dom/server';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Container, Row, Col } from 'react-grid-system';
@@ -172,29 +173,27 @@ class StepOne extends React.Component {
   
   renderTabPanel = ({ range = [], boardingOptions = [], genderOptions = [], id = '' }) => {
     const { sleepaway, age, gender } = this.props;
-    
+    const html = ReactDOMServer.renderToString(<LocaleString stringKey={`step_one.${id}.paragraph_text`} />);
+    const transformHtml = html.replace(/(&lt;)|(&quot;)|(&gt;)/ig, (intercept, fix1, fix2, fix3) => {
+      if(intercept === fix1) {
+        return '<';
+      }
+      if(intercept === fix2) {
+        return '"';
+      }
+      if(intercept === fix3) {
+        return '>';
+      }
+      return null;
+    });
+
     return (
       <div className="tab-content__container tab-row__container content">
         <div className="content__first-col">
           <H2>
-            <LocaleString stringKey={`step_one.${id}.title`} />
+            <LocaleString stringKey={`step_one.${id}.paragraph_title`} />
           </H2>
-          <H4><LocaleString stringKey={`step_one.${id}.paragraph_title_one`}/></H4>
-          <Paragraph>
-            <LocaleString stringKey={`step_one.${id}.paragraph_text_one`} />
-          </Paragraph>
-          <H4><LocaleString stringKey={`step_one.${id}.paragraph_title_two`} /></H4>
-          <Paragraph>
-            <LocaleString stringKey={`step_one.${id}.paragraph_text_two`} />
-          </Paragraph>
-          <H4><LocaleString stringKey={`step_one.${id}.paragraph_title_three`} /></H4>
-          <Paragraph>
-            <LocaleString stringKey={`step_one.${id}.paragraph_text_three`} />
-          </Paragraph>
-          <H4><LocaleString stringKey={`step_one.${id}.paragraph_title_four`} /></H4>
-          <Paragraph>
-            <LocaleString stringKey={`step_one.${id}.paragraph_text_four`} />
-          </Paragraph>
+          <div dangerouslySetInnerHTML={{__html: transformHtml}} ></div>
         </div>
         <div className="content__second-col">
           <Form onSubmit={this.props.handleSubmit(() => {})}>
