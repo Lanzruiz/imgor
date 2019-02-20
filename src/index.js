@@ -2,7 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
+//import { PersistGate } from 'redux-persist/integration/react';
 import { Route, Switch } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
 import axios from 'axios';
@@ -10,7 +10,7 @@ import axios from 'axios';
 import App from './containers/App';
 import InitialComponent from './containers/InitialComponent';
 // Store
-import configStore, { history } from './store';
+import /* configureStore */ store, { history } from './store';
 // Styles
 import './index.scss';
 
@@ -32,7 +32,7 @@ const {
   displayFooter
 } = imgorRootContainer.dataset;
 
-const { store, persistor } = configStore(appKey);
+//const { store, persistor } = configStore(appKey);
 
 export const instance = axios.create({
   baseURL: apiUrl || process.env.REACT_APP_API_URL,
@@ -40,7 +40,7 @@ export const instance = axios.create({
 
 ReactDOM.render(
   <Provider store={store}>
-    <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
+    {/* <PersistGate loading={<div>Loading...</div>} persistor={persistor}> */}
       <ConnectedRouter history={history}>
         <React.Fragment>
           <Switch>
@@ -85,7 +85,7 @@ ReactDOM.render(
           </Switch>
         </React.Fragment>
       </ConnectedRouter>
-    </PersistGate>
+    {/* </PersistGate> */}
   </Provider>,
   imgorRootContainer,
 );
