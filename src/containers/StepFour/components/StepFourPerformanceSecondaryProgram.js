@@ -15,7 +15,7 @@ import { stepThreeSecondaryProgramIdSelector } from '../../StepThree/selector';
 
 class StepFourPerformanceSecondaryProgram extends React.Component {
   render() {
-    const { id, sold_out, price, display_name, selectedId } = this.props;
+    const { id, sold_out, price, display_name, selectedId, viaLogoPath } = this.props;
     const contentClassNames = cx('step-four__performance-secondary-program', {
       'step-four__secondary-program--available': !sold_out,
       'step-four__secondary-program--sold-out': sold_out,
@@ -29,6 +29,7 @@ class StepFourPerformanceSecondaryProgram extends React.Component {
         id={id}
         cardHeader={<LocaleString stringKey="class" />}
         color="dark"
+        viaLogoPath={viaLogoPath}
         header={display_name}
         label="AGES 8-18"
         price={price}
@@ -93,6 +94,7 @@ function mapStateToProps(state) {
     participantId: participantIdSelector(state),
     selectedId: stepThreeSecondaryProgramIdSelector(state),
     participantProductId: cartStepThreeProductIdSelector(state),
+    viaLogoPath: state.initialSettings.viaLogoPath,
   };
 }
 
