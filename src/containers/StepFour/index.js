@@ -143,7 +143,7 @@ class StepFour extends React.Component {
   render() {
     const {
       age, businessType, gender, weeks, selectedWeekId, sport, programType, data, hasSecondaryProgram,
-      stepThreeSecondaryPrograms,
+      stepThreeSecondaryPrograms, viaLogoPath,
     } = this.props;
   
     const tabsList = [];
@@ -194,6 +194,7 @@ class StepFour extends React.Component {
         <TabPanel key={id} className="step-four-tabs__tab-panel">
           <StepFourWeekConcentrationComponent
             age={age}
+            viaLogoPath={viaLogoPath}
             businessType={businessType}
             customizeId={customize_id}
             endDate={end_date}

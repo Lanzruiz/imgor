@@ -65,7 +65,7 @@ class App extends React.Component {
     super(props);
     // To add more steps just add component into this array
     const isBusinessTypeForAdult = (props.dataBusinessType || '').toLowerCase() === 'Adult Program'.toLowerCase();
-    
+
     this.wizardFormChildren = [
       <StepOne
         key="0"
@@ -75,10 +75,14 @@ class App extends React.Component {
         dataBusinessType={props.dataBusinessType}
       />,
       <StepTwo key="1" />,
-      <StepThree key="2" />,
+      <StepThree
+        key="2"
+        viaLogoPath={props.viaLogoPath}
+      />,
       <StepFour
         key="3"
         programType="Concentration"
+        viaLogoPath={props.viaLogoPath}
       />,
       <StepFive key="4" />,
       <StepSix key="5" />,
@@ -92,7 +96,7 @@ class App extends React.Component {
   componentDidMount() {
     const {
       maxStepValue, cartId, gender, group, secondaryGroup, dataLastChanged, dataAppKey,
-      redirectUrlShopify, sport, businessType, urlToNoProps, lastChanged, dispatch,
+      redirectUrlShopify, sport, businessType, urlToNoProps, lastChanged, dispatch, dataViaLogoPath,
     } = this.props;
 
     const currentMaxStepValue = this.wizardFormChildren.length;
@@ -122,8 +126,8 @@ class App extends React.Component {
       businessType,
       urlToNoProps,
       lastChanged: dataLastChanged,
+      viaLogoPath: dataViaLogoPath,
     };
-
     this.setInitialSettings(initialSettings);
     this.getExtraSettings();
     AOS.init();
@@ -135,7 +139,7 @@ class App extends React.Component {
       this.props.cartActions.createCartRequest();
     }
   }
-  
+
   setInitialSettings = (initialSettings) => {
     const { gender, group, secondaryGroup } = initialSettings;
     if (gender) {
@@ -149,7 +153,6 @@ class App extends React.Component {
 
   getExtraSettings = () =>{
     const { extraSettingsPath } = this.props;
-    
     axios(extraSettingsPath).then(res => res.data)
     .then((data) => {
       this.props.initialSettingsActions.updateInitialSettings(data);
@@ -158,9 +161,9 @@ class App extends React.Component {
 
   render() {
     const { lang, redirectUrlShopify, contentPath, valid, dataBusinessType, dataDisplayFooter } = this.props;
-  
+
     const isBusinessTypeForAdult = (dataBusinessType || '').toLowerCase() === 'Adult Program'.toLowerCase();
-    
+
     return (
       <ReactLocalization lang={lang} contentPath={contentPath}>
         <WizardForm

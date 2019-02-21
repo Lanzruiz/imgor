@@ -10,7 +10,7 @@ import footballCore from '../../assets/img/football-core_copy_2.png';
 import './styles.scss';
 
 const CoreCard = (props) => {
-  const { selectedId, onClick, onRemove, price, label, id, header, soldOut, displayViaLabel } = props;
+  const { selectedId, onClick, onRemove, price, label, id, header, soldOut, displayViaLabel, viaLogoPath } = props;
   return (
     <Card
       cardHeader={<LocaleString stringKey="group_sport_training" />}
@@ -18,6 +18,7 @@ const CoreCard = (props) => {
       header={header}
       headerSize="large"
       id={id}
+      viaLogoPath={viaLogoPath}
       defaultImageSrc={footballCore}
       imgSrc="step_three.core.image_path"
       label={label}
