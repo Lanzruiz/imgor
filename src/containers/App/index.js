@@ -92,6 +92,11 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    // const {
+    //   maxStepValue, cartId, gender, group, secondaryGroup, dataLastChanged, dataAppKey,
+    //   redirectUrlShopify, sport, businessType, urlToNoProps, lastChanged, dispatch,
+    // } = this.props;
+
     const {
       maxStepValue, cartId, gender, group, secondaryGroup, dataLastChanged, dataAppKey,
       redirectUrlShopify, sport, businessType, urlToNoProps, lastChanged, dispatch, dataViaLogoPath,
