@@ -16,6 +16,7 @@ import { stepThreeSecondaryProgramIdSelector } from '../../StepThree/selector';
 class StepFourEslSecondaryProgram extends React.Component {
   render() {
     const { id, sold_out, price, display_name, selectedId, viaLogoPath } = this.props;
+
     const contentClassNames = cx('step-four__esl-secondary-program', {
       'step-four__secondary-program--available': !sold_out,
       'step-four__secondary-program--sold-out': sold_out,
@@ -25,7 +26,6 @@ class StepFourEslSecondaryProgram extends React.Component {
         id={id}
         cardHeader={<LocaleString stringKey="class" />}
         color="dark"
-        viaLogoPath={viaLogoPath}
         header={display_name}
         label="AGES 8-18"
         price={price}
@@ -34,6 +34,7 @@ class StepFourEslSecondaryProgram extends React.Component {
         selectedId={selectedId}
         soldOut={sold_out}
         via={true}
+        viaLogoPath={viaLogoPath}
       >
         <CardContent>
           <CardContentRow>
