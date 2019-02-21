@@ -377,6 +377,7 @@ function mapStateToProps(state) {
     cart: cartSelector(state),
     campersAge: Number(((state.form.wizard || {}).values || {}).age),
     viaLogoPath: state.initialSettings.viaLogoPath,
+    price: state.cart['price_total'],
   };
 };
 

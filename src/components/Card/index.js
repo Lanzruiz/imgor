@@ -269,8 +269,18 @@ class Card extends React.Component {
 
   onClickHandler = () => {
     const { id, onClick, onRemove, selectedId } = this.props;
-    const isCurrentCardSelected = id === selectedId;
-    isCurrentCardSelected ? onRemove(id) : onClick(id);
+    //const isCurrentCardSelected = id === selectedId;
+    //isCurrentCardSelected ? onRemove(id) : onClick(id);
+    if (selectedId === null) {
+      return onClick(id)
+    };
+    if (id === selectedId) {
+      return onRemove(id)
+    };
+    if (id !== selectedId) {
+      onRemove(selectedId);
+      onClick(id);
+    };
   }
 }
 
