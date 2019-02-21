@@ -520,21 +520,21 @@ function H3({ children }) {
   );
 }
 
-// function H4({ children }) {
-//   return (
-//     <h4 className="content__header content__header--h4">
-//       {children}
-//     </h4>
-//   );
-// }
-//
-// function Paragraph({ children }) {
-//   return (
-//     <p className="content__paragraph">
-//       {children}
-//     </p>
-//   );
-// }
+function H4({ children }) {
+  return (
+    <h4 className="content__header content__header--h4">
+      {children}
+    </h4>
+  );
+}
+
+function Paragraph({ children }) {
+  return (
+    <p className="content__paragraph">
+      {children}
+    </p>
+  );
+}
 
 function SleepawayRadioBtn({ options, sleepaway, possibleValues }) {
   return (

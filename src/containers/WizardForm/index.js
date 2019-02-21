@@ -286,7 +286,6 @@ class WizardForm extends React.Component {
         <Footer
           arrowUp={arrowPosition}
           step={step}
-          price={totalPrice}
           message={message}
           hasMessage={hasMessage}
           purchaseOnClickHandler={this.purchaseHandler}
@@ -966,6 +965,7 @@ function mapStateToProps(state) {
     endDate: stepTwoEndDateSelector(state),
     stepTreeSelectedId: stepTreeSelectedIdSelector(state),
     stepThreeSecondaryProgramId: stepThreeSecondaryProgramIdSelector(state),
+    totalPrice: state.cart['price_total'],
     totalPrice: totalPriceSelector(state),
     isWeeklyCamp: isWeeklyCampSelector(state),
     stepThreeSelectedCardWithSecondaryProgramsId: stepThreeSelectedCardWithSecondaryProgramsIdSelector(state),
