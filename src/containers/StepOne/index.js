@@ -459,7 +459,7 @@ class StepOne extends React.Component {
                               {this.renderTabPanel({
                                 range: createNumbersArray({ from: 8, to: 18 }),
                                 boardingOptions: ['Boarding', 'Non-Boarding'],
-                                genderOptions: ['Male', 'Female'],
+                                genderOptions: ['male', 'female'],
                                 id: row.id
                               })}
                             </TabPanel>
@@ -599,7 +599,7 @@ function AgeRadioBtnContainer ({ range, age }) {
 }
 
 function GenderRadioBtnContainer ({ options, value, possibleValues }) {
-  const defaultPossibleValues = ['Male', 'Female'];
+  const defaultPossibleValues = ['male', 'female'];
   const computedPossibleValues = include(possibleValues, 'All') ? defaultPossibleValues : possibleValues;
   return (
     <div className="content__radio-container">
