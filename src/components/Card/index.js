@@ -11,8 +11,6 @@ import Tooltip from '../Tooltip';
 import Image from '../Image';
 // Styles
 import './styles.scss';
-// Image
-//import viaImg from '../../assets/img/via-approved.png';
 
 const headerSizeEnum = {
   extraSmall: 'extra-small',

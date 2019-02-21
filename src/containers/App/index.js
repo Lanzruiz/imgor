@@ -77,12 +77,10 @@ class App extends React.Component {
       <StepTwo key="1" />,
       <StepThree
         key="2"
-        viaLogoPath={props.viaLogoPath}
       />,
       <StepFour
         key="3"
         programType="Concentration"
-        viaLogoPath={props.viaLogoPath}
       />,
       <StepFive key="4" />,
       <StepSix key="5" />,

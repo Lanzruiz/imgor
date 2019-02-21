@@ -116,7 +116,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
   
   reorderConcentrations = (items) => {
     const { concentrationOrdering } = this.props;
-    
+
     if(!concentrationOrdering) return items;
     
     const parsedConcentrationOrdering = concentrationOrdering.map(v => v.toLowerCase());
@@ -144,7 +144,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
   };
 
   render() {
-    const { weekId, customizeId, isFirstWeek } = this.props;
+    const { weekId, customizeId, isFirstWeek, viaLogoPath } = this.props;
     const data = this.props[`week_${weekId}_data`];
   
     return (
@@ -181,6 +181,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
                 customButtonTitle={customButtonTitle}
                 customNonSelectedButtonTitle={isNotSkipWeek ? null : <LocaleString stringKey="no-thanks" />}
                 via={via_label}
+                viaLogoPath={viaLogoPath}
               >
                 {this.renderCardContent(cardContentProps)}
               </Card>
@@ -425,7 +426,8 @@ function mapStateToProps(state) {
     participantId: participantIdSelector(state),
     stepThreeParticipantProductId: stepThreeParticipantProductIdSelector(state),
     stepFourConcentrationProductId: stepFourConcentrationProductIdSelector(state),
-    concentrationOrdering: state.initialSettings.concentrationOrdering
+    concentrationOrdering: state.initialSettings.concentrationOrdering,
+    viaLogoPath: state.initialSettings.viaLogoPath,
   };
 };
 

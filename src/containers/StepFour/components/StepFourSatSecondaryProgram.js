@@ -25,7 +25,6 @@ class StepFourSatSecondaryProgram extends React.Component {
         id={id}
         cardHeader={<LocaleString stringKey="class" />}
         color="dark"
-        viaLogoPath={viaLogoPath}
         header={display_name}
         label="AGES 15-18"
         price={price}
@@ -34,6 +33,7 @@ class StepFourSatSecondaryProgram extends React.Component {
         selectedId={selectedId}
         soldOut={sold_out}
         via={true}
+        viaLogoPath={viaLogoPath}
       >
         <CardContent>
           <CardContentRow>
