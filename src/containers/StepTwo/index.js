@@ -217,19 +217,19 @@ class StepTwo extends React.Component {
                     <LocaleString stringKey="step_two.questions.description" />
                   </p>
                   <div className="questions__icons icons">
-                    <div className="icons__container">
+                    <div className="icons__container advisor-cta-call">
                       <div className="icon-phone" />
                       <span className="icons__text">
                         <LocaleString stringKey="step_two.questions.call" />
                       </span>
                     </div>
-                    <div className="icons__container">
+                    <div className="icons__container advisor-cta-chat">
                       <div className="icon-message-bulb-square-o" />
                       <span className="icons__text">
                         <LocaleString stringKey="step_two.questions.chat" />
                       </span>
                     </div>
-                    <div className="icons__container">
+                    <div className="icons__container advisor-cta-email">
                       <div className="icon-file" />
                       <span className="icons__text">
                         <LocaleString stringKey="step_two.questions.email" />
