@@ -11,8 +11,6 @@ import Tooltip from '../Tooltip';
 import Image from '../Image';
 // Styles
 import './styles.scss';
-// Image
-import viaImg from '../../assets/img/via-approved.png';
 
 const headerSizeEnum = {
   extraSmall: 'extra-small',
@@ -106,7 +104,7 @@ class Card extends React.Component {
   render() {
     const {
       children, header, label, headerSize, color, cardHeader, imgSrc, id, soldOut,
-      selectedId, priceDescription, cardHeaderCapitalize, style, className,
+      selectedId, priceDescription, cardHeaderCapitalize, style, className
     } = this.props;
 
     const isSelectedIdExists = (typeof selectedId === 'number' || typeof selectedId === 'string');
@@ -158,7 +156,7 @@ class Card extends React.Component {
   }
 
   renderViaBlock = () => {
-    const { via } = this.props;
+    const { via, viaLogoPath } = this.props;
     // const { via, headerSize } = this.props;
     
     // const cardLabelViaClassName = cx('card-label__text card-label__text--serifa-bold', {
@@ -167,7 +165,7 @@ class Card extends React.Component {
     // });
     return via && (
       <div className='label_via_container'>
-        <Img className="label_via_img" src={viaImg} alt=""/>
+        <Img className="label_via_img" src={viaLogoPath} alt=""/>
       </div>
     );
   };

@@ -126,7 +126,7 @@ class StepThree extends React.Component {
   }
 
   render() {
-    const { selectedId, data, selectedCardWithSecondaryProgramsId } = this.props;
+    const { selectedId, data, selectedCardWithSecondaryProgramsId, viaLogoPath } = this.props;
     
     return (
       <AOSFadeInContainer className="step-three" ref={this.stepThree}>
@@ -148,6 +148,7 @@ class StepThree extends React.Component {
                     age_range,
                     display_name,
                     name,
+                    viaLogoPath,
                     has_secondary_program,
                     price: price || starting_price,
                     selectedId: selectedId || selectedCardWithSecondaryProgramsId,
@@ -168,7 +169,7 @@ class StepThree extends React.Component {
   renderCurrentCard = (args) => {
     const {
       age_range, display_name, name = '', price, id, selectedId, soldOut, has_secondary_program,
-      secondaryPrograms, displayViaLabel,
+      secondaryPrograms, displayViaLabel, viaLogoPath,
     } = args;
     const computedLabel = age_range ? `ages ${age_range}` : '';
     const nameLowerCase = toLower(name);
@@ -182,6 +183,7 @@ class StepThree extends React.Component {
       selectedId,
       price,
       displayViaLabel,
+      viaLogoPath,
       header: display_name,
       key: id,
       onClick: onCardClick,
@@ -373,7 +375,8 @@ function mapStateToProps(state) {
     weeks: weeksItemsSelector(state),
     stepThree: stepThreeSelector(state),
     cart: cartSelector(state),
-    campersAge: Number(((state.form.wizard || {}).values || {}).age)
+    campersAge: Number(((state.form.wizard || {}).values || {}).age),
+    viaLogoPath: state.initialSettings.viaLogoPath,
   };
 };
 

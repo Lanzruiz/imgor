@@ -29,7 +29,8 @@ const {
   last_changed,
   contentPath,
   settingsPath,
-  displayFooter
+  displayFooter,
+  viaLogoPath
 } = imgorRootContainer.dataset;
 
 //const { store, persistor } = configStore(appKey);
@@ -79,6 +80,7 @@ ReactDOM.render(
                   contentPath={contentPath}
                   settingsPath={contentPath}
                   extraSettingsPath={settingsPath}
+                  dataViaLogoPath={viaLogoPath}
                 />
               );
             }} />
