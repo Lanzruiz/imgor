@@ -8,7 +8,7 @@ import { bindActionCreators } from 'redux';
 import isEqual from 'lodash/isEqual';
 import { reduxForm, change } from 'redux-form';
 import toNumber from 'lodash/toNumber';
-import { PURGE } from 'redux-persist';
+// import { PURGE } from 'redux-persist';
 import { reset } from 'redux-form';
 import AOS from 'aos';
 // Providers
@@ -101,7 +101,7 @@ class App extends React.Component {
     const shouldPurgeState = (dataLastChangedNumder - lastChangedNumber) > 0;
 
     if (shouldPurgeState) {
-      dispatch({ type: PURGE, key: dataAppKey, result: () => null });
+      // dispatch({ type: PURGE, key: dataAppKey, result: () => null });
       dispatch( reset('wizard'), );
     }
 
