@@ -173,7 +173,7 @@ class StepOne extends React.Component {
   
   renderTabPanel = ({ range = [], boardingOptions = [], genderOptions = [], id = '' }) => {
     const { sleepaway, age, gender } = this.props;
-    const html = ReactDOMServer.renderToString(<LocaleString stringKey={`step_one.${id}.paragraph_text`} />);
+    const html = ReactDOMServer.renderToString(<LocaleString stringKey={`step_one.${id}.paragraph_text_1`} />);
     const transformHtml = html.replace(/(&lt;)|(&quot;)|(&gt;)/ig, (intercept, fix1, fix2, fix3) => {
       if(intercept === fix1) {
         return '<';
@@ -191,7 +191,7 @@ class StepOne extends React.Component {
       <div className="tab-content__container tab-row__container content">
         <div className="content__first-col">
           <H2>
-            <LocaleString stringKey={`step_one.${id}.paragraph_title`} />
+            <LocaleString stringKey={`step_one.${id}.paragraph_title_1`} />
           </H2>
           <div dangerouslySetInnerHTML={{__html: transformHtml}} />
         </div>
