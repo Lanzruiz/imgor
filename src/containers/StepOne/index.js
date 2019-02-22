@@ -193,7 +193,7 @@ class StepOne extends React.Component {
           <H2>
             <LocaleString stringKey={`step_one.${id}.paragraph_title`} />
           </H2>
-          <div dangerouslySetInnerHTML={{__html: transformHtml}} ></div>
+          <div dangerouslySetInnerHTML={{__html: transformHtml}} />
         </div>
         <div className="content__second-col">
           <Form onSubmit={this.props.handleSubmit(() => {})}>
@@ -226,7 +226,7 @@ class StepOne extends React.Component {
                 )
               }
             </div>
-            <div className="content__form-control">
+            <div className="content__form-control" style={{visibility: !!gender ? 'collapse': ''}}>
               <H3>
                 <LocaleString stringKey="step_one.gender" />
               </H3>
@@ -234,13 +234,14 @@ class StepOne extends React.Component {
                 options={['Male', 'Female']}
                 value={gender}
                 possibleValues={genderOptions}
+                hasPredefinedValue={!!gender}
               />
             </div>
           </Form>
         </div>
       </div>
     );
-  }
+  };
   
   selectGroup = ({ group, secondary_group }) => {
     this.props.stepOneActions.selectGroup({ group, secondary_group });
@@ -621,10 +622,10 @@ function GenderRadioBtnContainer ({ options, value, possibleValues }) {
                   checked={isEqual(lowerCaseOptionValue, toLower(value))}
                   disabled={isDisabled}
                 >
-                  <LocaleString stringKey={lowerCaseOptionValue} />
+                  <LocaleString stringKey={lowerCaseOptionValue}/>
                   {isDisabled && (
                     <span className="content__radio-btn--sold-out">
-                      <LocaleString stringKey="sold-out" />
+                      <LocaleString stringKey="sold-out"/>
                     </span>
                   )}
                 </Radio>
