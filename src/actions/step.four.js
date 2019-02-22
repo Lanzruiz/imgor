@@ -1,4 +1,5 @@
 // Modules
+import { isEmpty } from 'lodash';
 import isEqual from 'lodash/isEqual';
 import isNumber from 'lodash/isNumber';
 import assign from 'lodash/assign';
@@ -134,7 +135,13 @@ export function getCatalogCampWeekOneRequest({ business_type, program_type, spor
   return function (dispatch) {
     Api.req({
       apiCall: Api.getCatalogCamps,
-      res200: (data) => dispatch(getCatalogCampsWeekOne(data)),
+      res200: (data) => {
+        if(isEmpty(data.results)){
+          dispatch(setStepsCounter(stepsEnum.seven));
+        } else {
+          dispatch(getCatalogCampsWeekOne(data))
+        }
+      },
       res404: () => console.log('Api.getCatalogCamps() => 404'),
       reject: err => console.log(err),
       apiCallParams: {
