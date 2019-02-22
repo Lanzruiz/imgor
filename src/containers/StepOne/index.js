@@ -159,18 +159,6 @@ class StepOne extends React.Component {
     }
   };
   
-  incrementWeeksCounter = () => {
-    this.props.weeksActions.incrementWeeksCounter();
-  };
-  
-  decrementWeeksCounter = () => {
-    this.props.weeksActions.decrementWeeksCounter();
-  };
-  
-  setWeeksCounter = (count) => {
-    this.props.weeksActions.setWeeksCounter(count);
-  };
-  
   renderTabPanel = ({ range = [], boardingOptions = [], genderOptions = [], id = '' }) => {
     const { sleepaway, age, gender } = this.props;
     const html = ReactDOMServer.renderToString(<LocaleString stringKey={`step_one.${id}.paragraph_text`} />);
@@ -216,6 +204,7 @@ class StepOne extends React.Component {
                   <AgeRadioBtnContainer
                     age={age}
                     range={range}
+                    handleNastyClick={this.onUserActionDeletePrevCartProducts}
                   />
                 )
                 : (
@@ -234,6 +223,7 @@ class StepOne extends React.Component {
                 options={['Male', 'Female']}
                 value={gender}
                 possibleValues={genderOptions}
+                handleNastyClick={this.onUserActionDeletePrevCartProducts}
               />
             </div>
           </Form>
