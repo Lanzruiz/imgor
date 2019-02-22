@@ -159,18 +159,6 @@ class StepOne extends React.Component {
     }
   };
   
-  incrementWeeksCounter = () => {
-    this.props.weeksActions.incrementWeeksCounter();
-  };
-  
-  decrementWeeksCounter = () => {
-    this.props.weeksActions.decrementWeeksCounter();
-  };
-  
-  setWeeksCounter = (count) => {
-    this.props.weeksActions.setWeeksCounter(count);
-  };
-  
   renderTabPanel = ({ range = [], boardingOptions = [], genderOptions = [], id = '' }) => {
     const { sleepaway, age, gender } = this.props;
     const html = ReactDOMServer.renderToString(<LocaleString stringKey={`step_one.${id}.paragraph_text`} />);
@@ -216,6 +204,7 @@ class StepOne extends React.Component {
                   <AgeRadioBtnContainer
                     age={age}
                     range={range}
+                    handleNastyClick={this.onUserActionDeletePrevCartProducts}
                   />
                 )
                 : (
@@ -521,21 +510,21 @@ function H3({ children }) {
   );
 }
 
-function H4({ children }) {
-  return (
-    <h4 className="content__header content__header--h4">
-      {children}
-    </h4>
-  );
-}
-
-function Paragraph({ children }) {
-  return (
-    <p className="content__paragraph">
-      {children}
-    </p>
-  );
-}
+// function H4({ children }) {
+//   return (
+//     <h4 className="content__header content__header--h4">
+//       {children}
+//     </h4>
+//   );
+// }
+//
+// function Paragraph({ children }) {
+//   return (
+//     <p className="content__paragraph">
+//       {children}
+//     </p>
+//   );
+// }
 
 function SleepawayRadioBtn({ options, sleepaway, possibleValues }) {
   return (
