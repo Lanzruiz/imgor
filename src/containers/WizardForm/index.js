@@ -256,7 +256,7 @@ class WizardForm extends React.Component {
   }
 
   render() {
-    const { children, step, totalPrice, valid, dataDisplayFooter } = this.props;
+    const { children, step, valid, dataDisplayFooter } = this.props;
     
     
     const startIndex = 0;
@@ -286,7 +286,6 @@ class WizardForm extends React.Component {
         <Footer
           arrowUp={arrowPosition}
           step={step}
-          price={totalPrice}
           message={message}
           hasMessage={hasMessage}
           purchaseOnClickHandler={this.purchaseHandler}

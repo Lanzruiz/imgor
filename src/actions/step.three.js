@@ -202,26 +202,26 @@ function stepThreeSetWeeklyCatalogData({ weekId, data }) {
 }
 
 export function stepThreeAddWeeklyCampToTheCart(data) {
-  return function(dispatch) {
+  return async function(dispatch) {
     dispatch( stepThreeSetSecondaryPrograms({ id: null, secondary_programs: [] }), );
     dispatch( setSecondaryProgramId(null), );
-
-    Promise.all(
-      data.map(({ cartId, participantId, campId, weekId }) => (
-        Api.getCatalogCampCampId(campId)
-          .then(data => data.data.results[0])
-          .then(product => Api.postCartCartIdParticipantIdProduct({ cartId, participantId, product, quantity: 1, productId: product.id, type: 'camp' }))
-          .then(data => data.data)
-          .then(({ cart, participant_product_id }) => {
-            dispatch( updateCart(assign({}, cart, { [`stepOneSelectedProductWeek_${weekId}`]: participant_product_id })), );
-            if (weekId === 1) {
-              dispatch( saveTrainingId(campId), );
-            }
-          })
-      ))
-    )
-      .then(() => dispatch( setStepsCounter(stepsEnum.four) ))
-      .catch(console.error);
+  
+    for(let index in data) {
+      const { cartId, participantId, campId, weekId } = data[index];
+      
+      await Api.getCatalogCampCampId(campId)
+      .then(data => data.data.results[0])
+      .then(async (product) => await Api.postCartCartIdParticipantIdProduct({ cartId, participantId, product, quantity: 1, productId: product.id, type: 'camp' }))
+      .then(data => data.data)
+      .then(({ cart, participant_product_id }) => {
+        dispatch( updateCart(assign({}, cart, { [`stepOneSelectedProductWeek_${weekId}`]: participant_product_id })), );
+        if (String(weekId) === String(1)) {
+          dispatch( saveTrainingId(campId), );
+        }
+      })
+    }
+  
+    dispatch( setStepsCounter(stepsEnum.four) );
   }
 }
 
