@@ -146,7 +146,6 @@ class StepFourWeekConcentrationComponent extends React.Component {
   render() {
     const { weekId, customizeId, isFirstWeek, viaLogoPath } = this.props;
     const data = this.props[`week_${weekId}_data`];
-  
     return (
       <Row>
         {this.reorderConcentrations(data).map(({ id, price, age_range, secondary_program_type, sold_out, via_label }) => {

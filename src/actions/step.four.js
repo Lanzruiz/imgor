@@ -111,7 +111,7 @@ export function getCatalogCampRequest({ business_type, program_type, sport, age,
       apiCall: Api.getCatalogCamps,
       res200: (data) => {
         if (isEqual(data.results.length, 0)) {
-          dispatch( setStepsCounter(stepsEnum.five), );
+          dispatch( setStepsCounter(stepsEnum.seven), );
         }
         dispatch( getCatalogCamps(data), );
       },
@@ -134,7 +134,10 @@ export function getCatalogCampWeekOneRequest({ business_type, program_type, spor
   return function (dispatch) {
     Api.req({
       apiCall: Api.getCatalogCamps,
-      res200: (data) => dispatch(getCatalogCampsWeekOne(data)),
+      res200: (data) => {
+        dispatch(getCatalogCampsWeekOne(data));
+        dispatch(setStepsCounter(stepsEnum.seven));
+      },
       res404: () => console.log('Api.getCatalogCamps() => 404'),
       reject: err => console.log(err),
       apiCallParams: {
