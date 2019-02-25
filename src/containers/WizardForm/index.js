@@ -516,7 +516,7 @@ class WizardForm extends React.Component {
             flight: {
               airline: stepSixAirportPickupAirline,
               booked: false,
-              date: stepSixArrivalDateTime ? moment(stepSixArrivalDateTime, 'YYYY-MM-DD HH:mm').format() : null,
+              date: stepSixArrivalDateTime ? moment(stepSixArrivalDateTime, 'YYYY-MM-DD hh:mm').format() : null,
               location: isDropoffLocationEqualToOther ? null : stepSixDropoff,
               location_other: isDropoffLocationEqualToOther ? stepSixDropoffOtherLocation : null,
               number: stepSixArrivalFlightNumber,
