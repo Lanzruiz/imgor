@@ -516,7 +516,7 @@ class WizardForm extends React.Component {
             flight: {
               airline: stepSixAirportPickupAirline,
               booked: false,
-              date: stepSixArrivalDateTime ? moment(stepSixArrivalDateTime, 'YYYY-MM-DD hh:mm').format() : null,
+              date: stepSixArrivalDateTime ? moment(stepSixArrivalDateTime, 'YYYY-MM-DD hh:mm').format('hh:mm A') : null,
               location: isDropoffLocationEqualToOther ? null : stepSixDropoff,
               location_other: isDropoffLocationEqualToOther ? stepSixDropoffOtherLocation : null,
               number: stepSixArrivalFlightNumber,
@@ -536,7 +536,7 @@ class WizardForm extends React.Component {
             flight: {
               airline: stepSixDepartingAirline,
               booked: false,
-              date: stepSixDepartingDateTime ? moment(stepSixDepartingDateTime, 'YYYY-MM-DD HH:mm').format() : null,
+              date: stepSixDepartingDateTime ? moment(stepSixDepartingDateTime, 'YYYY-MM-DD hh:mm').format('hh:mm A') : null,
               location: isPickupLocationEqualToOther ? null : stepSixDeparting,
               location_other: isPickupLocationEqualToOther ? stepSixPickUpOtherLocation : null,
               number: stepSixDepartingFlightNumber,
@@ -581,7 +581,7 @@ class WizardForm extends React.Component {
             flight: {
               airline: stepSixAirportPickupAirline,
               booked: false,
-              date: stepSixArrivalDateTime ? moment(stepSixArrivalDateTime, 'YYYY-MM-DD HH:mm').format() : null,
+              date: stepSixArrivalDateTime ? moment(stepSixArrivalDateTime, 'YYYY-MM-DD hh:mm').format('hh:mm A') : null,
               location: isDropoffLocationEqualToOther ? null : stepSixDropoff,
               location_other: isDropoffLocationEqualToOther ? stepSixDropoffOtherLocation : null,
               number: stepSixArrivalFlightNumber,
@@ -626,7 +626,7 @@ class WizardForm extends React.Component {
             flight: {
               airline: stepSixDepartingAirline,
               booked: false,
-              date: stepSixDepartingDateTime ? moment(stepSixDepartingDateTime, 'YYYY-MM-DD HH:mm').format() : null,
+              date: stepSixDepartingDateTime ? moment(stepSixDepartingDateTime, 'YYYY-MM-DD hh:mm').format('hh:mm A') : null,
               location: isPickupLocationEqualToOther ? null : stepSixDeparting,
               location_other: isPickupLocationEqualToOther ? stepSixPickUpOtherLocation : null,
               number: stepSixDepartingFlightNumber,
