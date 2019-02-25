@@ -27,7 +27,7 @@ class DatePickerReduxForm extends React.Component {
 
   static defaultProps = {
     showTimeSelect: true,
-    dateFormat: 'YYYY-MM-DD hh:mm',
+    dateFormat: 'YYYY-MM-DD hh:mm A',
     isClearable: true,
     showYearDropdown: false,
     maxDate: null,
