@@ -257,7 +257,7 @@ class WizardForm extends React.Component {
   }
 
   render() {
-    const { children, step, totalPrice, valid, dataDisplayFooter } = this.props;
+    const { children, step, valid, dataDisplayFooter } = this.props;
     
     
     const startIndex = 0;
@@ -969,7 +969,6 @@ function mapStateToProps(state) {
     endDate: stepTwoEndDateSelector(state),
     stepTreeSelectedId: stepTreeSelectedIdSelector(state),
     stepThreeSecondaryProgramId: stepThreeSecondaryProgramIdSelector(state),
-    totalPrice: state.cart['price_total'],
     totalPrice: totalPriceSelector(state),
     isWeeklyCamp: isWeeklyCampSelector(state),
     stepThreeSelectedCardWithSecondaryProgramsId: stepThreeSelectedCardWithSecondaryProgramsIdSelector(state),

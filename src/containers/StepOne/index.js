@@ -174,7 +174,7 @@ class StepOne extends React.Component {
   
   renderTabPanel = ({ range = [], boardingOptions = [], genderOptions = [], id = '' }) => {
     const { sleepaway, age, gender } = this.props;
-    const html = ReactDOMServer.renderToString(<LocaleString stringKey={`step_one.${id}.paragraph_text`} />);
+    const html = ReactDOMServer.renderToString(<LocaleString stringKey={`step_one.${id}.paragraph_text_1`} />);
     const transformHtml = html.replace(/(&lt;)|(&quot;)|(&gt;)/ig, (intercept, fix1, fix2, fix3) => {
       if(intercept === fix1) {
         return '<';
@@ -192,9 +192,9 @@ class StepOne extends React.Component {
       <div className="tab-content__container tab-row__container content">
         <div className="content__first-col">
           <H2>
-            <LocaleString stringKey={`step_one.${id}.paragraph_title`} />
+            <LocaleString stringKey={`step_one.${id}.paragraph_title_1`} />
           </H2>
-          <div dangerouslySetInnerHTML={{__html: transformHtml}} ></div>
+          <div dangerouslySetInnerHTML={{__html: transformHtml}} />
         </div>
         <div className="content__second-col">
           <Form onSubmit={this.props.handleSubmit(() => {})}>
@@ -218,6 +218,7 @@ class StepOne extends React.Component {
                   <AgeRadioBtnContainer
                     age={age}
                     range={range}
+                    handleNastyClick={this.onUserActionDeletePrevCartProducts}
                   />
                 )
                 : (
@@ -228,7 +229,7 @@ class StepOne extends React.Component {
                 )
               }
             </div>
-            <div className="content__form-control">
+            <div className="content__form-control" style={{visibility: !!gender ? 'collapse': ''}}>
               <H3>
                 <LocaleString stringKey="step_one.gender" />
               </H3>
@@ -236,6 +237,7 @@ class StepOne extends React.Component {
                 options={['Male', 'Female']}
                 value={gender}
                 possibleValues={genderOptions}
+                hasPredefinedValue={!!gender}
               />
             </div>
           </Form>
@@ -522,21 +524,21 @@ function H3({ children }) {
   );
 }
 
-function H4({ children }) {
-  return (
-    <h4 className="content__header content__header--h4">
-      {children}
-    </h4>
-  );
-}
-
-function Paragraph({ children }) {
-  return (
-    <p className="content__paragraph">
-      {children}
-    </p>
-  );
-}
+// function H4({ children }) {
+//   return (
+//     <h4 className="content__header content__header--h4">
+//       {children}
+//     </h4>
+//   );
+// }
+//
+// function Paragraph({ children }) {
+//   return (
+//     <p className="content__paragraph">
+//       {children}
+//     </p>
+//   );
+// }
 
 function SleepawayRadioBtn({ options, sleepaway, possibleValues, handleChange }) {
   return (
@@ -624,10 +626,10 @@ function GenderRadioBtnContainer ({ options, value, possibleValues }) {
                   checked={isEqual(lowerCaseOptionValue, toLower(value))}
                   disabled={isDisabled}
                 >
-                  <LocaleString stringKey={lowerCaseOptionValue} />
+                  <LocaleString stringKey={lowerCaseOptionValue}/>
                   {isDisabled && (
                     <span className="content__radio-btn--sold-out">
-                      <LocaleString stringKey="sold-out" />
+                      <LocaleString stringKey="sold-out"/>
                     </span>
                   )}
                 </Radio>

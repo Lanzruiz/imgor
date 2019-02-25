@@ -18,6 +18,7 @@ import * as stepOneActions from '../../actions/step.one';
 import * as stepTwoActions from '../../actions/step.two';
 import * as weeksActions from '../../actions/weeks';
 import * as stepsActions from '../../actions/steps';
+import * as cartActions from '../../actions/cart';
 // Helpers
 import dateFormat from '../../helpers/dateFormat';
 import { gtmStateChange, stateChangeTypes } from '../../helpers/GTMService';
@@ -334,6 +335,10 @@ class StepTwo extends React.Component {
         isAvailable
           ?
           () => {
+            if(selectedDate.capacity_start_date !== capacity_start_date){
+              this.props.cartActions.deleteAllProductsFromCart(stepsEnum.two);
+            }
+            
             if (!isWeeklyCamp) {
               const weeksCounter = length_days / daysInWeek;
               const weeksLength = (weeksCounter > 1) ? weeksCounter : 1;

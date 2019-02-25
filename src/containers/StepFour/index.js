@@ -8,13 +8,12 @@ import cx from 'classnames';
 import PropTypes from 'prop-types';
 import scrollToComponent from 'react-scroll-to-component';
 import isEqual from 'lodash/isEqual';
-import find from 'lodash/find';
 import isNumber from 'lodash/isNumber';
 // Components
 import Header from '../../components/Header';
 import LocaleString from '../../components/LocaleString';
 import StepFourWeekConcentrationComponent from '../../components/StepFourWeekConcentrationComponent';
-import { emptyConcentrationId } from '../../reducers/step.four';
+// import { emptyConcentrationId } from '../../reducers/step.four';
 import StepFourEslSecondaryProgram from './components/StepFourEslSecondaryProgram';
 import StepFourPerformanceSecondaryProgram from './components/StepFourPerformanceSecondaryProgram';
 import StepFourSatSecondaryProgram from './components/StepFourSatSecondaryProgram';
@@ -56,8 +55,8 @@ class StepFour extends React.Component {
     sport: PropTypes.string.isRequired,
     age: PropTypes.string.isRequired,
     gender: PropTypes.string.isRequired,
-    startDate: PropTypes.string.isRequired,
-    endDate: PropTypes.string.isRequired,
+    startDate: PropTypes.string,
+    endDate: PropTypes.string,
     weeksLengthNumber: PropTypes.number,
     hasSecondaryProgram: PropTypes.bool,
     currentStep: PropTypes.number.isRequired,
@@ -88,21 +87,23 @@ class StepFour extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { data, weeks, currentStep } = this.props;
+    // const { data, weeks, currentStep } = this.props;
     // const { data, currentStep } = this.props;
     
-    const shouldRenderStepFour = data.length > 0;
-    const currentStepGreatherThenFour = currentStep > stepsEnum.four;
-    if (shouldRenderStepFour && currentStepGreatherThenFour) {
-      const unselectedWeek = find(weeks, ({ customize_id }) => !customize_id);
-      
-      if (unselectedWeek && prevProps.weeks[0].customize_id !== emptyConcentrationId) {
-        this.props.stepsActions.setStepsCounter(stepsEnum.four);
-      }
-    }
-    if (currentStep !== prevProps.currentStep && prevProps.currentStep > currentStep) {
-      this.scrollToCurrentComponent();
-    }
+    // console.log(data, weeks);
+    
+    // const shouldRenderStepFour = data.length > 0;
+    // const currentStepGreatherThenFour = currentStep > stepsEnum.four;
+    // if (shouldRenderStepFour && currentStepGreatherThenFour) {
+    //   const unselectedWeek = find(weeks, ({ customize_id }) => !customize_id);
+    //
+    //   if (unselectedWeek && prevProps.weeks[0].customize_id !== emptyConcentrationId) {
+    //     this.props.stepsActions.setStepsCounter(stepsEnum.four);
+    //   }
+    // }
+    // if (currentStep !== prevProps.currentStep && prevProps.currentStep > currentStep) {
+    //   this.scrollToCurrentComponent();
+    // }
   }
 
   componentWillUnmount() {
@@ -353,6 +354,7 @@ class StepFour extends React.Component {
 function mapStateToProps(state) {
   return {
     weeks: weeksItemsSelector(state),
+    weekOneData: state.stepFour.week_1_data,
     selectedWeekId: weeksSelectedWeekIdSelector(state),
     age: stepOneAgeSelector(state),
     gender: stepOneGenderSelector(state),

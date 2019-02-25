@@ -2,6 +2,7 @@
 import isEqual from 'lodash/isEqual';
 import isNumber from 'lodash/isNumber';
 import isString from 'lodash/isString';
+import isEmpty from 'lodash/isEmpty';
 import isEmail from 'validator/lib/isEmail';
 import isMobilePhone from 'validator/lib/isMobilePhone';
 import moment from 'moment';
@@ -13,6 +14,8 @@ import * as cartTypes from '../constants/cart';
 import { weekly_camp } from '../containers/StepOne';
 import { airportPickupInformation, departingFormFieldNames } from '../containers/StepSix/selectors';
 import { recalculateInsurancePrice } from './final.step';
+import { setStepsCounter } from './steps';
+import { saveTrainingId } from './training';
 
 export function updateCart(cart) {
   return (dispatch) => {
@@ -46,6 +49,37 @@ function createCart(cart) {
     type: cartTypes.CREATE_CART,
     payload: cart,
   };
+}
+
+export function deleteAllProductsFromCart(){
+  return async function (dispatch, getState){
+    const { cart } = getState();
+    const { participants } = cart;
+    
+    const cartId = cart.id;
+    const participantId = (participants[0] || {}).id || null;
+    const products = (participants[0] || {}).products || [];
+    
+    if(!isEmpty(products)){
+      for(let index in products){
+        await Api.req({
+          apiCall: Api.deleteCartCartIdParticipantParticipantIdProductId,
+          res200: async (data) => await dispatch(updateCart(data.cart)),
+          res404: () => console.log('Api.createCart() => 404'), // TODO: Add error handler!
+          reject: (err) => console.log(err), // TODO: Add error handler!
+          apiCallParams: {
+            cartId,
+            participantId,
+            productId: products[index].id
+          },
+        });
+      }
+  
+      // dispatch( updateCart(assign({}, getState(), { stepThreeProductId: null })), );
+      dispatch( saveTrainingId(null), );
+      dispatch(setStepsCounter(stepsEnum.two))
+    }
+  }
 }
 
 export function purchaseRequest(args, stubData) {

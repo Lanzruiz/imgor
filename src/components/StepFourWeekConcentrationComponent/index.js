@@ -113,7 +113,6 @@ class StepFourWeekConcentrationComponent extends React.Component {
     this.getWeekData();
   }
   
-  
   reorderConcentrations = (items) => {
     const { concentrationOrdering } = this.props;
 
