@@ -21,6 +21,7 @@ import * as stepThreeActions from '../../actions/step.three';
 import * as stepSixActions from '../../actions/step.six';
 import * as trainingActions from '../../actions/training';
 import * as cartActions from '../../actions/cart';
+import { gtmStateChange, stateChangeTypes } from '../../helpers/GTMService';
 // Selectors
 import {
   stepTreeSelectedIdSelector, stepThreeSelectedCardWithSecondaryProgramsIdSelector, stepThreeHasSecondaryProgram,
@@ -145,8 +146,8 @@ class WizardForm extends React.Component {
         return;
     }
     
-    window.reactAppFinish = () => {
-      this.purchaseHandler();
+    window.reactAppFinish = async () => {
+      await this.purchaseHandler();
     };
   }
 
@@ -298,7 +299,7 @@ class WizardForm extends React.Component {
     );
   }
 
-  purchaseHandler = () => {
+  purchaseHandler = async () => {
     const {
       cartId, redirectUrlShopify, firstName, lastName, position, finalStepDateOfBirth, shirtSize, guardianFirstName,
       guardianLastName, finalStepPhone, participantId, gender, age, guardianEmail, guardianPhone, email,
@@ -331,7 +332,9 @@ class WizardForm extends React.Component {
       preferred_shirt_size: shirtSize,
     };
 
-    this.props.cartActions.purchaseRequest(data, stubData);
+    await this.props.cartActions.purchaseRequest(data, stubData);
+    
+    this.props.gtmStateChange(stateChangeTypes.OR_CART);
   };
 
   saveCampHandler = () => {
@@ -513,7 +516,7 @@ class WizardForm extends React.Component {
             flight: {
               airline: stepSixAirportPickupAirline,
               booked: false,
-              date: stepSixArrivalDateTime ? moment(stepSixArrivalDateTime, 'YYYY-MM-DD HH:mm').format() : null,
+              date: stepSixArrivalDateTime ? moment(stepSixArrivalDateTime, 'YYYY-MM-DD hh:mm').format() : null,
               location: isDropoffLocationEqualToOther ? null : stepSixDropoff,
               location_other: isDropoffLocationEqualToOther ? stepSixDropoffOtherLocation : null,
               number: stepSixArrivalFlightNumber,
@@ -947,6 +950,7 @@ function mapDispatchToProps(dispatch) {
     stepSixActions: bindActionCreators(stepSixActions, dispatch),
     trainingActions: bindActionCreators(trainingActions, dispatch),
     cartActions: bindActionCreators(cartActions, dispatch),
+    gtmStateChange: bindActionCreators(gtmStateChange, dispatch)
   };
 };
 

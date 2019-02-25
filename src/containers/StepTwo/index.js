@@ -21,6 +21,7 @@ import * as stepsActions from '../../actions/steps';
 import * as cartActions from '../../actions/cart';
 // Helpers
 import dateFormat from '../../helpers/dateFormat';
+import { gtmStateChange, stateChangeTypes } from '../../helpers/GTMService';
 // Selectors
 import { stepTwoDataSelector, stepTwoSelectedDateSelector } from './selectors';
 import {
@@ -426,8 +427,9 @@ class StepTwo extends React.Component {
     return moment(capacity_start_date, stringFormat).month() === monthNumberJS;
   };
 
-  selectDate = (date) => {
-    this.props.stepTwoActions.selectDate(date);
+  selectDate = async (date) => {
+    await this.props.stepTwoActions.selectDate(date);
+    this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_CALENDAR);
   };
 
   selectCampLength = (length) => {
@@ -525,6 +527,7 @@ function mapDispatchToProps(dispatch) {
     stepTwoActions: bindActionCreators(stepTwoActions, dispatch),
     weeksActions: bindActionCreators(weeksActions, dispatch),
     stepsActions: bindActionCreators(stepsActions, dispatch),
+    gtmStateChange: bindActionCreators(gtmStateChange, dispatch),
     cartActions: bindActionCreators(cartActions, dispatch),
   };
 }

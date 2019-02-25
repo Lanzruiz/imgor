@@ -21,6 +21,7 @@ import LocaleString from '../../components/LocaleString';
 import Radio from '../../components/Radio';
 import Dropdown from '../../components/Dropdown';
 import AOSFadeInContainer from '../../components/AOSFadeInContainer';
+import { gtmStateChange, stateChangeTypes } from '../../helpers/GTMService';
 import TabRowHeader from './components/TabRowHeader';
 // Actions
 import * as weeksActions from '../../actions/weeks';
@@ -205,6 +206,7 @@ class StepOne extends React.Component {
                 options={[{ value: 'Boarding', stringKey: 'yes' },{ value: 'Non-Boarding', stringKey: 'no' }]}
                 sleepaway={sleepaway}
                 possibleValues={boardingOptions}
+                handleChange={() => { this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_BOARDING); }}
               />
             </div>
             <div className="content__form-control">
@@ -460,7 +462,7 @@ class StepOne extends React.Component {
                               {this.renderTabPanel({
                                 range: createNumbersArray({ from: 8, to: 18 }),
                                 boardingOptions: ['Boarding', 'Non-Boarding'],
-                                genderOptions: ['Male', 'Female'],
+                                genderOptions: ['male', 'female'],
                                 id: row.id
                               })}
                             </TabPanel>
@@ -538,7 +540,7 @@ function H3({ children }) {
 //   );
 // }
 
-function SleepawayRadioBtn({ options, sleepaway, possibleValues }) {
+function SleepawayRadioBtn({ options, sleepaway, possibleValues, handleChange }) {
   return (
     <Field
       className="content__radio-btn"
@@ -559,6 +561,7 @@ function SleepawayRadioBtn({ options, sleepaway, possibleValues }) {
                 value={value}
                 checked={isEqual(sleepaway, value)}
                 disabled={isDisabled}
+                handleChange={handleChange}
               >
                 <LocaleString stringKey={`step_one.sleepaway_${stringKey}`} />{' '}
                 {isDisabled && (
@@ -600,7 +603,7 @@ function AgeRadioBtnContainer ({ range, age }) {
 }
 
 function GenderRadioBtnContainer ({ options, value, possibleValues }) {
-  const defaultPossibleValues = ['Male', 'Female'];
+  const defaultPossibleValues = ['male', 'female'];
   const computedPossibleValues = include(possibleValues, 'All') ? defaultPossibleValues : possibleValues;
   return (
     <div className="content__radio-container">
@@ -680,6 +683,7 @@ function mapDispatchToProps(dispatch) {
     stepOneActions: bindActionCreators(stepOneActions, dispatch),
     participantActions: bindActionCreators({ addParticipantByCardId }, dispatch),
     stepsActions: bindActionCreators(stepsActions, dispatch),
+    gtmStateChange: bindActionCreators(gtmStateChange, dispatch)
   };
 };
 
