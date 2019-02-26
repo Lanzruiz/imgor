@@ -3,36 +3,36 @@ import _ from 'lodash';
 
 const GTM_CHANGE_STATE = '@GTM/change_state';
 
-const sports = {
-  'Baseball': ['1'],
-  'Bollettieri Boys Tennis': ['11'],
-  'Bollettieri Girls Tennis': ['12'],
-  'Boys Basketball': ['2'],
-  'Boys Soccer': ['9'],
-  'Football': ['4'],
-  'Girls Basketball': ['3'],
-  'Girls Soccer': ['10'],
-  'Golf': ['5'],
-  'Boys Lacrosse': ['6'],
-  'Girls Lacrosse': ['7'],
-  'Performance': ['8'],
-  'Track and Field and Cross Country': ['13'],
-  'Fashion': ['14'],
-  'Basketball': ['15'],
-  'Soccer Boys': ['9'],
-  'Tennis Boys': ['11', '16'],
-  'Tennis Girls': ['12', '16'],
-  'Tennis': ['16'],
-  'Soccer': ['17'],
-  'Soccer Girls': ['10', '17'],
-  'Basketball Boys': ['2', '15'],
-  'Basketball Girls': ['3', '15'],
-  'Track & Field and Cross Country': ['13'],
-  'Lacrosse': ['18'],
-  'Lacrosse Boys': ['6', '18'],
-  'Lacrosse Girls': ['7', '18'],
-  'Academics': ['19']
-};
+// const sports = {
+//   'Baseball': ['1'],
+//   'Bollettieri Boys Tennis': ['11'],
+//   'Bollettieri Girls Tennis': ['12'],
+//   'Boys Basketball': ['2'],
+//   'Boys Soccer': ['9'],
+//   'Football': ['4'],
+//   'Girls Basketball': ['3'],
+//   'Girls Soccer': ['10'],
+//   'Golf': ['5'],
+//   'Boys Lacrosse': ['6'],
+//   'Girls Lacrosse': ['7'],
+//   'Performance': ['8'],
+//   'Track and Field and Cross Country': ['13'],
+//   'Fashion': ['14'],
+//   'Basketball': ['15'],
+//   'Soccer Boys': ['9'],
+//   'Tennis Boys': ['11', '16'],
+//   'Tennis Girls': ['12', '16'],
+//   'Tennis': ['16'],
+//   'Soccer': ['17'],
+//   'Soccer Girls': ['10', '17'],
+//   'Basketball Boys': ['2', '15'],
+//   'Basketball Girls': ['3', '15'],
+//   'Track & Field and Cross Country': ['13'],
+//   'Lacrosse': ['18'],
+//   'Lacrosse Boys': ['6', '18'],
+//   'Lacrosse Girls': ['7', '18'],
+//   'Academics': ['19']
+// };
 
 export const stateChangeTypes = {
   OR_CAMPER_BOARDING: 'OR-camper-boarding',
@@ -69,7 +69,8 @@ function pushToDataLayer(data) {
 }
 
 function gtmStateChangeHandler(pageType = '', state) {
-  const sportKey = Object.keys(sports).find(key => (key || '').toLowerCase() === (state.sport || '').toLowerCase());
+  
+  // const sportKey = Object.keys(sports).find(key => (key || '').toLowerCase() === (state.sport || '').toLowerCase());
   
   const gtmParams = {
     event: 'newPage',
@@ -88,9 +89,11 @@ function gtmStateChangeHandler(pageType = '', state) {
       type: pageType,
       language: state.language,
       url: `${window.location.href}`,
-      sport: sports[sportKey]
+      sport: state.sport
     },
   };
+  
+  console.log('GTM >>', gtmParams);
   
   pushToDataLayer(gtmParams);
 }
