@@ -39,8 +39,6 @@ function pushToDataLayer(data) {
 }
 
 function gtmStateChangeHandler(pageType = '', state) {
- 
-  console.log(state);
   
   const gtmParams = {
     event: 'newPage',
@@ -95,8 +93,6 @@ function gtmStateChangeHandler(pageType = '', state) {
       }]
     }
   };
-  
-  console.log('GTM >>', gtmParams);
   
   pushToDataLayer(gtmParams);
 }
