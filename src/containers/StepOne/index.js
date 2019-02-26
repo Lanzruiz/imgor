@@ -172,12 +172,15 @@ class StepOne extends React.Component {
     this.props.weeksActions.setWeeksCounter(count);
   };
   
-  renderTabPanel = ({ range = [], boardingOptions = [], genderOptions = [], id = '', index }) => {
+  renderTabPanel = ({ range = [], boardingOptions = [], genderOptions = [], id = '', colName = ""}) => {
     const { sleepaway, age, gender, dataGender } = this.props;
     
-    const indexer = index + 1;
+    const parsedColName = (colName || '')
+      .toLowerCase()
+      .replace(/,/g, '')
+      .replace(/\s/g, '_');
     
-    const html = ReactDOMServer.renderToString(<LocaleString stringKey={`step_one.${id}.paragraph_text_${indexer}`} />);
+    const html = ReactDOMServer.renderToString(<LocaleString stringKey={`step_one.${id}.${parsedColName}.text`} />);
     
     const transformHtml = html.replace(/(&lt;)|(&quot;)|(&gt;)/ig, (intercept, fix1, fix2, fix3) => {
       if(intercept === fix1) {
@@ -196,7 +199,7 @@ class StepOne extends React.Component {
       <div className="tab-content__container tab-row__container content">
         <div className="content__first-col">
           <H2>
-            <LocaleString stringKey={`step_one.${id}.paragraph_title_${indexer}`} />
+            <LocaleString stringKey={`step_one.${id}.${parsedColName}.title`} />
           </H2>
           <div dangerouslySetInnerHTML={{__html: transformHtml}} />
         </div>
@@ -468,7 +471,7 @@ class StepOne extends React.Component {
                                 boardingOptions: ['Boarding', 'Non-Boarding'],
                                 genderOptions: ['Male', 'Female'],
                                 id: row.id,
-                                index: index
+                                colName: weekly_camp
                               })}
                             </TabPanel>
                         ) : (
@@ -483,7 +486,7 @@ class StepOne extends React.Component {
                                     boardingOptions: boarding_options,
                                     genderOptions: gender_options,
                                     id: row.id,
-                                    index: idx
+                                    colName: option.name
                                   })}
                                 </TabPanel>
                               );
