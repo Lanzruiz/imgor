@@ -191,7 +191,7 @@ class StepOne extends React.Component {
       }
       return null;
     });
-
+    
     return (
       <div className="tab-content__container tab-row__container content">
         <div className="content__first-col">
@@ -222,7 +222,6 @@ class StepOne extends React.Component {
                   <AgeRadioBtnContainer
                     age={age}
                     range={range}
-                    handleNastyClick={this.onUserActionDeletePrevCartProducts}
                   />
                 )
                 : (

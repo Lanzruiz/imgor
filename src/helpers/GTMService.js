@@ -39,6 +39,8 @@ function pushToDataLayer(data) {
 }
 
 function gtmStateChangeHandler(pageType = '', state) {
+ 
+  console.log(state);
   
   const gtmParams = {
     event: 'newPage',
@@ -67,28 +69,28 @@ function gtmStateChangeHandler(pageType = '', state) {
         coupon_code: null,
         coupon_data: [],
         email: state.email,
-        first_name: null,
-        last_name: null,
-        price_total: null,
-        total_discount: null,
+        first_name: state.first_name,
+        last_name: state.last_name,
+        price_total: state.price_total,
+        total_discount: state.total_discount,
       },
       campers: [{
         id: null,
         created: null,
         updated: null,
         address: null,
-        first_name: null,
-        last_name: null,
-        email: null,
-        phone: null,
+        first_name: state.guardian_information.first_name,
+        last_name: state.guardian_information.last_name,
+        email: state.guardian_information.email,
+        phone: state.guardian_information.phone,
         medical_waiver: null,
-        preferred_shirt_size: null,
-        preferred_short_size: null,
-        dob: null,
+        preferred_shirt_size: state.shirt_size,
+        preferred_short_size: state.shirt_size,
+        dob: state.dob,
         gender: state.gender,
-        position: null,
-        price_total: null,
-        age: null,
+        position: state.position,
+        price_total: state.price_total,
+        age: state.age,
         quantity: 1
       }]
     }

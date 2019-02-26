@@ -69,10 +69,11 @@ class StepFinal extends React.Component {
 
   componentWillReceiveProps(nextProps, nextContext) {
     const { email, last_name, phone, first_name } = nextProps.guradianInfo;
+    const { selectedPosition, shirtSize } = nextProps;
     
     const differentData = JSON.stringify(nextProps.guradianInfo) !== JSON.stringify(this.props.guradianInfo);
     
-    if( email && last_name && phone && first_name && differentData){
+    if( email && last_name && phone && first_name && differentData && selectedPosition && shirtSize ){
       this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_INFORMATION);
     }
   }
