@@ -171,9 +171,16 @@ class StepOne extends React.Component {
     this.props.weeksActions.setWeeksCounter(count);
   };
   
-  renderTabPanel = ({ range = [], boardingOptions = [], genderOptions = [], id = '' }) => {
-    const { sleepaway, age, gender } = this.props;
-    const html = ReactDOMServer.renderToString(<LocaleString stringKey={`step_one.${id}.paragraph_text_1`} />);
+  renderTabPanel = ({ range = [], boardingOptions = [], genderOptions = [], id = '', colName = ""}) => {
+    const { sleepaway, age, gender, dataGender } = this.props;
+    
+    const parsedColName = (colName || '')
+      .toLowerCase()
+      .replace(/,/g, '')
+      .replace(/\s/g, '_');
+    
+    const html = ReactDOMServer.renderToString(<LocaleString stringKey={`step_one.${id}.${parsedColName}.text`} />);
+    
     const transformHtml = html.replace(/(&lt;)|(&quot;)|(&gt;)/ig, (intercept, fix1, fix2, fix3) => {
       if(intercept === fix1) {
         return '<';
@@ -186,12 +193,12 @@ class StepOne extends React.Component {
       }
       return null;
     });
-
+    
     return (
       <div className="tab-content__container tab-row__container content">
         <div className="content__first-col">
           <H2>
-            <LocaleString stringKey={`step_one.${id}.paragraph_title_1`} />
+            <LocaleString stringKey={`step_one.${id}.${parsedColName}.title`} />
           </H2>
           <div dangerouslySetInnerHTML={{__html: transformHtml}} />
         </div>
@@ -227,7 +234,7 @@ class StepOne extends React.Component {
                 )
               }
             </div>
-            <div className="content__form-control" style={{visibility: !!gender ? 'collapse': ''}}>
+            <div className="content__form-control" style={{visibility: !!dataGender ? 'collapse': ''}}>
               <H3>
                 <LocaleString stringKey="step_one.gender" />
               </H3>
@@ -235,7 +242,7 @@ class StepOne extends React.Component {
                 options={['Male', 'Female']}
                 value={gender}
                 possibleValues={genderOptions}
-                hasPredefinedValue={!!gender}
+                hasPredefinedValue={!!dataGender}
               />
             </div>
           </Form>
@@ -298,7 +305,7 @@ class StepOne extends React.Component {
               </GreenBlock>
             </TabRowSection>
           </TabRow>
-          {parsedData.map((row, idx) => {
+          {parsedData.map((row, index) => {
             const selectedIndex = (
               isStringsEqual(row.name, group)
                 ? isStringsEqual(row.name, weekly_camp)
@@ -309,7 +316,7 @@ class StepOne extends React.Component {
                 : 0
             );
             return (
-              <React.Fragment key={idx}>
+              <React.Fragment key={index}>
                 <Tabs
                   selectedTabClassName="tab-row__section--selected"
                   disabledTabClassName="tab-row__section--disabled"
@@ -461,7 +468,8 @@ class StepOne extends React.Component {
                                 range: createNumbersArray({ from: 8, to: 18 }),
                                 boardingOptions: ['Boarding', 'Non-Boarding'],
                                 genderOptions: ['Male', 'Female'],
-                                id: row.id
+                                id: row.id,
+                                colName: weekly_camp
                               })}
                             </TabPanel>
                         ) : (
@@ -471,7 +479,13 @@ class StepOne extends React.Component {
                               const range = createNumbersArray({ from: age_from, to: age_to });
                               return (
                                 <TabPanel key={idx}>
-                                  {this.renderTabPanel({ range, boardingOptions: boarding_options, genderOptions: gender_options, id: row.id })}
+                                  {this.renderTabPanel({
+                                    range,
+                                    boardingOptions: boarding_options,
+                                    genderOptions: gender_options,
+                                    id: row.id,
+                                    colName: option.name
+                                  })}
                                 </TabPanel>
                               );
                             })
