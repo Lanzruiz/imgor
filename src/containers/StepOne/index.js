@@ -172,7 +172,7 @@ class StepOne extends React.Component {
   };
   
   renderTabPanel = ({ range = [], boardingOptions = [], genderOptions = [], id = '' }) => {
-    const { sleepaway, age, gender } = this.props;
+    const { sleepaway, age, gender, dataGender } = this.props;
     const html = ReactDOMServer.renderToString(<LocaleString stringKey={`step_one.${id}.paragraph_text`} />);
     const transformHtml = html.replace(/(&lt;)|(&quot;)|(&gt;)/ig, (intercept, fix1, fix2, fix3) => {
       if(intercept === fix1) {
@@ -227,7 +227,7 @@ class StepOne extends React.Component {
                 )
               }
             </div>
-            <div className="content__form-control" style={{visibility: !!gender ? 'collapse': ''}}>
+            <div className="content__form-control" style={{visibility: !!dataGender ? 'collapse': ''}}>
               <H3>
                 <LocaleString stringKey="step_one.gender" />
               </H3>
@@ -235,7 +235,7 @@ class StepOne extends React.Component {
                 options={['Male', 'Female']}
                 value={gender}
                 possibleValues={genderOptions}
-                hasPredefinedValue={!!gender}
+                hasPredefinedValue={!!dataGender}
               />
             </div>
           </Form>
