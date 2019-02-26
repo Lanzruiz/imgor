@@ -8,13 +8,11 @@ import cx from 'classnames';
 import PropTypes from 'prop-types';
 import scrollToComponent from 'react-scroll-to-component';
 import isEqual from 'lodash/isEqual';
-import find from 'lodash/find';
 import isNumber from 'lodash/isNumber';
 // Components
 import Header from '../../components/Header';
 import LocaleString from '../../components/LocaleString';
 import StepFourWeekConcentrationComponent from '../../components/StepFourWeekConcentrationComponent';
-import { emptyConcentrationId } from '../../reducers/step.four';
 import StepFourEslSecondaryProgram from './components/StepFourEslSecondaryProgram';
 import StepFourPerformanceSecondaryProgram from './components/StepFourPerformanceSecondaryProgram';
 import StepFourSatSecondaryProgram from './components/StepFourSatSecondaryProgram';
@@ -31,7 +29,7 @@ import {
   cartIdSelector, participantIdSelector, cartSelector,
 } from '../StepOne/selectors';
 import { sportSelector, businessTypeSelector, packageTypeSelector } from '../InitialComponent/selectors';
-import { stepFourDataSelector } from './selectors';
+import { stepFourDataSelector, stepFourWeekOneDataSelector } from './selectors';
 // Constants
 import { stepsEnum } from '../../constants/steps';
 // Styles
@@ -88,21 +86,21 @@ class StepFour extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { data, weeks, currentStep } = this.props;
-    // const { data, currentStep } = this.props;
-    
-    const shouldRenderStepFour = data.length > 0;
-    const currentStepGreatherThenFour = currentStep > stepsEnum.four;
-    if (shouldRenderStepFour && currentStepGreatherThenFour) {
-      const unselectedWeek = find(weeks, ({ customize_id }) => !customize_id);
-      
-      if (unselectedWeek && prevProps.weeks[0].customize_id !== emptyConcentrationId) {
-        this.props.stepsActions.setStepsCounter(stepsEnum.four);
-      }
-    }
-    if (currentStep !== prevProps.currentStep && prevProps.currentStep > currentStep) {
-      this.scrollToCurrentComponent();
-    }
+    // const { data, weeks, currentStep } = this.props;
+    // // const { data, currentStep } = this.props;
+    //
+    // const shouldRenderStepFour = data.length > 0;
+    // const currentStepGreatherThenFour = currentStep > stepsEnum.four;
+    // if (shouldRenderStepFour && currentStepGreatherThenFour) {
+    //   const unselectedWeek = find(weeks, ({ customize_id }) => !customize_id);
+    //
+    //   if (unselectedWeek && prevProps.weeks[0].customize_id !== emptyConcentrationId) {
+    //     this.props.stepsActions.setStepsCounter(stepsEnum.four);
+    //   }
+    // }
+    // if (currentStep !== prevProps.currentStep && prevProps.currentStep > currentStep) {
+    //   this.scrollToCurrentComponent();
+    // }
   }
 
   componentWillUnmount() {
@@ -143,12 +141,14 @@ class StepFour extends React.Component {
   render() {
     const {
       age, businessType, gender, weeks, selectedWeekId, sport, programType, data, hasSecondaryProgram,
-      stepThreeSecondaryPrograms, viaLogoPath,
+      stepThreeSecondaryPrograms, viaLogoPath, week_1_data
     } = this.props;
   
     const tabsList = [];
     const tabPanels = [];
-
+  
+    const hasDataButFirstWeekIsEmpty = data.length > 0 && week_1_data.length === 0;
+  
     const tabListClassName = cx('step-four-tabs__tab-list', { 'react-hidden': isEqual(weeks.length, 1) });
   
     if (hasSecondaryProgram) {
@@ -210,7 +210,7 @@ class StepFour extends React.Component {
       );
     });
     return (
-      <AOSFadeInContainer className="step-four" ref={this.stepFour}>
+      <AOSFadeInContainer className={`step-four ${hasDataButFirstWeekIsEmpty ? 'react-hidden' : ''}`} ref={this.stepFour}>
         <Container>
           <Row>
             <Col>
@@ -369,7 +369,8 @@ function mapStateToProps(state) {
     businessType: businessTypeSelector(state),
     packageType: packageTypeSelector(state),
     cart: cartSelector(state),
-    concentrationOrdering: state.initialSettings.concentrationOrdering
+    concentrationOrdering: state.initialSettings.concentrationOrdering,
+    week_1_data: stepFourWeekOneDataSelector(state),
   };
 };
 
