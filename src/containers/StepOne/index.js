@@ -172,7 +172,7 @@ class StepOne extends React.Component {
   };
   
   renderTabPanel = ({ range = [], boardingOptions = [], genderOptions = [], id = '', colName = ""}) => {
-    const { sleepaway, age, gender } = this.props;
+    const { sleepaway, age, gender, dataGender } = this.props;
     
     const parsedColName = (colName || '')
       .toLowerCase()
@@ -234,7 +234,7 @@ class StepOne extends React.Component {
                 )
               }
             </div>
-            <div className="content__form-control" style={{visibility: !!gender ? 'collapse': ''}}>
+            <div className="content__form-control" style={{visibility: !!dataGender ? 'collapse': ''}}>
               <H3>
                 <LocaleString stringKey="step_one.gender" />
               </H3>
@@ -242,7 +242,7 @@ class StepOne extends React.Component {
                 options={['Male', 'Female']}
                 value={gender}
                 possibleValues={genderOptions}
-                hasPredefinedValue={!!gender}
+                hasPredefinedValue={!!dataGender}
               />
             </div>
           </Form>
