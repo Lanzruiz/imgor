@@ -157,15 +157,19 @@ class StepOne extends React.Component {
       if(window.reactAppStart && typeof window.reactAppStart === 'function'){
         window.reactAppStart({ cartId, email });
       }
+      
+      this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_EMAIL);
     }
   };
   
   incrementWeeksCounter = () => {
     this.props.weeksActions.incrementWeeksCounter();
+    this.props.gtmStateChange(stateChangeTypes.OR_CAMP_DURATION);
   };
   
   decrementWeeksCounter = () => {
     this.props.weeksActions.decrementWeeksCounter();
+    this.props.gtmStateChange(stateChangeTypes.OR_CAMP_DURATION);
   };
   
   setWeeksCounter = (count) => {
@@ -225,7 +229,6 @@ class StepOne extends React.Component {
                   <AgeRadioBtnContainer
                     age={age}
                     range={range}
-                    handleNastyClick={this.onUserActionDeletePrevCartProducts}
                   />
                 )
                 : (
@@ -427,7 +430,8 @@ class StepOne extends React.Component {
                                           this.selectGroup({ group: row.name, secondary_group: option.name });
                                           this.setWeeksCounter(0);
                                           this.setPrice(option.price);
-                                      }}
+                                          this.props.gtmStateChange(stateChangeTypes.OR_CAMP_DURATION);
+                                        }}
                                       className={cx(`
                                         tab-row__section
                                         tab-row__section--bg-white
