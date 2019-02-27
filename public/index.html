@@ -25,10 +25,27 @@
 			}
 		</script>
 
+		<!-- ---------------------------------- -->
+		<!--EXTERNAL INIT REACT APP EXAMPLE-->
+		<!-- ---------------------------------- -->
+		<button id="eee">Init app</button>
+		<script>
+			//some event
+			document.getElementById('eee').addEventListener('click', () => {
+
+			  //invoke initReactApp
+			  if(window.initReactApp && typeof window.initReactApp === 'function') {
+          window.initReactApp({ email: 'test@test.com' });
+        }
+
+			})
+		</script>
+
 		<!-- data-business_type: [Adult Program, Youth Camp] -->
 
 		<div
       id="imgor-root"
+			data-external_init="true"
       data-sport="golf"
       data-gender="male"
       data-group=""

@@ -16,6 +16,7 @@ import { airportPickupInformation, departingFormFieldNames } from '../containers
 import { recalculateInsurancePrice } from './final.step';
 import { setStepsCounter } from './steps';
 import { saveTrainingId } from './training';
+import { addParticipantByCardId } from './participant';
 
 export function updateCart(cart) {
   return (dispatch) => {
@@ -33,11 +34,16 @@ export function deleteCart() {
   };
 };
 
-export function createCartRequest() {
+export function createCartRequest(initialEmail) {
   return function(dispatch) {
     return Api.req({
       apiCall: Api.createCart,
-      res200: (data) => dispatch(createCart(data.cart)),
+      res200: (data) => {
+        if(initialEmail){
+          dispatch(addParticipantByCardId({ cartId: data.cart.id,  email: initialEmail }))
+        }
+        dispatch(createCart(data.cart))
+      },
       res404: () => console.log('Api.createCart() => 404'), // TODO: Add error handler!
       reject: (err) => console.log(err), // TODO: Add error handler!
     });
