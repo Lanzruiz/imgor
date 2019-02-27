@@ -853,9 +853,9 @@ class WizardForm extends React.Component {
       // case finalStepDateOfBirth && !isEqual( calculateAge(finalStepDateOfBirth), ageNumber ): {
       //   return 'camper_age_is_not_equal';
       // }
-      case !position: {
-        return 'step_final.no_position_message';
-      }
+      // case !position: {
+      //   return 'step_final.no_position_message';
+      // }
       case !shirtSize: {
         return 'step_final.no_shirt_size_message';
       }
