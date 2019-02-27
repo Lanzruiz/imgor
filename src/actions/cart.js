@@ -348,7 +348,7 @@ export function stepSixValidation (props) {
 
 export function stepFinalValidation (props) {
   const {
-    ageNumber, finalStepDateOfBirth, firstName, lastName, position, shirtSize, guardianFirstName,
+    ageNumber, finalStepDateOfBirth, firstName, lastName, position, shirtSize, guardianFirstName, positions,
     guardianLastName, guardianEmail, guardianPhone, isBusinessTypeForAdult
   } = props;
   
@@ -371,7 +371,7 @@ export function stepFinalValidation (props) {
     // case finalStepDateOfBirth && !isEqual( calculateAge(finalStepDateOfBirth), ageNumber ): {
     //   return 'camper_age_is_not_equal';
     // }
-    case !position: {
+    case !isEmpty(positions) && !position: {
       return 'step_final.no_position_message';
     }
     case !shirtSize: {
