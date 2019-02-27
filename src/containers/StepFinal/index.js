@@ -84,7 +84,6 @@ class StepFinal extends React.Component {
 
   render() {
     const { positions, selectedPosition, shirtSize, age, isBusinessTypeForAdult, refundable, refundableLoading, insurancePrice } = this.props;
-    
     const options = [
       {
         stringKey: 'step_final.required_insurance_yes_title',
