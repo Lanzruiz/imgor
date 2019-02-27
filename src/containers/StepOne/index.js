@@ -320,6 +320,9 @@ class StepOne extends React.Component {
                   : tabIndex
                 : 0
             );
+            
+            const customTabName = ReactDOMServer.renderToString(<LocaleString stringKey={`step_one.${row.id}.tab_title`}/>);
+            
             return (
               <React.Fragment key={index}>
                 <Tabs
@@ -342,7 +345,9 @@ class StepOne extends React.Component {
                       >
                         <TabRowHeader >
                           <Fragment>
-                            <div>{row.name}</div>
+                            <div>
+                              {customTabName || row.name}
+                            </div>
                             <div className="tab-row__header--subtitle">
                               <LocaleString stringKey={`step_one.${row.id}.under_tab_title`}/>
                             </div>
