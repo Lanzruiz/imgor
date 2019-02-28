@@ -1,7 +1,7 @@
 // Modules
 import React, { Fragment } from 'react';
 import { Container, Row, Col } from 'react-grid-system';
-import { Form, Field, reduxForm } from 'redux-form';
+import { Form, Field } from 'redux-form';
 import scrollToComponent from 'react-scroll-to-component';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
