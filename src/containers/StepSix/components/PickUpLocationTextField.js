@@ -12,10 +12,10 @@ const PickUpLocationTextField = (props) => {
   return isEqual(props.departing, departingFormFieldNames.other) && (
     <div className="step-six__text-input step-six__form-field">
       <Input
-        autoComplete="off"
         name={stepSixFormFieldNames.pickUpOtherLocation}
         label="step_six.other_location"
         disabled={isDisabled}
+        autoComplete={false}
       />
     </div>
   );
