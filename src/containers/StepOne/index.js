@@ -98,6 +98,7 @@ class StepOne extends React.Component {
     age: PropTypes.string,
     gender: PropTypes.string,
     weeksLengthNumber: PropTypes.number,
+    dataInitialEmail: PropTypes.string,
   };
 
   static defaultProps = {
@@ -264,16 +265,18 @@ class StepOne extends React.Component {
   };
 
   render() {
-    const { weeksCounter, participantId, data, tabIndex, group } = this.props;
+    const { weeksCounter, participantId, data, tabIndex, group, dataInitialEmail } = this.props;
     
     const parsedData = data.map(v => ({...v, id: (v.name || '').toLowerCase().replace(/\s/g, '_')}));
     
     return (
       <AOSFadeInContainer className="step-one">
-        <EmailModal
-          onSubmit={this.closeEmailModal}
-          shouldShowEmailModal={!participantId}
-        />
+        {!dataInitialEmail && (
+          <EmailModal
+            onSubmit={this.closeEmailModal}
+            shouldShowEmailModal={!participantId}
+          />
+        )}
         <Container>
           <Row>
             <Col>
