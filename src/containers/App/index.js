@@ -29,6 +29,7 @@ import { setMaxStepValue } from '../../actions/steps';
 import { createCartRequest } from '../../actions/cart';
 import { setInitialSettings, updateInitialSettings } from '../../actions/initialSettings';
 import { selectGroup } from '../../actions/step.one';
+
 // Styles
 import './styles.scss';
 
@@ -53,6 +54,7 @@ class App extends React.Component {
     extraSettingsPath: PropTypes.string,
     dataBusinessType: PropTypes.string,
     dataDisplayFooter: PropTypes.bool,
+    dataInitial: PropTypes.object,
   };
 
   static defaultProps = {
@@ -73,6 +75,7 @@ class App extends React.Component {
         dataSecondaryGroup={props.dataSecondaryGroup}
         dataGender={props.dataGender}
         dataBusinessType={props.dataBusinessType}
+        dataInitialEmail={(props.dataInitial || {}).email}
       />,
       <StepTwo key="1" />,
       <StepThree
@@ -117,7 +120,7 @@ class App extends React.Component {
     }
 
     if (!cartId) {
-      this.props.cartActions.createCartRequest();
+      this.props.cartActions.createCartRequest(this.props.dataInitial.email);
     }
 
     const initialSettings = {
@@ -139,7 +142,7 @@ class App extends React.Component {
   componentDidUpdate(prevProps) {
     const { cartId } = this.props;
     if (cartId !== prevProps.cartId && !cartId) {
-      this.props.cartActions.createCartRequest();
+      this.props.cartActions.createCartRequest(this.props.dataInitial.email);
     }
   }
 

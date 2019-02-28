@@ -17,6 +17,7 @@ import './index.scss';
 const imgorRootContainer = document.getElementById('imgor-root');
 
 const {
+  external_init,
   sport,
   gender,
   group,
@@ -39,55 +40,66 @@ export const instance = axios.create({
   baseURL: apiUrl || process.env.REACT_APP_API_URL,
 });
 
-ReactDOM.render(
-  <Provider store={store}>
-    {/* <PersistGate loading={<div>Loading...</div>} persistor={persistor}> */}
-      <ConnectedRouter history={history}>
-        <React.Fragment>
-          <Switch>
-            <Route path="/start" exact component={(args) => {
-              return (
-                <InitialComponent
-                  {...args}
-                  sport={sport}
-                  gender={gender}
-                  group={group}
-                  secondaryGroup={secondary_group}
-                  businessType={business_type}
-                  redirectUrlShopify={redirectUrlShopify}
-                  urlToNoProps={urlToNoProps}
-                />
-              );
-            }} />
-            <Route path="/" component={(args) => {
-              return (
-                <App
-                  {...args}
-                  redirectUrlShopify={redirectUrlShopify}
-                  sport={sport}
-                  gender={gender}
-                  group={group}
-                  secondaryGroup={secondary_group}
-                  businessType={business_type}
-                  urlToNoProps={urlToNoProps}
-                  dataGroup={group}
-                  dataSecondaryGroup={secondary_group}
-                  dataBusinessType={business_type}
-                  dataGender={gender}
-                  dataLastChanged={last_changed}
-                  dataDisplayFooter={displayFooter === 'true'}
-                  dataAppKey={appKey}
-                  contentPath={contentPath}
-                  settingsPath={contentPath}
-                  extraSettingsPath={settingsPath}
-                  dataViaLogoPath={viaLogoPath}
-                />
-              );
-            }} />
-          </Switch>
-        </React.Fragment>
-      </ConnectedRouter>
-    {/* </PersistGate> */}
-  </Provider>,
-  imgorRootContainer,
-);
+function init(initData = {}){
+  ReactDOM.render(
+    <Provider store={store}>
+      {/* <PersistGate loading={<div>Loading...</div>} persistor={persistor}> */}
+        <ConnectedRouter history={history}>
+          <React.Fragment>
+            <Switch>
+              <Route path="/start" exact component={(args) => {
+                return (
+                  <InitialComponent
+                    {...args}
+                    sport={sport}
+                    gender={gender}
+                    group={group}
+                    secondaryGroup={secondary_group}
+                    businessType={business_type}
+                    redirectUrlShopify={redirectUrlShopify}
+                    urlToNoProps={urlToNoProps}
+                  />
+                );
+              }} />
+              <Route path="/" component={(args) => {
+                return (
+                  <App
+                    {...args}
+                    redirectUrlShopify={redirectUrlShopify}
+                    sport={sport}
+                    gender={gender}
+                    group={group}
+                    secondaryGroup={secondary_group}
+                    businessType={business_type}
+                    urlToNoProps={urlToNoProps}
+                    dataGroup={group}
+                    dataSecondaryGroup={secondary_group}
+                    dataBusinessType={business_type}
+                    dataGender={gender}
+                    dataLastChanged={last_changed}
+                    dataDisplayFooter={displayFooter === 'true'}
+                    dataAppKey={appKey}
+                    contentPath={contentPath}
+                    settingsPath={contentPath}
+                    extraSettingsPath={settingsPath}
+                    dataViaLogoPath={viaLogoPath}
+                    dataInitial={initData}
+                  />
+                );
+              }} />
+            </Switch>
+          </React.Fragment>
+        </ConnectedRouter>
+      {/* </PersistGate> */}
+    </Provider>,
+    imgorRootContainer,
+  );
+}
+
+if(external_init !== 'true'){
+  init();
+} else {
+  window.initReactApp = (initData) => {
+    init(initData);
+  }
+}
