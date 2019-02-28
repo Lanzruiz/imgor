@@ -23,6 +23,8 @@ const Radio = (props) => {
         name={name}
         value={value}
         onChange={(v) => {onChange(v); handleChange && handleChange(v);}}
+        onBlur={() => { rest.onBlur() }}
+        onFocus={() => { rest.onFocus() }}
       />
       {children}
     </label>

@@ -500,10 +500,13 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default reduxForm({
-  form: 'wizard', // <------ same form name
-  destroyOnUnmount: false, // <------ preserve form data
-  forceUnregisterOnUnmount: true, // <------ unregister fields on unmount
-})(
-  connect(mapStateToProps, mapDispatchToProps)(StepFinal)
-);
+// export default reduxForm({
+//   form: 'wizard', // <------ same form name
+//   destroyOnUnmount: false, // <------ preserve form data
+//   forceUnregisterOnUnmount: true, // <------ unregister fields on unmount
+// })(
+//   connect(mapStateToProps, mapDispatchToProps)(StepFinal)
+// );
+
+
+export default  connect(mapStateToProps, mapDispatchToProps)(StepFinal)
