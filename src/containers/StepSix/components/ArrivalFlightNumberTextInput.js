@@ -11,6 +11,7 @@ const ArrivalFlightNumberTextInput = () => {
       <Input
         name={stepSixFormFieldNames.arrivalFlightNumber}
         label="step_six.flight_number"
+        autoComplete={false}
       />
     </div>
   );

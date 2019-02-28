@@ -15,6 +15,7 @@ const PickUpLocationTextField = (props) => {
         name={stepSixFormFieldNames.pickUpOtherLocation}
         label="step_six.other_location"
         disabled={isDisabled}
+        autoComplete={false}
       />
     </div>
   );
