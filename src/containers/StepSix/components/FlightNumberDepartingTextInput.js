@@ -9,6 +9,7 @@ const FlightNumberDepartingTextInput = () => {
   return (
     <div className="step-six__text-input step-six__form-field">
       <Input
+        autoComplete="off"
         name={stepSixFormFieldNames.departingFlightNumber}
         label="step_six.flight_number"
       />

@@ -13,6 +13,7 @@ const DropoffLocationTextField = (props) => {
   return isEqual(props.dropoff, departingFormFieldNames.other) && (
     <div className="step-six__text-input step-six__form-field">
       <Input
+        autoComplete="off"
         name={stepSixFormFieldNames.dropoffOtherLocation}
         label="step_six.other_location"
         disabled={isDisabled}

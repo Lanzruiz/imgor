@@ -120,6 +120,7 @@ class renderDatePicker extends React.Component {
               <div className={`${datePickerContainerClassName} ${showTimeSelect ? 'with-time-select' : ''}`}>
                 <DatePicker
                   {...input}
+                  autoComplete="off"
                   fixedHeight
                   withPortal={withPortal}
                   isClearable={isClearable}

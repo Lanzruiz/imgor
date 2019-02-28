@@ -51,6 +51,7 @@ export default class Input extends React.Component {
         {({ strings }) => (
           <React.Fragment>
             <input
+              autoComplete="off"
               {...input}
               className={inputClassName}
               placeholder={(strings && strings[label]) ? strings[label] : label}
