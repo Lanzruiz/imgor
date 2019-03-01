@@ -1,29 +1,23 @@
 import React from 'react';
-import {
-  required,
-  email,
-} from 'redux-form-validators';
 import LocaleString from '../components/LocaleString';
 import calculateAge from './calculateAge';
 
-const validations = {
-  email: [
-    required({ msg: 'Must be valid email. example@yourdomain.com' }),
-    email({ msg: 'Must be valid email. example@yourdomain.com' }),
-  ],
+export const emailValidate = (value, message, description) => {
+  const regEx = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+  if(!value) return message;
+  return value && regEx.test(value) ? undefined : description;
 };
+
 
 const validate = (values, state) => {
   const errors = {};
-  for (let field in validations) {
-    let value = values[field];
-    errors[field] = validations[field].map((validateField) => {
-      return validateField(value, values);
-    }).find(x => x);
-  }
+  
+  const emailMessage = 'Must be valid email. example@yourdomain.com';
+  errors['email'] = emailValidate(values['email'], emailMessage, emailMessage);
   
   const age = Number(state.values.age || 0);
-  errors['date_of_birth'] = calculateAge(values.date_of_birth) !== age
+  
+  errors['date_of_birth'] = values.date_of_birth && calculateAge(values.date_of_birth) !== age
     ? <LocaleString stringKey={'camper_age_is_not_equal'}/>
     : undefined;
   
