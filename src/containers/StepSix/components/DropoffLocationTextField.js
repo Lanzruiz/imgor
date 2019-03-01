@@ -16,6 +16,7 @@ const DropoffLocationTextField = (props) => {
         name={stepSixFormFieldNames.dropoffOtherLocation}
         label="step_six.other_location"
         disabled={isDisabled}
+        autoComplete={false}
       />
     </div>
   );

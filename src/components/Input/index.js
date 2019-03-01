@@ -16,6 +16,7 @@ export default class Input extends React.Component {
     inputClassName: PropTypes.string,
     errorBlockClassName: PropTypes.string,
     disabled: PropTypes.bool,
+    autoComplete: PropTypes.bool.isRequired,
   };
 
   static defaultProps = {
@@ -23,6 +24,7 @@ export default class Input extends React.Component {
     label: '',
     inputClassName: '',
     errorBlockClassName: '',
+    autoComplete: false,
   };
 
   render() {
@@ -39,7 +41,7 @@ export default class Input extends React.Component {
   }
 
   renderField = ({ input, meta: { touched, error }, disabled }) => {
-    const { label, inputClassName, errorBlockClassName } = this.props;
+    const { label, inputClassName, errorBlockClassName, autoComplete } = this.props;
     const hasError = touched && error;
     const errorBlockHasErrorClassName = errorBlockClassName ? `${errorBlockClassName}--error` : 'error';
     const errorBlockClassNames = cx(errorBlockClassName, {
@@ -53,6 +55,7 @@ export default class Input extends React.Component {
             <input
               {...input}
               className={inputClassName}
+              autoComplete={autoComplete ? "on" : "off"}
               placeholder={(strings && strings[label]) ? strings[label] : label}
             />
             <p className={errorBlockClassNames}>

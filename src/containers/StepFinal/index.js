@@ -208,6 +208,7 @@ class StepFinal extends React.Component {
                                   inputClassName="step-final__input"
                                   name={stepFinalFormFieldNames.firstName}
                                   label="first name"
+                                  autoComplete={false}
                                 />
                               </label>
                               <label className="step-final__form-control">
@@ -215,6 +216,7 @@ class StepFinal extends React.Component {
                                   inputClassName="step-final__input"
                                   name={stepFinalFormFieldNames.lastName}
                                   label="last name"
+                                  autoComplete={false}
                                 />
                               </label>
                               <label className="step-final__form-control">
@@ -243,6 +245,7 @@ class StepFinal extends React.Component {
                                   inputClassName="step-final__input"
                                   name={stepFinalFormFieldNames.email}
                                   label="email (optional)"
+                                  autoComplete={false}
                                 />
                               </label>
                               <label className="step-final__form-control">
@@ -250,6 +253,7 @@ class StepFinal extends React.Component {
                                   inputClassName="step-final__input"
                                   name={stepFinalFormFieldNames.phone}
                                   label="phone number (optional)"
+                                  autoComplete={false}
                                 />
                               </label>
                             </Form>
@@ -326,6 +330,7 @@ class StepFinal extends React.Component {
                                     inputClassName="step-final__input"
                                     name={stepFinalFormFieldNames.guardianInformationFirstName}
                                     label="first name"
+                                    autoComplete={false}
                                   />
                                 </label>
                                 <label className="step-final__form-control">
@@ -333,6 +338,7 @@ class StepFinal extends React.Component {
                                     inputClassName="step-final__input"
                                     name={stepFinalFormFieldNames.guardianInformationLastName}
                                     label="last name"
+                                    autoComplete={false}
                                   />
                                 </label>
                                 <label className="step-final__form-control">
@@ -340,6 +346,7 @@ class StepFinal extends React.Component {
                                     inputClassName="step-final__input"
                                     name={stepFinalFormFieldNames.guardianInformationEmail}
                                     label="email"
+                                    autoComplete={false}
                                   />
                                 </label>
                                 <label className="step-final__form-control">
@@ -347,6 +354,7 @@ class StepFinal extends React.Component {
                                     inputClassName="step-final__input"
                                     name={stepFinalFormFieldNames.guardianInformationPhone}
                                     label="phone number"
+                                    autoComplete={false}
                                   />
                                 </label>
                               </Form>

@@ -29,6 +29,7 @@ class EmailModal extends React.Component {
                 inputClassName="email-modal__input"
                 errorBlockClassName="email-modal__error-block"
                 label="email"
+                autoComplete={false}
               />
             </div>
             <Button
