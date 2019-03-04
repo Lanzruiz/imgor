@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "aos": "^2.3.4",
     "axios": "^0.18.0",
     "classnames": "^2.2.6",
     "connected-react-router": "^5.0.1",
@@ -11,22 +12,28 @@
     "lodash": "^4.17.11",
     "moment": "^2.22.2",
     "query-string": "^6.2.0",
+    "rc-tooltip": "^3.7.3",
     "react": "^16.5.2",
     "react-animate-height": "^2.0.7",
     "react-datepicker": "^2.0.0",
     "react-dom": "^16.5.2",
     "react-grid-system": "^4.3.1",
     "react-height": "^3.0.0",
+    "react-icons": "^3.3.0",
     "react-image": "^1.5.1",
     "react-localization": "^1.0.13",
+    "react-number-format": "^4.0.6",
     "react-outside-click-handler": "^1.2.2",
     "react-redux": "^5.0.7",
+    "react-responsive": "^6.0.1",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.0.5",
     "react-scroll-to-component": "^1.0.2",
     "react-slick": "^0.23.2",
     "react-tabs": "^2.3.0",
+    "react-transition-group": "1.x",
+    "react-visibility-sensor": "^5.0.2",
     "redux": "^4.0.1",
     "redux-devtools-extension": "^2.13.5",
     "redux-form": "^7.4.2",
@@ -35,12 +42,14 @@
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
     "slick-carousel": "^1.8.1",
+    "uglifyjs-webpack-plugin": "^2.0.1",
     "validator": "^10.9.0"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "build": "npm run build:react && npm run build:bundle",
+    "build:react": "react-scripts build",
+    "build:bundle": "webpack --config webpack.config.js",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -54,6 +63,7 @@
   ],
   "devDependencies": {
     "node-sass": "^4.9.4",
-    "prop-types": "^15.6.2"
+    "prop-types": "^15.6.2",
+    "webpack-cli": "^3.1.2"
   }
 }
