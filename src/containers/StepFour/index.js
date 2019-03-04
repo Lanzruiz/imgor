@@ -353,6 +353,7 @@ class StepFour extends React.Component {
 function mapStateToProps(state) {
   return {
     weeks: weeksItemsSelector(state),
+    weekOneData: state.stepFour.week_1_data,
     selectedWeekId: weeksSelectedWeekIdSelector(state),
     age: stepOneAgeSelector(state),
     gender: stepOneGenderSelector(state),

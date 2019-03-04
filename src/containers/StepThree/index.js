@@ -21,6 +21,7 @@ import AOSFadeInContainer from '../../components/AOSFadeInContainer';
 import * as trainingActions from '../../actions/training';
 import * as stepThreeActions from '../../actions/step.three';
 import * as stepsActions from '../../actions/steps';
+import { gtmStateChange, stateChangeTypes } from '../../helpers/GTMService';
 // Selectors
 import {
   stepThreeDataSelector, stepTreeSelectedIdSelector, stepThreeSelectedProductSelector, stepThreeSelector,
@@ -221,11 +222,11 @@ class StepThree extends React.Component {
     }
   };
 
-  selectCard = (id) => {
+  selectCard = async (id) => {
     const { cartId, participantId, cartStepThreeProductId, isWeeklyCamp, weeks, stepThree } = this.props;
 
     if (cartStepThreeProductId) {
-      this.props.stepThreeActions.stepThreeDeleteProductFromCartAndSetNew({ campId: id, cartId, participantId, productId: cartStepThreeProductId });
+      await this.props.stepThreeActions.stepThreeDeleteProductFromCartAndSetNew({ campId: id, cartId, participantId, productId: cartStepThreeProductId });
     }
     if (cartId && participantId && !cartStepThreeProductId) {
       if (isWeeklyCamp) {
@@ -238,12 +239,14 @@ class StepThree extends React.Component {
             const currentWeekId = find(currentWeekData, ['name', selectedItem.name]);
             data.push({ cartId, participantId, campId: currentWeekId.id, weekId: weekItem.id });
           });
-          this.props.stepThreeActions.stepThreeAddWeeklyCampToTheCart(data);
+          await this.props.stepThreeActions.stepThreeAddWeeklyCampToTheCart(data);
         }
       } else {
-        this.props.stepThreeActions.stepThreeSetProductToTheCart({ cartId, participantId, campId: id });
+        await this.props.stepThreeActions.stepThreeSetProductToTheCart({ cartId, participantId, campId: id });
       }
     }
+  
+    this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_PROGRAM);
   };
 
   discardCardWithSecondProgram = () => {
@@ -338,8 +341,9 @@ class StepThree extends React.Component {
     this.props.trainingActions.setDefaultState();
   };
 
-  goToNextStep = ({ id: cardId, secondaryPrograms }) => {
-    this.setSecondaryPrograms({ id: cardId, secondaryPrograms });
+  goToNextStep = async ({ id: cardId, secondaryPrograms }) => {
+    await this.setSecondaryPrograms({ id: cardId, secondaryPrograms });
+    this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_PROGRAM);
   };
 
   scrollToCurrentComponent = () => {
@@ -373,6 +377,7 @@ function mapStateToProps(state) {
     cart: cartSelector(state),
     campersAge: Number(((state.form.wizard || {}).values || {}).age),
     viaLogoPath: state.initialSettings.viaLogoPath,
+    price: state.cart['price_total'],
   };
 };
 
@@ -381,6 +386,7 @@ function mapDispatchToProps(dispatch) {
     trainingActions: bindActionCreators(trainingActions, dispatch),
     stepThreeActions: bindActionCreators(stepThreeActions, dispatch),
     stepsActions: bindActionCreators(stepsActions, dispatch),
+    gtmStateChange: bindActionCreators(gtmStateChange, dispatch)
   };
 };
 

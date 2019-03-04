@@ -27,7 +27,7 @@ class DatePickerReduxForm extends React.Component {
 
   static defaultProps = {
     showTimeSelect: true,
-    dateFormat: 'YYYY-MM-DD HH:mm',
+    dateFormat: 'YYYY-MM-DD hh:mm A',
     isClearable: true,
     showYearDropdown: false,
     maxDate: null,
@@ -131,7 +131,7 @@ class renderDatePicker extends React.Component {
                   // popperPlacement={'bottom'}
                   onChange={this.handleChange}
                   onBlur={() => { input.onBlur(); }}
-                  timeFormat="HH:mm"
+                  timeFormat="hh:mm"
                   timeIntervals={5}
                   timeCaption="Time"
                   maxDate={this.props.maxDate}

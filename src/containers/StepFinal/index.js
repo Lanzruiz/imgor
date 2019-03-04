@@ -19,6 +19,7 @@ import DatePickerReduxForm from '../../components/DatePicker';
 import AOSFadeInContainer from '../../components/AOSFadeInContainer';
 // Actions
 import * as finalStepActions from '../../actions/final.step';
+import { gtmStateChange, stateChangeTypes } from '../../helpers/GTMService';
 import { cartIdSelector, participantIdSelector, stepOneAgeSelector } from '../StepOne/selectors';
 // Selectors
 import { finalStepPositionsSelector, finalStepSelectedPositionSelector, finalStepShirtSizeSelector } from './selectors';
@@ -64,6 +65,19 @@ class StepFinal extends React.Component {
 
   componentWillMount() {
     this.setDefaultState();
+  }
+
+  componentWillReceiveProps(nextProps, nextContext) {
+    const { email, last_name, phone, first_name } = nextProps.guradianInfo;
+    const { selectedPosition, shirtSize } = nextProps;
+    
+    const differentData =
+      JSON.stringify({...nextProps.guradianInfo, selectedPosition, shirtSize})
+      !== JSON.stringify({...this.props.guradianInfo, selectedPosition, shirtSize});
+    
+    if( email && last_name && phone && first_name && differentData && selectedPosition && shirtSize ){
+      this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_INFORMATION);
+    }
   }
   
   handleConfirmRefundable = () => {
@@ -202,7 +216,7 @@ class StepFinal extends React.Component {
                       <CardContent>
                         <CardContentRow>
                           <CardContentCol>
-                            <Form className="step-final__form" onSubmit={() => {}}>
+                            <Form autoComplete="off" className="step-final__form" onSubmit={() => {}}>
                               <label className="step-final__form-control">
                                 <Input
                                   inputClassName="step-final__input"
@@ -324,7 +338,7 @@ class StepFinal extends React.Component {
                         <CardContent>
                           <CardContentRow>
                             <CardContentCol>
-                              <Form className="step-final__form" style={{ maxWidth: (!isMobile && isTablet) ? '100%' : 'calc(100%/3)', marginRight: 'auto' }} onSubmit={() => {}}>
+                              <Form autoComplete="off" className="step-final__form" style={{ maxWidth: (!isMobile && isTablet) ? '100%' : 'calc(100%/3)', marginRight: 'auto' }} onSubmit={() => {}}>
                                 <label className="step-final__form-control">
                                   <Input
                                     inputClassName="step-final__input"
@@ -508,7 +522,7 @@ function ShirtSizeRadioBtn({ shirtSize }) {
 }
 
 function mapStateToProps(state) {
-  const { cart: { participants } } = state;
+  const { cart: { participants }, form: { wizard } } = state;
   
   const products = (participants || []).reduce((acc, v) => {
     acc = [...acc, ...v.products];
@@ -535,13 +549,15 @@ function mapStateToProps(state) {
     initRefundable: initRefundable,
     refundable: state.finalStep.refundable,
     refundableLoading: state.finalStep.refundableLoading,
-    insurancePrice: state.finalStep.insurancePrice
+    insurancePrice: state.finalStep.insurancePrice,
+    guradianInfo: ((wizard || {}).values || {}).guardian_information || {}
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     finalStepActions: bindActionCreators(finalStepActions, dispatch),
+    gtmStateChange: bindActionCreators(gtmStateChange, dispatch)
   };
 }
 
