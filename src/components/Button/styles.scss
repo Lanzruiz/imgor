@@ -1,0 +1,16 @@
+@import '../../constants/scss/variables.scss';
+
+#{$root} {
+    .button {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        height: 100%;
+        width: 100%;
+        flex: 1;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}

@@ -1,0 +1,65 @@
+
+@font-face {
+    font-family: Proxima Nova;
+    font-weight: normal;
+    src: url("./licensed/fbc6b03a-b3a1-427c-a884-053deca3a53c.eot?#iefix");
+    src: url("./licensed/fbc6b03a-b3a1-427c-a884-053deca3a53c.eot?#iefix") format("eot"),
+         url("./licensed/0d416408-95c6-4ad7-b08d-e60573d3b37d.woff2") format("woff2"),
+         url("./licensed/d999c07b-a049-4eb5-b8a6-4f36ae25e67e.woff") format("woff"),
+         url("./licensed/4d4a75f5-d32a-4a09-8665-133afd39cc37.ttf") format("truetype"),
+         url("./licensed/8152bc4e-d700-4c78-b6be-326893e6f53f.svg#8152bc4e-d700-4c78-b6be-326893e6f53f") format("svg");
+}
+
+@font-face {
+    font-family: Proxima Nova;
+    font-weight: normal;
+    src: url("./licensed/7e90123f-e4a7-4689-b41f-6bcfe331c00a.eot?#iefix");
+    src: url("./licensed/7e90123f-e4a7-4689-b41f-6bcfe331c00a.eot?#iefix") format("eot"),
+         url("./licensed/64017d81-9430-4cba-8219-8f5cc28b923e.woff2") format("woff2"),
+         url("./licensed/e56ecb6d-da41-4bd9-982d-2d295bec9ab0.woff") format("woff"),
+         url("./licensed/2aff4f81-3e97-4a83-9e6c-45e33c024796.ttf") format("truetype"),
+         url("./licensed/ab9cd062-380f-4b53-b1a7-c0bec7402235.svg#ab9cd062-380f-4b53-b1a7-c0bec7402235") format("svg");
+}
+
+@font-face {
+    font-family: Serifa;
+    font-weight: normal;
+    src: url("./licensed/d60f05ba-473f-4f6a-aed4-46b91e21919a.eot?#iefix");
+    src: url("./licensed/d60f05ba-473f-4f6a-aed4-46b91e21919a.eot?#iefix") format("eot"),
+         url("./licensed/08015965-8ffc-41c9-a4df-d05234b4394b.woff2") format("woff2"),
+         url("./licensed/305f0d2c-2687-4916-bde8-91cd7875238c.woff") format("woff"),
+         url("./licensed/c67a52a4-afff-4262-94e1-91a59eb90b82.ttf") format("truetype"),
+         url("./licensed/5d10bfc6-f9b2-4494-a6a7-14cc6e7a79f3.svg#5d10bfc6-f9b2-4494-a6a7-14cc6e7a79f3") format("svg");
+}
+
+@font-face {
+    font-family: Serifa;
+    font-weight: bold;
+    src: url("./licensed/0a8ff7a2-fea6-4b39-8c88-4ff17ae318bb.eot?#iefix");
+    src: url("./licensed/0a8ff7a2-fea6-4b39-8c88-4ff17ae318bb.eot?#iefix") format("eot"),
+         url("./licensed/0148c714-e0cd-4809-955b-1afdbdf0299d.woff2") format("woff2"),
+         url("./licensed/a3c83290-c1af-4313-8a09-f9bf53ae781b.woff") format("woff"),
+         url("./licensed/82cb8acd-d091-4d65-9695-54cc813464ad.ttf") format("truetype"),
+         url("./licensed/eb2bf05b-03f5-4473-8405-3f2a5d36ee4d.svg#eb2bf05b-03f5-4473-8405-3f2a5d36ee4d") format("svg");
+}
+
+@font-face {
+    font-family: Serifa;
+    font-weight: 900;
+    src: url("./licensed/d404af09-c3f1-43a7-8927-7ccc1e6c6c54.eot?#iefix");
+    src: url("./licensed/d404af09-c3f1-43a7-8927-7ccc1e6c6c54.eot?#iefix") format("eot"),
+         url("./licensed/0b4a2bb9-66b5-45b6-918e-d490dfc6fd53.woff2") format("woff2"),
+         url("./licensed/8fdf95cb-43d2-4ae6-8f6b-bf0de655e785.woff") format("woff"),
+         url("./licensed/4e3f7b98-d5aa-4e66-ab08-46ae782dbaba.ttf") format("truetype"),
+         url("./licensed/095bee4c-87ca-44ac-980f-43d02644908e.svg#095bee4c-87ca-44ac-980f-43d02644908e") format("svg");
+  }
+
+@font-face {
+    font-family: Trade Gothic Bold Cn\ 20;
+    src: url("./licensed/257c802f-349c-4b4d-aefa-546d5de15ec6.eot?#iefix");
+    src: url("./licensed/257c802f-349c-4b4d-aefa-546d5de15ec6.eot?#iefix") format("eot"),
+         url("./licensed/1ba28851-f34b-4cb8-bf58-6a4b160ba249.woff2") format("woff2"),
+         url("./licensed/5fdc935e-9e30-442a-bbe9-8d887b858471.woff") format("woff"),
+         url("./licensed/616c4c87-a077-43f4-a9f4-f01267c13818.ttf") format("truetype"),
+         url("./licensed/c901ad5f-a842-4549-a1f4-583a97f7e169.svg#c901ad5f-a842-4549-a1f4-583a97f7e169") format("svg");
+  }

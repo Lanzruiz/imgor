@@ -1,0 +1,38 @@
+@import '../../constants/scss/variables.scss';
+
+#{$root} {
+    .image {
+        &__container {
+            display: block;
+
+            &--landscape {
+                height: auto;
+                width: 100%;
+            }
+
+            &--portrait {
+                height: 100%;
+                width: auto;
+            }
+
+            &--square {
+                height: 100%;
+                width: 100%;
+            }
+
+            &__image {
+                max-height: 36px;
+                max-width: 89px;
+                display: block;
+                width: auto;
+                height: 100%;
+                padding: 15px 20px;
+                box-sizing: content-box;
+
+                @include breakpoint($mobile){
+                    padding: 3px 20px 3px 0;
+                }
+            }
+        }
+    }
+}

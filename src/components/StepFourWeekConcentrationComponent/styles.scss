@@ -1,0 +1,44 @@
+@import '../../constants/scss/variables.scss';
+
+#{$root} {
+    .week-concentration-component {
+        &__paragraph {
+            font-size: 18px;
+            line-height: 17px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            color: $concentration-header;
+            font-family: 'Proxima Nova', sans-serif;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            padding: 0;
+            text-transform: none;
+        }
+
+        &__list {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+
+            &-item {
+                display: block;
+                font-size: 14px;
+                line-height: 22px;
+                text-transform: none;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                font-family: 'Proxima Nova', sans-serif;
+
+                &:before {
+                    box-sizing: border-box;
+                    content: '\25E6';
+                    margin-right: 10px;
+                }
+            }
+        }
+
+        &__content {
+            padding: 15px;
+        }
+    }
+}

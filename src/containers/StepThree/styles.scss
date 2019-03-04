@@ -1,0 +1,17 @@
+@import '../../constants/scss/variables.scss';
+
+#{$root} {
+    .step-three {
+        & .card-label {
+            padding: 8px 4px;
+
+            @include breakpoint($mobile) {
+                padding: 5px;
+            }
+        }
+
+        & .card-body__content {
+            justify-content: center;
+        }
+    }
+}

@@ -1,0 +1,385 @@
+@import '../../constants/scss/variables.scss';
+
+#{$root} {
+    .step-two {
+        margin-bottom: 30px;
+
+        &__container {
+            display: flex;
+            flex-direction: row;
+
+            @include breakpoint($mobile){
+                margin-left: -15px;
+                margin-right: -15px;
+                flex-direction: column;
+            }
+        }
+
+        &__questions {
+            align-items: center;
+            display: flex;
+            background-color: $tab-row-bg;
+            flex-direction: column;
+            justify-content: center;
+            padding: 15px;
+            text-align: center;
+            width: 25%;
+
+            [class^="icon-"] {
+              font-size: 30px;
+              margin-bottom: 4px;
+            }
+
+            @include breakpoint($mobile){
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+
+        &__dates {
+            background-color: $date-block-bg;
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            width: 100%;
+
+            @include breakpoint($mobile){
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+
+        &__selected-date {
+            align-items: center;
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 15px;
+            width: calc(100% - 10%);
+            @include breakpoint($tablet){
+                width: 100%;
+            }
+        }
+
+        &__description {
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+            margin-top: auto;
+
+            @include breakpoint($mobile){
+                flex-direction: column;
+            }
+        }
+    }
+
+    .questions {
+        &__questions {
+            color: $white;
+            font-family: $trade-gothic;
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        &__header {
+            color: $white;
+            font-family: $header-font;
+            font-size: 18px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        &__description {
+            color: $white;
+            font-family: $trade-gothic;
+            font-size: 14px;
+            line-height: 14px;
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+
+        &__icons {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            width: 100%;
+        }
+    }
+
+    .icons {
+        &__container {
+            align-items: center;
+            background-color: $question-icons-bg;
+            color: $question-icons-color;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 69px;
+            width: 66px;
+        }
+
+        &__text {
+            color: $white;
+            font-family: $serifa-light;
+            font-size: 13px;
+            text-transform: uppercase;
+
+            @include breakpoint($mobile){
+                font-size: 14px;
+            }
+        }
+    }
+
+    .dates {
+        .carousel__container{
+          padding: 0 30px 40px 30px;
+          border: none;
+          min-height: unset;
+
+          .carousel__item{
+            padding: 6px;
+          }
+
+          .slick-arrow:before{
+            width: 30px;
+            height: 30px;
+            background-size: 38px 45px;
+          }
+
+          .slick-next{
+            right: -25px;
+          }
+        }
+
+        &__header {
+            color: $tab-row-bg;
+            font-family: $header-font;
+            font-size: 18px;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        &__container {
+            color: $tab-row-bg;
+            font-size: 0;
+            line-height: 0;
+            margin: 10px 0 10px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        &__column{
+          margin: 5px 0;
+        }
+
+        &__item {
+            cursor: pointer;
+            font-family: $trade-gothic;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 18px;
+            padding: 0 10px;
+            @include breakpoint($mobile){
+                padding: 0 13px;
+            }
+
+            &:hover{
+                background-color: $date-block-selected-bg;
+                color: $white;
+                font-family: $header-font;
+                font-size: 14px;
+            }
+
+            &.active{
+                background-color: $date-block-selected-bg;
+                color: $white;
+                font-family: $header-font;
+                font-size: 14px;
+            }
+
+
+            &.sold-out, &.sold-out:hover {
+                color: $sold-out;
+                cursor: not-allowed;
+                text-decoration: line-through;
+                background-color: transparent;
+                font-family: $trade-gothic;
+            }
+        }
+
+        &__no-data {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: $sold-out;
+            font-family: $header-font;
+        }
+
+    }
+    .description {
+        font-family: $trade-gothic;
+        font-size: 12px;
+        overflow: hidden;
+        line-height: 14px;
+
+        &__info {
+            color: $tab-row-bg;
+            float: left;
+
+            @include breakpoint($mobile){
+                margin-bottom: 5px;
+            }
+        }
+
+        &__sold-out {
+            color: $sold-out;
+            float: right;
+            text-decoration: line-through;
+            text-transform: uppercase;
+        }
+    }
+
+    .selected-date {
+        &__container {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            width: 65%;
+            @include breakpoint($tablet){
+                width: 100%;
+            }
+            @include breakpoint($mobile){
+                margin: 0 -20px;
+            }
+
+            &:before {
+                content: '';
+                position: absolute;
+                transform: translateX(-50%);
+                left: 50%;
+                top: -15px;
+                width: 0;
+                height: 0;
+                border-left: 15px solid transparent;
+                border-right: 15px solid transparent;
+                border-top: 15px solid $date-block-selected-bg;
+                clear: both;
+            }
+        }
+
+        &__info {
+            border: 2px solid $date-block-selected-bg;
+            background-color: $date-block-selected-bg;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        &__check-in {
+            align-items: center;
+            background: $white;
+            justify-content: center;
+            display: flex;
+            padding: 5px 10px;
+            box-sizing: border-box;
+            writing-mode: tb;
+            transform: rotate(180deg);
+        }
+
+        &__check-out {
+            align-items: center;
+            background: $white;
+            justify-content: center;
+            display: flex;
+            padding: 5px 10px;
+            box-sizing: border-box;
+            writing-mode: tb;
+        }
+
+        &__current-selected {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 5px 50px 10px 50px;
+            width: 100%;
+
+            @include breakpoint($mobile){
+                padding: 5px 20px 10px 20px;
+            }
+        }
+    }
+
+    .check-in {
+        &__text {
+            color: $date-block-selected-bg;
+            font-family: $trade-gothic;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+    }
+
+    .check-out {
+        &__text {
+            color: $date-block-selected-bg;
+            font-family: $trade-gothic;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+    }
+
+    .current-selected {
+        max-width: 870px;
+
+        &__header {
+            color: $white;
+            font-family: $header-font;
+            font-size: 22px;
+            text-align: center;
+            text-transform: uppercase;
+            width: 100%;
+        }
+
+        &__days {
+            align-items: center;
+            color: $white;
+            display: flex;
+            flex-direction: row;
+            font-family: $trade-gothic;
+            font-size: 18px;
+            justify-content: space-between;
+            text-transform: uppercase;
+            width: 100%;
+
+            @include breakpoint($mobile){
+                font-size: 12px;
+            }
+        }
+
+        &__dates {
+            align-items: center;
+            color: $white;
+            display: flex;
+            font-family: $header-font;
+            font-size: 29px;
+            font-weight: normal;
+            justify-content: space-between;
+            text-transform: uppercase;
+            width: 100%;
+
+            @include breakpoint($mobile){
+                font-size: 20px;
+            }
+        }
+    }
+}

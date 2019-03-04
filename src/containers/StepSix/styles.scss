@@ -1,0 +1,272 @@
+@import '../../constants/scss/variables.scss';
+
+#{$root} {
+    .step-six {
+        .radio-btn__container{
+            &--checkbox{
+                color: #083451;
+                font-size: 15px;
+                cursor: pointer;
+                input{
+                    //background: red;
+                }
+            }
+        }
+
+        .has-booked-description{
+          margin-top: 10px;
+          margin-bottom: 10px;
+          color: $card-blue-color;
+        }
+
+        .h-100{
+          height: 100%;
+        }
+
+        &__card-content {
+            width: 100%;
+            padding: 35px;
+            font-family: $header-font;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            justify-content: space-between;
+
+            @include breakpoint($mobile) {
+                padding: 20px;
+            }
+        }
+
+        &__slide-header {
+            color: $tab-row-bg;
+            display: block;
+            font-family: $header-font;
+            font-size: 24px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        &__slide-sub-header {
+            color: $date-block-selected-bg;
+            display: block;
+            font-family: $header-font;
+            font-size: 20px;
+            font-weight: normal;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        &__radio-block {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        &__text-container {
+            border-top: 1px solid $header-text-color;
+            padding: 10px;
+        }
+
+        &__paragraph {
+            color: $tab-row-bg;
+            display: block;
+            font-family: $normal-font, sans-serif;
+            margin-bottom: 10px;
+            margin-top: 10px;
+
+            &--small {
+                font-size: 13px;
+                line-height: 16px;
+            }
+
+            &--medium {
+                font-size: 15px;
+                line-height: 16px;
+            }
+        }
+
+        &__radio-container {
+            margin-bottom: 15px;
+            font-family: $header-font;
+        }
+
+        &__initial {
+            &-header {
+                font-size: 30px;
+                line-height: 38px;
+                display: block;
+                color: $tab-row-bg;
+                font-family: $header-font;
+                margin-bottom: 20px;
+            }
+
+            &-question {
+                margin: 40px 0 80px;
+                padding: 0;
+            }
+
+            &-checkbox {
+                & .radio-btn__container--pointer {
+                    font-size: 24px;
+                }
+
+                & .radio-btn__btn {
+                    height: 25px;
+                    width: 25px;
+                }
+
+                & .radio-btn__container {
+                    height: inherit;
+                    padding-left: 30px;
+                }
+            }
+
+            &-label {
+                margin-right: 20px;
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 10px;
+            }
+        }
+
+        &__text-input {
+            max-width: 285px;
+            height: 38px;
+            border: 1px solid $gray;
+            background-color: $white;
+            width: 100%;
+
+            & > input {
+                box-sizing: border-box;
+                font-family: $normal-font;
+                padding: 10px 15px;
+                width: 100%;
+            }
+
+            & .react-datepicker-wrapper {
+                width: 100%;
+            }
+
+            & .react-datepicker__input-container {
+                width: 100%;
+
+                & > input {
+                    box-sizing: border-box;
+                    font-family: $normal-font;
+                    padding: 10px 15px;
+                    width: 100%;
+                }
+            }
+        }
+
+        &__form-field {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        &__select-container {
+            background-color: $white;
+            max-width: 287px;
+
+            & .dropdown__options {
+                max-height: 250px;
+                overflow-y: scroll;
+            }
+        }
+
+        &__radio-list {
+            &-item {
+                display: block;
+                margin-bottom: 10px;
+            }
+        }
+
+        &__step-paragraph {
+            max-width: 285px;
+        }
+
+        &__transportation-card {
+            min-height: 335px;
+
+            &-container {
+                margin-bottom: 0;
+            }
+        }
+
+        & .card-body__body {
+            flex: 1 1 auto;
+        }
+
+        .card-content__row {
+            @include breakpoint($mobile) {
+                flex-direction: row;
+            }
+
+            .radio-btn__container {
+                margin-bottom: 10px;
+            }
+
+            .card-content__col {
+                width: 50%;
+            }
+        }
+
+        .step-six__card-content {
+            padding: 30px 20px 10px;
+
+            @include breakpoint($mobile) {
+                justify-content: space-evenly;
+            }
+        }
+
+        .dropdown__option {
+            font-family: $normal-font;
+        }
+
+      &__summary{
+        &__box{
+          color: $tab-row-bg;
+          padding: 8px 0;
+          &__unaccompanied-price{
+            margin-left: 10px;
+            font-family: $trade-gothic-bold;
+          }
+
+          &:first-child{
+            border-right: 1px solid $card-blue-color;
+          }
+          &:last-child{
+            border-right: none;
+          }
+
+          .box-item{
+            display: flex;
+            justify-content: space-between;
+            padding: 3px 0;
+            font-family: $proxima-nova;
+
+            div:first-child{
+              color: $tab-row-bg;
+            }
+          }
+        }
+      }
+
+      .add-to-cart{
+        display: flex;
+        justify-content: flex-start;
+        margin-top: 10px;
+        &__button{
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+      }
+    }
+
+    .carousel{
+      .slick-arrow{
+        border: none;
+        background: transparent;
+      }
+    }
+}

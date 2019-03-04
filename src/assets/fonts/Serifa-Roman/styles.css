@@ -1,0 +1,11 @@
+
+@font-face {
+  font-family: Serifa Roman;
+  src:
+    url('./SerifaW01-55Roman.eot?#iefix') format('embedded-opentype'),
+    url('./SerifaW01-55Roman.woff') format('woff'),
+    url('./SerifaW01-55Roman.ttf') format('truetype'),
+    url('./SerifaW01-55Roman.svg#SerifaW01-55Roman') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}

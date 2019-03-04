@@ -1,0 +1,162 @@
+@import '../../constants/scss/variables.scss';
+
+#{$root} {
+    .footer {
+        align-items: center;
+        display: flex;
+        height: 100%;
+        justify-content: flex-start;
+        width: 100%;
+
+        @include breakpoint($mobile){
+            flex-wrap: wrap;
+            align-content: center;
+        }
+
+        &__wrapper {
+            height: 71px;
+        }
+
+        &__container {
+            background-color: $green-block-bg;
+            border-top: 1px solid $white;
+            box-sizing: border-box;
+            height: 71px;
+
+            @include breakpoint($mobile){
+                height: auto;
+                min-height: 71px;
+                padding: 3px 0;
+            }
+
+            &--fixed {
+                position: fixed;
+                z-index: 100000;
+                width: 100%;
+                bottom: 0;
+                left: 0;
+                right: 0;
+            }
+        }
+
+        &__image {
+            max-height: 36px;
+            max-width: 89px;
+            display: block;
+            width: auto;
+            height: 100%;
+            padding: 15px 20px;
+            box-sizing: content-box;
+
+            @include breakpoint($mobile){
+                padding: 3px 20px 3px 0;
+            }
+
+            &-container {
+                align-items: center;
+                display: flex;
+                height: 71px;
+                justify-content: center;
+
+                @include breakpoint($mobile){
+                    height: auto;
+                    flex: 0;
+                }
+            }
+        }
+
+        &__price {
+            &-container {
+                color: $subheader-text-color;
+                display: flex;
+                flex-direction: column;
+                font-family: $header-font;
+                font-size: 36px;
+                text-transform: uppercase;
+                min-width: 100px;
+
+                @include breakpoint($mobile){
+                    font-size: 25px;
+                    flex: 1;
+                }
+            }
+
+            &-total {
+                font-size: 10px;
+            }
+        }
+
+        &__text {
+            margin: 0 auto;
+            color: $subheader-text-color;
+            font-family: $header-font;
+            font-size: 20px;
+            text-transform: uppercase;
+            padding: 15px 20px;
+
+            @include breakpoint($mobile){
+                padding: 3px 0 0;
+                font-size: 12px;
+                width: 100%;
+                flex:1 1 auto;
+                text-align: center;
+                img {
+                    width: 11px;
+                }
+            }
+        }
+
+        &__btn-container {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+
+            @include breakpoint($mobile){
+                margin: 3px -20px -3px;
+            }
+        }
+
+        &__btn {
+            align-items: center;
+            background-color: $white;
+            box-sizing: border-box;
+            border: 1px solid #4481a3;
+            color: #4481a3;
+            font-family: $serifa-bold;
+            font-size: 14px;
+            display: flex;
+            height: 38px;
+            justify-content: center;
+            text-align: center;
+            text-transform: uppercase;
+            line-height: 16px;
+            margin: 0 5px;
+            padding: 0 15px;
+
+            @include breakpoint($mobile){
+                font-size: 12px;
+                line-height: 15px;
+            }
+
+            &--purchase {
+               width: 307px;
+            }
+
+            &--save-camp {
+               width: 142px;
+            }
+
+            &--share-camp {
+               width: 142px;
+            }
+
+            &--disabled {
+              color: rgba(#4481a3, 0.4);
+              border: 1px solid rgba(#4481a3, 0.4);
+              cursor: default;
+            }
+        }
+    }
+}

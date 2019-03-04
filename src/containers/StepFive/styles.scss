@@ -1,0 +1,101 @@
+@import '../../constants/scss/variables.scss';
+
+#{$root} {
+    .step-five {
+        & .card-body__body {
+            flex: 1 1 auto;
+        }
+
+        & .card-content__row {
+            flex-direction: row;
+        }
+
+        &__no-items {
+            color: $card-red-color;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        &__card-attributes {
+            align-items: center;
+            box-sizing: border-box;
+            display: flex;
+            padding: 0 35px;
+            margin-bottom: 10px;
+            width: 100%;
+
+            & .dropdown__options {
+                max-height: 175px;
+                overflow: auto;
+            }
+
+            & > div {
+                width: 100%;
+            }
+        }
+
+        &__load-more-bth {
+            border: 2px solid $white;
+            box-sizing: border-box;
+            background: $subheader-text-color;
+            color: $white;
+            text-transform: uppercase;
+            font-family: $serifa-bold;
+            white-space: nowrap;
+
+            & .button {
+                box-sizing: border-box;
+                padding: 8px 16px;
+            }
+
+            &:active, &:hover {
+                background: $white;
+                border: 2px solid $subheader-text-color;
+                color: $subheader-text-color
+            }
+        }
+    }
+
+    .card-counter {
+        &__container {
+            align-items: center;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-bottom: 10px;
+            padding: 0 35px;
+            width: 100%;
+        }
+
+        &__header {
+            color: $subheader-text-color;
+            font-family: $header-font;
+            font-size: 15px;
+
+            &-container {
+                align-items: center;
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                width: 100%;
+            }
+        }
+
+        &__counter {
+            align-items: center;
+            display: flex;
+            color: $subheader-text-color;
+            font-family: $trade-gothic;
+            flex-direction: row;
+            height: 31px;
+            justify-content: space-around;
+            width: 100%;
+
+            &--btn {
+                display: flex;
+                width: 100%;
+            }
+        }
+    }
+}

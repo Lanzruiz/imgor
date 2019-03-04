@@ -1,0 +1,139 @@
+@import '../../constants/scss/variables.scss';
+
+#{$root} {
+  @import 'react-datepicker/src/stylesheets/datepicker.scss';
+
+  .react-datepicker-popper{
+    .react-datepicker{
+      display: flex;
+      flex-direction: row;
+      border: none;
+      box-shadow: 0 0 5px rgba(black, 0.4);
+      border-radius: 0;
+      &__input-container{
+        cursor: pointer;
+      }
+      &__triangle{
+        border-bottom-color: $card-blue-color !important;
+      }
+      &__header{
+        background: $card-blue-color;
+        color: white;
+        border-radius: 0;
+        border-bottom: none;
+      }
+      &__current-month{
+        color: white;
+        font-family: $proxima-nova;
+      }
+      &__navigation{
+        &--next{
+          border-left-color: white;
+          right: 0;
+        }
+        &--previous{
+          border-right-color: white;
+          left: 0;
+        }
+      }
+      &__day-name{
+        font-family: $proxima-nova;
+        color: white;
+      }
+      &__weeks{
+        margin: 0;
+      }
+      &__month{
+        margin: 0;
+      }
+      &__day{
+        border-radius: 0;
+        border-left: 1px solid #eee;
+        border-bottom: 1px solid #eee;
+        margin: 0;
+        padding: 3px;
+        &:first-child{
+          border-left: none;
+        }
+        &--selected{
+          background-color: $card-blue-color;
+          font-weight: bold;
+          border-radius: 0;
+        }
+      }
+      &__time-container{
+        border-left: 1px solid $card-blue-color;
+      }
+      &__year{
+        &-read-view--down-arrow{
+          border-top-color: white;
+          &:hover{
+            border-top-color: white;
+          }
+        }
+        &-read-view--selected-year{
+          font-weight: normal;
+          font-family: $proxima-nova;
+        }
+        &-dropdown {
+          border-radius: 0;
+          border: none;
+          background-color: white;
+          box-shadow: 0 0 5px rgba(black, 0.4);
+        }
+        &-option{
+          color: black;
+          padding: 5px 0;
+          border-bottom: 1px solid #eee;
+          &:hover{
+            background-color: $card-blue-color;
+            color: white;
+            border-radius: 0;
+          }
+        }
+      }
+
+    }
+    .react-datepicker-time {
+      &__header{
+        color: white;
+        font-family: $proxima-nova;
+      }
+      &-list-item{
+        &--selected{
+          border-radius: 0;
+          background-color: $card-blue-color;
+        }
+      }
+    }
+  }
+  .with-time-select{
+    .react-datepicker__navigation{
+      &--next{
+        border-left-color: white;
+        right: 70px;
+      }
+      &--previous{
+        border-right-color: white;
+        left: 0;
+      }
+    }
+  }
+
+  .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item--selected {
+    background-color: $card-blue-color;
+    &:hover{
+      background-color: $card-blue-color;
+    }
+  }
+
+  .react-datepicker__time-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .react-datepicker__navigation {
+    box-sizing: border-box;
+  }
+}
+

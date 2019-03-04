@@ -1,0 +1,42 @@
+@import '../../constants/scss/variables.scss';
+
+#{$root} {
+    .header {
+        &__container {
+            display: block;
+            margin-bottom: 20px;
+            padding: 20px 0 0;
+
+            @include breakpoint($mobile){
+                font-size: 30px;
+                padding-top: 15px;
+            }
+        }
+
+        &__h2 {
+            display: block;
+            color: $header-text-color;
+            font-size: 40px;
+            font-family: $header-font;
+            text-transform: uppercase;
+
+            @include breakpoint($mobile){
+                font-size: 30px;
+                margin-bottom: 5px;
+            }
+        }
+
+        &__h6 {
+            color: $subheader-text-color;
+            display: block;
+            font-size: 20px;
+            font-weight: normal;
+            text-transform: uppercase;
+            font-family: $normal-font;
+
+            @include breakpoint($mobile){
+                font-size: 18px;
+            }
+        }
+    }
+}

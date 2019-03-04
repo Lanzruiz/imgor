@@ -1,0 +1,151 @@
+@import '../../constants/scss/variables.scss';
+
+#{$root} {
+    @import "~slick-carousel/slick/slick.css";
+    @import "~slick-carousel/slick/slick-theme.css";
+
+    .carousel {
+        &__container {
+            border: 1px solid $header-text-color;
+            box-sizing: border-box;
+            padding: 41px;
+            background-color: #f3f3f3;
+            display: block;
+            width: 100%;
+            min-height: 343px;
+            height: 100%;
+
+            & .slick-list {
+                height: inherit;
+            }
+        }
+
+        &__btn {
+            width: 50px;
+            height: 63px;
+        }
+
+        &__item {
+            display: block;
+            height: inherit;
+            padding: 15px;
+        }
+
+        .slick-dots li {
+            position: relative;
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin: 0 5px;
+            padding: 0;
+            cursor: pointer;
+            width: 11px;
+            height: 11px;
+            box-sizing: border-box;
+
+            &.slick-active {
+                button {
+                    &::before {
+                        opacity: .75;
+                        color: #000;
+                    }
+                }
+            }
+
+            button {
+                box-sizing: border-box;
+
+                &::before {
+                    background-color: #083451;
+                    font-size: 6px;
+                    line-height: 20px;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 11px;
+                    height: 11px;
+                    content: " ";
+                    text-align: center;
+                    opacity: .25;
+                    color: #000;
+                    border-radius: 50%;
+                }
+            }
+        }
+
+        .slick-next,
+        .slick-prev {
+            background: #fafafa;
+            border-radius: 50%;
+            border: 1px solid #083451;
+            box-sizing: border-box;
+            color: #083451;
+            font-size: 18px;
+            height: 45px;
+            width: 45px;
+            z-index: 1;
+
+            &:before {
+                all: initial;
+            }
+        }
+
+        .slick-next {
+            right: -33px;
+        }
+
+        .slick-prev {
+            left: -33px;
+        }
+
+        .slick-arrow {
+            &.slick-disabled {
+                opacity: .25;
+                transition: opacity .2s linear;
+            }
+
+            & .button-arrow {
+                display: block;
+                margin: auto;
+            }
+        }
+    }
+
+    // Animation
+    .slide-enter {
+        transform: translate3d(-100%, 0, 0);
+    }
+
+    .slide-enter.slide-enter-active {
+        transition: transform 500ms ease;
+        transform: translate3d(0, 0, 0);
+    }
+
+    .slide-leave {
+        transform: translate3d(0, 0, 0);
+    }
+
+    .slide-leave.slide-leave-active {
+        transition: transform 300ms ease;
+        transform: translate3d(-100%, 0, 0);
+    }
+
+    // Animation
+    .slide-top-enter {
+        transform: translate3d(0, 100%, 0);
+    }
+
+    .slide-top-enter.slide-top-enter-active {
+        transition: transform 500ms ease;
+        transform: translate3d(0, 0, 0);
+    }
+
+    .slide-top-leave {
+        transform: translate3d(0, 0, 0);
+    }
+
+    .slide-top-leave.slide-top-leave-active {
+        transition: transform 300ms ease;
+        transform: translate3d(0, 100%, 0);
+    }
+}
