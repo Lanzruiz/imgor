@@ -1,7 +1,7 @@
 // Modules
 import React, { Fragment } from 'react';
 import { Container, Row, Col } from 'react-grid-system';
-import { Form, Field, reduxForm } from 'redux-form';
+import { Form, Field } from 'redux-form';
 import scrollToComponent from 'react-scroll-to-component';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -387,6 +387,13 @@ class StepFinal extends React.Component {
 }
 
 function PositionRadioBtn({ options, prefix, position }) {
+  const handleSelect = (input, position_id) => {
+    if(position_id !== position || !position){
+      input.onChange(position_id);
+      input.onBlur();
+    }
+  };
+  
   return (
     <ul className="step-final__form">
       <Field
@@ -397,12 +404,19 @@ function PositionRadioBtn({ options, prefix, position }) {
           options.map(({ position_id, name }) => {
             return (
               <li className="step-final__radio" key={position_id}>
-                <Radio
-                  {...input}
-                  value={position_id}
-                  checked={isEqual(position, position_id)}
-                  children={name}
-                />
+                <label
+                  className="radio-btn__container radio-btn__container--regular radio-btn__container--pointer"
+                  onClick={() => { handleSelect(input, position_id) }}
+                >
+                  <input
+                    className="radio-btn__btn"
+                    type="radio"
+                    name={input.name}
+                    checked={position === position_id}
+                    onChange={() => null}
+                  />
+                  {name}
+                </label>
               </li>
             );
           })
@@ -421,6 +435,14 @@ function ShirtSizeRadioBtn({ shirtSize }) {
     { id: 5, value: 'xl', stringKey: 'step_final.shirt_size.x-large' },
     { id: 6, value: 'xxl', stringKey: 'step_final.shirt_size.xx-large' },
   ];
+  
+  const handleSelect = (input, value) => {
+    if(value !== shirtSize || !shirtSize){
+      input.onChange(value);
+      input.onBlur();
+    }
+  };
+  
   return (
     <Field
       name={stepFinalFormFieldNames.shirtSize}
@@ -434,12 +456,20 @@ function ShirtSizeRadioBtn({ shirtSize }) {
                 options.map(({ id, value, stringKey }) => {
                   return isEqual(id % 2, 0) && (
                     <li key={id} className="step-final__radio">
-                      <Radio
-                        {...input}
-                        value={value}
-                        checked={isEqual(shirtSize, value)}
-                        children={<LocaleString stringKey={stringKey} />}
-                      />
+  
+                      <label
+                        className="radio-btn__container radio-btn__container--regular radio-btn__container--pointer"
+                        onClick={() => { handleSelect(input, value) }}
+                      >
+                        <input
+                          className="radio-btn__btn"
+                          type="radio"
+                          name={input.name}
+                          checked={shirtSize === value}
+                          onChange={() => null}
+                        />
+                        <LocaleString stringKey={stringKey} />
+                      </label>
                     </li>
                   );
                 })
@@ -452,12 +482,19 @@ function ShirtSizeRadioBtn({ shirtSize }) {
                 options.map(({ id, value, stringKey }) => {
                   return !isEqual(id % 2, 0) && (
                     <li key={id} className="step-final__radio">
-                      <Radio
-                        {...input}
-                        value={value}
-                        checked={isEqual(shirtSize, value)}
-                        children={<LocaleString stringKey={stringKey} />}
-                      />
+                      <label
+                        className="radio-btn__container radio-btn__container--regular radio-btn__container--pointer"
+                        onClick={() => { handleSelect(input, value) }}
+                      >
+                        <input
+                          className="radio-btn__btn"
+                          type="radio"
+                          name={input.name}
+                          checked={shirtSize === value}
+                          onChange={() => null}
+                        />
+                        <LocaleString stringKey={stringKey} />
+                      </label>
                     </li>
                   );
                 })
@@ -508,10 +545,13 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default reduxForm({
-  form: 'wizard', // <------ same form name
-  destroyOnUnmount: false, // <------ preserve form data
-  forceUnregisterOnUnmount: true, // <------ unregister fields on unmount
-})(
-  connect(mapStateToProps, mapDispatchToProps)(StepFinal)
-);
+// export default reduxForm({
+//   form: 'wizard', // <------ same form name
+//   destroyOnUnmount: false, // <------ preserve form data
+//   forceUnregisterOnUnmount: true, // <------ unregister fields on unmount
+// })(
+//   connect(mapStateToProps, mapDispatchToProps)(StepFinal)
+// );
+
+
+export default  connect(mapStateToProps, mapDispatchToProps)(StepFinal)
