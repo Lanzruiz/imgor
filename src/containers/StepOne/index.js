@@ -21,6 +21,7 @@ import LocaleString from '../../components/LocaleString';
 import Radio from '../../components/Radio';
 import Dropdown from '../../components/Dropdown';
 import AOSFadeInContainer from '../../components/AOSFadeInContainer';
+import { gtmStateChange, stateChangeTypes } from '../../helpers/GTMService';
 import TabRowHeader from './components/TabRowHeader';
 // Actions
 import * as weeksActions from '../../actions/weeks';
@@ -157,15 +158,19 @@ class StepOne extends React.Component {
       if(window.reactAppStart && typeof window.reactAppStart === 'function'){
         window.reactAppStart({ cartId, email });
       }
+      
+      this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_EMAIL);
     }
   };
   
   incrementWeeksCounter = () => {
     this.props.weeksActions.incrementWeeksCounter();
+    this.props.gtmStateChange(stateChangeTypes.OR_CAMP_DURATION);
   };
   
   decrementWeeksCounter = () => {
     this.props.weeksActions.decrementWeeksCounter();
+    this.props.gtmStateChange(stateChangeTypes.OR_CAMP_DURATION);
   };
   
   setWeeksCounter = (count) => {
@@ -213,6 +218,7 @@ class StepOne extends React.Component {
                 options={[{ value: 'Boarding', stringKey: 'yes' },{ value: 'Non-Boarding', stringKey: 'no' }]}
                 sleepaway={sleepaway}
                 possibleValues={boardingOptions}
+                handleChange={() => { this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_BOARDING); }}
               />
             </div>
             <div className="content__form-control">
@@ -224,7 +230,6 @@ class StepOne extends React.Component {
                   <AgeRadioBtnContainer
                     age={age}
                     range={range}
-                    handleNastyClick={this.onUserActionDeletePrevCartProducts}
                   />
                 )
                 : (
@@ -433,7 +438,8 @@ class StepOne extends React.Component {
                                           this.selectGroup({ group: row.name, secondary_group: option.name });
                                           this.setWeeksCounter(0);
                                           this.setPrice(option.price);
-                                      }}
+                                          this.props.gtmStateChange(stateChangeTypes.OR_CAMP_DURATION);
+                                        }}
                                       className={cx(`
                                         tab-row__section
                                         tab-row__section--bg-white
@@ -560,7 +566,7 @@ function H3({ children }) {
 //   );
 // }
 
-function SleepawayRadioBtn({ options, sleepaway, possibleValues }) {
+function SleepawayRadioBtn({ options, sleepaway, possibleValues, handleChange }) {
   return (
     <Field
       className="content__radio-btn"
@@ -581,6 +587,7 @@ function SleepawayRadioBtn({ options, sleepaway, possibleValues }) {
                 value={value}
                 checked={isEqual(sleepaway, value)}
                 disabled={isDisabled}
+                handleChange={handleChange}
               >
                 <LocaleString stringKey={`step_one.sleepaway_${stringKey}`} />{' '}
                 {isDisabled && (
@@ -702,6 +709,7 @@ function mapDispatchToProps(dispatch) {
     stepOneActions: bindActionCreators(stepOneActions, dispatch),
     participantActions: bindActionCreators({ addParticipantByCardId }, dispatch),
     stepsActions: bindActionCreators(stepsActions, dispatch),
+    gtmStateChange: bindActionCreators(gtmStateChange, dispatch)
   };
 };
 

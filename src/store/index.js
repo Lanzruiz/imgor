@@ -6,6 +6,7 @@ import thunk from 'redux-thunk';
 //import localForage from 'localforage';
 import { createBrowserHistory } from 'history';
 import { routerMiddleware } from 'connected-react-router';
+import { gtmReduxMiddleware } from '../helpers/GTMService';
 // Reducers
 import rootReducer from '../reducers';
 
@@ -29,7 +30,7 @@ import rootReducer from '../reducers';
   export const history = createBrowserHistory();
 
   const store = createStore(rootReducer(history), composeWithDevTools(
-    applyMiddleware(thunk, routerMiddleware(history)),
+    applyMiddleware(thunk, routerMiddleware(history), gtmReduxMiddleware),
   ));
 
   export default store;
