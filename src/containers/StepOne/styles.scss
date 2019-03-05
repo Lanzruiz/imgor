@@ -248,7 +248,7 @@
 
             &--subtitle{
               font-size: 16px;
-              font-family: $trade-gothic;
+              font-family: $proxima-nova;
             }
 
             &--regular {
@@ -415,7 +415,7 @@
 
         &__header {
             color: $tab-row-bg;
-            font-family: $header-font;
+            font-family: $proxima-nova !important;
             display: block;
             text-transform: uppercase;
             margin-bottom: 10px;
@@ -438,7 +438,7 @@
             color: $tab-row-bg;
             font-size: 15px;
             margin-bottom: 15px;
-            font-family: $trade-gothic;
+            font-family: $proxima-nova;
             line-height: 16px;
         }
 
@@ -461,7 +461,7 @@
             }
 
             & .radio-btn__container--regular {
-                font-family: $trade-gothic;
+                font-family: $proxima-nova;
                 font-weight: normal;
             }
         }
@@ -483,13 +483,13 @@
 
             & .radio-btn__container--regular {
                 font-weight: normal;
-                font-family: $trade-gothic;
+                font-family: $proxima-nova;
             }
         }
 
         &__sleepaway-label {
             color: $tab-row-bg;
-            font-family: $header-font;
+            font-family: $proxima-nova;
             font-size: 16px;
 
             &--disabled {

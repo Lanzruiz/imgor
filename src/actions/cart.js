@@ -16,6 +16,7 @@ import { airportPickupInformation, departingFormFieldNames } from '../containers
 import { recalculateInsurancePrice } from './final.step';
 import { setStepsCounter } from './steps';
 import { saveTrainingId } from './training';
+import { addParticipantByCardId } from './participant';
 
 export function updateCart(cart) {
   return (dispatch) => {
@@ -33,11 +34,16 @@ export function deleteCart() {
   };
 };
 
-export function createCartRequest() {
+export function createCartRequest(initialEmail) {
   return function(dispatch) {
     return Api.req({
       apiCall: Api.createCart,
-      res200: (data) => dispatch(createCart(data.cart)),
+      res200: (data) => {
+        if(initialEmail){
+          dispatch(addParticipantByCardId({ cartId: data.cart.id,  email: initialEmail }))
+        }
+        dispatch(createCart(data.cart))
+      },
       res404: () => console.log('Api.createCart() => 404'), // TODO: Add error handler!
       reject: (err) => console.log(err), // TODO: Add error handler!
     });
@@ -348,7 +354,7 @@ export function stepSixValidation (props) {
 
 export function stepFinalValidation (props) {
   const {
-    ageNumber, finalStepDateOfBirth, firstName, lastName, position, shirtSize, guardianFirstName,
+    ageNumber, finalStepDateOfBirth, firstName, lastName, position, shirtSize, guardianFirstName, positions,
     guardianLastName, guardianEmail, guardianPhone, isBusinessTypeForAdult
   } = props;
   
@@ -371,7 +377,7 @@ export function stepFinalValidation (props) {
     // case finalStepDateOfBirth && !isEqual( calculateAge(finalStepDateOfBirth), ageNumber ): {
     //   return 'camper_age_is_not_equal';
     // }
-    case !position: {
+    case !isEmpty(positions) && !position: {
       return 'step_final.no_position_message';
     }
     case !shirtSize: {

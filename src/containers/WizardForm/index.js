@@ -46,7 +46,7 @@ import {
 import {
   finalStepFirstNameSelector, finalStepLastNameSelector, finalStepPositionSelector, finalStepPhoneSelector,
   finalStepShirtSizeSelector, finalStepGuardianFirstNameSelector, finalStepGuardianLastNameSelector,
-  finalStepGuardianEmailSelector, finalStepGuardianPhoneSelector, finalStepDateOfBirthSelector,
+  finalStepGuardianEmailSelector, finalStepGuardianPhoneSelector, finalStepDateOfBirthSelector, finalStepPositionsSelector,
 } from '../StepFinal/selectors';
 // Helpers
 import isStringsEqual from '../../helpers/isStringsEqual';
@@ -57,6 +57,7 @@ import { stepsEnum } from '../../constants/steps';
 import { weekly_camp } from '../StepOne';
 import { airportPickupInformation, departingFormFieldNames } from '../StepSix/selectors';
 import { productTypesEnum } from '../../constants/cart';
+import isEmpty from 'lodash/isEmpty';
 // Styles
 import './styles.scss';
 
@@ -834,7 +835,7 @@ class WizardForm extends React.Component {
 
   stepFinalValidation = () => {
     const {
-      ageNumber, finalStepDateOfBirth, firstName, lastName, position, shirtSize, guardianFirstName,
+      ageNumber, finalStepDateOfBirth, firstName, lastName, position, positions, shirtSize, guardianFirstName,
       guardianLastName, guardianEmail, guardianPhone, isBusinessTypeForAdult
     } = this.props;
     const adultAge = 18;
@@ -856,7 +857,7 @@ class WizardForm extends React.Component {
       // case finalStepDateOfBirth && !isEqual( calculateAge(finalStepDateOfBirth), ageNumber ): {
       //   return 'camper_age_is_not_equal';
       // }
-      case !position: {
+      case !isEmpty(positions) && !position : {
         return 'step_final.no_position_message';
       }
       case !shirtSize: {
@@ -977,6 +978,7 @@ function mapStateToProps(state) {
     weeksItems: weeksItemsSelector(state),
     firstName: finalStepFirstNameSelector(state),
     lastName: finalStepLastNameSelector(state),
+    positions: finalStepPositionsSelector(state),
     position: finalStepPositionSelector(state),
     shirtSize: finalStepShirtSizeSelector(state),
     ageNumber: stepOneAgeNumberSelector(state),
