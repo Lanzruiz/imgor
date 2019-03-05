@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import {debounce} from 'lodash';
 
 const GTM_CHANGE_STATE = '@GTM/change_state';
 
@@ -19,7 +19,7 @@ export const gtmStateChange = (stateChangeType) => (dispatch) => {
   })
 };
 
-const gtmStateChangeHandlerDebounced = _.debounce(gtmStateChangeHandler, 1000);
+const gtmStateChangeHandlerDebounced = debounce(gtmStateChangeHandler, 1000);
 
 export const gtmReduxMiddleware = (state) => (next) => (action) => {
   const { cart, form: { wizard }, initialSettings, stepOne, weeks } = state.getState();
