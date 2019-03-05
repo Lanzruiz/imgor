@@ -3,11 +3,14 @@ import isEqual from 'lodash/isEqual';
 import isNumber from 'lodash/isNumber';
 import isString from 'lodash/isString';
 import isEmpty from 'lodash/isEmpty';
+import ReactDOMServer from 'react-dom/server';
+import React from 'react';
 import isEmail from 'validator/lib/isEmail';
 import isMobilePhone from 'validator/lib/isMobilePhone';
 import moment from 'moment';
 // Api
 import Api from '../api';
+import LocaleString from '../components/LocaleString';
 import { stepsEnum } from '../constants/steps';
 import isStringsEqual from '../helpers/isStringsEqual';
 import * as cartTypes from '../constants/cart';
@@ -137,7 +140,7 @@ export function sendCartData(props){
         cart: cart,
         price: cart.price_total || 0,
         checkout_ready: !message,
-        message
+        message: ReactDOMServer.renderToString(<LocaleString stringKey={message}/>)
       });
     }
   }
@@ -197,7 +200,6 @@ export function stepOneValidation (props) {
       return 'choose_age_sleepaway';
     }
     case (isString(age) && !isString(gender) && !isString(sleepaway)): {
-      
       return 'choose_sleepaway_and_gender';
     }
     case (isString(sleepaway) && !isString(gender) && !isString(age)): {
