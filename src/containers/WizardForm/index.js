@@ -303,7 +303,7 @@ class WizardForm extends React.Component {
   purchaseHandler = async () => {
     const {
       cartId, redirectUrlShopify, firstName, lastName, position, finalStepDateOfBirth, shirtSize, guardianFirstName,
-      guardianLastName, finalStepPhone, participantId, gender, age, guardianEmail, guardianPhone, email,
+      guardianLastName, finalStepPhone, participantId, gender, age, guardianEmail, guardianPhone, email, dataRepEmail
     } = this.props;
 
     const shopifyUrl = redirectUrlShopify || process.env.REACT_APP_REDIRECT_URL_SHOPIFY;
@@ -332,6 +332,10 @@ class WizardForm extends React.Component {
       dob: new Date(finalStepDateOfBirth) / 1000,
       preferred_shirt_size: shirtSize,
     };
+    
+    if(dataRepEmail){
+      data.representative_email = dataRepEmail
+    }
 
     await this.props.cartActions.purchaseRequest(data, stubData);
     

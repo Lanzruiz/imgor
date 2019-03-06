@@ -121,7 +121,20 @@ export function purchaseRequest(args, stubData) {
     Api.req({
       res200: (data) => {
         dispatch( updateCart(data.cart), );
-
+        
+        const body = {
+          ...stubData,
+          cartId: args.cartId,
+          first_name: args.guardianFirstName,
+          last_name: args.guardianLastName,
+          email: args.guardianEmail,
+          contact_number: args.guardianPhone,
+        };
+        
+        if(args.representative_email){
+          body.representative_email = args.representative_email
+        }
+        
         Api.req({
           res200: (data) => {
             // dispatch( updateCart({ ...data.cart }), );
@@ -133,14 +146,7 @@ export function purchaseRequest(args, stubData) {
           res404: () => { console.log('Api.putCartCartId => 404'); },
           reject: console.error,
           apiCall: Api.putCartCartId,
-          apiCallParams: {
-            ...stubData,
-            cartId: args.cartId,
-            first_name: args.guardianFirstName,
-            last_name: args.guardianLastName,
-            email: args.guardianEmail,
-            contact_number: args.guardianPhone,
-          },
+          apiCallParams: body,
         });
 
       },

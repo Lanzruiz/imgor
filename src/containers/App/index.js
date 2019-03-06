@@ -169,7 +169,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { lang, redirectUrlShopify, contentPath, valid, dataBusinessType, dataDisplayFooter } = this.props;
+    const { lang, redirectUrlShopify, contentPath, valid, dataBusinessType, dataDisplayFooter, dataRepEmail } = this.props;
 
     const isBusinessTypeForAdult = (dataBusinessType || '').toLowerCase() === 'Adult Program'.toLowerCase();
 
@@ -180,6 +180,7 @@ class App extends React.Component {
           valid={valid}
           isBusinessTypeForAdult={isBusinessTypeForAdult}
           dataDisplayFooter={dataDisplayFooter}
+          dataRepEmail={dataRepEmail}
         >
           {() => this.wizardFormChildren}
         </WizardForm>
