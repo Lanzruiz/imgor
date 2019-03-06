@@ -19,6 +19,7 @@ const imgorRootContainer = document.getElementById('imgor-root');
 const {
   external_init,
   sport,
+  repEmail,
   gender,
   group,
   secondary_group,
@@ -73,6 +74,7 @@ function init(initData = {}){
                     businessType={business_type}
                     urlToNoProps={urlToNoProps}
                     dataGroup={group}
+                    dataRepEmail={repEmail}
                     dataSecondaryGroup={secondary_group}
                     dataBusinessType={business_type}
                     dataGender={gender}
