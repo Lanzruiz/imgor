@@ -1,9 +1,6 @@
 @import '../../constants/scss/variables.scss';
 
 #{$root} {
-    @import "~slick-carousel/slick/slick.css";
-    @import "~slick-carousel/slick/slick-theme.css";
-
     .carousel {
         &__container {
             border: 1px solid $header-text-color;

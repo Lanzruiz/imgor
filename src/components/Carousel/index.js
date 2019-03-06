@@ -3,6 +3,7 @@ import React from 'react';
 import Slider from 'react-slick';
 import { CSSTransitionGroup } from 'react-transition-group';
 // Styles
+import './slick.scss';
 import './styles.scss';
 
 export default class Carousel extends React.Component {
@@ -27,7 +28,7 @@ export default class Carousel extends React.Component {
         transitionLeaveTimeout={300}
       >
         {this.props.render && (
-          <div className="carousel carousel__container">
+          <div className="slick-wrapper carousel carousel__container">
             <Slider {...settings}>
               {this.props.children}
             </Slider>
