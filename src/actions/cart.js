@@ -37,21 +37,46 @@ export function deleteCart() {
   };
 };
 
-export function createCartRequest(initialEmail) {
+export function createCartRequest(dataInitial, repEmail) {
   return function(dispatch) {
     return Api.req({
       apiCall: Api.createCart,
       res200: (data) => {
-        if(initialEmail){
-          dispatch(addParticipantByCardId({ cartId: data.cart.id,  email: initialEmail }))
+        if(dataInitial.email){
+          dispatch(addParticipantByCardId({
+            cartId: data.cart.id,
+            email: dataInitial.email || null,
+          }));
         }
-        dispatch(createCart(data.cart))
+        
+        dispatch(createCart(data.cart));
+        
+        if(repEmail){
+          dispatch(updateCartData({ id: data.cart.id, ...data.cart, representative_email: repEmail }))
+        }
       },
       res404: () => console.log('Api.createCart() => 404'), // TODO: Add error handler!
-      reject: (err) => console.log(err), // TODO: Add error handler!
+      reject: (err) => console.log(err), // TODO: Add error handler!,
     });
   };
 };
+
+export function updateCartData({ id, ...rest }){
+  return function(dispatch) {
+    return Api.req({
+      apiCall: Api.putCartCartId,
+      res200: (data) => {
+        dispatch(updateCart(data.cart))
+      },
+      res404: () => console.log('Api.createCart() => 404'), // TODO: Add error handler!
+      reject: (err) => console.log(err), // TODO: Add error handler!,
+      apiCallParams: {
+        cartId: id,
+        ...rest
+      }
+    });
+  };
+}
 
 function createCart(cart) {
   return {

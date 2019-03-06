@@ -55,6 +55,7 @@ class App extends React.Component {
     dataBusinessType: PropTypes.string,
     dataDisplayFooter: PropTypes.bool,
     dataInitial: PropTypes.object,
+    dataRepEmail: PropTypes.string,
   };
 
   static defaultProps = {
@@ -120,7 +121,9 @@ class App extends React.Component {
     }
 
     if (!cartId) {
-      this.props.cartActions.createCartRequest(this.props.dataInitial.email);
+      const { dataInitial, dataRepEmail } = this.props;
+      
+      this.props.cartActions.createCartRequest(dataInitial, dataRepEmail);
     }
 
     const initialSettings = {
@@ -140,9 +143,9 @@ class App extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { cartId } = this.props;
+    const { cartId, dataInitial, dataRepEmail } = this.props;
     if (cartId !== prevProps.cartId && !cartId) {
-      this.props.cartActions.createCartRequest(this.props.dataInitial.email);
+      this.props.cartActions.createCartRequest(dataInitial, dataRepEmail);
     }
   }
 
