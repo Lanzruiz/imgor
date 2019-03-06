@@ -144,10 +144,22 @@
             width: 30px;
             height: 30px;
             background-size: 38px 45px;
+            font-family: $proxima-nova;
           }
 
           .slick-next{
             right: -25px;
+          }
+
+          .slick-dots{
+            li{
+              button{
+                &:before{
+                  font-family: $proxima-nova;
+                }
+
+              }
+            }
           }
         }
 
