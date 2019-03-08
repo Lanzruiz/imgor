@@ -34,12 +34,12 @@ export const gtmReduxMiddleware = (state) => (next) => (action) => {
 };
 
 function pushToDataLayer(data) {
-  console.log('GTM -- before push << dataLayer', window.dataLayer);
+  //console.log('GTM -- before push << dataLayer', window.dataLayer);
   
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push(data);
   
-  console.log('GTM -- after push << dataLayer', window.dataLayer);
+  //console.log('GTM -- after push << dataLayer', window.dataLayer);
 }
 
 function gtmStateChangeHandler(pageType = '', state) {
