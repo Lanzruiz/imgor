@@ -100,6 +100,7 @@ class StepOne extends React.Component {
     gender: PropTypes.string,
     weeksLengthNumber: PropTypes.number,
     dataInitialEmail: PropTypes.string,
+    dataGender: PropTypes.string,
   };
 
   static defaultProps = {
@@ -199,7 +200,9 @@ class StepOne extends React.Component {
       }
       return null;
     });
-    
+  
+    const genderCollapsed = !!dataGender || (genderOptions && genderOptions.length < 2);
+  
     return (
       <div className="tab-content__container tab-row__container content">
         <div className="content__first-col">
@@ -240,7 +243,11 @@ class StepOne extends React.Component {
                 )
               }
             </div>
-            <div className="content__form-control" style={{visibility: !!dataGender ? 'collapse': ''}}>
+            <div className="content__form-control" style={{
+               visibility: genderCollapsed ? 'collapse': '',
+               display: genderCollapsed ? 'none': ''
+             }}
+            >
               <H3>
                 <LocaleString stringKey="step_one.gender" />
               </H3>
@@ -644,6 +651,7 @@ function GenderRadioBtnContainer ({ options, value, possibleValues }) {
             const lowerCaseOptionValue = toLower(gender);
             const isDisabled = !include(computedPossibleValues.map(toLower), lowerCaseOptionValue);
             const radioBtnClassNames = cx('content__label', { 'content__label--disabled': isDisabled });
+            
             return (
               <div key={lowerCaseOptionValue} className={radioBtnClassNames}>
                 <Radio

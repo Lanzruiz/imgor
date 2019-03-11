@@ -56,6 +56,7 @@ class App extends React.Component {
     dataDisplayFooter: PropTypes.bool,
     dataInitial: PropTypes.object,
     dataRepEmail: PropTypes.string,
+    dataGender: PropTypes.string,
   };
 
   static defaultProps = {
