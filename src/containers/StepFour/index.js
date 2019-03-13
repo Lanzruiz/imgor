@@ -84,24 +84,24 @@ class StepFour extends React.Component {
     }
     this.scrollToCurrentComponent();
   }
-
-  componentDidUpdate(prevProps) {
-    // const { data, weeks, currentStep } = this.props;
-    // // const { data, currentStep } = this.props;
-    //
-    // const shouldRenderStepFour = data.length > 0;
-    // const currentStepGreatherThenFour = currentStep > stepsEnum.four;
-    // if (shouldRenderStepFour && currentStepGreatherThenFour) {
-    //   const unselectedWeek = find(weeks, ({ customize_id }) => !customize_id);
-    //
-    //   if (unselectedWeek && prevProps.weeks[0].customize_id !== emptyConcentrationId) {
-    //     this.props.stepsActions.setStepsCounter(stepsEnum.four);
-    //   }
-    // }
-    // if (currentStep !== prevProps.currentStep && prevProps.currentStep > currentStep) {
-    //   this.scrollToCurrentComponent();
-    // }
-  }
+  
+  // componentDidUpdate(prevProps) {
+  //   // const { data, weeks, currentStep } = this.props;
+  //   // // const { data, currentStep } = this.props;
+  //   //
+  //   // const shouldRenderStepFour = data.length > 0;
+  //   // const currentStepGreatherThenFour = currentStep > stepsEnum.four;
+  //   // if (shouldRenderStepFour && currentStepGreatherThenFour) {
+  //   //   const unselectedWeek = find(weeks, ({ customize_id }) => !customize_id);
+  //   //
+  //   //   if (unselectedWeek && prevProps.weeks[0].customize_id !== emptyConcentrationId) {
+  //   //     this.props.stepsActions.setStepsCounter(stepsEnum.four);
+  //   //   }
+  //   // }
+  //   // if (currentStep !== prevProps.currentStep && prevProps.currentStep > currentStep) {
+  //   //   this.scrollToCurrentComponent();
+  //   // }
+  // }
 
   componentWillUnmount() {
     this.setDefaultProps();
