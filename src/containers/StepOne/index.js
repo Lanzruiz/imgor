@@ -100,6 +100,7 @@ class StepOne extends React.Component {
     gender: PropTypes.string,
     weeksLengthNumber: PropTypes.number,
     dataInitialEmail: PropTypes.string,
+    dataGender: PropTypes.string,
   };
 
   static defaultProps = {
@@ -199,7 +200,7 @@ class StepOne extends React.Component {
       }
       return null;
     });
-    
+  
     const genderCollapsed = !!dataGender || (genderOptions && genderOptions.length < 2);
   
     return (
@@ -242,7 +243,11 @@ class StepOne extends React.Component {
                 )
               }
             </div>
-            <div className="content__form-control" style={{visibility: genderCollapsed ? 'collapse': ''}}>
+            <div className="content__form-control" style={{
+               visibility: genderCollapsed ? 'collapse': '',
+               display: genderCollapsed ? 'none': ''
+             }}
+            >
               <H3>
                 <LocaleString stringKey="step_one.gender" />
               </H3>
