@@ -70,8 +70,6 @@ class App extends React.Component {
     // To add more steps just add component into this array
     const isBusinessTypeForAdult = (props.dataBusinessType || '').toLowerCase() === 'Adult Program'.toLowerCase();
 
-    console.log('GENDER - 1', props.dataGender);
-    
     this.wizardFormChildren = [
       <StepOne
         key="0"

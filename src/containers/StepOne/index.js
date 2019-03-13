@@ -201,9 +201,6 @@ class StepOne extends React.Component {
       return null;
     });
   
-    console.log('GENDER - 2', dataGender);
-    console.log('GENDER - 2 / genderOptions', genderOptions);
-    
     const genderCollapsed = !!dataGender || (genderOptions && genderOptions.length < 2);
   
     return (
