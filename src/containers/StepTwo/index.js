@@ -107,7 +107,7 @@ class StepTwo extends React.Component {
       this.setDefaultState();
       return;
     }
-
+    
     const getCatalogCampsCalendarArgs = {
       age,
       sport,
@@ -124,6 +124,8 @@ class StepTwo extends React.Component {
     }
 
     this.getCatalogCampsCalendar(getCatalogCampsCalendarArgs);
+    
+    this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_CALENDAR);
   }
 
   componentDidUpdate(prevProps) {
@@ -429,7 +431,7 @@ class StepTwo extends React.Component {
 
   selectDate = async (date) => {
     await this.props.stepTwoActions.selectDate(date);
-    this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_CALENDAR);
+    // this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_CALENDAR);
   };
 
   selectCampLength = (length) => {
