@@ -42,6 +42,9 @@ export const instance = axios.create({
 });
 
 function init(initData = {}){
+  
+  console.log('INIT REACT APP', 'v0.1');
+  
   ReactDOM.render(
     <Provider store={store}>
       {/* <PersistGate loading={<div>Loading...</div>} persistor={persistor}> */}
