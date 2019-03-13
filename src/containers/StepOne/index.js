@@ -165,12 +165,12 @@ class StepOne extends React.Component {
   
   incrementWeeksCounter = () => {
     this.props.weeksActions.incrementWeeksCounter();
-    this.props.gtmStateChange(stateChangeTypes.OR_CAMP_DURATION);
+    this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_DURATION);
   };
   
   decrementWeeksCounter = () => {
     this.props.weeksActions.decrementWeeksCounter();
-    this.props.gtmStateChange(stateChangeTypes.OR_CAMP_DURATION);
+    this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_DURATION);
   };
   
   setWeeksCounter = (count) => {
@@ -438,7 +438,7 @@ class StepOne extends React.Component {
                                           this.selectGroup({ group: row.name, secondary_group: option.name });
                                           this.setWeeksCounter(0);
                                           this.setPrice(option.price);
-                                          this.props.gtmStateChange(stateChangeTypes.OR_CAMP_DURATION);
+                                          this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_DURATION);
                                         }}
                                       className={cx(`
                                         tab-row__section

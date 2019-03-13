@@ -1,14 +1,15 @@
-import {debounce} from 'lodash';
+import { debounce } from 'lodash';
 
 const GTM_CHANGE_STATE = '@GTM/change_state';
 
 export const stateChangeTypes = {
   OR_CAMPER_EMAIL: 'OR-camper-email',
-  OR_CAMP_DURATION: 'OR-cam-duration',
+  OR_CAMPER_DURATION: 'OR-camper-duration',
   OR_CAMPER_BOARDING: 'OR-camper-boarding',
   OR_CAMPER_CALENDAR: 'OR-camper-calendar',
   OR_CAMPER_INFORMATION: 'OR-camper-information',
   OR_CAMPER_PROGRAM: 'OR-camper-program',
+  OR_CAMPER_GEAR: 'OR-camper-gear',
   OR_CART: 'OR-cart'
 };
 
@@ -59,7 +60,7 @@ function gtmStateChangeHandler(pageType = '', state) {
       },
       title: document.title,
       type: pageType,
-      language: state.language,
+      language: state.language || state.lang || 'en',
       url: `${window.location.href}`,
       sport: state.sport
     },
