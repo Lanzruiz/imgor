@@ -85,24 +85,6 @@ class StepFour extends React.Component {
     this.scrollToCurrentComponent();
   }
 
-  componentDidUpdate(prevProps) {
-    // const { data, weeks, currentStep } = this.props;
-    // // const { data, currentStep } = this.props;
-    //
-    // const shouldRenderStepFour = data.length > 0;
-    // const currentStepGreatherThenFour = currentStep > stepsEnum.four;
-    // if (shouldRenderStepFour && currentStepGreatherThenFour) {
-    //   const unselectedWeek = find(weeks, ({ customize_id }) => !customize_id);
-    //
-    //   if (unselectedWeek && prevProps.weeks[0].customize_id !== emptyConcentrationId) {
-    //     this.props.stepsActions.setStepsCounter(stepsEnum.four);
-    //   }
-    // }
-    // if (currentStep !== prevProps.currentStep && prevProps.currentStep > currentStep) {
-    //   this.scrollToCurrentComponent();
-    // }
-  }
-
   componentWillUnmount() {
     this.setDefaultProps();
   }
@@ -112,9 +94,7 @@ class StepFour extends React.Component {
     
     if(!concentrationOrdering) return items;
     
-    
     const parsedConcentrationOrdering = concentrationOrdering.map(v => v.toLowerCase());
-    
     
     const parsedItems = [ ...items ].map(v => ({
       ...v,
@@ -123,12 +103,10 @@ class StepFour extends React.Component {
     }));
     
     const sortedGroups = parsedConcentrationOrdering.reduce((acc, conc) => {
-    
       const s = acc.data.filter(v => v.nameInLowerCase === conc || v.displayNameInLowerCase === conc);
       const r = acc.data.filter(v => v.nameInLowerCase !== conc && v.displayNameInLowerCase !== conc);
       acc.sorted = [ ...acc.sorted, ...s ];
       acc.data = [ ...r ];
-    
       return acc;
     }, {
       sorted: [],
