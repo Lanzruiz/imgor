@@ -49,7 +49,7 @@
     "step_two.page_of": "page {current} of {max}",
     "step_three.header": "Step {stepNumber} - Choose your Training",
     "step_three.sub_header": "Listed price is for entire camp stay, from check-in through check-out",
-    "step_four.header": "Step {stepNumber} - Customize with Training Concentrations",
+    "step_four.header": "Step {stepNumber} - Add optional training concentrations",
     "step_four.sub_header": "Make a selection for each week, Price listed is for each week’s selection",
     "step_four.secondary_programs.sub_header": "Selection is for entire camp stay",
     "step_four.15_hours": "15 Hours",
