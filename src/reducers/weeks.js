@@ -6,6 +6,7 @@ import find from 'lodash/find';
 import { PURGE } from 'redux-persist';
 // Constants
 import * as weeksTypes from '../constants/weeks';
+import { emptyConcentrationId } from './step.four';
 
 const initialState = {
   selectedWeekId: 0,
@@ -59,7 +60,25 @@ export default function(state = initialState, action) {
     case weeksTypes.CUSTOMIZE_WEEK: {
       const weeks = concat(state.weeks);
       weeks[state.selectedWeekId].customize_id = payload;
-      return assign({}, state, { weeks });
+      
+      const skipWeeks = weeks.map((v, i) => {
+        const week = {...v};
+        week.customize_id = null;
+        week.price = 0;
+        if(i === 0){
+          week.customize_id = emptyConcentrationId;
+        }
+        return week;
+      });
+      
+      if(payload === emptyConcentrationId){
+        return {
+          ...state,
+          weeks: skipWeeks
+        }
+      }
+      
+      return { ...state, weeks };
     }
 
     case weeksTypes.REMOVE_CUSTOMIZED_WEEK: {

@@ -111,7 +111,7 @@ export function getCatalogCampRequest({ business_type, program_type, sport, age,
       apiCall: Api.getCatalogCamps,
       res200: (data) => {
         if (isEqual(data.results.length, 0)) {
-          dispatch( setStepsCounter(stepsEnum.four), );
+          dispatch( setStepsCounter(stepsEnum.seven), );
         }
         dispatch( getCatalogCamps(data), );
       },
@@ -379,7 +379,10 @@ export function stepFourSetDefaultState() {
 }
 
 export function stepFourSetSecondaryProgramIdRequest({ campId, cartId, participantId, productId }) {
+  
+  
   return function(dispatch) {
+  
     Api.getCatalogCampCampId(campId)
       .then(data => data.data.results[0])
       .then((product) => {
