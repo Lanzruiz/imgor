@@ -102,6 +102,8 @@ class StepThree extends React.Component {
 
   componentDidMount() {
     this.getCatalogCampsLevels();
+  
+    this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_PROGRAM);
     //this.scrollToCurrentComponent();
   }
 
@@ -246,7 +248,7 @@ class StepThree extends React.Component {
       }
     }
   
-    this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_PROGRAM);
+    // this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_PROGRAM);
   };
 
   discardCardWithSecondProgram = () => {
@@ -343,7 +345,7 @@ class StepThree extends React.Component {
 
   goToNextStep = async ({ id: cardId, secondaryPrograms }) => {
     await this.setSecondaryPrograms({ id: cardId, secondaryPrograms });
-    this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_PROGRAM);
+    // this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_PROGRAM);
   };
 
   scrollToCurrentComponent = () => {
