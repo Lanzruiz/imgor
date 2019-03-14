@@ -100,7 +100,7 @@ class StepThree extends React.Component {
     data: [],
   };
 
-  componentDidMount() { 
+  componentDidMount() {
     this.getCatalogCampsLevels();
     //this.scrollToCurrentComponent();
   }

@@ -349,7 +349,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
     }
   };
 
-  customizeWeek = (id) => {
+  customizeWeek = async (id) => {
     const { weekId, cartId, participantId, maxWeekCounter, stepFourConcentrationProductId } = this.props;
     const data = this.props[`week_${weekId}_data`];
     const selectedItem = find(data, ['id', id]);
@@ -369,7 +369,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
   
     if (stepFourConcentrationProductId) {
       if (isEqual(emptyConcentrationId, id)) {
-        this.deleteSelectedConcentration(id);
+        await this.deleteSelectedConcentration(id);
         return;
       }
       args.productId = stepFourConcentrationProductId;
@@ -393,8 +393,11 @@ class StepFourWeekConcentrationComponent extends React.Component {
     if (stepFourConcentrationProductId) {
       const nextWeekId = weekId >= maxWeekCounter ? null : weekId;
       await this.props.weeksActions.deleteSelectedConcentration({
-        cartId, participantId, nextWeekId,
-        productId: stepFourConcentrationProductId, id,
+        id,
+        nextWeekId,
+        cartId,
+        participantId,
+        productId: stepFourConcentrationProductId,
         currentWeekId: weekId,
       });
       
