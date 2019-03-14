@@ -80,20 +80,18 @@ class StepFinal extends React.Component {
     }
   }
   
-  handleConfirmRefundable = () => {
+  handleConfirmRefundable = (refundableIncoming = false) => {
+    this.props.finalStepActions.finalStepRefundableUpdate(refundableIncoming);
+    
     const { cartId, participantId, refundable } = this.props;
     
     const data = {
       cartId,
       participantId,
-      refundable
+      refundable: refundableIncoming || refundable
     };
     
     this.props.finalStepActions.updateAllProductsForRefundableInfo(data);
-  };
-  
-  handleRadioButtonRefundableChange = (refundable = false) => {
-    this.props.finalStepActions.finalStepRefundableUpdate(refundable);
   };
 
   render() {
@@ -132,8 +130,6 @@ class StepFinal extends React.Component {
                   />
                 </Col>
               </Row>
-  
-  
               <Card
                 buttonBlock={false}
                 cardHeader={<LocaleString stringKey="step_final.required_insurance" />}
@@ -145,12 +141,11 @@ class StepFinal extends React.Component {
                   <CardContentRow>
                     <CardContentCol>
                       <div className="step-final__form-insurance">
-                        <div className="step-final__form-insurance__container">
-  
+                        <div className={`step-final__form-insurance__container ${refundableLoading ? 'loading' : ''}`}>
                           <Radio
                             name="refundable"
                             className="step-final__form-insurance__radio-button"
-                            onChange={() => {this.handleRadioButtonRefundableChange(true)}}
+                            onChange={() => {this.handleConfirmRefundable(true)}}
                             checked={refundable}
                             children={(
                               <Fragment>
@@ -167,7 +162,7 @@ class StepFinal extends React.Component {
                           <Radio
                             name="refundable"
                             className="step-final__form-insurance__radio-button"
-                            onChange={() => {this.handleRadioButtonRefundableChange(false)}}
+                            onChange={() => {this.handleConfirmRefundable(false)}}
                             checked={!refundable}
                             children={(
                               <Fragment>
@@ -180,16 +175,6 @@ class StepFinal extends React.Component {
                               </Fragment>
                             )}
                           />
-                          <button
-                            className="button step-final__form-insurance__confirm-button"
-                            onClick={this.handleConfirmRefundable}
-                            disabled={refundableLoading}
-                          >
-                            {refundableLoading
-                              ? <LocaleString stringKey={"loading"} />
-                              : <LocaleString stringKey={"confirm"} />
-                            }
-                          </button>
                         </div>
                       </div>
                     </CardContentCol>

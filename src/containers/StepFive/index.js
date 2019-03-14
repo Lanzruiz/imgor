@@ -21,6 +21,7 @@ import {
 import { sportSelector, businessTypeSelector, packageTypeSelector } from '../InitialComponent/selectors';
 // Actions
 import * as stepFiveActions from '../../actions/step.five';
+import { gtmStateChange, stateChangeTypes } from '../../helpers/GTMService';
 // Constants
 import { stepsEnum } from '../../constants/steps';
 // Styles
@@ -48,6 +49,7 @@ class StepFive extends React.Component {
 
   componentDidMount() {
     scrollToComponent(this.stepFour.current, { align: 'top', duration: 500 });
+    this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_GEAR);
   }
 
   componentWillUnmount() {
@@ -132,6 +134,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     stepFiveActions: bindActionCreators(stepFiveActions, dispatch),
+    gtmStateChange: bindActionCreators(gtmStateChange, dispatch)
   };
 };
 
