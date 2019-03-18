@@ -136,7 +136,6 @@ export function getCatalogCampWeekOneRequest({ business_type, program_type, spor
       apiCall: Api.getCatalogCamps,
       res200: (data) => {
         dispatch(getCatalogCampsWeekOne(data));
-        dispatch(setStepsCounter(stepsEnum.seven));
       },
       res404: () => console.log('Api.getCatalogCamps() => 404'),
       reject: err => console.log(err),
@@ -380,7 +379,10 @@ export function stepFourSetDefaultState() {
 }
 
 export function stepFourSetSecondaryProgramIdRequest({ campId, cartId, participantId, productId }) {
+  
+  
   return function(dispatch) {
+  
     Api.getCatalogCampCampId(campId)
       .then(data => data.data.results[0])
       .then((product) => {
