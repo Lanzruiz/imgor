@@ -80,15 +80,17 @@ class StepFinal extends React.Component {
     }
   }
   
-  handleConfirmRefundable = (refundableIncoming = false) => {
+  handleConfirmRefundable = (refundableIncoming) => {
+    console.log(refundableIncoming);
+    
     this.props.finalStepActions.finalStepRefundableUpdate(refundableIncoming);
     
-    const { cartId, participantId, refundable } = this.props;
+    const { cartId, participantId } = this.props;
     
     const data = {
       cartId,
       participantId,
-      refundable: refundableIncoming || refundable
+      refundable: refundableIncoming
     };
     
     this.props.finalStepActions.updateAllProductsForRefundableInfo(data);
