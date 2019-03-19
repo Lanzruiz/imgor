@@ -34,7 +34,7 @@ import createNumbersArray from '../../helpers/createNumbersArray';
 import isStringsEqual from '../../helpers/isStringsEqual';
 // Constants
 import { minWeekCount, maxWeekCount } from '../../constants/weeks';
-import { stepOneFormFieldsName } from './selectors';
+import { stepOneFormFieldsName, stepOneSecondaryGroupSelector } from './selectors';
 // Selectors
 import {
   stepOneGroupSelector, stepOneDataSelector, stepOneTabIndexSelector, weeksCounterSelector,
@@ -178,13 +178,25 @@ class StepOne extends React.Component {
     this.props.weeksActions.setWeeksCounter(count);
   };
   
+  selectGroup = ({ group, secondary_group }) => {
+    this.props.stepOneActions.selectGroup({ group, secondary_group });
+  };
+  
+  setTabIndex = (tabIndex) => {
+    this.props.stepOneActions.setTabIndex(tabIndex);
+  };
+  
+  setPrice = (price) => {
+    this.props.stepOneActions.stepOneSetPrice(price);
+  };
+  
   renderTabPanel = ({ range = [], boardingOptions = [], genderOptions = [], id = '', colName = ""}) => {
     const { sleepaway, age, gender, dataGender } = this.props;
     
     const parsedColName = (colName || '')
-      .toLowerCase()
-      .replace(/,/g, '')
-      .replace(/\s/g, '_');
+    .toLowerCase()
+    .replace(/,/g, '')
+    .replace(/\s/g, '_');
     
     const html = ReactDOMServer.renderToString(<LocaleString stringKey={`step_one.${id}.${parsedColName}.text`} />);
     
@@ -200,9 +212,9 @@ class StepOne extends React.Component {
       }
       return null;
     });
-  
+    
     const genderCollapsed = !!dataGender || (genderOptions && genderOptions.length < 2);
-  
+    
     return (
       <div className="tab-content__container tab-row__container content">
         <div className="content__first-col">
@@ -244,9 +256,9 @@ class StepOne extends React.Component {
               }
             </div>
             <div className="content__form-control" style={{
-               visibility: genderCollapsed ? 'collapse': '',
-               display: genderCollapsed ? 'none': ''
-             }}
+              visibility: genderCollapsed ? 'collapse': '',
+              display: genderCollapsed ? 'none': ''
+            }}
             >
               <H3>
                 <LocaleString stringKey="step_one.gender" />
@@ -263,21 +275,9 @@ class StepOne extends React.Component {
       </div>
     );
   };
-  
-  selectGroup = ({ group, secondary_group }) => {
-    this.props.stepOneActions.selectGroup({ group, secondary_group });
-  };
-  
-  setTabIndex = (tabIndex) => {
-    this.props.stepOneActions.setTabIndex(tabIndex);
-  };
-  
-  setPrice = (price) => {
-    this.props.stepOneActions.stepOneSetPrice(price);
-  };
-
+ 
   render() {
-    const { weeksCounter, participantId, data, tabIndex, group, dataInitialEmail } = this.props;
+    const { weeksCounter, participantId, data, tabIndex, group, dataInitialEmail, secondaryGroup } = this.props;
     
     const parsedData = data.map(v => ({...v, id: (v.name || '').toLowerCase().replace(/\s/g, '_')}));
     
@@ -333,6 +333,13 @@ class StepOne extends React.Component {
             
             const customTabName = ReactDOMServer.renderToString(<LocaleString stringKey={`step_one.${row.id}.tab_title`}/>);
             
+            const secondaryGroupParsed = (secondaryGroup || group || '')
+            .toLowerCase()
+            .replace(/,/g, '')
+            .replace(/\s/g, '_');
+            
+            const tabOptionName = ReactDOMServer.renderToString(<LocaleString stringKey={`step_one.${row.id}.${secondaryGroupParsed}.tab`}/>);
+            
             return (
               <React.Fragment key={index}>
                 <Tabs
@@ -341,6 +348,14 @@ class StepOne extends React.Component {
                   selectedIndex={selectedIndex}
                   onSelect={this.setTabIndex}
                 >
+                  
+                  {tabOptionName && (
+                    <div className="tab-row__option">
+                      {tabOptionName}
+                    </div>
+                  )}
+                  
+                  
                   <TabRow className={cx('tab-row__container align-initial', {
                     'tab-row__container--disabled': (tabIndex > 0) && !isStringsEqual(group, row.name),
                   })}>
@@ -557,22 +572,6 @@ function H3({ children }) {
   );
 }
 
-// function H4({ children }) {
-//   return (
-//     <h4 className="content__header content__header--h4">
-//       {children}
-//     </h4>
-//   );
-// }
-//
-// function Paragraph({ children }) {
-//   return (
-//     <p className="content__paragraph">
-//       {children}
-//     </p>
-//   );
-// }
-
 function SleepawayRadioBtn({ options, sleepaway, possibleValues, handleChange }) {
   return (
     <Field
@@ -705,6 +704,7 @@ function mapStateToProps(state) {
     data: stepOneDataSelector(state),
     tabIndex: stepOneTabIndexSelector(state),
     group: stepOneGroupSelector(state),
+    secondaryGroup: stepOneSecondaryGroupSelector(state),
     weeksLengthNumber: state.stepOne.weeksLengthNumber,
     sport: sportSelector(state),
     businessType: businessTypeSelector(state),
