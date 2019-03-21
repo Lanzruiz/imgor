@@ -250,7 +250,7 @@ class StepTwo extends React.Component {
                   <div className="dates">
                     <ScreenClassRender render={(cl) => {
                       const groupSize = 5;
-                      const perPage = cl === 'xs' ? 2 : 3;
+                      const perPage = cl === 'xs' ? 2 : 5;
   
                       const dataGrouped = data.reduce((acc, v, index) => {
                         const i = Math.floor(index / groupSize);
@@ -288,9 +288,15 @@ class StepTwo extends React.Component {
                           <Default>
                             {data.length
                               ? (
-                                <div className="dates__container ">
-                                  {this.newRenderDates(dataGrouped)}
-                                </div>
+                                <Carousel render={true} className="test">
+                                  {dataGroupedAndPaged.map((page, index) => (
+                                    <CarouselItem key={index}>
+                                      <div className="dates__container">
+                                        {this.newRenderDates(page)}
+                                      </div>
+                                    </CarouselItem>
+                                  ))}
+                                </Carousel>
                               ) : (
                                 <div className="dates__no-data">
                                   <LocaleString stringKey="step_two.dates.no-data" />
