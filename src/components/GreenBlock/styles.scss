@@ -1,8 +1,14 @@
 @import '../../constants/scss/variables.scss';
 
 #{$root} {
-    .green-block {
-        background-color: $green-block-bg;
-        color: $green-block-color;
-    }
+  .green-block {
+    padding: 5px 10px;
+    background-color: $green-block-bg;
+    color: $green-block-color;
+  }
+  .transparent-block {
+    background-color: transparent;
+    color: transparent;
+  }
 }
+
