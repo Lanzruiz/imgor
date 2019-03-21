@@ -59,12 +59,7 @@
   }
 
   .tab-row {
-    &__option{
-      text-transform: uppercase;
-      font-family: $proxima-nova;
-      color: $card-blue-color;
-      font-size: 22px;
-    }
+    //margin-top: 50px;
 
     &__group-header {
       font-family: $serifa-bold;
@@ -119,6 +114,7 @@
     }
 
     &__section {
+      position: relative;
       margin: 1px 0 1px 1px;
       width: 25%;
       padding: 5px 15px;
@@ -200,6 +196,18 @@
         & .tab-row__section--locked {
           background: $white url('../../assets/img/locked-padlock-dark.png') no-repeat center center;
         }
+      }
+    }
+
+    &__option{
+      width: 100%;
+      margin-top: -43px;
+      font-size: 22px;
+
+      .tab-row__green-block{
+        margin:0;
+        width: 100%;
+        min-height: 42px;
       }
     }
 

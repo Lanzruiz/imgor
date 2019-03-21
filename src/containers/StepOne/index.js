@@ -277,7 +277,7 @@ class StepOne extends React.Component {
   };
  
   render() {
-    const { weeksCounter, participantId, data, tabIndex, group, dataInitialEmail, secondaryGroup } = this.props;
+    const { weeksCounter, participantId, data, tabIndex, group, dataInitialEmail } = this.props;
     
     const parsedData = data.map(v => ({...v, id: (v.name || '').toLowerCase().replace(/\s/g, '_')}));
     
@@ -299,27 +299,6 @@ class StepOne extends React.Component {
               />
             </Col>
           </Row>
-          <TabRow transparent>
-            <TabRowSection className="mb-hidden" />
-            <TabRowSection tabIndex={tabIndex} index={1}>
-              <GreenBlock className="tab-row__green-block">
-                <TabRowHeaderGreenBlock localeKey="step_one.tabs.our_most" />
-                <TabRowHeaderGreenBlock localeKey="step_one.tabs.popular_camp" />
-              </GreenBlock>
-            </TabRowSection>
-            <TabRowSection tabIndex={tabIndex} index={2}>
-              <GreenBlock className="tab-row__green-block">
-                <TabRowHeaderGreenBlock localeKey="step_one.tabs.the_ultimate" />
-                <TabRowHeaderGreenBlock localeKey="step_one.tabs.training_experience" />
-              </GreenBlock>
-            </TabRowSection>
-            <TabRowSection tabIndex={tabIndex} index={3}>
-              <GreenBlock className="tab-row__green-block">
-                <TabRowHeaderGreenBlock localeKey="step_one.tabs.invite_only" />
-                <TabRowHeaderGreenBlock localeKey="step_one.tabs.programm" />
-              </GreenBlock>
-            </TabRowSection>
-          </TabRow>
           {parsedData.map((row, index) => {
             const selectedIndex = (
               isStringsEqual(row.name, group)
@@ -333,12 +312,9 @@ class StepOne extends React.Component {
             
             const customTabName = ReactDOMServer.renderToString(<LocaleString stringKey={`step_one.${row.id}.tab_title`}/>);
             
-            const secondaryGroupParsed = (secondaryGroup || group || '')
-            .toLowerCase()
-            .replace(/,/g, '')
-            .replace(/\s/g, '_');
+            const parseName = (name) => name.toLowerCase().replace(/,/g, '').replace(/\s/g, '_');
             
-            const tabOptionName = ReactDOMServer.renderToString(<LocaleString stringKey={`step_one.${row.id}.${secondaryGroupParsed}.tab`}/>);
+            const weeklyCamp = ReactDOMServer.renderToString(<LocaleString stringKey={`step_one.${row.id}.${parseName(weekly_camp)}.tab`}/>);
             
             return (
               <React.Fragment key={index}>
@@ -348,13 +324,30 @@ class StepOne extends React.Component {
                   selectedIndex={selectedIndex}
                   onSelect={this.setTabIndex}
                 >
-                  
-                  {tabOptionName && (
-                    <div className="tab-row__option">
-                      {tabOptionName}
-                    </div>
-                  )}
-                  
+                  <TabRow transparent>
+                    <TabRowSection className="mb-hidden" />
+                    
+                    {isStringsEqual(row.name, weekly_camp) && weeklyCamp && (
+                      <TabRowSection tabIndex={tabIndex} index={1} style={{width: '75%'}}>
+                        <GreenBlock className="tab-row__green-block">
+                          <TabRowHeaderGreenBlock localeKey={`step_one.${row.id}.${parseName(weekly_camp)}.tab`} />
+                        </GreenBlock>
+                      </TabRowSection>
+                    )}
+                    
+                    {row.options && (row.options.map((option, idx) => {
+                      const tabGreenBox = ReactDOMServer.renderToString(<LocaleString stringKey={`step_one.${row.id}.${parseName(option.name)}.tab`}/>);
+                      
+                      return tabGreenBox ? (
+                        <TabRowSection key={idx} tabIndex={tabIndex} index={idx}>
+                          <GreenBlock  className="tab-row__green-block">
+                            <TabRowHeaderGreenBlock localeKey={`step_one.${row.id}.${parseName(option.name)}.tab`} />
+                          </GreenBlock>
+                        </TabRowSection>
+                      ) : <TabRowSection key={idx}  className="mb-hidden" />
+                    }))}
+                    
+                  </TabRow>
                   
                   <TabRow className={cx('tab-row__container align-initial', {
                     'tab-row__container--disabled': (tabIndex > 0) && !isStringsEqual(group, row.name),
@@ -382,6 +375,8 @@ class StepOne extends React.Component {
                       {
                         isStringsEqual(row.name, weekly_camp)
                           ? (
+                          <React.Fragment>
+                           
                             <Tab
                               onClick={() => this.selectGroup({ group: row.name, secondary_group: null })}
                               className={cx(`
@@ -447,6 +442,7 @@ class StepOne extends React.Component {
                                 </Button>
                               </div>
                             </Tab>
+                          </React.Fragment>
                           ) : (
                             <React.Fragment>
                               {row.options && (
@@ -471,6 +467,8 @@ class StepOne extends React.Component {
                                         tab-row__hover`
                                       )}
                                     >
+                                     
+  
                                       <div className={cx('tab-row__wrapper', {
                                         'tab-row__container--disabled': ((tabIndex > 0) && ((idx + 1 !== tabIndex) && !isStringsEqual(group, row.name))) || option.sold_out,
                                         'sold-out-block': option.sold_out,
@@ -539,9 +537,9 @@ class StepOne extends React.Component {
   }
 }
 
-function TabRowSection({ index = 0, children, tabIndex = 0, className }) {
+function TabRowSection({ index = 0, children, tabIndex = 0, className, style }) {
   return (
-    <div children={children} className={cx('tab-row__section tab-row__section--center mb-0', {
+    <div children={children} style={style} className={cx('tab-row__section tab-row__section--center mb-0', {
       'tab-row__section--disabled': (tabIndex > 0) && (tabIndex !== index),
       [className]: className,
     })} />
