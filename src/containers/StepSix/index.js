@@ -626,7 +626,7 @@ class StepSix extends React.Component {
                           className="add-to-cart__button card-body__button card-body__button--selected"
                           onClick={hasTransportationCartData ? this.unselectTransportationOption : this.addTransportDataToCart}
                         >
-                          { hasTransportationCartData ? 'Remove' : 'Add to cart' }
+                          { hasTransportationCartData ? 'Remove' : 'Select' }
                         </Button>
                       </Col>
                     </Row>
