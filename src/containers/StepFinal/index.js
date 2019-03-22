@@ -130,241 +130,246 @@ class StepFinal extends React.Component {
                   />
                 </Col>
               </Row>
-              <Card
-                buttonBlock={false}
-                cardHeader={<LocaleString stringKey="step_final.required_insurance" />}
-                cardHeaderCapitalize={true}
-                priceBlock={false}
-                id={223232323}
-              >
-                <CardContent>
-                  <CardContentRow>
-                    <CardContentCol>
-                      <div className="step-final__form-insurance">
-                        <div className={`step-final__form-insurance__container ${refundableLoading ? 'loading' : ''}`}>
-                          <Radio
-                            name="refundable"
-                            className="step-final__form-insurance__radio-button"
-                            onChange={() => {this.handleConfirmRefundable(true)}}
-                            checked={refundable}
-                            children={(
-                              <Fragment>
-                                <div className="header">
-                                  <LocaleString stringKey={options[0].stringKey} formatString={options[0].formatString} />
-                                </div>
-                                <div className="description">
-                                  <LocaleString stringKey={options[0].stringKeyDesc} />
-                                </div>
-                              </Fragment>
-                            )}
-                          />
-  
-                          <Radio
-                            name="refundable"
-                            className="step-final__form-insurance__radio-button"
-                            onChange={() => {this.handleConfirmRefundable(false)}}
-                            checked={!refundable}
-                            children={(
-                              <Fragment>
-                                <div className="header">
-                                  <LocaleString stringKey={options[1].stringKey} />
-                                </div>
-                                <div className="description">
-                                  <LocaleString stringKey={options[1].stringKeyDesc} />
-                                </div>
-                              </Fragment>
-                            )}
-                          />
-                        </div>
-                      </div>
-                    </CardContentCol>
-                  </CardContentRow>
-                </CardContent>
-              </Card>
+              <Row>
+                <Col style={{ padding: '15px' }}>
+                  <Card
+                    buttonBlock={false}
+                    cardHeader={<LocaleString stringKey="step_final.required_insurance" />}
+                    cardHeaderCapitalize={true}
+                    priceBlock={false}
+                    id={223232323}
+                  >
+                    <CardContent>
+                      <CardContentRow>
+                        <CardContentCol>
+                          <div className="step-final__form-insurance">
+                            <div className={`step-final__form-insurance__container ${refundableLoading ? 'loading' : ''}`}>
+                              <Radio
+                                name="refundable"
+                                className="step-final__form-insurance__radio-button"
+                                onChange={() => {this.handleConfirmRefundable(true)}}
+                                checked={refundable}
+                                children={(
+                                  <Fragment>
+                                    <div className="header">
+                                      <LocaleString stringKey={options[0].stringKey} formatString={options[0].formatString} />
+                                    </div>
+                                    <div className="description">
+                                      <LocaleString stringKey={options[0].stringKeyDesc} />
+                                    </div>
+                                  </Fragment>
+                                )}
+                              />
+      
+                              <Radio
+                                name="refundable"
+                                className="step-final__form-insurance__radio-button"
+                                onChange={() => {this.handleConfirmRefundable(false)}}
+                                checked={!refundable}
+                                children={(
+                                  <Fragment>
+                                    <div className="header">
+                                      <LocaleString stringKey={options[1].stringKey} />
+                                    </div>
+                                    <div className="description">
+                                      <LocaleString stringKey={options[1].stringKeyDesc} />
+                                    </div>
+                                  </Fragment>
+                                )}
+                              />
+                            </div>
+                          </div>
+                        </CardContentCol>
+                      </CardContentRow>
+                    </CardContent>
+                  </Card>
+                </Col>
+              </Row>
               
-              <Col>
-                <Row>
-                  <Col
-                    sm={12}
-                    md={12}
-                    lg={4}
-                    style={{ borderRight: '1px solid #fff' }}
+              <Row>
+                <Col
+                  sm={12}
+                  md={12}
+                  lg={4}
+                  style={{ padding: '15px' }}
+                >
+                  <Card
+                    buttonBlock={false}
+                    cardHeader={<LocaleString stringKey="step_final.camper_information" />}
+                    cardHeaderCapitalize={true}
+                    id={0}
+                    priceBlock={false}
+                    style={{ marginBottom: 0 }}
                   >
-                    <Card
-                      buttonBlock={false}
-                      cardHeader={<LocaleString stringKey="step_final.camper_information" />}
-                      cardHeaderCapitalize={true}
-                      id={0}
-                      priceBlock={false}
-                      style={{ marginBottom: 0 }}
-                    >
-                      <CardContent>
-                        <CardContentRow>
-                          <CardContentCol>
-                            <Form autoComplete="off" className="step-final__form" onSubmit={() => {}}>
-                              <label className="step-final__form-control">
-                                <Input
-                                  inputClassName="step-final__input"
-                                  name={stepFinalFormFieldNames.firstName}
-                                  label="first name"
-                                  autoComplete={false}
-                                />
-                              </label>
-                              <label className="step-final__form-control">
-                                <Input
-                                  inputClassName="step-final__input"
-                                  name={stepFinalFormFieldNames.lastName}
-                                  label="last name"
-                                  autoComplete={false}
-                                />
-                              </label>
-                              <label className="step-final__form-control">
-                                <DatePickerReduxForm
-                                  placeholder="Date Of Birth"
-                                  name={stepFinalFormFieldNames.dateOfBirth}
-                                  inputClassName="step-final__input cursor-pointer"
-                                  className="step-final__input"
-                                  showTimeSelect={false}
-                                  isClearable={false}
-                                  dateFormat="MM/DD/YYYY"
-                                  maxDate={new Date()}
-                                  withPopperPlacement={false}
-                                  showYearDropdown
-                                  yearDropdownItemNumber={90}
-                                  openToDate={new Date((new Date().getFullYear() - age), 0)}
-                                />
-                                {/*<InputBirthDayMask*/}
-                                  {/*inputClassName="step-final__input"*/}
-                                  {/*name={stepFinalFormFieldNames.dateOfBirth}*/}
-                                  {/*label="date of birth"*/}
-                                {/*/>*/}
-                              </label>
-                              <label className="step-final__form-control">
-                                <Input
-                                  inputClassName="step-final__input"
-                                  name={stepFinalFormFieldNames.email}
-                                  label="email (optional)"
-                                  autoComplete={false}
-                                />
-                              </label>
-                              <label className="step-final__form-control">
-                                <Input
-                                  inputClassName="step-final__input"
-                                  name={stepFinalFormFieldNames.phone}
-                                  label="phone number (optional)"
-                                  autoComplete={false}
-                                />
-                              </label>
-                            </Form>
-                          </CardContentCol>
-                        </CardContentRow>
-                      </CardContent>
-                    </Card>
-                  </Col>
-                  <Col
-                    sm={12}
-                    md={6}
-                    lg={4}
-                    style={{ borderRight: '1px solid #fff' }}
-                  >
-                    <Card
-                      buttonBlock={false}
-                      cardHeader={<LocaleString stringKey="step_final.position" />}
-                      cardHeaderCapitalize={true}
-                      id={1}
-                      priceBlock={false}
-                      style={{ marginBottom: 0 }}
-                    >
-                      <CardContent>
-                        <CardContentRow>
-                          <CardContentCol className="step-final__position">
-                            <PositionRadioBtn
-                              options={positions}
-                              position={selectedPosition}
-                            />
-                          </CardContentCol>
-                        </CardContentRow>
-                      </CardContent>
-                    </Card>
-                  </Col>
-                  <Col
-                    sm={12}
-                    md={6}
-                    lg={4}
-                    style={{ borderRight: '1px solid #fff' }}
-                  >
-                    <Card
-                      buttonBlock={false}
-                      cardHeader={<LocaleString stringKey="step_final.shirt_size" />}
-                      cardHeaderCapitalize={true}
-                      id={2}
-                      priceBlock={false}
-                      style={{ marginBottom: 0 }}
-                    >
-                      <CardContent>
-                        <CardContentRow>
-                          <ShirtSizeRadioBtn shirtSize={shirtSize} />
-                        </CardContentRow>
-                      </CardContent>
-                    </Card>
-                  </Col>
-                </Row>
+                    <CardContent>
+                      <CardContentRow>
+                        <CardContentCol>
+                          <Form autoComplete="off" className="step-final__form" onSubmit={() => {}}>
+                            <label className="step-final__form-control">
+                              <Input
+                                inputClassName="step-final__input"
+                                name={stepFinalFormFieldNames.firstName}
+                                label="first name"
+                                autoComplete={false}
+                              />
+                            </label>
+                            <label className="step-final__form-control">
+                              <Input
+                                inputClassName="step-final__input"
+                                name={stepFinalFormFieldNames.lastName}
+                                label="last name"
+                                autoComplete={false}
+                              />
+                            </label>
+                            <label className="step-final__form-control">
+                              <DatePickerReduxForm
+                                placeholder="Date Of Birth"
+                                name={stepFinalFormFieldNames.dateOfBirth}
+                                inputClassName="step-final__input cursor-pointer"
+                                className="step-final__input"
+                                showTimeSelect={false}
+                                isClearable={false}
+                                dateFormat="MM/DD/YYYY"
+                                maxDate={new Date()}
+                                withPopperPlacement={false}
+                                showYearDropdown
+                                yearDropdownItemNumber={90}
+                                openToDate={new Date((new Date().getFullYear() - age), 0)}
+                              />
+                              {/*<InputBirthDayMask*/}
+                                {/*inputClassName="step-final__input"*/}
+                                {/*name={stepFinalFormFieldNames.dateOfBirth}*/}
+                                {/*label="date of birth"*/}
+                              {/*/>*/}
+                            </label>
+                            <label className="step-final__form-control">
+                              <Input
+                                inputClassName="step-final__input"
+                                name={stepFinalFormFieldNames.email}
+                                label="email (optional)"
+                                autoComplete={false}
+                              />
+                            </label>
+                            <label className="step-final__form-control">
+                              <Input
+                                inputClassName="step-final__input"
+                                name={stepFinalFormFieldNames.phone}
+                                label="phone number (optional)"
+                                autoComplete={false}
+                              />
+                            </label>
+                          </Form>
+                        </CardContentCol>
+                      </CardContentRow>
+                    </CardContent>
+                  </Card>
+                </Col>
                 
-                {!isBusinessTypeForAdult && (
-                  <Row>
-                    <Col sm={12} style={{ borderRight: '1px solid #fff' }}>
-                      <Card
-                        buttonBlock={false}
-                        cardHeader={<LocaleString stringKey="step_final.guardian_information" />}
-                        cardHeaderCapitalize={true}
-                        id={3}
-                        priceBlock={false}
-                      >
-                        <CardContent>
-                          <CardContentRow>
-                            <CardContentCol>
-                              <Form autoComplete="off" className="step-final__form" style={{ maxWidth: (!isMobile && isTablet) ? '100%' : 'calc(100%/3)', marginRight: 'auto' }} onSubmit={() => {}}>
-                                <label className="step-final__form-control">
-                                  <Input
-                                    inputClassName="step-final__input"
-                                    name={stepFinalFormFieldNames.guardianInformationFirstName}
-                                    label="first name"
-                                    autoComplete={false}
-                                  />
-                                </label>
-                                <label className="step-final__form-control">
-                                  <Input
-                                    inputClassName="step-final__input"
-                                    name={stepFinalFormFieldNames.guardianInformationLastName}
-                                    label="last name"
-                                    autoComplete={false}
-                                  />
-                                </label>
-                                <label className="step-final__form-control">
-                                  <Input
-                                    inputClassName="step-final__input"
-                                    name={stepFinalFormFieldNames.guardianInformationEmail}
-                                    label="email"
-                                    autoComplete={false}
-                                  />
-                                </label>
-                                <label className="step-final__form-control">
-                                  <Input
-                                    inputClassName="step-final__input"
-                                    name={stepFinalFormFieldNames.guardianInformationPhone}
-                                    label="phone number"
-                                    autoComplete={false}
-                                  />
-                                </label>
-                              </Form>
-                            </CardContentCol>
-                          </CardContentRow>
-                        </CardContent>
-                      </Card>
-                    </Col>
-                  </Row>
-                )}
-              </Col>
+                <Col
+                  sm={12}
+                  md={6}
+                  lg={4}
+                  style={{ padding: '15px' }}
+                >
+                  <Card
+                    buttonBlock={false}
+                    cardHeader={<LocaleString stringKey="step_final.position" />}
+                    cardHeaderCapitalize={true}
+                    id={1}
+                    priceBlock={false}
+                    style={{ marginBottom: 0 }}
+                  >
+                    <CardContent>
+                      <CardContentRow>
+                        <CardContentCol className="step-final__position">
+                          <PositionRadioBtn
+                            options={positions}
+                            position={selectedPosition}
+                          />
+                        </CardContentCol>
+                      </CardContentRow>
+                    </CardContent>
+                  </Card>
+                </Col>
+                
+                <Col
+                  sm={12}
+                  md={6}
+                  lg={4}
+                  style={{ padding: '15px' }}
+                >
+                  <Card
+                    buttonBlock={false}
+                    cardHeader={<LocaleString stringKey="step_final.shirt_size" />}
+                    cardHeaderCapitalize={true}
+                    id={2}
+                    priceBlock={false}
+                    style={{ marginBottom: 0 }}
+                  >
+                    <CardContent>
+                      <CardContentRow>
+                        <ShirtSizeRadioBtn shirtSize={shirtSize} />
+                      </CardContentRow>
+                    </CardContent>
+                  </Card>
+                </Col>
+              </Row>
+
+              {!isBusinessTypeForAdult && (
+              <Row>
+                <Col sm={12} style={{ padding: '15px' }}>
+                  <Card
+                    buttonBlock={false}
+                    cardHeader={<LocaleString stringKey="step_final.guardian_information" />}
+                    cardHeaderCapitalize={true}
+                    id={3}
+                    priceBlock={false}
+                  >
+                    <CardContent>
+                      <CardContentRow>
+                        <CardContentCol>
+                          <Form autoComplete="off" className="step-final__form" style={{ maxWidth: (!isMobile && isTablet) ? '100%' : 'calc(100%/3)', marginRight: 'auto' }} onSubmit={() => {}}>
+                            <label className="step-final__form-control">
+                              <Input
+                                inputClassName="step-final__input"
+                                name={stepFinalFormFieldNames.guardianInformationFirstName}
+                                label="first name"
+                                autoComplete={false}
+                              />
+                            </label>
+                            <label className="step-final__form-control">
+                              <Input
+                                inputClassName="step-final__input"
+                                name={stepFinalFormFieldNames.guardianInformationLastName}
+                                label="last name"
+                                autoComplete={false}
+                              />
+                            </label>
+                            <label className="step-final__form-control">
+                              <Input
+                                inputClassName="step-final__input"
+                                name={stepFinalFormFieldNames.guardianInformationEmail}
+                                label="email"
+                                autoComplete={false}
+                              />
+                            </label>
+                            <label className="step-final__form-control">
+                              <Input
+                                inputClassName="step-final__input"
+                                name={stepFinalFormFieldNames.guardianInformationPhone}
+                                label="phone number"
+                                autoComplete={false}
+                              />
+                            </label>
+                          </Form>
+                        </CardContentCol>
+                      </CardContentRow>
+                    </CardContent>
+                  </Card>
+                </Col>
+              </Row>
+              )}
+
             </Container>
           </AOSFadeInContainer>
         );
