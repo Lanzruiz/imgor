@@ -11,7 +11,20 @@ export function getCatalogCampsGroup({ sport, gender, group, businessType, secon
   return function(dispatch) {
     Api.req({
       apiCall: Api.getCatalogCampsGroup,
-      res200: data => dispatch( stepOneGetCatalogGroup(data), ),
+      res200: data => {
+        const { results } = data;
+        
+        if(results.length === 1 && (results[0].options || []).length < 2) {
+          dispatch(selectGroup({
+            group: results[ 0 ].name,
+            secondary_group: (results[ 0 ].options[ 0 ] || {}).name || null
+          }));
+          dispatch(stepOneSetPrice(results[ 0 ].price));
+          dispatch(setTabIndex(1));
+        }
+        
+        dispatch( stepOneGetCatalogGroup(data) )
+      },
       res404: () => console.log('Api.getCatalogCampsGroup() => Error 404'), // TODO: Add error handler
       reject: err => console.error,
       apiCallParams: {
