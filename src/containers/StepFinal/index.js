@@ -188,7 +188,7 @@ class StepFinal extends React.Component {
                     sm={12}
                     md={12}
                     lg={4}
-                    style={{ padding: isMobile ? '0 15px' : 0, borderRight: '1px solid #fff' }}
+                    style={{ borderRight: '1px solid #fff' }}
                   >
                     <Card
                       buttonBlock={false}
@@ -265,7 +265,7 @@ class StepFinal extends React.Component {
                     sm={12}
                     md={6}
                     lg={4}
-                    style={{ padding: isMobile ? '0 15px' : 0, borderRight: '1px solid #fff' }}
+                    style={{ borderRight: '1px solid #fff' }}
                   >
                     <Card
                       buttonBlock={false}
@@ -291,7 +291,7 @@ class StepFinal extends React.Component {
                     sm={12}
                     md={6}
                     lg={4}
-                    style={{ padding: isMobile ? '0 15px' : 0, borderRight: '1px solid #fff' }}
+                    style={{ borderRight: '1px solid #fff' }}
                   >
                     <Card
                       buttonBlock={false}
@@ -312,7 +312,7 @@ class StepFinal extends React.Component {
                 
                 {!isBusinessTypeForAdult && (
                   <Row>
-                    <Col sm={12} style={{ padding: isMobile ? '0 15px' : 0, borderRight: '1px solid #fff' }}>
+                    <Col sm={12} style={{ borderRight: '1px solid #fff' }}>
                       <Card
                         buttonBlock={false}
                         cardHeader={<LocaleString stringKey="step_final.guardian_information" />}
