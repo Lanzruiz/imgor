@@ -46,7 +46,7 @@ function pushToDataLayer(data) {
 function gtmStateChangeHandler(pageType = '', state) {
   
   const gtmParams = {
-    event: 'newPage',
+    event: 'newPageData',
     newPageData: {
       params: {
         age: state.age,
