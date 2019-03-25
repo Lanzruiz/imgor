@@ -190,10 +190,19 @@ class StepTwo extends React.Component {
   }
 
   render() {
-    const { data, weeksCounter, sport, selectedDate } = this.props;
-
+    const { data, weeksCounter, sport, selectedDate, boarding } = this.props;
     
+    const shouldDontDisplaySoldOut = data.reduce((acc, item) => {
+      const { capacity } = item;
+      const capacityItemByBoardingValue = capacity.find((capacityItem) => capacityItem.boarding === boarding);
+      const isAvailable = capacityItemByBoardingValue.available > 0;
 
+      if(acc === false){
+        return acc;
+      }
+      return isAvailable;
+    }, true);
+    
     return (
       <AOSFadeInContainer className="step-two">
         <Container>
@@ -312,9 +321,11 @@ class StepTwo extends React.Component {
                     <span className="description__info">
                       &#42;<LocaleString stringKey="step_two.dates.header_descripion" />
                     </span>
-                    <span className="description__sold-out sold-out">
-                      <LocaleString stringKey="step_two.dates.sold_out" />
-                    </span>
+                    {!shouldDontDisplaySoldOut && (
+                      <span className="description__sold-out sold-out">
+                        <LocaleString stringKey="step_two.dates.sold_out" />
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
