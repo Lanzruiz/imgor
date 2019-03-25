@@ -1,32 +1,32 @@
 @import '../../constants/scss/variables.scss';
 
 #{$root} {
-    .tab-row {
-        align-items: stretch;
-        background-color: $tab-row-bg;
-        display: flex;
-        justify-content: center;
-        padding: 0;
+  .tab-row {
+    background-color: $tab-row-bg;
+    display: flex;
+    justify-content: flex-start;
+    padding: 0;
 
-        @include breakpoint($mobile){
-            margin: 0 -15px;
-        }
-
-        &--transparent {
-            background-color: transparent;
-
-            @include breakpoint($mobile){
-                .tab-row__section{
-                    width: auto;
-                    flex: 1;
-                }
-            }
-        }
+    @include breakpoint($mobile) {
+      margin: 0 -15px;
     }
 
-    .mb-hidden{
-        @include breakpoint($mobile){
-            display: none;
+    &--transparent {
+      background-color: transparent;
+
+      @include breakpoint($mobile) {
+        .tab-row__section {
+          width: auto;
+          flex: 1;
         }
+      }
     }
+  }
+
+  .mb-hidden {
+    @include breakpoint($mobile) {
+      display: none;
+    }
+  }
 }
+
