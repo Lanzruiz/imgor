@@ -1,5 +1,10 @@
 # Imgor rebuild
 
+###Requirements
+
+- **NodeJs 10.15+**
+- **Yarn 1.12+**
+
 ### Getting started
 1. ##### Create .env file from example
 ```sh
@@ -8,21 +13,41 @@
 
 1. ##### Install packages
 ```sh
-  $ npm i
+  $ yarn install
 ```
 
 #### Development
 1. ##### Start dev server
 ```sh
-  $ npm start
+  $ yarn start
 ```
 
-#### Production
+#### Production (NOT REQUIRED FOR DEVELOP)
 1. ##### Run React App on your server
-2. ##### Add iframe to your website
-
+2. ##### Add div container to your website
+3. ##### Add bundled script into your page
 ```html
-	<iframe src={url-path-to-react-app}></iframe>
+	<div
+		id="imgor-root"
+		data-external_init="false"
+		data-rep-email="repemail@pls.com"
+		data-sport="Golf"
+		data-gender="male"
+		data-group=""
+		data-secondary_group=""
+		data-business_type="Youth Camp"
+		data-api-url=""
+		data-url-to-no-props="/abc"
+		data-redirect-url-shopify=""
+		data-app-key="abc"
+		data-last_changed="1547592269991"
+		data-display-footer="true"
+		data-content-path="/settings/locale.en.json"
+		data-settings-path="/settings/settings.json"
+		data-via-logo-path="https://t6hgmcqx.s3.amazonaws.com/2c7a9538-3f33-70c4-29f5-ae75f59b6445/fn7s1pm3wnitd4rh/via-approved.png"
+	></div>
+	
+	<script src="/static/js/main.code.chunk.js">
 ```
 
 3. ##### SCSS
