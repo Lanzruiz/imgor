@@ -107,7 +107,7 @@ class StepTwo extends React.Component {
       this.setDefaultState();
       return;
     }
-
+    
     const getCatalogCampsCalendarArgs = {
       age,
       sport,
@@ -124,6 +124,8 @@ class StepTwo extends React.Component {
     }
 
     this.getCatalogCampsCalendar(getCatalogCampsCalendarArgs);
+    
+    this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_CALENDAR);
   }
 
   componentDidUpdate(prevProps) {
@@ -257,7 +259,7 @@ class StepTwo extends React.Component {
                   <div className="dates">
                     <ScreenClassRender render={(cl) => {
                       const groupSize = 5;
-                      const perPage = cl === 'xs' ? 3 : 4;
+                      const perPage = cl === 'xs' ? 2 : 5;
   
                       const dataGrouped = data.reduce((acc, v, index) => {
                         const i = Math.floor(index / groupSize);
@@ -279,12 +281,6 @@ class StepTwo extends React.Component {
                                 <Carousel render={true} className="test">
                                   {dataGroupedAndPaged.map((page, index) => (
                                     <CarouselItem key={index}>
-                                      <h2 className="header__h6">
-                                        <LocaleString stringKey="step_two.page_of" formatString={{
-                                          current: ++index,
-                                          max: dataGroupedAndPaged.length
-                                        }}/>
-                                      </h2>
                                       <div className="dates__container">
                                         {this.newRenderDates(page)}
                                       </div>
@@ -301,9 +297,15 @@ class StepTwo extends React.Component {
                           <Default>
                             {data.length
                               ? (
-                                <div className="dates__container ">
-                                  {this.newRenderDates(dataGrouped)}
-                                </div>
+                                <Carousel render={true} className="test">
+                                  {dataGroupedAndPaged.map((page, index) => (
+                                    <CarouselItem key={index}>
+                                      <div className="dates__container">
+                                        {this.newRenderDates(page)}
+                                      </div>
+                                    </CarouselItem>
+                                  ))}
+                                </Carousel>
                               ) : (
                                 <div className="dates__no-data">
                                   <LocaleString stringKey="step_two.dates.no-data" />
@@ -379,7 +381,9 @@ class StepTwo extends React.Component {
 
     return dataArray.map((group, index) => (
       <div className="dates__column" key={index}>
-        {group.map((item, index) => element(item, index))}
+        <ul>
+          {group.map((item, index) => element(item, index))}
+        </ul>
       </div>
     ));
   };
@@ -440,7 +444,7 @@ class StepTwo extends React.Component {
 
   selectDate = async (date) => {
     await this.props.stepTwoActions.selectDate(date);
-    this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_CALENDAR);
+    // this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_CALENDAR);
   };
 
   selectCampLength = (length) => {
