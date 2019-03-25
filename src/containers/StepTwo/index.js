@@ -196,7 +196,7 @@ class StepTwo extends React.Component {
       const { capacity } = item;
       const capacityItemByBoardingValue = capacity.find((capacityItem) => capacityItem.boarding === boarding);
       const isAvailable = capacityItemByBoardingValue.available > 0;
-      
+
       if(acc === false){
         return acc;
       }
