@@ -363,7 +363,7 @@ class StepOne extends React.Component {
                       >
                         <TabRowHeader >
                           <Fragment>
-                            <div>
+                            <div className="tab-row__header--title">
                               {customTabName || row.name}
                             </div>
                             <div className="tab-row__header--subtitle">
