@@ -363,7 +363,7 @@ class StepOne extends React.Component {
                       >
                         <TabRowHeader >
                           <Fragment>
-                            <div>
+                            <div className="tab-row__header--title">
                               {customTabName || row.name}
                             </div>
                             <div className="tab-row__header--subtitle">
@@ -495,13 +495,13 @@ class StepOne extends React.Component {
                   <React.Fragment>
                     <TabPanel />
                     {
-                      isStringsEqual(row.name, weekly_camp)
+                      isStringsEqual(row.name, weekly_camp) && row.options.length === 0
                         ? (
                             <TabPanel>
                               {this.renderTabPanel({
                                 range: createNumbersArray({ from: 8, to: 18 }),
                                 boardingOptions: ['Boarding', 'Non-Boarding'],
-                                genderOptions: row.options && row.options[0] ? row.options[0].gender_options : ['Male', 'Female'],
+                                genderOptions: ['Male', 'Female'],
                                 id: row.id,
                                 colName: weekly_camp
                               })}
@@ -511,6 +511,7 @@ class StepOne extends React.Component {
                             row.options.map((option, idx) => {
                               const { age_from, age_to, boarding_options, gender_options } = option;
                               const range = createNumbersArray({ from: age_from, to: age_to });
+
                               return (
                                 <TabPanel key={idx}>
                                   {this.renderTabPanel({
@@ -614,19 +615,21 @@ function AgeRadioBtnContainer ({ range, age }) {
         name={stepOneFormFieldsName.age}
         type="radio"
         options={range}
-        component={({ input, options }) => (
-          options.map((value) => (
-            <div key={value} className="content__age react-text-left react-mb-10">
-              <Radio
-                {...input}
-                className="content__radio-btn--font-16"
-                checked={`${age}` === `${value}`}
-                children={value}
-                value={value}
-              />
-            </div>
-          ))
-        )}
+        component={({ input, options }) => {
+          return (
+            options.map((value) => (
+              <div key={value} className="content__age react-text-left react-mb-10">
+                <Radio
+                  {...input}
+                  className="content__radio-btn--font-16"
+                  checked={`${age}` === `${value}`}
+                  children={value}
+                  value={value}
+                />
+              </div>
+            ))
+          );
+        }}
       />
     </div>
   );
