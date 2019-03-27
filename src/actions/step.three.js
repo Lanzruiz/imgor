@@ -34,6 +34,8 @@ export function getCatalogCampsLevelsRequest(args) {
 };
 
 export function postCartCartIdParticipantIdProductRequest({ cartId, quantity, product, participantId, type, productId }) {
+  console.log(product);
+
   return function(dispatch) {
     Api.req({
       apiCall: Api.postCartCartIdParticipantIdProduct,
