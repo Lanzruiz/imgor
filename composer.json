@@ -1,0 +1,12 @@
+{
+  "name": "img/imgor_v3_react",
+  "description": "React IMGOR Application",
+  "type": "react-app",
+  "authors": [
+    {
+      "name": "Courtney Adesile",
+      "email": "ca@largeinc.com"
+    }
+  ],
+  "require": {}
+}
