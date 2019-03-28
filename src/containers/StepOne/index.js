@@ -11,6 +11,7 @@ import cx from 'classnames';
 import include from 'lodash/includes';
 import toLower from 'lodash/toLower';
 import isEqual from 'lodash/isEqual';
+import scrollToComponent from 'react-scroll-to-component';
 // Components
 import EmailModal from '../../components/EmailModal';
 import Header from '../../components/Header';
@@ -123,6 +124,10 @@ class StepOne extends React.Component {
     };
     
     this.getCatalogCampsGroup(args);
+    this.scrollToCurrentComponent();
+  }
+  scrollToCurrentComponent = () => {
+    scrollToComponent(this, { offset: -200, align: 'middle', duration: 1000 });
   }
 
   componentDidUpdate(prevProps) {

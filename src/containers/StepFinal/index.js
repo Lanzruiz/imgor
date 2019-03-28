@@ -61,6 +61,11 @@ class StepFinal extends React.Component {
     this.props.finalStepActions.recalculateInsurancePrice();
     
     this.finalStepGetCatalogPositions({ sport, participant });
+    //this.scrollToCurrentComponent();
+  }
+
+  scrollToCurrentComponent = () => {
+    scrollToComponent(this, { align: 'top', duration: 500 });
   }
 
   componentWillMount() {

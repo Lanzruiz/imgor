@@ -6,7 +6,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
-import scrollToComponent from 'react-scroll-to-component';
 import isEqual from 'lodash/isEqual';
 import isNumber from 'lodash/isNumber';
 // Components
@@ -17,6 +16,7 @@ import StepFourEslSecondaryProgram from './components/StepFourEslSecondaryProgra
 import StepFourPerformanceSecondaryProgram from './components/StepFourPerformanceSecondaryProgram';
 import StepFourSatSecondaryProgram from './components/StepFourSatSecondaryProgram';
 import AOSFadeInContainer from '../../components/AOSFadeInContainer';
+import scrollToComponent from 'react-scroll-to-component';
 // Action
 import * as weeksActions from '../../actions/weeks';
 import * as stepsActions from '../../actions/steps';
@@ -82,7 +82,11 @@ class StepFour extends React.Component {
     if (!hasSecondaryProgram && isEqual(currentStep, stepsEnum.four)) {
       this.getCatalogCamp();
     }
-    this.scrollToCurrentComponent();
+    //this.scrollToCurrentComponent();
+  }
+
+  scrollToCurrentComponent = () => {
+    scrollToComponent(this, { offset: 0, align: 'middle', duration: 1500 });
   }
 
   componentWillUnmount() {
@@ -319,13 +323,6 @@ class StepFour extends React.Component {
         return false;
     }
   };
-
-  scrollToCurrentComponent = () => {
-    const { hasSecondaryProgram, data } = this.props;
-    if (hasSecondaryProgram || data.length > 0) {
-      scrollToComponent(this.stepFour.current, { align: 'top', duration: 500 });
-    }
-  }
 }
 
 function mapStateToProps(state) {

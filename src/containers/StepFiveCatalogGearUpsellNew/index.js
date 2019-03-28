@@ -7,6 +7,7 @@ import { CSSTransitionGroup } from 'react-transition-group';
 import { bindActionCreators } from 'redux';
 import toLower from 'lodash/toLower';
 import find from 'lodash/find';
+import scrollToComponent from 'react-scroll-to-component';
 // Components
 import Card, { CardContent, CardContentRow, CardContentCol, CardContentText } from '../../components/Card';
 import LocaleString from '../../components/LocaleString';
@@ -65,6 +66,11 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
 
   componentDidMount() {
     this.getCatalogGearUpsellNew();
+    //this.scrollToCurrentComponent();
+  }
+
+  scrollToCurrentComponent = () => {
+    scrollToComponent(this, { align: 'top', duration: 500 });
   }
 
   componentWillUnmount() {

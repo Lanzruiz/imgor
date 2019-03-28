@@ -104,7 +104,7 @@ class StepThree extends React.Component {
     this.getCatalogCampsLevels();
   
     this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_PROGRAM);
-    //this.scrollToCurrentComponent();
+    this.scrollToCurrentComponent();
   }
 
   componentDidUpdate(prevProps) {
@@ -121,10 +121,12 @@ class StepThree extends React.Component {
         this.getCatalogCampsLevels();
       }
     }
+    //this.scrollToCurrentComponentToFour();
   }
 
   componentWillUnmount() {
     this.setDefaultState();
+    //this.scrollToCurrentComponentToFour();
   }
 
   render() {
@@ -247,7 +249,7 @@ class StepThree extends React.Component {
         await this.props.stepThreeActions.stepThreeSetProductToTheCart({ cartId, participantId, campId: id });
       }
     }
-  
+    this.scrollToCurrentComponentToFour();
     // this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_PROGRAM);
   };
 
@@ -349,8 +351,13 @@ class StepThree extends React.Component {
   };
 
   scrollToCurrentComponent = () => {
-    scrollToComponent(this.stepThree.current, { align: 'top' });
+    scrollToComponent(this, { offset: 200, align: 'top', duration: 1000 });
   }
+
+  scrollToCurrentComponentToFour = () => {
+    scrollToComponent(this, { offset: 200 });
+  }
+
 }
 
 function mapStateToProps(state) {

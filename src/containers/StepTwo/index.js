@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import moment from 'moment';
+import scrollToComponent from 'react-scroll-to-component';
 import isEqual from 'lodash/isEqual';
 // Components
 import Header from '../../components/Header';
@@ -126,6 +127,9 @@ class StepTwo extends React.Component {
     this.getCatalogCampsCalendar(getCatalogCampsCalendarArgs);
     
     this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_CALENDAR);
+
+    this.scrollToCurrentComponent();
+
   }
 
   componentDidUpdate(prevProps) {
@@ -187,6 +191,10 @@ class StepTwo extends React.Component {
 
   componentWillUnmount() {
     this.setDefaultState();
+  }
+
+  scrollToCurrentComponent = () => {
+    scrollToComponent(this, { offset: -200, align: 'middle', duration: 1000 });
   }
 
   render() {
