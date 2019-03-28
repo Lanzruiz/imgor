@@ -12,6 +12,7 @@ import Card, { CardContent, CardContentRow, CardContentCol, CardContentText } fr
 import LocaleString from '../../components/LocaleString';
 import Dropdown from '../../components/Dropdown';
 import Image from '../../components/Image';
+import { gtmAddCartProduct } from '../../helpers/GTMService';
 // Selectors
 import { stepOneGenderSelector, cartIdSelector, participantIdSelector } from '../StepOne/selectors';
 import { stepTwoStartDateSelector, stepTwoEndDateSelector } from '../StepTwo/selectors';
@@ -188,7 +189,7 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
     );
   };
 
-  setUpsellGearItem = (cardId, dates, shouldSendRequest) => {
+  setUpsellGearItem = async (cardId, dates, shouldSendRequest) => {
     if (shouldSendRequest) {
       const { cartId, participantId, upsellNewSelectedProducts } = this.props;
       const upsellNewSelectedProductsItem = upsellNewSelectedProducts[cardId];
@@ -202,7 +203,9 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
         productId: product.id,
         type: productTypesEnum.gearUpsell,
       };
-      this.props.stepFiveActions.stepFiveSetUpsellGearItemRequest(args);
+      await this.props.stepFiveActions.stepFiveSetUpsellGearItemRequest(args);
+  
+      this.props.gtmAddCartProduct({ id: product.id });
     }
   };
 
@@ -210,7 +213,7 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
     this.props.stepFiveActions.stepFiveSetUpsellGearItemDate({ cardId, dateId });
   };
 
-  updateUpsellGearItem = (cardId, dates, shouldSendRequest) => {
+  updateUpsellGearItem = async (cardId, dates, shouldSendRequest) => {
     if (shouldSendRequest) {
       const { cartId, participantId, upsellNewSelectedProducts } = this.props;
       const upsellNewSelectedProductsItem = upsellNewSelectedProducts[cardId];
@@ -225,10 +228,12 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
         type: productTypesEnum.gearUpsell,
       };
       if (upsellNewSelectedProductsItem.needUpdate) {
-        this.props.stepFiveActions.stepFiveUpdateUpsellGearItemRequest(args);
+        await this.props.stepFiveActions.stepFiveUpdateUpsellGearItemRequest(args);
       } else {
-        this.props.stepFiveActions.stepFiveDeleteUpsellGearItemRequest(args);
+        await this.props.stepFiveActions.stepFiveDeleteUpsellGearItemRequest(args);
       }
+      
+      this.props.gtmAddCartProduct({ id: product.id });
     }
   };
 }
@@ -248,6 +253,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     stepFiveActions: bindActionCreators(stepFiveActions, dispatch),
+    gtmAddCartProduct: bindActionCreators(gtmAddCartProduct, dispatch)
   };
 }
 

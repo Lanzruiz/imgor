@@ -18,6 +18,7 @@ import {
   PerWeekSentence,
   TrainingSentence
 } from '../../containers/StepFour';
+import { gtmAddCartProduct } from '../../helpers/GTMService';
 import LocaleString from '../LocaleString';
 // Actions
 import * as weeksActions from '../../actions/weeks';
@@ -374,11 +375,14 @@ class StepFourWeekConcentrationComponent extends React.Component {
       }
       args.productId = stepFourConcentrationProductId;
 
-      this.props.weeksActions.updateSelectedConcentration(args);
+      await this.props.weeksActions.updateSelectedConcentration(args);
+      this.props.gtmAddCartProduct({ id });
       return;
     }
-
-    this.props.stepFourActions.stepFourCustomizeWeekRequest(args);
+    
+    await this.props.stepFourActions.stepFourCustomizeWeekRequest(args);
+    
+    setTimeout(() => { this.props.gtmAddCartProduct({ id }) }, 1000)
   };
 
   setMinHeight = (height) => {
@@ -436,6 +440,7 @@ function mapDispatchToProps(dispatch) {
   return {
     weeksActions: bindActionCreators(weeksActions, dispatch),
     stepFourActions: bindActionCreators(stepFourActions, dispatch),
+    gtmAddCartProduct: bindActionCreators(gtmAddCartProduct, dispatch)
   };
 };
 
