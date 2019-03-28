@@ -15,6 +15,7 @@ import LocaleString from '../../components/LocaleString';
 import Dropdown from '../../components/Dropdown';
 // Actions
 import * as stepFiveActions from '../../actions/step.five';
+import { gtmAddCartProduct } from '../../helpers/GTMService';
 // Selectors
 import { cartIdSelector, participantIdSelector } from '../StepOne/selectors';
 import { stepTwoStartDateSelector, stepTwoEndDateSelector } from '../StepTwo/selectors';
@@ -184,7 +185,7 @@ class StepFiveCatalogExcursionsNew extends React.Component {
     }
   };
 
-  setExcursionGearItemRequest = (cardId, dates, shouldSendRequest) => {
+  setExcursionGearItemRequest = async (cardId, dates, shouldSendRequest) => {
     if (shouldSendRequest) {
       const { cartId, participantId, selectedExcurcionGear } = this.props;
       const selectedExcurcionGearItem = selectedExcurcionGear[cardId];
@@ -198,11 +199,11 @@ class StepFiveCatalogExcursionsNew extends React.Component {
         productId: product.id,
         type: productTypesEnum.excursion,
       };
-      this.props.stepFiveActions.stepFiveSetExcursionGearItemRequest(args);
+      await this.props.stepFiveActions.stepFiveSetExcursionGearItemRequest(args);
     }
   };
 
-  updateExcursionGearItemRequest = (cardId, dates, shouldSendRequest) => {
+  updateExcursionGearItemRequest =  async (cardId, dates, shouldSendRequest) => {
     if (shouldSendRequest) {
       const { cartId, participantId, selectedExcurcionGear } = this.props;
       const selectedExcurcionGearItem = selectedExcurcionGear[cardId];
@@ -217,10 +218,12 @@ class StepFiveCatalogExcursionsNew extends React.Component {
         type: productTypesEnum.excursion,
       };
       if (selectedExcurcionGearItem.needUpdate) {
-        this.props.stepFiveActions.stepFiveUpdateExcursionGearItemRequest(args);
+        await this.props.stepFiveActions.stepFiveUpdateExcursionGearItemRequest(args);
       } else {
-        this.props.stepFiveActions.stepFiveDeleteExcursionGearItemRequest(args);
+        await this.props.stepFiveActions.stepFiveDeleteExcursionGearItemRequest(args);
       }
+  
+      this.props.gtmAddCartProduct({ id: product.id });
     }
   }
 }
@@ -239,6 +242,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     stepFiveActions: bindActionCreators(stepFiveActions, dispatch),
+    gtmAddCartProduct: bindActionCreators(gtmAddCartProduct, dispatch)
   };
 }
 

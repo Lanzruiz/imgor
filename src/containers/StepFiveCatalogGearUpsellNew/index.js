@@ -228,9 +228,9 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
         type: productTypesEnum.gearUpsell,
       };
       if (upsellNewSelectedProductsItem.needUpdate) {
-        this.props.stepFiveActions.stepFiveUpdateUpsellGearItemRequest(args);
+        await this.props.stepFiveActions.stepFiveUpdateUpsellGearItemRequest(args);
       } else {
-        this.props.stepFiveActions.stepFiveDeleteUpsellGearItemRequest(args);
+        await this.props.stepFiveActions.stepFiveDeleteUpsellGearItemRequest(args);
       }
       
       this.props.gtmAddCartProduct({ id: product.id });

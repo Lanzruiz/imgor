@@ -299,13 +299,14 @@ export function deleteExcursionGearItem({ cardId }) {
 };
 
 export function stepFiveSetExcursionGearItemRequest({ cartId, participantId, product, quantity, productId, type, cardId }) {
-  return function(dispatch) {
+  return async function(dispatch) {
     Api.req({
       apiCall: Api.postCartCartIdParticipantIdProduct,
       apiCallParams: { cartId, participantId, product, quantity, productId, type },
       res200: (data) => {
         dispatch( updateCart(data.cart), );
         dispatch( selectExcursionGearItem({ cardId, productId: data.participant_product_id }) );
+        return Promise.resolve();
       },
       res404: console.log,
       reject: console.error,
@@ -314,13 +315,14 @@ export function stepFiveSetExcursionGearItemRequest({ cartId, participantId, pro
 };
 
 export function stepFiveUpdateExcursionGearItemRequest({ cartId, participantId, productId, product, type, cardId }) {
-  return function(dispatch) {
+  return async function(dispatch) {
     Api.req({
       apiCall: Api.putCartCartIdParticipantParticipantIdProductId,
       apiCallParams: { cartId, participantId, productId, product, type },
       res200: (data) => {
         dispatch( updateCart(data.cart), );
         dispatch( updateExcursionGearItem({ cardId }) );
+        return Promise.resolve();
       },
       res404: console.log,
       reject: console.error,
@@ -329,13 +331,14 @@ export function stepFiveUpdateExcursionGearItemRequest({ cartId, participantId, 
 };
 
 export function stepFiveDeleteExcursionGearItemRequest({ cartId, participantId, productId, cardId }) {
-  return function(dispatch) {
+  return async function(dispatch) {
     Api.req({
       apiCall: Api.deleteCartCartIdParticipantParticipantIdProductId,
       apiCallParams: { cartId, participantId, productId },
       res200: (data) => {
         dispatch( updateCart(data.cart), );
         dispatch( deleteExcursionGearItem({ cardId }), );
+        return Promise.resolve();
       },
       res404: console.log,
       reject: console.error,
