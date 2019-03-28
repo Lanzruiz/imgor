@@ -38,6 +38,10 @@ import { stepsEnum } from '../../constants/steps';
 import './styles.scss';
 
 class StepTwo extends React.Component {
+  constructor(props) {
+    super(props);
+    this.stepTwo = React.createRef();
+  }
   static propTypes = {
     boarding: PropTypes.bool,
     stepOneActions: PropTypes.shape({
@@ -194,7 +198,7 @@ class StepTwo extends React.Component {
   }
 
   scrollToCurrentComponent = () => {
-    scrollToComponent(this, { offset: -200, align: 'middle', duration: 1000 });
+    scrollToComponent(this.stepTwo.current, { offset: -200, align: 'middle', duration: 1000 });
   }
 
   render() {
@@ -212,7 +216,7 @@ class StepTwo extends React.Component {
     }, true);
     
     return (
-      <AOSFadeInContainer className="step-two">
+      <AOSFadeInContainer className="step-two" ref={this.stepTwo}>
         <Container>
           <Row>
             <Col>

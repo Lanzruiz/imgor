@@ -82,11 +82,11 @@ class StepFour extends React.Component {
     if (!hasSecondaryProgram && isEqual(currentStep, stepsEnum.four)) {
       this.getCatalogCamp();
     }
-    //this.scrollToCurrentComponent();
+    this.scrollToCurrentComponent();
   }
 
   scrollToCurrentComponent = () => {
-    scrollToComponent(this, { offset: 0, align: 'middle', duration: 1500 });
+    scrollToComponent(this.stepFour.current, { offset: 0, align: 'middle', duration: 1500 });
   }
 
   componentWillUnmount() {

@@ -351,11 +351,11 @@ class StepThree extends React.Component {
   };
 
   scrollToCurrentComponent = () => {
-    scrollToComponent(this, { offset: 200, align: 'top', duration: 1000 });
+    scrollToComponent(this.stepThree.current, { offset: 200, align: 'top', duration: 1000 });
   }
 
   scrollToCurrentComponentToFour = () => {
-    scrollToComponent(this, { offset: 200 });
+    scrollToComponent(this.stepThree.current, { offset: 200 });
   }
 
 }
