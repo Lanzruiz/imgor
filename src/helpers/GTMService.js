@@ -132,11 +132,11 @@ function gtmAddProductHandler(state) {
   const { id } = state.newProductCartData;
   const { participants } = state;
   
-  console.log('ID', id);
+  // console.log('ID', id);
   
   const products = (participants[0] || { products: [] }).products;
   
-  console.log('products', products);
+  // console.log('products', products);
   
   
   const product = (products.find(v => (v.product || {}).id === id) || {}) || { product: {} };
@@ -149,7 +149,7 @@ function gtmAddProductHandler(state) {
     name: ''
   };
   
-  console.log('ADD_PRODUCT', product);
+  // console.log('ADD_PRODUCT', product);
   
   const gtmParams = {
     event: 'newEvent',
@@ -169,7 +169,7 @@ function gtmAddProductHandler(state) {
     }
   };
   
-  console.log('ADD_PRODUCT RESULT:', gtmParams);
+  // console.log('ADD_PRODUCT RESULT:', gtmParams);
   
   pushToDataLayer(gtmParams);
 }
