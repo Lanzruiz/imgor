@@ -408,7 +408,7 @@ export function stepFourSetSecondaryProgramIdRequest({ campId, cartId, participa
 
 
 export function stepFourCustomizeWeekRequest({ cartId, product, participantId, quantity, productId, type, nextWeekId, currentWeekId }) {
-  return function(dispatch) {
+  return async function(dispatch) {
     dispatch( customizeWeek(productId) );
 
     if (isEqual(productId, emptyConcentrationId)) {
@@ -428,6 +428,7 @@ export function stepFourCustomizeWeekRequest({ cartId, product, participantId, q
         if (isNumber(nextWeekId) && (nextWeekId > (currentWeekId - 1))) {
           dispatch( selectWeek(nextWeekId), );
         }
+        return Promise.resolve();
       },
       res404: () => console.log('Api.postCartCartIdParticipantIdProduct() => 404'),
       reject: console.error,

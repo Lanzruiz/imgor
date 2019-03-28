@@ -21,7 +21,7 @@ import AOSFadeInContainer from '../../components/AOSFadeInContainer';
 import * as trainingActions from '../../actions/training';
 import * as stepThreeActions from '../../actions/step.three';
 import * as stepsActions from '../../actions/steps';
-import { gtmStateChange, stateChangeTypes } from '../../helpers/GTMService';
+import { gtmAddCartProduct, gtmStateChange, stateChangeTypes } from '../../helpers/GTMService';
 // Selectors
 import {
   stepThreeDataSelector, stepTreeSelectedIdSelector, stepThreeSelectedProductSelector, stepThreeSelector,
@@ -248,7 +248,7 @@ class StepThree extends React.Component {
       }
     }
   
-    // this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_PROGRAM);
+    this.props.gtmAddCartProduct({ id });
   };
 
   discardCardWithSecondProgram = () => {
@@ -387,7 +387,8 @@ function mapDispatchToProps(dispatch) {
     trainingActions: bindActionCreators(trainingActions, dispatch),
     stepThreeActions: bindActionCreators(stepThreeActions, dispatch),
     stepsActions: bindActionCreators(stepsActions, dispatch),
-    gtmStateChange: bindActionCreators(gtmStateChange, dispatch)
+    gtmStateChange: bindActionCreators(gtmStateChange, dispatch),
+    gtmAddCartProduct: bindActionCreators(gtmAddCartProduct, dispatch)
   };
 };
 

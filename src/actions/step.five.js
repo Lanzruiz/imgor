@@ -121,7 +121,7 @@ export function stepFiveSetParticipantProductId({ participantProductId, productI
 };
 
 export function postCartCartIdParticipantParticipantIdProductRequest({ attributes, quantity, cartId, participantId, productId, type, product }) {
-  return function(dispatch) {
+  return async function(dispatch) {
     Api.req({
       apiCall: Api.postCartCartIdParticipantIdProduct,
       apiCallParams: { attributes, cartId, quantity, participantId, product, productId, type },
@@ -130,6 +130,7 @@ export function postCartCartIdParticipantParticipantIdProductRequest({ attribute
         dispatch( updateCart(cart), );
         dispatch( stepFiveSetGear(productId), );
         dispatch( stepFiveSetParticipantProductId({ participantProductId: participant_product_id, productId }), );
+        return Promise.resolve();
       },
       res404: () => console.log('Api.postCartCartIdParticipantIdProduct() => 404'),
       reject: console.error,
@@ -153,13 +154,15 @@ export function deleteCartCartIdParticipantParticipantIdProductIdRequest({ cartI
 };
 
 export function putCartCartIdParticipantParticipantIdProductIdRequest({ cartId, participantId, productId, participantProductId }) {
-  return function(dispatch) {
+  return async function(dispatch) {
     Api.req({
       apiCall: Api.putCartCartIdParticipantParticipantIdProductId,
       apiCallParams: { cartId, participantId, productId: participantProductId },
       res200: (data) => {
         dispatch( updateCart(data.cart), );
         dispatch( stepFiveUpdateGearItem(productId), );
+        
+        return Promise.resolve();
       },
       res404: () => console.log('Api.putCartCartIdParticipantParticipantIdProductId() => 404'),
       reject: console.error,
@@ -195,13 +198,14 @@ export function stepFiveIncreaseUpsellItemsPerPage() {
 }
 
 export function stepFiveSetUpsellGearItemRequest({ cartId, participantId, product, quantity, productId, type, cardId }) {
-  return function(dispatch) {
+  return async function(dispatch) {
     Api.req({
       apiCall: Api.postCartCartIdParticipantIdProduct,
       apiCallParams: { cartId, participantId, product, quantity, productId, type },
       res200: (data) => {
         dispatch( updateCart(data.cart), );
         dispatch( stepFiveSetUpsellGearItem({ cardId, productId: data.participant_product_id }) );
+        return Promise.resolve();
       },
       res404: console.log,
       reject: console.error,
@@ -210,13 +214,14 @@ export function stepFiveSetUpsellGearItemRequest({ cartId, participantId, produc
 };
 
 export function stepFiveUpdateUpsellGearItemRequest({ cartId, participantId, productId, product, type, cardId }) {
-  return function(dispatch) {
+  return async function(dispatch) {
     Api.req({
       apiCall: Api.putCartCartIdParticipantParticipantIdProductId,
       apiCallParams: { cartId, participantId, productId, product, type },
       res200: (data) => {
         dispatch( updateCart(data.cart), );
         dispatch( stepFiveUpdateUpsellGearItem({ cardId }) );
+        return Promise.resolve();
       },
       res404: console.log,
       reject: console.error,
