@@ -9,6 +9,7 @@ import { CSSTransitionGroup } from 'react-transition-group';
 import Img from 'react-image';
 import find from 'lodash/find';
 import isEqual from 'lodash/isEqual';
+import scrollToComponent from 'react-scroll-to-component';
 // Components
 import Button from '../../components/Button';
 import Card, { CardContent, CardContentRow, CardContentCol, CardContentText } from '../../components/Card';
@@ -83,6 +84,11 @@ class StepFiveCatalogGear extends React.Component {
   componentDidMount() {
     const { gender } = this.props;
     this.getCatalogGear({ gender });
+    //this.scrollToCurrentComponent();
+  }
+
+  scrollToCurrentComponent = () => {
+    scrollToComponent(this, { align: 'top', duration: 500 });
   }
 
   componentWillUnmount() {

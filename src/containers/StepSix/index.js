@@ -144,6 +144,7 @@ class StepSix extends React.Component {
     this.stepSixGetCatalogTransportUnaccompanied();
     this.getCatalogTransport();
     this.getCatalogAirlines();
+    //this.scrollToCurrentComponent();
   }
 
   componentDidUpdate(prevProps) {
@@ -151,6 +152,10 @@ class StepSix extends React.Component {
     if ((step !== prevProps.step) && (prevProps.step > step) && ((prevProps.step - 1) === step)) {
       scrollToComponent(this.stepSix.current, { align: 'top', duration: 500 });
     }
+  }
+
+  scrollToCurrentComponent = () => {
+    scrollToComponent(this, { align: 'top', duration: 500 });
   }
 
   componentWillUnmount() {

@@ -50,6 +50,11 @@ class StepFive extends React.Component {
   componentDidMount() {
     scrollToComponent(this.stepFour.current, { align: 'top', duration: 500 });
     this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_GEAR);
+    //this.scrollToCurrentComponent();
+  }
+
+  scrollToCurrentComponent = () => {
+    scrollToComponent(this, { align: 'top', duration: 500 });
   }
 
   componentWillUnmount() {

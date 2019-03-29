@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { Col, Row } from 'react-grid-system';
 import isEqual from 'lodash/isEqual';
 import toLower from 'lodash/toLower';
+import scrollToComponent from 'react-scroll-to-component';
 import find from 'lodash/find';
 import { CSSTransitionGroup } from 'react-transition-group';
 // Components
@@ -60,6 +61,11 @@ class StepFiveCatalogExcursionsNew extends React.Component {
   componentDidMount() {
     const { startDate, endDate } = this.props;
     this.getCatalogExcursionsNew({ startDate, endDate });
+    //this.scrollToCurrentComponent();
+  }
+
+  scrollToCurrentComponent = () => {
+    scrollToComponent(this, { align: 'top', duration: 500 });
   }
 
   componentWillUnmount() {

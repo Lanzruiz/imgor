@@ -11,6 +11,7 @@ import cx from 'classnames';
 import include from 'lodash/includes';
 import toLower from 'lodash/toLower';
 import isEqual from 'lodash/isEqual';
+import scrollToComponent from 'react-scroll-to-component';
 // Components
 import EmailModal from '../../components/EmailModal';
 import Header from '../../components/Header';
@@ -49,6 +50,10 @@ import './styles.scss';
 export const weekly_camp = 'Year-Round Weekly Camps';
 
 class StepOne extends React.Component {
+  constructor(props) {
+    super(props);
+    this.stepOne = React.createRef();
+  }
   static propTypes = {
     weeksCounter: PropTypes.number,
     weeksActions: PropTypes.shape({
@@ -123,6 +128,10 @@ class StepOne extends React.Component {
     };
     
     this.getCatalogCampsGroup(args);
+    this.scrollToCurrentComponent();
+  }
+  scrollToCurrentComponent = () => {
+    scrollToComponent(this.stepOne.current, { offset: -200, align: 'middle', duration: 1000 });
   }
 
   componentDidUpdate(prevProps) {
@@ -282,7 +291,7 @@ class StepOne extends React.Component {
     const parsedData = data.map(v => ({...v, id: (v.name || '').toLowerCase().replace(/\s/g, '_')}));
     
     return (
-      <AOSFadeInContainer className="step-one">
+      <AOSFadeInContainer className="step-one" ref={this.stepOne}>
         {!dataInitialEmail && (
           <EmailModal
             onSubmit={this.closeEmailModal}
