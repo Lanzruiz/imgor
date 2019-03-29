@@ -43,7 +43,7 @@ export const instance = axios.create({
 
 function init(initData = {}){
   
-  console.log('INIT REACT APP', 'v0.1');
+  console.log('INIT REACT APP', 'v0.2');
   
   ReactDOM.render(
     <Provider store={store}>
