@@ -60,7 +60,6 @@ export const gtmReduxMiddleware = (state) => (next) => (action) => {
 };
 
 function pushToDataLayer(data) {
-  console.log('newEventData.type:'+data.newEventData.type);
   //console.log('GTM -- before push << dataLayer', window.dataLayer);
   
   window.dataLayer = window.dataLayer || [];
