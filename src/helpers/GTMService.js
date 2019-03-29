@@ -1,6 +1,8 @@
 import { debounce } from 'lodash';
+import moment from 'moment';
 
 const GTM_CHANGE_STATE = '@GTM/change_state';
+const GTM_CART_NEW_PRODUCT = '@GTM/cart_add_product';
 
 export const stateChangeTypes = {
   OR_CAMPER_EMAIL: 'OR-camper-email',
@@ -10,7 +12,8 @@ export const stateChangeTypes = {
   OR_CAMPER_INFORMATION: 'OR-camper-information',
   OR_CAMPER_PROGRAM: 'OR-camper-program',
   OR_CAMPER_GEAR: 'OR-camper-gear',
-  OR_CART: 'OR-cart'
+  OR_CART: 'OR-cart',
+  OR_CART_ADD: 'OR-cart-add'
 };
 
 export const gtmStateChange = (stateChangeType) => (dispatch) => {
@@ -20,7 +23,17 @@ export const gtmStateChange = (stateChangeType) => (dispatch) => {
   })
 };
 
+export const gtmAddCartProduct = (productData = { id: '' }) => (dispatch) => {
+  setTimeout(() => {
+    dispatch({
+      type: GTM_CART_NEW_PRODUCT,
+      payload: { productData }
+    })
+  }, 1000)
+};
+
 const gtmStateChangeHandlerDebounced = debounce(gtmStateChangeHandler, 1000);
+const gtmAddProductHandlerDebounced = debounce(gtmAddProductHandler, 1000);
 
 export const gtmReduxMiddleware = (state) => (next) => (action) => {
   const { cart, form: { wizard }, initialSettings, stepOne, weeks } = state.getState();
@@ -31,6 +44,18 @@ export const gtmReduxMiddleware = (state) => (next) => (action) => {
       { ...initialSettings, ...stepOne, ...cart, ...weeks, ...(wizard || {}).values || {} }
     );
   }
+  
+  if(action.type === GTM_CART_NEW_PRODUCT){
+    gtmAddProductHandlerDebounced({
+      ...initialSettings,
+      ...stepOne,
+      ...cart,
+      ...weeks,
+      ...(wizard || {}).values || {},
+      newProductCartData: action.payload.productData
+    })
+  }
+  
   next(action);
 };
 
@@ -98,6 +123,53 @@ function gtmStateChangeHandler(pageType = '', state) {
       }]
     }
   };
+  
+  pushToDataLayer(gtmParams);
+}
+
+function gtmAddProductHandler(state) {
+  
+  const { id } = state.newProductCartData;
+  const { participants } = state;
+  
+  // console.log('ID', id);
+  
+  const products = (participants[0] || { products: [] }).products;
+  
+  // console.log('products', products);
+  
+  
+  const product = (products.find(v => (v.product || {}).id === id) || {}) || { product: {} };
+  
+  const item = product.product || {
+    capacity_start_date: '',
+    price: 0,
+    program_type: '',
+    product_type: '',
+    name: ''
+  };
+  
+  // console.log('ADD_PRODUCT', product);
+  
+  const gtmParams = {
+    event: 'newEvent',
+    newEventData: {
+      params: {
+        url: `${window.location.href}`,
+        type: item.product_type, // camp|concentration|gear|upsell etc,
+        date: item.capacity_start_date ? moment(product.capacity_start_date).format('MM-DD-YYYY') : '',
+        name: item.name || item.program_type, //breakthrough|core|speed,
+        price: item.price, // int
+      },
+      title: document.title,
+      type: stateChangeTypes.OR_CART_ADD,
+      language: state.language || state.lang || 'en',
+      url: `${window.location.href}`,
+      sport: state.sport
+    }
+  };
+  
+  // console.log('ADD_PRODUCT RESULT:', gtmParams);
   
   pushToDataLayer(gtmParams);
 }

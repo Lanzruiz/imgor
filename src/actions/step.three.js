@@ -100,7 +100,11 @@ export function stepThreeSetProductToTheCart({ campId, cartId, participantId, ty
     Api.getCatalogCampCampId(campId)
       .then(data => data.data.results[0])
       .then(product => Api.postCartCartIdParticipantIdProduct({ cartId, participantId, product, quantity: 1, productId: product.id, type }))
-      .then(data => data.data)
+      .then(data => {
+        console.log(data);
+        
+        return data.data
+      })
       .then(({ cart, participant_product_id }) => {
         dispatch( updateCart(assign({}, cart, { stepThreeProductId: participant_product_id })), );
         dispatch( saveTrainingId(campId), );
@@ -212,7 +216,9 @@ export function stepThreeAddWeeklyCampToTheCart(data) {
       await Api.getCatalogCampCampId(campId)
       .then(data => data.data.results[0])
       .then(async (product) => await Api.postCartCartIdParticipantIdProduct({ cartId, participantId, product, quantity: 1, productId: product.id, type: 'camp' }))
-      .then(data => data.data)
+      .then(data => {
+        return data.data
+      })
       .then(({ cart, participant_product_id }) => {
         dispatch( updateCart(assign({}, cart, { [`stepOneSelectedProductWeek_${weekId}`]: participant_product_id })), );
         if (String(weekId) === String(1)) {

@@ -17,6 +17,7 @@ import LocaleString from '../../components/LocaleString';
 import Dropdown from '../../components/Dropdown';
 // Actions
 import * as stepFiveActions from '../../actions/step.five';
+import { gtmAddCartProduct } from '../../helpers/GTMService';
 // Selectors
 import { cartIdSelector, participantIdSelector, stepOneGenderSelector } from '../StepOne/selectors';
 import { stepFiveDataPerPageSelector, stepFiveSelectedGearsSelector, stepFiveProductsSelector } from '../StepFive/selectors';
@@ -212,7 +213,7 @@ class StepFiveCatalogGear extends React.Component {
     );
   };
 
-  setGear = (productId) => {
+  setGear = async (productId) => {
     const { cartId, participantId, data, stepFiveProducts } = this.props;
     const gearItem = find(data, ['id', productId]);
     const currentProduct = stepFiveProducts[productId];
@@ -232,11 +233,13 @@ class StepFiveCatalogGear extends React.Component {
       if (isEqual(gearItem.attributes.length, 0)) {
         delete args.attributes;
       }
-      this.props.stepFiveActions.postCartCartIdParticipantParticipantIdProductRequest(args);
+      await this.props.stepFiveActions.postCartCartIdParticipantParticipantIdProductRequest(args);
+  
+      this.props.gtmAddCartProduct({ id: productId });
     }
   };
 
-  updateGearItem = (productId) => {
+  updateGearItem = async (productId) => {
     const { cartId, participantId, data, stepFiveProducts, selectedGear } = this.props;
     const gearItem = find(data, ['id', productId]);
     const currentProduct = stepFiveProducts[productId];
@@ -257,7 +260,9 @@ class StepFiveCatalogGear extends React.Component {
       if (isEqual(gearItem.attributes.length, 0)) {
         delete args.attributes;
       }
-      this.props.stepFiveActions.putCartCartIdParticipantParticipantIdProductIdRequest(args);
+      await this.props.stepFiveActions.putCartCartIdParticipantParticipantIdProductIdRequest(args);
+  
+      this.props.gtmAddCartProduct({ id: productId });
     }
   };
 
@@ -345,6 +350,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     stepFiveActions: bindActionCreators(stepFiveActions, dispatch),
+    gtmAddCartProduct: bindActionCreators(gtmAddCartProduct, dispatch)
   };
 }
 
