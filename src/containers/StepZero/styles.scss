@@ -1,0 +1,555 @@
+@import '../../constants/scss/variables.scss';
+
+#{$root} {
+  .step-one {
+
+    margin-bottom: 20px;
+
+    &__dropdown-age {
+      background-color: #f3f3f3;
+
+      & .dropdown__options {
+        overflow-y: scroll;
+        max-height: 180px;
+      }
+    }
+
+    .content__label--disabled {
+      text-decoration: none;
+
+      & .content__radio-btn--sold-out {
+        display: inline-block;
+        font-size: 12px;
+        line-height: 10px;
+        margin-left: 7px;
+        text-align: center;
+        text-transform: uppercase;
+        width: 35px;
+      }
+
+      & .radio-btn__container {
+        text-decoration: line-through;
+      }
+
+      & .radio-btn__btn {
+        background-color: transparent;
+      }
+    }
+
+    .content__sleepaway-label--disabled {
+      text-decoration: none;
+
+      & .content__radio-btn--sold-out {
+        display: inline-block;
+        font-size: 12px;
+        line-height: 10px;
+        text-align: center;
+        text-transform: uppercase;
+        width: 35px;
+      }
+
+      & .radio-btn__container {
+        text-decoration: line-through;
+      }
+
+      & .radio-btn__btn {
+        background-color: transparent;
+      }
+    }
+  }
+
+  .tab-row {
+    //margin-top: 50px;
+
+    &__group-header {
+      font-family: $serifa-bold;
+    }
+
+    &__secondary-group-header {
+      font-family: $header-font;
+    }
+
+    &__separator {
+      width: 0 !important;
+      @media screen and (min-width: $mobile) {
+        width: 60px !important;
+      }
+    }
+
+    &__hover {
+      background: $white;
+
+      &:hover {
+        background: $tab-selected-bg;
+        cursor: pointer;
+
+        & .tab-row__header {
+          color: $white;
+        }
+      }
+    }
+
+    &__header {
+      &.plus {
+        margin-left: 5px;
+        margin-right: 10px;
+        padding: 4px;
+
+        @media screen and (min-width: $small-mobile) {
+          margin-left: 20px;
+          margin-right: 0;
+        }
+      }
+
+      &.minus {
+        margin-right: 5px;
+        margin-left: 10px;
+        padding: 4px;
+
+        @media screen and (min-width: $small-mobile) {
+          margin-right: 20px;
+          margin-left: 0;
+        }
+      }
+    }
+
+    &__section {
+      position: relative;
+      margin: 1px 0 1px 1px;
+      width: 25%;
+      padding: 5px 15px;
+      box-sizing: border-box;
+
+      &:last-child {
+        margin-right: 1px;
+      }
+
+      @include breakpoint($mobile) {
+        flex: 1;
+        &.mb-w100 {
+          flex: 1 1 auto;
+          width: 100%;
+          flex-direction: row;
+        }
+      }
+
+      &--center {
+        text-align: center;
+      }
+
+      &--p15px0 {
+        padding: 15px 0;
+      }
+
+      &--bg-white {
+        background-color: $white;
+      }
+
+      &--selected {
+        background-color: $tab-selected-bg;
+        position: relative;
+
+        &:after {
+          content: '';
+          position: absolute;
+          transform: translateX(-50%);
+          left: 50%;
+          top: 100%;
+          width: 0;
+          height: 0;
+          border-left: 15px solid transparent;
+          border-right: 15px solid transparent;
+          border-top: 15px solid $tab-selected-bg;
+          clear: both;
+        }
+
+        & .tab-row__header {
+          color: $white;
+        }
+      }
+
+      &--bg-transparent {
+        background-color: transparent;
+
+        &:after {
+          display: none;
+        }
+      }
+
+      &--disabled {
+        position: relative;
+
+        &:after {
+          background: $white;
+          bottom: 0;
+          content: '';
+          cursor: not-allowed;
+          height: 100%;
+          opacity: 0.5;
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          width: 100%;
+        }
+
+        & .tab-row__section--locked {
+          background: $white url('../../assets/img/locked-padlock-dark.png') no-repeat center center;
+        }
+      }
+    }
+
+    &__option{
+      width: 100%;
+      margin-top: -43px;
+      font-size: 22px;
+
+      .tab-row__green-block{
+        margin:0;
+        width: 100%;
+        min-height: 42px;
+      }
+    }
+
+    &__wrapper {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      justify-content: center;
+      width: 100%;
+
+      &.sold-out-block {
+        color: $sold-out;
+      }
+
+      & .sold-out-text {
+        font-family: $header-font;
+        font-size: 15px;
+        text-transform: uppercase;
+      }
+    }
+
+    &__header {
+      color: $tab-header-color;
+      display: block;
+      font-weight: bold;
+      max-width: $tab-header-max-width;
+      text-align: center;
+      text-transform: uppercase;
+
+      &--green-block {
+        color: $tab-row-bg;
+        font-size: 15px;
+        font-family: $serifa-bold;
+        margin: auto;
+
+        @include breakpoint($mobile) {
+          font-size: 13px;
+        }
+      }
+
+      &--sold {
+        color: #de5963 !important;
+      }
+
+      &--through {
+        text-decoration: line-through;
+      }
+
+      &--small {
+        line-height: 8px;
+        font-size: 8px;
+      }
+
+      &--subtitle {
+        font-size: 16px;
+        font-family: $proxima-nova;
+      }
+
+      &--regular {
+        font-size: 24px;
+
+        @include breakpoint($tablet) {
+          font-size: 18px;
+        }
+      }
+
+      &--medium {
+        font-size: 26px;
+
+        @include breakpoint($tablet) {
+          font-size: 20px;
+        }
+      }
+
+      &--mw-initial {
+        max-width: initial;
+      }
+
+      &--trade-gothic-bold {
+        font-family: $header-font;
+      }
+
+      &--font-18 {
+        font-size: 18px;
+      }
+
+      &--font-50 {
+        font-size: 50px;
+
+        @include breakpoint($tablet) {
+          font-size: 40px;
+        }
+      }
+
+      &--font-80 {
+        font-size: 80px;
+
+        @include breakpoint($tablet) {
+          font-size: 60px;
+        }
+      }
+
+      &--font-100 {
+        font-size: 100px;
+
+        @include breakpoint($tablet) {
+          font-size: 80px;
+        }
+      }
+    }
+
+    &__tab-list {
+      display: flex;
+      width: 100%;
+      padding-left: 0;
+      margin: 0;
+
+      @include breakpoint($mobile) {
+        flex-wrap: wrap;
+      }
+    }
+
+    &__container {
+      margin-bottom: 15px;
+      min-height: $min-tab-row-height;
+
+      @include breakpoint($mobile) {
+        min-height: 10px;
+      }
+
+      &--disabled {
+        opacity: 0.5;
+      }
+    }
+
+    &__green-block {
+      line-height: 16px;
+      padding: 5px;
+      display: flex;
+      flex-direction: column;
+      height: calc(100% + 10px);
+      margin: -5px -15px;
+      box-sizing: border-box;
+    }
+
+    &__separator {
+      background-color: #d8e5eb;
+      height: 1px;
+      width: 110px;
+
+      @include breakpoint($tablet) {
+        width: 60px;
+        margin: 0 20px;
+      }
+
+      @include breakpoint($mobile) {
+        margin: 0 auto;
+        flex: 1 1 auto;
+      }
+    }
+
+    @include breakpoint($mobile) {
+      .d-flex--mb-column {
+        justify-content: center;
+        align-content: center;
+        align-items: center;
+        flex-direction: column;
+
+        .d-flex {
+          width: 100%;
+          justify-content: center;
+          flex-wrap: wrap;
+        }
+      }
+    }
+  }
+
+  .tab-content {
+    &__container {
+      display: flex;
+      flex-direction: row;
+
+      @include breakpoint($mobile) {
+        flex-wrap: wrap;
+      }
+    }
+  }
+
+  .content {
+    &__first-col {
+      background-color: #f0f0f0;
+      border: 1px solid #366e92;
+      padding: 28px 24px;
+      width: 65%;
+
+      @include breakpoint($mobile) {
+        padding: 15px;
+        margin: 0 -15px -1px;
+        width: 100%;
+      }
+    }
+
+    &__second-col {
+      background-color: $green-block-bg;
+      border: 1px solid #366e92;
+      border-left-color: transparent;
+      padding: 43px 39px;
+      max-width: 398px;
+      width: 35%;
+
+      @include breakpoint($mobile) {
+        padding: 15px;
+        margin: 0 -15px -1px;
+        width: 100%;
+        max-width: 100%;
+        order: -1;
+        border-left-color: #366e92;
+      }
+    }
+
+    &__header {
+      color: $tab-row-bg;
+      font-family: $proxima-nova !important;
+      display: block;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+
+      &--h2 {
+        font-size: 28px;
+      }
+
+      &--h3 {
+        font-size: 21px;
+      }
+
+      &--h4 {
+        font-size: 15px;
+        line-height: 16px;
+      }
+    }
+
+    &__paragraph {
+      color: $tab-row-bg;
+      font-size: 15px;
+      margin-bottom: 15px;
+      font-family: $proxima-nova;
+      line-height: 16px;
+    }
+
+    &__form-control {
+      margin-bottom: 20px;
+    }
+
+    &__label {
+      display: block;
+      margin-bottom: 10px; /* ? */
+      position: relative;
+      margin-bottom: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      user-select: none;
+      width: 33%;
+
+      &--disabled {
+        text-decoration: line-through;
+      }
+
+      & .radio-btn__container--regular {
+        font-family: $proxima-nova;
+        font-weight: normal;
+      }
+    }
+
+    &__age {
+      display: block;
+      float: left;
+      width: 33%;
+
+      &--block {
+        display: block;
+
+        &::after {
+          content: '';
+          clear: both;
+          display: table;
+        }
+      }
+
+      & .radio-btn__container--regular {
+        font-weight: normal;
+        font-family: $proxima-nova;
+      }
+    }
+
+    &__sleepaway-label {
+      color: $tab-row-bg;
+      font-family: $proxima-nova;
+      font-size: 16px;
+
+      &--disabled {
+        text-decoration: line-through;
+      }
+    }
+
+    &__radio-btn {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 20px;
+      width: 20px;
+      background-color: #f0f0f0;
+      border-radius: 50%;
+
+      &:checked {
+        background-color: $tab-header-color;
+
+        &::after {
+          content: "\2713";
+          position: absolute;
+          height: 100%;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 22px;
+        }
+      }
+
+      &--font-16 {
+        font-size: 16px !important;
+      }
+    }
+
+    &__radio-container {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      @include breakpoint($mobile) {
+        justify-content: center;
+      }
+    }
+  }
+}
+
