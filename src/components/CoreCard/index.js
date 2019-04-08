@@ -8,14 +8,16 @@ import LocaleString from '../../components/LocaleString';
 import footballCore from '../../assets/img/football-core_copy_2.png';
 // Styles
 import './styles.scss';
+//  const { selectedId, onClick, onRemove, price, label, id, header, soldOut, displayViaLabel, viaLogoPath } = props;
+//  header={header}
 
 const CoreCard = (props) => {
-  const { selectedId, onClick, onRemove, price, label, id, header, soldOut, displayViaLabel, viaLogoPath } = props;
+  const { selectedId, onClick, onRemove, price, label, id, soldOut, displayViaLabel, viaLogoPath } = props;
   return (
     <Card
       cardHeader={<LocaleString stringKey="group_sport_training" />}
       color="light-blue"
-      header={header}
+      header=<LocaleString stringKey="step_three.core" />
       headerSize="large"
       id={id}
       viaLogoPath={viaLogoPath}
