@@ -1,16 +1,8 @@
 // Modules
 import { createSelector } from 'reselect';
 import { formValueSelector, getFormMeta } from 'redux-form';
-import moment from 'moment';
 import find from 'lodash/find';
-import assign from 'lodash/assign';
 // Selectors
-import { stepTwoCampDaysLengthSelector, stepTwoStartDateSelector } from '../StepTwo/selectors';
-// Helpers
-import isStringsEqual from '../../helpers/isStringsEqual';
-// Constants
-import { weekly_camp } from './index';
-import { daysInWeek } from '../../constants/weeks';
 
 export const stepOneFormFieldsName = {
   age: 'age',
@@ -79,53 +71,12 @@ export const stepOnePriceSelector = createSelector(
   },
 );
 
-export const weeksLengthSelector = createSelector(
-  stepTwoCampDaysLengthSelector,
-  function(campDaysLength = 0) {
-    const daysLength = campDaysLength / daysInWeek;
-    return daysLength > 1 ? daysLength : 1;
-  },
-);
-
-export const weeksWeeksSelector = createSelector(
-  weeksSelector,
-  function(weeks = {}) {
-    return weeks.weeks;
-  },
-);
-
-export const weeksItemsSelector = createSelector(
-  weeksSelector,
-  stepTwoStartDateSelector,
-  function(weeks = { weeks: [] }, start) {
-    if (!start) {
-      return [];
-    }
-    return weeks.weeks.map(function(week, idx) {
-      const days = 'days';
-      const stringFormat = 'YYYY-MM-DD';
-      const startDateAddDays = idx * daysInWeek;
-      const startDate = moment(start, stringFormat).add(startDateAddDays, days).format(stringFormat);
-      const endDate = moment(startDate, stringFormat).add(7, days).subtract(1, days).format(stringFormat);
-      return assign({}, week, { start_date: startDate, end_date: endDate });
-    });
-  },
-);
-
-export const isWeeklyCampSelector = createSelector(
-  stepOneGroupSelector,
-  function(group = '') {
-    return isStringsEqual(group, weekly_camp);
-  },
-);
-
 export function stepOneFormValueSelector(state = {}, name = '') {
   const selector = formValueSelector('wizard');
   return selector(state, name);
 };
 
 export const stepOneFormValuesName = createSelector(
-  isWeeklyCampSelector,
   stepOneGroupSelector,
   stepOneSecondaryGroupSelector,
   function(isWeeklyCamp = false, group = '', secondaryGroup = '') {
