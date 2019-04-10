@@ -104,7 +104,7 @@ class StepThree extends React.Component {
     this.getCatalogCampsLevels();
   
     this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_PROGRAM);
-    //this.scrollToCurrentComponent();
+    this.scrollToCurrentComponent();
   }
 
   componentDidUpdate(prevProps) {

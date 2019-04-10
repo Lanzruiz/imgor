@@ -1,0 +1,290 @@
+// Modules
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Col, Container, Row } from 'react-grid-system';
+import { connect } from 'react-redux';
+import scrollToComponent from 'react-scroll-to-component';
+import { bindActionCreators } from 'redux';
+import { formValueSelector, reduxForm } from 'redux-form';
+import { addParticipantByCardId } from '../../actions/participant';
+import * as stepOneActions from '../../actions/step.one';
+import * as stepsActions from '../../actions/steps';
+// Actions
+import * as weeksActions from '../../actions/weeks';
+// Components
+import AOSFadeInContainer from '../../components/AOSFadeInContainer';
+import Card, { CardContent, CardContentCol, CardContentRow } from '../../components/Card';
+import EmailModal from '../../components/EmailModal';
+import Header from '../../components/Header';
+import LocaleString from '../../components/LocaleString';
+import { stepsEnum } from '../../constants/steps';
+import AgeRadioBtnContainer from './components/AgeRadioBtnContainer';
+import GenderRadioBtnContainer from './components/GenderRadioBtnContainer';
+import SleepawayRadioBtn from './components/SleepawayRadioBtn';
+// Constants
+import createNumbersArray from '../../helpers/createNumbersArray';
+import { gtmStateChange, stateChangeTypes } from '../../helpers/GTMService';
+import isStringsEqual from '../../helpers/isStringsEqual';
+// Helpers
+import validation from '../../helpers/validate';
+// Selectors
+import { businessTypeSelector, packageTypeSelector, sportSelector } from '../InitialComponent/selectors';
+import {
+  stepOneAgeSelector,
+  stepOneDataSelector,
+  stepOneGenderSelector,
+  stepOneSecondaryGroupSelector,
+  stepOneSleepawaySelector
+} from './selectors';
+// Styles
+import './styles.scss';
+
+class StepOne extends React.Component {
+  constructor(props) {
+    super(props);
+    this.stepZero = React.createRef();
+  }
+
+  componentDidMount() {
+    const { sport, dataGender, dataGroup, dataBusinessType, dataSecondaryGroup } = this.props;
+    const args = {
+      sport,
+      gender: dataGender,
+      group: dataGroup,
+      businessType: dataBusinessType,
+      secondaryGroup: dataSecondaryGroup,
+    };
+    
+    this.getCatalogCampsGroup(args);
+    this.scrollToCurrentComponent();
+  }
+  
+  scrollToCurrentComponent = () => {
+    scrollToComponent(this.stepZero.current, { offset: -200, align: 'middle', duration: 1000 });
+  };
+
+  componentDidUpdate(prevProps) {
+    const { sport, dataGender, dataGroup, dataBusinessType, dataSecondaryGroup } = this.props;
+    const isSportChanged = !isStringsEqual(sport, prevProps.sport);
+    if (isSportChanged) {
+      const args = {
+        sport,
+        gender: dataGender,
+        group: dataGroup,
+        businessType: dataBusinessType,
+        secondaryGroup: dataSecondaryGroup,
+      };
+      this.getCatalogCampsGroup(args);
+    }
+  }
+  
+  getCatalogCampsGroup = (args) => {
+    for (let key in args) {
+      if (!args[key]) {
+        delete args[key];
+      }
+    }
+    if (args.sport) {
+      this.props.stepOneActions.getCatalogCampsGroup(args);
+    }
+  };
+  
+  closeEmailModal = () => {
+    const { cartId, email } = this.props;
+    if (cartId && email) {
+      this.props.participantActions.addParticipantByCardId({ cartId, email });
+      if(window.reactAppStart && typeof window.reactAppStart === 'function'){
+        window.reactAppStart({ cartId, email });
+      }
+      this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_EMAIL);
+    }
+  };
+  
+  render() {
+    const { sleepaway, age, gender, dataGender, participantId, dataInitialEmail, genderOptions } = this.props;
+  
+    const boardingOptions = ['Boarding', 'Non-Boarding'];
+    const range = createNumbersArray({ from: 8, to: 18 });
+    const genderCollapsed = !!dataGender || (genderOptions && genderOptions.length < 2);
+    
+    return (
+      <AOSFadeInContainer className="step-zero" ref={this.stepZero}>
+        {!dataInitialEmail && (
+          <EmailModal
+            onSubmit={this.closeEmailModal}
+            shouldShowEmailModal={!participantId}
+          />
+        )}
+        <Container>
+          <Row>
+            <Col>
+              <Header
+                header="step_zero.header"
+                subHeader="step_zero.sub_header"
+                formatString={{ stepNumber: stepsEnum.zero }}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col sm={12} md={12} lg={genderCollapsed ? 6 : 4} style={{ padding: '15px' }}>
+              <Card
+                buttonBlock={false}
+                cardHeader={<LocaleString stringKey="step_zero.choose_sleepaway" />}
+                cardHeaderCapitalize={true}
+                id={0}
+                priceBlock={false}
+                style={{ marginBottom: 0 }}
+              >
+                <CardContent>
+                  <CardContentRow>
+                    <CardContentCol>
+                      <div className="content__form-control">
+                        <SleepawayRadioBtn
+                          options={[{ value: 'Boarding', stringKey: 'yes' },{ value: 'Non-Boarding', stringKey: 'no' }]}
+                          sleepaway={sleepaway}
+                          possibleValues={boardingOptions}
+                          handleChange={() => { this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_BOARDING); }}
+                        />
+                      </div>
+                    </CardContentCol>
+                  </CardContentRow>
+                </CardContent>
+              </Card>
+            </Col>
+            
+            <Col sm={12} md={12} lg={genderCollapsed ? 6 : 4} style={{ padding: '15px' }}>
+              <Card
+                buttonBlock={false}
+                cardHeader={<LocaleString stringKey="step_zero.select_camper_age" />}
+                cardHeaderCapitalize={true}
+                id={2}
+                priceBlock={false}
+                style={{ marginBottom: 0 }}
+              >
+                <CardContent>
+                  <CardContentRow>
+                    <div className="content__form-control">
+                      <AgeRadioBtnContainer
+                        age={age}
+                        range={range}
+                      />
+                    </div>
+                  </CardContentRow>
+                </CardContent>
+              </Card>
+            </Col>
+            
+            <Col sm={12} md={12} lg={genderCollapsed ? 0 : 4} style={{ padding: '15px', visibility: genderCollapsed ? 'collapse': '', display: genderCollapsed ? 'none': '' }}>
+              <Card
+                buttonBlock={false}
+                cardHeader={<LocaleString stringKey="step_zero.gender" />}
+                cardHeaderCapitalize={true}
+                id={2}
+                priceBlock={false}
+                style={{ marginBottom: 0 }}
+              >
+                <CardContent>
+                  <CardContentRow>
+                    <div className="content__form-control">
+                      <GenderRadioBtnContainer
+                        options={['Male', 'Female']}
+                        value={gender}
+                        possibleValues={genderOptions}
+                        hasPredefinedValue={!!dataGender}
+                      />
+                    </div>
+                  </CardContentRow>
+                </CardContent>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+      </AOSFadeInContainer>
+    );
+  }
+}
+
+StepOne.propTypes = {
+  participantId: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
+  stepsActions: PropTypes.shape({
+    setStepsCounter: PropTypes.func.isRequired,
+  }),
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      age_range: PropTypes.string,
+      business_type: PropTypes.string,
+      capacity_available: PropTypes.number,
+      name: PropTypes.string,
+      options: PropTypes.oneOfType([
+        PropTypes.bool,
+        PropTypes.arrayOf(
+          PropTypes.shape({
+            capacity_available: PropTypes.number,
+            name: PropTypes.string,
+            sold_out: PropTypes.bool,
+          }),
+        ),
+      ]),
+      sold_out: PropTypes.bool,
+      start_price: PropTypes.number,
+    }),
+  ),
+  tabIndex: PropTypes.number,
+  group: PropTypes.string,
+  sleepaway: PropTypes.string,
+  age: PropTypes.string,
+  gender: PropTypes.string,
+  weeksLengthNumber: PropTypes.number,
+  dataInitialEmail: PropTypes.string,
+  dataGender: PropTypes.string,
+};
+
+StepOne.defaultProps = {
+  weeksCounter: 0,
+  shouldShowEmailModal: true,
+  weeksActions: {},
+  stepActions: {},
+  tabIndex: 0,
+  weeksLengthNumber: 0,
+};
+
+
+const selector = formValueSelector('wizard');
+
+function mapStateToProps(state) {
+  return {
+    participantId: state.participant.id,
+    email: selector(state, 'email'),
+    sleepaway: stepOneSleepawaySelector(state),
+    age: stepOneAgeSelector(state),
+    gender: stepOneGenderSelector(state),
+    cartId: state.cart.id,
+    data: stepOneDataSelector(state),
+    secondaryGroup: stepOneSecondaryGroupSelector(state),
+    sport: sportSelector(state),
+    businessType: businessTypeSelector(state),
+    packageType: packageTypeSelector(state),
+  };
+};
+
+function mapDispatchToProps(dispatch) {
+  return {
+    weeksActions: bindActionCreators(weeksActions, dispatch),
+    stepOneActions: bindActionCreators(stepOneActions, dispatch),
+    participantActions: bindActionCreators({ addParticipantByCardId }, dispatch),
+    stepsActions: bindActionCreators(stepsActions, dispatch),
+    gtmStateChange: bindActionCreators(gtmStateChange, dispatch)
+  };
+};
+
+export default reduxForm({
+  form: 'wizard', // <------ same form name
+  destroyOnUnmount: false, // <------ preserve form data
+  forceUnregisterOnUnmount: true, // <------ unregister fields on unmount
+  validate: validation, // <------ validation
+})(
+  connect(mapStateToProps, mapDispatchToProps)(StepOne)
+);
