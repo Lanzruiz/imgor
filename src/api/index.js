@@ -48,6 +48,19 @@ class Api {
       },
     });
   };
+  
+  async getCatalogCampsConcetrations({business_type, sport, age, gender, start_date, end_date}) {
+    return await instance.get('catalog/camps/concentrations', {
+      params: {
+        business_type,
+        sport,
+        age,
+        gender,
+        start_date,
+        end_date,
+      },
+    });
+  }
 
   async postCartCartIdParticipant({ cartId, email }) {
     return await instance.post(`cart/${cartId}/participant`, {

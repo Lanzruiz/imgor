@@ -11,7 +11,7 @@ import isNumber from 'lodash/isNumber';
 // Components
 import Header from '../../components/Header';
 import LocaleString from '../../components/LocaleString';
-import StepFourWeekConcentrationComponent from '../../components/StepFourWeekConcentrationComponent';
+import StepFourWeekConcentrationComponent from './StepFourWeekConcentrationComponent';
 import StepFourEslSecondaryProgram from './components/StepFourEslSecondaryProgram';
 import StepFourPerformanceSecondaryProgram from './components/StepFourPerformanceSecondaryProgram';
 import StepFourSatSecondaryProgram from './components/StepFourSatSecondaryProgram';
@@ -29,7 +29,7 @@ import {
   cartIdSelector, participantIdSelector, cartSelector,
 } from '../StepOne/selectors';
 import { sportSelector, businessTypeSelector, packageTypeSelector } from '../InitialComponent/selectors';
-import { stepFourDataSelector, stepFourWeekOneDataSelector } from './selectors';
+import { stepFourDataSelector, stepFourWeekOneDataSelector, stepFourWeeksDataSelector } from './selectors';
 // Constants
 import { stepsEnum } from '../../constants/steps';
 // Styles
@@ -48,6 +48,7 @@ class StepFour extends React.Component {
     stepFourActions: PropTypes.shape({
       getCatalogCampRequest: PropTypes.func.isRequired,
       stepFourSetDefaultState: PropTypes.func.isRequired,
+      getCatalogCamConcentrations: PropTypes.func,
     }),
     businessType: PropTypes.string.isRequired,
     programType: PropTypes.string.isRequired,
@@ -60,6 +61,7 @@ class StepFour extends React.Component {
     hasSecondaryProgram: PropTypes.bool,
     currentStep: PropTypes.number.isRequired,
     data: PropTypes.array,
+    weeksData: PropTypes.array,
     weeks: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.number,
@@ -80,14 +82,14 @@ class StepFour extends React.Component {
   componentDidMount() {
     const { hasSecondaryProgram, currentStep } = this.props;
     if (!hasSecondaryProgram && isEqual(currentStep, stepsEnum.four)) {
-      this.getCatalogCamp();
+      this.getCatalogCamConcentrations();
     }
     this.scrollToCurrentComponent();
   }
 
   scrollToCurrentComponent = () => {
     scrollToComponent(this.stepFour.current, { offset: 0, align: 'middle', duration: 1500 });
-  }
+  };
 
   componentWillUnmount() {
     this.setDefaultProps();
@@ -122,14 +124,12 @@ class StepFour extends React.Component {
   
   render() {
     const {
-      age, businessType, gender, weeks, selectedWeekId, sport, programType, data, hasSecondaryProgram,
-      stepThreeSecondaryPrograms, viaLogoPath, week_1_data
+      age, businessType, gender, weeks, selectedWeekId, sport, programType, hasSecondaryProgram,
+      stepThreeSecondaryPrograms, viaLogoPath, weeksData
     } = this.props;
   
     const tabsList = [];
     const tabPanels = [];
-  
-    const hasDataButFirstWeekIsEmpty = data.length > 0 && week_1_data.length === 0;
   
     const tabListClassName = cx('step-four-tabs__tab-list', { 'react-hidden': isEqual(weeks.length, 1) });
   
@@ -163,36 +163,45 @@ class StepFour extends React.Component {
         </AOSFadeInContainer>
       );
     }
-
-    if (isEqual(data.length, 0)) return false;
     
-    weeks.forEach(({ id, customize_id, end_date, start_date }, index) => {
-      tabsList.push(
-        <Tab key={id} className="step-four-tabs__tab">
-          <LocaleString stringKey="week" /> {id}
-        </Tab>
-      );
-      tabPanels.push(
-        <TabPanel key={id} className="step-four-tabs__tab-panel">
-          <StepFourWeekConcentrationComponent
-            age={age}
-            viaLogoPath={viaLogoPath}
-            businessType={businessType}
-            customizeId={customize_id}
-            endDate={end_date}
-            gender={gender}
-            startDate={start_date}
-            sport={sport}
-            programType={programType}
-            weekId={id}
-            maxWeekCounter={weeks.length}
-            isFirstWeek={index === 0}
-          />
-        </TabPanel>
-      );
+    (weeksData || []).forEach((week, index) => {
+      if(week.concentrations){
+        tabsList.push(
+          <Tab key={index} className="step-four-tabs__tab">
+            <LocaleString stringKey={week.name} />
+          </Tab>
+        );
+        
+        tabPanels.push(
+          <TabPanel key={index} className="step-four-tabs__tab-panel">
+            <Row>
+              {(week.concentrations || []).map(v => (
+                <StepFourWeekConcentrationComponent
+                  key={v.product.id}
+                  age={age}
+                  viaLogoPath={viaLogoPath}
+                  businessType={businessType}
+                  customizeId={weeks[index].customize_id}
+                  product={v.product}
+                  // endDate={end_date}
+                  gender={gender}
+                  // startDate={start_date}
+                  sport={sport}
+                  programType={programType}
+                  weekId={index + 1}
+                  maxWeekCounter={weeks.length}
+                  isFirstWeek={index === 0}
+                />
+              ))}
+            </Row>
+          </TabPanel>
+        )
+      }
+      
     });
+    
     return (
-      <AOSFadeInContainer className={`step-four ${hasDataButFirstWeekIsEmpty ? 'react-hidden' : ''}`} ref={this.stepFour}>
+      <AOSFadeInContainer className={`step-four`} ref={this.stepFour}>
         <Container>
           <Row>
             <Col>
@@ -248,6 +257,20 @@ class StepFour extends React.Component {
       end_date: endDate,
     };
     this.props.stepFourActions.getCatalogCampRequest(getCatalogCampArgs);
+  };
+  
+  getCatalogCamConcentrations = () => {
+    const { age, businessType, gender, sport, startDate, endDate } = this.props;
+    const getCatalogCampArgs = {
+      age,
+      gender,
+      sport,
+      business_type: businessType,
+      start_date: startDate,
+      end_date: endDate,
+    };
+    
+    this.props.stepFourActions.getCatalogCamConcentrations(getCatalogCampArgs);
   };
 
   setDefaultProps = () => {
@@ -328,6 +351,7 @@ class StepFour extends React.Component {
 function mapStateToProps(state) {
   return {
     weeks: weeksItemsSelector(state),
+    weeksData: stepFourWeeksDataSelector(state),
     selectedWeekId: weeksSelectedWeekIdSelector(state),
     age: stepOneAgeSelector(state),
     gender: stepOneGenderSelector(state),
