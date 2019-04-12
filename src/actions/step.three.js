@@ -104,8 +104,6 @@ export function stepThreeSetProductToTheCart({ campId, cartId, participantId, ty
       .then(data => data.data.results[0])
       .then(product => Api.postCartCartIdParticipantIdProduct({ cartId, participantId, product, quantity: 1, productId: product.id, type }))
       .then(data => {
-        console.log(data);
-        
         return data.data
       })
       .then(({ cart, participant_product_id }) => {
