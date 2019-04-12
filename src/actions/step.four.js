@@ -4,7 +4,7 @@ import isNumber from 'lodash/isNumber';
 import assign from 'lodash/assign';
 // Constants
 import * as stepFourTypes from '../constants/step.four';
-import { emptyConcentrationId } from '../reducers/step.four';
+import { emptyConcentrationId, emptyConcentrationsSkipWeek } from '../reducers/step.four';
 import { stepsEnum } from '../constants/steps';
 // Api
 import Api from '../api';
@@ -144,6 +144,12 @@ export function getCatalogCamConcentrations({ business_type, sport, age, gender,
       res200: (data) => {
         if(data.results) {
           dispatch(getCatalogCampsConcentrations(data));
+          
+          data.results.forEach((v, i) => {
+            if(!v.concentrations){
+              dispatch(customizeWeek(emptyConcentrationsSkipWeek, i));
+            }
+          })
         }
         return Promise.resolve(data.results);
       },
@@ -439,9 +445,16 @@ export function stepFourSetSecondaryProgramIdRequest({ campId, cartId, participa
 export function stepFourCustomizeWeekRequest({ cartId, product, participantId, quantity, productId, type, nextWeekId, currentWeekId }) {
   return async function(dispatch) {
     dispatch( customizeWeek(productId) );
-
+    
+    if(isEqual(productId, emptyConcentrationsSkipWeek)){
+      if (isNumber(nextWeekId) && (nextWeekId > (currentWeekId - 1))) {
+        dispatch( selectWeek(nextWeekId), );
+      }
+      return;
+    }
+    
     if (isEqual(productId, emptyConcentrationId)) {
-      dispatch( setStepsCounter(stepsEnum.seven), );
+      dispatch( setStepsCounter(stepsEnum.seven) );
       return;
     }
 

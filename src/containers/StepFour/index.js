@@ -11,6 +11,7 @@ import isNumber from 'lodash/isNumber';
 // Components
 import Header from '../../components/Header';
 import LocaleString from '../../components/LocaleString';
+import { emptyConcentrationId, emptyConcentrationsSkipWeek } from '../../reducers/step.four';
 import StepFourWeekConcentrationComponent from './StepFourWeekConcentrationComponent';
 import StepFourEslSecondaryProgram from './components/StepFourEslSecondaryProgram';
 import StepFourPerformanceSecondaryProgram from './components/StepFourPerformanceSecondaryProgram';
@@ -40,36 +41,6 @@ class StepFour extends React.Component {
     super(props);
     this.stepFour = React.createRef();
   }
-
-  static propTypes = {
-    stepsActions: PropTypes.shape({
-      incrementStepsCounter: PropTypes.func.isRequired,
-    }),
-    stepFourActions: PropTypes.shape({
-      getCatalogCampRequest: PropTypes.func.isRequired,
-      stepFourSetDefaultState: PropTypes.func.isRequired,
-      getCatalogCamConcentrations: PropTypes.func,
-    }),
-    businessType: PropTypes.string.isRequired,
-    programType: PropTypes.string.isRequired,
-    sport: PropTypes.string.isRequired,
-    age: PropTypes.string.isRequired,
-    gender: PropTypes.string.isRequired,
-    startDate: PropTypes.string,
-    endDate: PropTypes.string,
-    weeksLengthNumber: PropTypes.number,
-    hasSecondaryProgram: PropTypes.bool,
-    currentStep: PropTypes.number.isRequired,
-    data: PropTypes.array,
-    weeksData: PropTypes.array,
-    weeks: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.number,
-        customize_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      }),
-    ),
-    concentrationOrdering: PropTypes.array,
-  };
 
   static defaultProps = {
     weeksLengthNumber: 0,
@@ -165,39 +136,68 @@ class StepFour extends React.Component {
     }
     
     (weeksData || []).forEach((week, index) => {
-      if(week.concentrations){
-        tabsList.push(
-          <Tab key={index} className="step-four-tabs__tab">
-            <LocaleString stringKey={week.name} />
-          </Tab>
-        );
-        
-        tabPanels.push(
-          <TabPanel key={index} className="step-four-tabs__tab-panel">
-            <Row>
-              {(week.concentrations || []).map(v => (
-                <StepFourWeekConcentrationComponent
-                  key={v.product.id}
-                  age={age}
-                  viaLogoPath={viaLogoPath}
-                  businessType={businessType}
-                  customizeId={weeks[index].customize_id}
-                  product={v.product}
-                  // endDate={end_date}
-                  gender={gender}
-                  // startDate={start_date}
-                  sport={sport}
-                  programType={programType}
-                  weekId={index + 1}
-                  maxWeekCounter={weeks.length}
-                  isFirstWeek={index === 0}
-                />
-              ))}
-            </Row>
-          </TabPanel>
-        )
+      const lastWeek = (weeksData.length - 1) === index;
+      
+      if(index === 0 && week.concentrations && !week.concentrations.find(v => v.product.id === emptyConcentrationId)){
+        week.concentrations = [
+          ...week.concentrations,
+          {
+            product: {
+              id: emptyConcentrationId,
+              secondary_program_type: 'props week'
+            }
+          }
+        ]
       }
       
+      tabsList.push(
+        <Tab key={index} className="step-four-tabs__tab">
+          <LocaleString stringKey={week.name} />
+        </Tab>
+      );
+      
+      tabPanels.push(
+        <TabPanel key={index} className="step-four-tabs__tab-panel">
+          <Row>
+            {(week.concentrations || []).map(v => (
+              <StepFourWeekConcentrationComponent
+                key={v.product.id}
+                age={age}
+                viaLogoPath={viaLogoPath}
+                businessType={businessType}
+                customizeId={(weeks[index] || {}).customize_id || null}
+                product={v.product}
+                gender={gender}
+                sport={sport}
+                programType={programType}
+                weekId={index + 1}
+                maxWeekCounter={weeks.length}
+                isFirstWeek={index === 0}
+                isLastWeek={lastWeek}
+              />
+            ))}
+            {!week.concentrations && (
+              <StepFourWeekConcentrationComponent
+                key={emptyConcentrationsSkipWeek}
+                age={age}
+                viaLogoPath={viaLogoPath}
+                businessType={businessType}
+                customizeId={weeks[index].customize_id}
+                product={null}
+                gender={gender}
+                sport={sport}
+                programType={programType}
+                weekId={index + 1}
+                maxWeekCounter={weeks.length}
+                isFirstWeek={index === 0}
+                isEmptyConcentrations={true}
+                isLastWeek={lastWeek}
+              />
+            )}
+          </Row>
+        </TabPanel>
+      )
+    
     });
     
     return (
@@ -347,6 +347,36 @@ class StepFour extends React.Component {
     }
   };
 }
+
+StepFour.propTypes = {
+  stepsActions: PropTypes.shape({
+    incrementStepsCounter: PropTypes.func.isRequired,
+  }),
+  stepFourActions: PropTypes.shape({
+    getCatalogCampRequest: PropTypes.func.isRequired,
+    stepFourSetDefaultState: PropTypes.func.isRequired,
+    getCatalogCamConcentrations: PropTypes.func,
+  }),
+  businessType: PropTypes.string.isRequired,
+  programType: PropTypes.string.isRequired,
+  sport: PropTypes.string.isRequired,
+  age: PropTypes.string.isRequired,
+  gender: PropTypes.string.isRequired,
+  startDate: PropTypes.string,
+  endDate: PropTypes.string,
+  weeksLengthNumber: PropTypes.number,
+  hasSecondaryProgram: PropTypes.bool,
+  currentStep: PropTypes.number.isRequired,
+  data: PropTypes.array,
+  weeksData: PropTypes.array,
+  weeks: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      customize_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    }),
+  ),
+  concentrationOrdering: PropTypes.array,
+};
 
 function mapStateToProps(state) {
   return {

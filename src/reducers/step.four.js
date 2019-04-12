@@ -24,7 +24,8 @@ const initialState = {
   secondaryProgramId: null,
 };
 
-export const emptyConcentrationId = '1337lorem';
+export const emptyConcentrationId = 'emptyConcentrationId';
+export const emptyConcentrationsSkipWeek = 'emptyConcentrationsSkipWeek';
 
 const emptyConcentration = {
   isDummy: true,

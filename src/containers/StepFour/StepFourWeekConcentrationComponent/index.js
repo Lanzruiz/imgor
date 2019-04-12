@@ -10,6 +10,7 @@ import find from 'lodash/find';
 import { ReactHeight } from 'react-height';
 import isEqual from 'lodash/isEqual';
 import flatten from 'lodash/flatten';
+import Button from '../../../components/Button';
 // Components
 import Card, { CardContent, CardContentRow, CardContentCol, ImagePlus } from '../../../components/Card';
 import {
@@ -30,7 +31,7 @@ import { stepThreeParticipantProductIdSelector } from '../../StepThree/selector'
 import { stepFourConcentrationProductIdSelector, stepFourWeeksDataSelector } from '../selectors';
 // Constants
 import { productTypesEnum } from '../../../constants/cart';
-import { emptyConcentrationId } from '../../../reducers/step.four';
+import { emptyConcentrationId, emptyConcentrationsSkipWeek } from '../../../reducers/step.four';
 // Styles
 import './styles.scss';
 
@@ -53,6 +54,8 @@ class StepFourWeekConcentrationComponent extends React.Component {
     maxWeekCounter: PropTypes.number.isRequired,
     concentrationOrdering: PropTypes.array,
     isFirstWeek: PropTypes.bool,
+    isEmptyConcentrations: PropTypes.bool,
+    isLastWeek: PropTypes.bool,
   };
   
   reorderConcentrations = (items) => {
@@ -85,10 +88,23 @@ class StepFourWeekConcentrationComponent extends React.Component {
   };
 
   render() {
-    const { customizeId, isFirstWeek, viaLogoPath, product } = this.props;
-    const { id, price, age_range, secondary_program_type, sold_out, via_label } = product;
+    const { customizeId, isFirstWeek, viaLogoPath, product, isEmptyConcentrations, isLastWeek } = this.props;
+    
+    const { id, price, age_range, secondary_program_type, sold_out, via_label } = product || { id: emptyConcentrationsSkipWeek };
   
-  
+    if(isEmptyConcentrations){
+      return (
+        <div className="step-four-tabs__tab-panel__empty-week empty-week">
+          <p>No available weekly training.</p>
+          {!isLastWeek && (
+            <Button className="empty-week__button" onClick={() => this.customizeWeek(id)}>
+              Go to the next step
+            </Button>
+          )}
+        </div>
+      )
+    }
+    
     const secondaryProgram = (secondary_program_type || '').toLowerCase();
     const hasElsOrSat = secondaryProgram === 'esl' || secondaryProgram === 'sat';
   
@@ -222,6 +238,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
   };
   
   customizeWeek = async (id) => {
+    
     const { weekId, cartId, participantId, maxWeekCounter, stepFourConcentrationProductId } = this.props;
     
     const data = flatten(this.props.weeksData.map(v => v.concentrations )).map(v => v.product);
