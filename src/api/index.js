@@ -174,6 +174,17 @@ class Api {
       },
     });
   };
+  
+  async getCatalogCampsHistogramOnly({ sport, gender, business_type }) {
+    return await instance.get('catalog/camps/histogram', {
+      params: {
+        group_by: 'age_from,age_to,gender,boarding',
+        business_type: business_type,
+        sport: sport,
+        gender: gender,
+      },
+    });
+  };
 
   async getCatalogTransport() {
     return await instance.get('catalog/transport');

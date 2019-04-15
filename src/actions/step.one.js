@@ -7,6 +7,21 @@ import Api from '../api';
 import { addParticipant } from './participant';
 import { setStepsCounter } from './steps';
 
+
+export function getCatalogCampsHistogramRequestOnly({ sport, gender, business_type }) {
+  return function(dispatch) {
+    Api.req({
+      apiCall: Api.getCatalogCampsHistogramOnly,
+      res200: data => {
+        console.log(data);
+      },
+      res404: () => console.log('Api.getCatalogCampsHistogram() => 404'), // TODO: Add error handler!
+      reject: err => console.log(err), // TODO: Add error handler!
+      apiCallParams: { sport, gender, business_type },
+    });
+  }
+}
+
 export function getCatalogCampsGroup({ sport, gender, group, businessType, secondaryGroup }) {
   return function(dispatch) {
     Api.req({

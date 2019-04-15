@@ -9,6 +9,7 @@ import { formValueSelector, reduxForm } from 'redux-form';
 import { addParticipantByCardId } from '../../actions/participant';
 import * as stepOneActions from '../../actions/step.one';
 import * as stepsActions from '../../actions/steps';
+import * as stepZeroActions from '../../actions/step.zero';
 // Actions
 import * as weeksActions from '../../actions/weeks';
 // Components
@@ -75,6 +76,7 @@ class StepOne extends React.Component {
         secondaryGroup: dataSecondaryGroup,
       };
       this.getCatalogCampsGroup(args);
+      this.props.stepZeroActions.getCatalogCampsHistogramRequestOnly(args);
     }
   }
   
@@ -101,10 +103,10 @@ class StepOne extends React.Component {
   };
   
   render() {
-    const { sleepaway, age, gender, dataGender, participantId, dataInitialEmail, genderOptions } = this.props;
+    const { sleepaway, age, gender, dataGender, participantId, dataInitialEmail, genderOptions, loading, minAge, maxAge, genders } = this.props;
   
     const boardingOptions = ['Boarding', 'Non-Boarding'];
-    const range = createNumbersArray({ from: 8, to: 18 });
+    const range = createNumbersArray({ from: minAge, to: maxAge });
     const genderCollapsed = !!dataGender || (genderOptions && genderOptions.length < 2);
     
     return (
@@ -115,6 +117,7 @@ class StepOne extends React.Component {
             shouldShowEmailModal={!participantId}
           />
         )}
+        
         <Container>
           <Row>
             <Col>
@@ -164,10 +167,12 @@ class StepOne extends React.Component {
                 <CardContent>
                   <CardContentRow>
                     <div className="content__form-control">
-                      <AgeRadioBtnContainer
-                        age={age}
-                        range={range}
-                      />
+                      {!loading && (
+                        <AgeRadioBtnContainer
+                          age={age}
+                          range={range}
+                        />
+                      )}
                     </div>
                   </CardContentRow>
                 </CardContent>
@@ -186,12 +191,14 @@ class StepOne extends React.Component {
                 <CardContent>
                   <CardContentRow>
                     <div className="content__form-control">
-                      <GenderRadioBtnContainer
-                        options={['Male', 'Female']}
-                        value={gender}
-                        possibleValues={genderOptions}
-                        hasPredefinedValue={!!dataGender}
-                      />
+                      {!loading && (
+                        <GenderRadioBtnContainer
+                          options={genders}
+                          value={gender}
+                          possibleValues={genderOptions}
+                          hasPredefinedValue={!!dataGender}
+                        />
+                      )}
                     </div>
                   </CardContentRow>
                 </CardContent>
@@ -211,6 +218,9 @@ StepOne.propTypes = {
   ]),
   stepsActions: PropTypes.shape({
     setStepsCounter: PropTypes.func.isRequired,
+  }),
+  stepZeroActions: PropTypes.shape({
+    getCatalogCampsHistogramRequestOnly: PropTypes.func,
   }),
   data: PropTypes.arrayOf(
     PropTypes.shape({
@@ -240,6 +250,9 @@ StepOne.propTypes = {
   weeksLengthNumber: PropTypes.number,
   dataInitialEmail: PropTypes.string,
   dataGender: PropTypes.string,
+  minAge: PropTypes.number,
+  maxAge: PropTypes.number,
+  loading: PropTypes.bool,
 };
 
 StepOne.defaultProps = {
@@ -256,6 +269,10 @@ const selector = formValueSelector('wizard');
 
 function mapStateToProps(state) {
   return {
+    minAge: state.stepZero.minAge,
+    maxAge: state.stepZero.maxAge,
+    loading: state.stepZero.loading,
+    genders: state.stepZero.genders,
     participantId: state.participant.id,
     email: selector(state, 'email'),
     sleepaway: stepOneSleepawaySelector(state),
@@ -274,6 +291,7 @@ function mapDispatchToProps(dispatch) {
   return {
     weeksActions: bindActionCreators(weeksActions, dispatch),
     stepOneActions: bindActionCreators(stepOneActions, dispatch),
+    stepZeroActions: bindActionCreators(stepZeroActions, dispatch),
     participantActions: bindActionCreators({ addParticipantByCardId }, dispatch),
     stepsActions: bindActionCreators(stepsActions, dispatch),
     gtmStateChange: bindActionCreators(gtmStateChange, dispatch)
