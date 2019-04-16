@@ -11,6 +11,7 @@ export function getCatalogCampsHistogramRequestOnly({ sport, gender, businessTyp
       res200: data => {
         const results = data.results;
   
+        const total = data.total;
         const minAge = (data.results.age_from[0] || {}).name || 8;
         const maxAge = (data.results.age_to[0] || {}).name || 18;
         const genders = (data.results.gender || []).map(v => v.name);
@@ -19,6 +20,7 @@ export function getCatalogCampsHistogramRequestOnly({ sport, gender, businessTyp
           type: STEP_ZERO_DONE_CATALOG,
           payload: {
             data: results,
+            total,
             minAge,
             maxAge,
             genders: genders || ['Male', 'Female']
