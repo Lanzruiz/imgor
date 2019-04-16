@@ -35,6 +35,7 @@ import AirlinesDropdownContainer from './components/AirlinesDropdownContainer';
 import AOSFadeInContainer from '../../components/AOSFadeInContainer';
 // Images
 import stubImage from '../../assets/img/2018-Suburban.png';
+import planeImg from '../../assets/img/plane.svg';
 // Actions
 import * as stepSixActions from '../../actions/step.six';
 import * as stepsActions from '../../actions/steps';
@@ -203,6 +204,12 @@ class StepSix extends React.Component {
       [airportPickupInformation.arrival]: 'Arrival Only',
       [airportPickupInformation.departing]: 'Departing Only',
     };
+    
+    const parsedTransport = transport.map(v => ({
+      id: v.id,
+      display_name: `${v.airport} - $${v.price}`,
+      name: v.package_product_id,
+    }));
 
     return (
       <AOSFadeInContainer className="step-six" ref={this.stepSix}>
@@ -219,7 +226,7 @@ class StepSix extends React.Component {
           <Col>
             <Row style={{display: 'flex'}}>
               <Col lg={6} md={6} xs={12} style={{ paddingRight: 0, paddingLeft: 0, marginBottom: 15, zIndex: 15 }}>
-                <div className="transport">
+                <div className="section transport">
                   <div className="transport__header">
                     <div className="transport__header__title">
                       Airport Shuttle
@@ -246,6 +253,59 @@ class StepSix extends React.Component {
                     />
                   </div>
                 </div>
+  
+                {(airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && (
+                  <div className="section pick-up">
+                    <div className="content">
+                      <div className="title">
+                        <img src={planeImg} alt="airplane" />
+                        ARRIVAL INFO
+                      </div>
+                      <div className="airport">
+                        <div className="airport__title">ARRIVAL AIRPORT</div>
+                        <div className="dropdown">
+                          <TransportRadioContainer
+                            name={stepSixFormFieldNames.transport}
+                            options={parsedTransport}
+                            value={selectedTransportValue}
+                          />
+                        </div>
+                      </div>
+                      <div className="unaccompanied">
+                        <LocaleString stringKey="step_six.unaccompanied" />
+                        <Paragraph>
+                          <LocaleString stringKey="step_six.airlines_service" />
+                        </Paragraph>
+                        <Paragraph>
+                          <LocaleString stringKey="step_six.ages" />
+                        </Paragraph>
+                        <UnaccompaniedCheckboxContainer
+                          unaccompanied={unaccompanied}
+                          transportUnaccompanied={transportUnaccompanied}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+  
+                {(airportPickupArrivalAndDeparting || airportPickupDepartingOnly) && (
+                  <div className="section drop-off">
+                    <div className="content">
+                      <div className="title">
+                        <img src={planeImg} alt="airplane" />
+                        DEPARTURE INFO
+                      </div>
+                      <div className="airport">
+                        <div className="airport__title">DEPARTURE AIRPORT</div>
+                        <TransportRadioContainer
+                          name={stepSixFormFieldNames.departingTransport}
+                          options={parsedTransport}
+                          value={departingTransport}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
               </Col>
               
               
@@ -329,10 +389,10 @@ class StepSix extends React.Component {
                           <SliderSubHeader>
                             <LocaleString stringKey="step_six.arrival_flight_information" />
                           </SliderSubHeader>
-                          <TransportRadioContainer
-                            options={transport}
-                            value={selectedTransportValue}
-                          />
+                          {/*<TransportRadioContainer*/}
+                          {/*  options={transport}*/}
+                          {/*  value={selectedTransportValue}*/}
+                          {/*/>*/}
                         </Col>
                         <Col md={12} lg={7} xl={6}>
                           <AirportHasArrivalFlightBookedCheckbox />

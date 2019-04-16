@@ -100,6 +100,7 @@
     "step_six.travel": "Travel",
     "step_six.starting_at": "Starting At",
     "step_six.configure_travel": "Configure travel",
+    "step_six.no-need-travel": "I DO NOT NEED TRAVEL ARRANGEMENTS",
 
 
     "step_final.header": "Enter Camper Information",

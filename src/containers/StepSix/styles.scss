@@ -2,18 +2,6 @@
 
 #{$root} {
   .step-six {
-    .radio-btn__container {
-      &--checkbox {
-        color: #083451;
-        font-size: 15px;
-        cursor: pointer;
-
-        input {
-          //background: red;
-        }
-      }
-    }
-
     .has-booked-description {
       margin-top: 10px;
       margin-bottom: 10px;
@@ -37,25 +25,6 @@
       @include breakpoint($mobile) {
         padding: 20px;
       }
-    }
-
-    &__slide-header {
-      color: $tab-row-bg;
-      display: block;
-      font-family: $header-font;
-      font-size: 24px;
-      text-transform: uppercase;
-      margin-bottom: 15px;
-    }
-
-    &__slide-sub-header {
-      color: $date-block-selected-bg;
-      display: block;
-      font-family: $header-font;
-      font-size: 20px;
-      font-weight: normal;
-      text-transform: uppercase;
-      margin-bottom: 10px;
     }
 
     &__radio-block {
@@ -275,8 +244,23 @@
   }
 
   .step-six{
-    .transport{
+    .dropdown__container{
+      background: $white;
+      border: 1px solid $card-dark-blue-color;
+      border-radius: 3px;
+      padding: 7px 10px 7px 10px;
+      max-width: 300px;
+      .dropdown__options{
+        border-radius: 3px;
+      }
+    }
+
+    .section{
+      background-color: $card-body-bg;
       font-family: $proxima-nova;
+    }
+
+    .transport{
       &__header{
         padding: 10px 15px;
         background-color: $card-dark-blue-color;
@@ -311,7 +295,6 @@
         align-items: center;
       }
       &__options{
-        background-color: $card-body-bg;
         padding: 20px;
         &__title{
           text-transform: uppercase;
@@ -320,6 +303,37 @@
         }
         &__checkboxes{
           padding: 10px 0 0 10px;
+          text-transform: uppercase;
+          label{
+            margin-top: 10px;
+          }
+        }
+      }
+    }
+
+    .pick-up, .drop-off{
+      padding: 0 20px 20px 20px;
+      .content{
+        padding-top: 30px;
+        border-top: 1px solid $card-dark-blue-color;
+        .title{
+          display: flex;
+          align-items: center;
+          color: $card-dark-blue-color;
+          font-weight: bold;
+          font-size: 15px;
+          img{
+            width: 25px;
+            margin-right: 12px;
+          }
+        }
+        .airport{
+          padding-top: 20px;
+          &__title{
+            color: $card-blue-color;
+            font-weight: bold;
+            margin-bottom: 10px;
+          }
         }
       }
     }

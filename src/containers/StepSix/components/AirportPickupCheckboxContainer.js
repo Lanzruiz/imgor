@@ -27,6 +27,7 @@ class AirportPickupCheckboxContainer extends React.Component {
       { value: both, stringKey: 'step_six.roundtrip' },
       { value: arrival, stringKey: 'step_six.pickup' },
       { value: departing, stringKey: 'step_six.dropoff' },
+      { value: undefined, stringKey: 'step_six.no-need-travel' },
     ];
     return (
       <div className="step-six__card-content transport__options__checkboxes">
