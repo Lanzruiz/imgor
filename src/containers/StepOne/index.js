@@ -59,15 +59,17 @@ class StepOne extends React.Component {
   };
   
   componentDidMount() {
-    const { sport, dataGender, dataGroup, dataBusinessType, dataSecondaryGroup } = this.props;
+    const { sport, gender, group, businessType, secondaryGroup, age, sleepaway} = this.props;
     const args = {
       sport,
-      gender: dataGender,
-      group: dataGroup,
-      businessType: dataBusinessType,
-      secondaryGroup: dataSecondaryGroup,
+      businessType,
+      boarding: sleepaway,
+      age,
+      gender,
+      group,
+      secondaryGroup,
     };
-    
+  
     this.getCatalogCampsGroup(args);
     this.scrollToCurrentComponent();
   }
@@ -77,16 +79,23 @@ class StepOne extends React.Component {
   };
   
   componentDidUpdate(prevProps) {
-    const { sport, dataGender, dataGroup, dataBusinessType, dataSecondaryGroup } = this.props;
+    const { sport, gender, group, businessType, secondaryGroup, age, sleepaway} = this.props;
     const isSportChanged = !isStringsEqual(sport, prevProps.sport);
-    if(isSportChanged) {
+    const isAgeChanged = !isStringsEqual(age, prevProps.age);
+    const isSleepawayChanged = !isStringsEqual(sleepaway, prevProps.sleepaway);
+    const isGenderChanged = !isStringsEqual(gender, prevProps.gender);
+    
+    if(isSportChanged || isAgeChanged || isSleepawayChanged || isGenderChanged) {
       const args = {
         sport,
-        gender: dataGender,
-        group: dataGroup,
-        businessType: dataBusinessType,
-        secondaryGroup: dataSecondaryGroup,
+        businessType,
+        boarding: sleepaway,
+        age,
+        gender,
+        group,
+        secondaryGroup,
       };
+      
       this.getCatalogCampsGroup(args);
     }
   }
