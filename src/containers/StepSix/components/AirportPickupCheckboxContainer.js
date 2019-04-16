@@ -29,7 +29,7 @@ class AirportPickupCheckboxContainer extends React.Component {
       { value: departing, stringKey: 'step_six.dropoff' },
     ];
     return (
-      <div className="step-six__card-content">
+      <div className="step-six__card-content transport__options__checkboxes">
         <Field
           name={stepSixFormFieldNames.airportPickup}
           type="radio"

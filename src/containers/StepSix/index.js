@@ -78,56 +78,6 @@ import { stepSixFormFieldNames, airportPickupInformation } from './selectors';
 import './styles.scss';
 
 class StepSix extends React.Component {
-  static propTypes = {
-    airportPickup: PropTypes.string,
-    airlines: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.string,
-        display_name: PropTypes.string,
-        name: PropTypes.string,
-      }),
-    ),
-    stepSixActions: PropTypes.shape({
-      stepSixSetDefaultState: PropTypes.func.isRequired,
-      stepSixGetCatalogTransportRequest: PropTypes.func.isRequired,
-      stepSixGetCatalogAirlinesRequest: PropTypes.func.isRequired,
-      stepSixSetArrivalAirlines: PropTypes.func.isRequired,
-      stepSixSetDepartingAirlines: PropTypes.func.isRequired,
-      stepSixGetCatalogTransportUnaccompaniedRequest: PropTypes.func.isRequired,
-      stepSixSelectTransportationOption: PropTypes.func.isRequired,
-      stepSixUnselectTransportationOption: PropTypes.func.isRequired,
-      stepSixDeleteProductInTheCart: PropTypes.func.isRequired,
-      stepSixAddTransportToCart: PropTypes.func.isRequired,
-      stepSixClearTransportCart: PropTypes.func.isRequired,
-    }),
-    transport: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.number,
-        package_product_id: PropTypes.string,
-        airport: PropTypes.string,
-        vehicle: PropTypes.string,
-        price: PropTypes.number,
-      }),
-    ).isRequired,
-    dropoff: PropTypes.string,
-    departing: PropTypes.string,
-    departingTransport: PropTypes.string,
-    pickUp: PropTypes.string,
-    selectedArrivalAirline: PropTypes.shape({
-      id: PropTypes.string,
-      display_name: PropTypes.string,
-      name: PropTypes.string,
-    }),
-    selectedDepartingAirline: PropTypes.shape({
-      id: PropTypes.string,
-      display_name: PropTypes.string,
-      name: PropTypes.string,
-    }),
-    selectedTransportValue: PropTypes.string,
-    unaccompanied: PropTypes.string,
-    transportationId: PropTypes.number,
-  };
-
   static defaultProps = {
     transportation: 'false',
     transport: [],
@@ -156,7 +106,7 @@ class StepSix extends React.Component {
 
   scrollToCurrentComponent = () => {
     scrollToComponent(this, { align: 'top', duration: 500 });
-  }
+  };
 
   componentWillUnmount() {
     this.setDefaultState();
@@ -268,6 +218,37 @@ class StepSix extends React.Component {
           </Row>
           <Col>
             <Row style={{display: 'flex'}}>
+              <Col lg={6} md={6} xs={12} style={{ paddingRight: 0, paddingLeft: 0, marginBottom: 15, zIndex: 15 }}>
+                <div className="transport">
+                  <div className="transport__header">
+                    <div className="transport__header__title">
+                      Airport Shuttle
+                    </div>
+                    <div className="transport__header__price">
+                      <div className="price">$99</div>
+                      <div className="starting">Starting At</div>
+                    </div>
+                  </div>
+                  <div className="transport__image">
+                    <Image
+                      className="card-content__img"
+                      defaultSrc={stubImage}
+                      src="step_six.transport.image_path"
+                    />
+                  </div>
+                  <div className="transport__options">
+                    <div className="transport__options__title">
+                      Schedule Airport Transportation
+                    </div>
+                    <AirportPickupCheckboxContainer
+                      handleChange={this.handlePickupChange}
+                      airportPickup={airportPickup}
+                    />
+                  </div>
+                </div>
+              </Col>
+              
+              
               <Col md={5} lg={4} style={{ paddingRight: 0, paddingLeft: 0, marginBottom: 15, zIndex: 15 }}>
                 <Card
                   id={0}
@@ -294,10 +275,10 @@ class StepSix extends React.Component {
                         />
                       </CardContentCol>
                       <CardContentCol>
-                        <AirportPickupCheckboxContainer
-                          handleChange={this.handlePickupChange}
-                          airportPickup={airportPickup}
-                        />
+                        {/*<AirportPickupCheckboxContainer*/}
+                        {/*  handleChange={this.handlePickupChange}*/}
+                        {/*  airportPickup={airportPickup}*/}
+                        {/*/>*/}
                       </CardContentCol>
                     </CardContentRow>
                     <CardContentText>
@@ -645,6 +626,57 @@ class StepSix extends React.Component {
     );
   }
 }
+
+StepSix.propTypes = {
+  airportPickup: PropTypes.string,
+  airlines: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      display_name: PropTypes.string,
+      name: PropTypes.string,
+    }),
+  ),
+  stepSixActions: PropTypes.shape({
+    stepSixSetDefaultState: PropTypes.func.isRequired,
+    stepSixGetCatalogTransportRequest: PropTypes.func.isRequired,
+    stepSixGetCatalogAirlinesRequest: PropTypes.func.isRequired,
+    stepSixSetArrivalAirlines: PropTypes.func.isRequired,
+    stepSixSetDepartingAirlines: PropTypes.func.isRequired,
+    stepSixGetCatalogTransportUnaccompaniedRequest: PropTypes.func.isRequired,
+    stepSixSelectTransportationOption: PropTypes.func.isRequired,
+    stepSixUnselectTransportationOption: PropTypes.func.isRequired,
+    stepSixDeleteProductInTheCart: PropTypes.func.isRequired,
+    stepSixAddTransportToCart: PropTypes.func.isRequired,
+    stepSixClearTransportCart: PropTypes.func.isRequired,
+  }),
+  transport: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      package_product_id: PropTypes.string,
+      airport: PropTypes.string,
+      vehicle: PropTypes.string,
+      price: PropTypes.number,
+    }),
+  ).isRequired,
+  dropoff: PropTypes.string,
+  departing: PropTypes.string,
+  departingTransport: PropTypes.string,
+  pickUp: PropTypes.string,
+  selectedArrivalAirline: PropTypes.shape({
+    id: PropTypes.string,
+    display_name: PropTypes.string,
+    name: PropTypes.string,
+  }),
+  selectedDepartingAirline: PropTypes.shape({
+    id: PropTypes.string,
+    display_name: PropTypes.string,
+    name: PropTypes.string,
+  }),
+  selectedTransportValue: PropTypes.string,
+  unaccompanied: PropTypes.string,
+  transportationId: PropTypes.number,
+};
+
 
 function mapStateToProps(state) {
   return {
