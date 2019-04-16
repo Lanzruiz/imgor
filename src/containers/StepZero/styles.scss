@@ -4,6 +4,20 @@
   .step-zero {
     margin-bottom: 65px;
 
+    .empty_box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      padding: 10px;
+      border: 1px solid $card-light-blue-color;
+      color: $card-light-blue-color;
+      font-family: $proxima-nova;
+      .text{
+        text-transform: uppercase;
+      }
+    }
+
     .card-body__head {
       padding-left: 14px;
     }

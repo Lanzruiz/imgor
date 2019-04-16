@@ -29,14 +29,8 @@ import isStringsEqual from '../../helpers/isStringsEqual';
 // Helpers
 import validation from '../../helpers/validate';
 // Selectors
-import { businessTypeSelector, packageTypeSelector, sportSelector } from '../InitialComponent/selectors';
-import {
-  stepOneAgeSelector,
-  stepOneDataSelector,
-  stepOneGenderSelector,
-  stepOneSecondaryGroupSelector,
-  stepOneSleepawaySelector
-} from './selectors';
+import { businessTypeSelector, sportSelector } from '../InitialComponent/selectors';
+import { stepOneAgeSelector, stepOneGenderSelector, stepOneSleepawaySelector } from './selectors';
 // Styles
 import './styles.scss';
 
@@ -47,16 +41,6 @@ class StepOne extends React.Component {
   }
 
   componentDidMount() {
-    const { sport, dataGender, dataGroup, dataBusinessType, dataSecondaryGroup } = this.props;
-    const args = {
-      sport,
-      gender: dataGender,
-      group: dataGroup,
-      businessType: dataBusinessType,
-      secondaryGroup: dataSecondaryGroup,
-    };
-    
-    this.getCatalogCampsGroup(args);
     this.scrollToCurrentComponent();
   }
   
@@ -65,7 +49,7 @@ class StepOne extends React.Component {
   };
 
   componentDidUpdate(prevProps) {
-    const { sport, dataGender, dataGroup, dataBusinessType, dataSecondaryGroup } = this.props;
+    const { sport, dataGender, dataGroup, dataBusinessType } = this.props;
     const isSportChanged = !isStringsEqual(sport, prevProps.sport);
     if (isSportChanged) {
       const args = {
@@ -73,9 +57,7 @@ class StepOne extends React.Component {
         gender: dataGender,
         group: dataGroup,
         businessType: dataBusinessType,
-        secondaryGroup: dataSecondaryGroup,
       };
-      this.getCatalogCampsGroup(args);
       this.props.stepZeroActions.getCatalogCampsHistogramRequestOnly(args);
     }
   }
@@ -103,12 +85,12 @@ class StepOne extends React.Component {
   };
   
   render() {
-    const { sleepaway, age, gender, dataGender, participantId, dataInitialEmail, genderOptions, loading, minAge, maxAge, genders } = this.props;
+    const { sleepaway, age, gender, dataGender, participantId, dataInitialEmail, genderOptions, loading, minAge, maxAge, genders, hasData } = this.props;
   
     const boardingOptions = ['Boarding', 'Non-Boarding'];
     const range = createNumbersArray({ from: minAge, to: maxAge });
     const genderCollapsed = !!dataGender || (genderOptions && genderOptions.length < 2);
-    
+  
     return (
       <AOSFadeInContainer className="step-zero" ref={this.stepZero}>
         {!dataInitialEmail && (
@@ -117,95 +99,125 @@ class StepOne extends React.Component {
             shouldShowEmailModal={!participantId}
           />
         )}
-        
-        <Container>
-          <Row>
-            <Col>
-              <Header
-                header="step_zero.header"
-                subHeader="step_zero.sub_header"
-                formatString={{ stepNumber: stepsEnum.zero }}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col sm={12} md={12} lg={genderCollapsed ? 6 : 4} style={{ padding: '15px' }}>
-              <Card
-                buttonBlock={false}
-                cardHeader={<LocaleString stringKey="step_zero.choose_sleepaway" />}
-                cardHeaderCapitalize={true}
-                id={0}
-                priceBlock={false}
-                style={{ marginBottom: 0 }}
-              >
-                <CardContent>
-                  <CardContentRow>
-                    <CardContentCol>
+        {hasData && (
+          <Container>
+            <Row>
+              <Col>
+                <Header
+                  header="step_zero.header"
+                  subHeader="step_zero.sub_header"
+                  formatString={{ stepNumber: stepsEnum.zero }}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col sm={12} md={12} lg={genderCollapsed ? 6 : 4} style={{ padding: '15px' }}>
+                <Card
+                  buttonBlock={false}
+                  cardHeader={<LocaleString stringKey="step_zero.choose_sleepaway"/>}
+                  cardHeaderCapitalize={true}
+                  id={0}
+                  priceBlock={false}
+                  style={{ marginBottom: 0 }}
+                >
+                  <CardContent>
+                    <CardContentRow>
+                      <CardContentCol>
+                        <div className="content__form-control">
+                          <SleepawayRadioBtn
+                            options={[ { value: 'Boarding', stringKey: 'yes' }, {
+                              value: 'Non-Boarding',
+                              stringKey: 'no'
+                            } ]}
+                            sleepaway={sleepaway}
+                            possibleValues={boardingOptions}
+                            handleChange={() => {
+                              this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_BOARDING);
+                            }}
+                          />
+                        </div>
+                      </CardContentCol>
+                    </CardContentRow>
+                  </CardContent>
+                </Card>
+              </Col>
+              <Col sm={12} md={12} lg={genderCollapsed ? 6 : 4} style={{ padding: '15px' }}>
+                <Card
+                  buttonBlock={false}
+                  cardHeader={<LocaleString stringKey="step_zero.select_camper_age"/>}
+                  cardHeaderCapitalize={true}
+                  id={2}
+                  priceBlock={false}
+                  style={{ marginBottom: 0 }}
+                >
+                  <CardContent>
+                    <CardContentRow>
                       <div className="content__form-control">
-                        <SleepawayRadioBtn
-                          options={[{ value: 'Boarding', stringKey: 'yes' },{ value: 'Non-Boarding', stringKey: 'no' }]}
-                          sleepaway={sleepaway}
-                          possibleValues={boardingOptions}
-                          handleChange={() => { this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_BOARDING); }}
-                        />
+                        {!loading && (
+                          <AgeRadioBtnContainer
+                            age={age}
+                            range={range}
+                          />
+                        )}
                       </div>
-                    </CardContentCol>
-                  </CardContentRow>
-                </CardContent>
-              </Card>
-            </Col>
-            
-            <Col sm={12} md={12} lg={genderCollapsed ? 6 : 4} style={{ padding: '15px' }}>
-              <Card
-                buttonBlock={false}
-                cardHeader={<LocaleString stringKey="step_zero.select_camper_age" />}
-                cardHeaderCapitalize={true}
-                id={2}
-                priceBlock={false}
-                style={{ marginBottom: 0 }}
-              >
-                <CardContent>
-                  <CardContentRow>
-                    <div className="content__form-control">
-                      {!loading && (
-                        <AgeRadioBtnContainer
-                          age={age}
-                          range={range}
-                        />
-                      )}
-                    </div>
-                  </CardContentRow>
-                </CardContent>
-              </Card>
-            </Col>
-            
-            <Col sm={12} md={12} lg={genderCollapsed ? 0 : 4} style={{ padding: '15px', visibility: genderCollapsed ? 'collapse': '', display: genderCollapsed ? 'none': '' }}>
-              <Card
-                buttonBlock={false}
-                cardHeader={<LocaleString stringKey="step_zero.gender" />}
-                cardHeaderCapitalize={true}
-                id={2}
-                priceBlock={false}
-                style={{ marginBottom: 0 }}
-              >
-                <CardContent>
-                  <CardContentRow>
-                    <div className="content__form-control">
-                      {!loading && (
-                        <GenderRadioBtnContainer
-                          options={genders}
-                          value={gender}
-                          possibleValues={genderOptions}
-                          hasPredefinedValue={!!dataGender}
-                        />
-                      )}
-                    </div>
-                  </CardContentRow>
-                </CardContent>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
+                    </CardContentRow>
+                  </CardContent>
+                </Card>
+              </Col>
+              <Col sm={12} md={12} lg={genderCollapsed ? 0 : 4} style={{
+                padding: '15px',
+                visibility: genderCollapsed ? 'collapse' : '',
+                display: genderCollapsed ? 'none' : ''
+              }}>
+                <Card
+                  buttonBlock={false}
+                  cardHeader={<LocaleString stringKey="step_zero.gender"/>}
+                  cardHeaderCapitalize={true}
+                  id={2}
+                  priceBlock={false}
+                  style={{ marginBottom: 0 }}
+                >
+                  <CardContent>
+                    <CardContentRow>
+                      <div className="content__form-control">
+                        {!loading && (
+                          <GenderRadioBtnContainer
+                            options={genders}
+                            value={gender}
+                            possibleValues={genderOptions}
+                            hasPredefinedValue={!!dataGender}
+                          />
+                        )}
+                      </div>
+                    </CardContentRow>
+                  </CardContent>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        )}
+        {(hasData) || (
+          <Container>
+            <Row>
+              <Col>
+                <Header
+                  header="step_zero.header"
+                  subHeader="step_zero.sub_header"
+                  formatString={{ stepNumber: stepsEnum.zero }}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col sm={12} md={12} lg={12} style={{ padding: '15px' }}>
+                <div className="empty_box">
+                  <div className="text">
+                    {loading ? 'Loading' : 'Call IMG'}
+                  </div>
+                </div>
+              </Col>
+            </Row>
+          </Container>
+        )}
       </AOSFadeInContainer>
     );
   }
@@ -222,32 +234,10 @@ StepOne.propTypes = {
   stepZeroActions: PropTypes.shape({
     getCatalogCampsHistogramRequestOnly: PropTypes.func,
   }),
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      age_range: PropTypes.string,
-      business_type: PropTypes.string,
-      capacity_available: PropTypes.number,
-      name: PropTypes.string,
-      options: PropTypes.oneOfType([
-        PropTypes.bool,
-        PropTypes.arrayOf(
-          PropTypes.shape({
-            capacity_available: PropTypes.number,
-            name: PropTypes.string,
-            sold_out: PropTypes.bool,
-          }),
-        ),
-      ]),
-      sold_out: PropTypes.bool,
-      start_price: PropTypes.number,
-    }),
-  ),
-  tabIndex: PropTypes.number,
   group: PropTypes.string,
   sleepaway: PropTypes.string,
   age: PropTypes.string,
   gender: PropTypes.string,
-  weeksLengthNumber: PropTypes.number,
   dataInitialEmail: PropTypes.string,
   dataGender: PropTypes.string,
   minAge: PropTypes.number,
@@ -273,17 +263,15 @@ function mapStateToProps(state) {
     maxAge: state.stepZero.maxAge,
     loading: state.stepZero.loading,
     genders: state.stepZero.genders,
+    hasData: state.stepZero.total > 0,
     participantId: state.participant.id,
     email: selector(state, 'email'),
     sleepaway: stepOneSleepawaySelector(state),
     age: stepOneAgeSelector(state),
     gender: stepOneGenderSelector(state),
     cartId: state.cart.id,
-    data: stepOneDataSelector(state),
-    secondaryGroup: stepOneSecondaryGroupSelector(state),
     sport: sportSelector(state),
     businessType: businessTypeSelector(state),
-    packageType: packageTypeSelector(state),
   };
 };
 

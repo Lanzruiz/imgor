@@ -5,6 +5,7 @@ import * as stepZeroTypes from '../constants/step.zero';
 
 const initialState = {
   data: {},
+  total: 0,
   loading: false,
   minAge: 8,
   maxAge: 18,
@@ -22,6 +23,7 @@ const reducer = {
     return {
       ...state,
       data: action.payload.data,
+      total: action.payload.total,
       minAge: action.payload.minAge,
       maxAge: action.payload.maxAge,
       genders: action.payload.genders,
