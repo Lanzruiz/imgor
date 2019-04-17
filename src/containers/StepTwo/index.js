@@ -236,8 +236,6 @@ class StepTwo extends React.Component {
                         return acc;
                       }, []);
                       
-                      console.log(data);
-                      
                       if(!hasAnyData){
                         return (
                           <div className="description__no-available-camps">
