@@ -182,7 +182,7 @@ class StepFour extends React.Component {
                 age={age}
                 viaLogoPath={viaLogoPath}
                 businessType={businessType}
-                customizeId={weeks[index].customize_id}
+                customizeId={(weeks[index] || {}).customize_id}
                 product={null}
                 gender={gender}
                 sport={sport}

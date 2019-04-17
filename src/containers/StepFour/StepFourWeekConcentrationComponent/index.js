@@ -95,10 +95,12 @@ class StepFourWeekConcentrationComponent extends React.Component {
     if(isEmptyConcentrations){
       return (
         <div className="step-four-tabs__tab-panel__empty-week empty-week">
-          <p>No available weekly training.</p>
+          <p>
+            <LocaleString stringKey="step_four.no-available-training" />
+          </p>
           {!isLastWeek && (
             <Button className="empty-week__button" onClick={() => this.customizeWeek(id)}>
-              Go to the next step
+              <LocaleString stringKey="continue" />
             </Button>
           )}
         </div>
