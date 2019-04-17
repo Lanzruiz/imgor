@@ -163,7 +163,23 @@ class StepTwo extends React.Component {
       }
       return isAvailable;
     }, true);
-    
+  
+    // const hasAnyData = data && data.length > 0;
+    //
+    // if(!hasAnyData){
+    //   return (
+    //     <Container>
+    //       <Row>
+    //         <Col>
+    //           <div className="description__no-available-camps">
+    //             <LocaleString stringKey="step_two.dates.no_available_camps" />
+    //           </div>
+    //         </Col>
+    //       </Row>
+    //     </Container>
+    //   )
+    // }
+  
     return (
       <AOSFadeInContainer className="step-two" ref={this.stepTwo}>
         <Container>
@@ -221,8 +237,6 @@ class StepTwo extends React.Component {
                     <ScreenClassRender render={(cl) => {
                       const groupSize = 5;
                       const perPage = cl === 'xs' ? 2 : 5;
-  
-                      const hasAnyData = data && data.length > 0;
                       
                       const dataGrouped = data.reduce((acc, v, index) => {
                         const i = Math.floor(index / groupSize);
@@ -235,14 +249,6 @@ class StepTwo extends React.Component {
                         acc[i] = [...(acc[i] || []), v];
                         return acc;
                       }, []);
-                      
-                      if(!hasAnyData){
-                        return (
-                          <div className="description__no-available-camps">
-                            <LocaleString stringKey="step_two.dates.no_available_camps" />
-                          </div>
-                        )
-                      }
                       
                       return (
                         <Fragment>

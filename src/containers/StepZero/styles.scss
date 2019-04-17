@@ -1,22 +1,35 @@
 @import '../../constants/scss/variables.scss';
 
 #{$root} {
+
   .step-zero {
     margin-bottom: 65px;
+    .step-two__questions{
+      width: 100%;
+    }
 
-    .empty_box {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-sizing: border-box;
-      padding: 10px;
-      border: 1px solid $card-light-blue-color;
-      color: $card-light-blue-color;
-      font-family: $proxima-nova;
-      .text{
-        text-transform: uppercase;
+    .no-data{
+      margin-top: 50px;
+      margin-bottom: 50px;
+      .empty_box {
+        height: 100%;
+        display: flex;
+        padding: 20px;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        border: 1px solid $card-light-blue-color;
+        color: $card-light-blue-color;
+        font-family: $proxima-nova;
+        .text{
+          text-transform: uppercase;
+          &.danger{
+            color: $sold-out;
+          }
+        }
       }
     }
+
 
     .card-body__head {
       padding-left: 14px;
