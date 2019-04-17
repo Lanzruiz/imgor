@@ -251,6 +251,14 @@
             }
         }
 
+        &__no-available-camps {
+          width: 100%;
+          color: $sold-out;
+          text-align: center;
+          text-transform: uppercase;
+          font-family: $proxima-nova;
+        }
+
         &__sold-out {
             color: $sold-out;
             float: right;

@@ -42,57 +42,6 @@ class StepTwo extends React.Component {
     super(props);
     this.stepTwo = React.createRef();
   }
-  static propTypes = {
-    boarding: PropTypes.bool,
-    stepOneActions: PropTypes.shape({
-      stepOneSetCampLength: PropTypes.func.isRequired,
-    }),
-    stepTwoActions: PropTypes.shape({
-      getCatalogCampsCalendarRequest: PropTypes.func.isRequired,
-      selectDate: PropTypes.func.isRequired,
-      stepTwoSetDefaultState: PropTypes.func.isRequired,
-      stepTwoSetCampDaysLength: PropTypes.func.isRequired,
-    }),
-    weeksActions: PropTypes.shape({
-      setOnlyWeeks: PropTypes.func.isRequired,
-    }),
-    data: PropTypes.arrayOf(
-      PropTypes.shape({
-        capacity: PropTypes.arrayOf(
-          PropTypes.shape({
-            available: PropTypes.number,
-            boarding: PropTypes.bool,
-          }),
-        ),
-        capacity_end_date: PropTypes.date,
-        capacity_start_date: PropTypes.date,
-        display_length: PropTypes.string,
-        display_sport: PropTypes.string,
-        length: PropTypes.string,
-        length_days: PropTypes.number,
-        program_types: PropTypes.arrayOf(
-          PropTypes.shape({
-            capacity: PropTypes.number,
-            display_name: PropTypes.string,
-            name: PropTypes.string,
-            sold_out: PropTypes.bool,
-          }),
-        ),
-        sport: PropTypes.string,
-        selectedDate: PropTypes.shape({
-          capacity_start_date: PropTypes.date,
-          capacity_end_date: PropTypes.date,
-        }),
-      }),
-    ),
-    sleepaway: PropTypes.string,
-    age: PropTypes.string,
-    gender: PropTypes.string,
-    group: PropTypes.string,
-    secondary_group: PropTypes.string,
-    weeksCounter: PropTypes.number,
-    isWeeklyCamp: PropTypes.bool,
-  };
 
   static defaultProps = {
     data: [],
@@ -199,7 +148,7 @@ class StepTwo extends React.Component {
 
   scrollToCurrentComponent = () => {
     scrollToComponent(this.stepTwo.current, { offset: -200, align: 'middle', duration: 1000 });
-  }
+  };
 
   render() {
     const { data, weeksCounter, sport, selectedDate, boarding } = this.props;
@@ -273,6 +222,8 @@ class StepTwo extends React.Component {
                       const groupSize = 5;
                       const perPage = cl === 'xs' ? 2 : 5;
   
+                      const hasAnyData = data && data.length > 0;
+                      
                       const dataGrouped = data.reduce((acc, v, index) => {
                         const i = Math.floor(index / groupSize);
                         acc[i] = [...(acc[i] || []), v];
@@ -284,6 +235,16 @@ class StepTwo extends React.Component {
                         acc[i] = [...(acc[i] || []), v];
                         return acc;
                       }, []);
+                      
+                      console.log(data);
+                      
+                      if(!hasAnyData){
+                        return (
+                          <div className="description__no-available-camps">
+                            <LocaleString stringKey="step_two.dates.no_available_camps" />
+                          </div>
+                        )
+                      }
                       
                       return (
                         <Fragment>
@@ -528,6 +489,58 @@ class StepTwo extends React.Component {
     this.props.stepTwoActions.stepTwoSetDefaultState();
   }
 }
+
+StepTwo.propTypes = {
+  boarding: PropTypes.bool,
+  stepOneActions: PropTypes.shape({
+    stepOneSetCampLength: PropTypes.func.isRequired,
+  }),
+  stepTwoActions: PropTypes.shape({
+    getCatalogCampsCalendarRequest: PropTypes.func.isRequired,
+    selectDate: PropTypes.func.isRequired,
+    stepTwoSetDefaultState: PropTypes.func.isRequired,
+    stepTwoSetCampDaysLength: PropTypes.func.isRequired,
+  }),
+  weeksActions: PropTypes.shape({
+    setOnlyWeeks: PropTypes.func.isRequired,
+  }),
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      capacity: PropTypes.arrayOf(
+        PropTypes.shape({
+          available: PropTypes.number,
+          boarding: PropTypes.bool,
+        }),
+      ),
+      capacity_end_date: PropTypes.date,
+      capacity_start_date: PropTypes.date,
+      display_length: PropTypes.string,
+      display_sport: PropTypes.string,
+      length: PropTypes.string,
+      length_days: PropTypes.number,
+      program_types: PropTypes.arrayOf(
+        PropTypes.shape({
+          capacity: PropTypes.number,
+          display_name: PropTypes.string,
+          name: PropTypes.string,
+          sold_out: PropTypes.bool,
+        }),
+      ),
+      sport: PropTypes.string,
+      selectedDate: PropTypes.shape({
+        capacity_start_date: PropTypes.date,
+        capacity_end_date: PropTypes.date,
+      }),
+    }),
+  ),
+  sleepaway: PropTypes.string,
+  age: PropTypes.string,
+  gender: PropTypes.string,
+  group: PropTypes.string,
+  secondary_group: PropTypes.string,
+  weeksCounter: PropTypes.number,
+  isWeeklyCamp: PropTypes.bool,
+};
 
 function mapStateToProps(state) {
   return {
