@@ -252,11 +252,13 @@
         }
 
         &__no-available-camps {
-          width: 100%;
+          border: 1px solid $card-blue-color;
+          padding: 20px;
           color: $sold-out;
           text-align: center;
           text-transform: uppercase;
           font-family: $proxima-nova;
+          margin-bottom: 100px;
         }
 
         &__sold-out {

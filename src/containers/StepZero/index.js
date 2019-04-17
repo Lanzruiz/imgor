@@ -99,7 +99,7 @@ class StepOne extends React.Component {
             shouldShowEmailModal={!participantId}
           />
         )}
-        {hasData && (
+        {!loading && hasData && (
           <Container>
             <Row>
               <Col>
@@ -196,28 +196,66 @@ class StepOne extends React.Component {
             </Row>
           </Container>
         )}
-        {(hasData) || (
-          <Container>
+        {loading || hasData || (
+          <Container className="no-data">
             <Row>
-              <Col>
-                <Header
-                  header="step_zero.header"
-                  subHeader="step_zero.sub_header"
-                  formatString={{ stepNumber: stepsEnum.zero }}
-                />
+              <Col sm={12} md={6} lg={4}>
+                <div className="step-two__questions questions">
+                  <span className="questions__questions">
+                    <LocaleString stringKey="step_two.questions.questions" />
+                  </span>
+                  <h2 className="questions__header">
+                    <LocaleString stringKey="step_two.questions.header" />
+                  </h2>
+                  <p className="questions__description">
+                    <LocaleString stringKey="step_two.questions.description" />
+                  </p>
+                  <div className="questions__icons icons">
+                    <div className="icons__container advisor-cta-call">
+                      <div className="icon-phone" />
+                      <span className="icons__text">
+                        <LocaleString stringKey="step_two.questions.call" />
+                      </span>
+                    </div>
+                    <div className="icons__container advisor-cta-chat">
+                      <div className="icon-message-bulb-square-o" />
+                      <span className="icons__text">
+                        <LocaleString stringKey="step_two.questions.chat" />
+                      </span>
+                    </div>
+                    <div className="icons__container advisor-cta-email">
+                      <div className="icon-file" />
+                      <span className="icons__text">
+                        <LocaleString stringKey="step_two.questions.email" />
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </Col>
-            </Row>
-            <Row>
-              <Col sm={12} md={12} lg={12} style={{ padding: '15px' }}>
+              <Col sm={12} md={6} lg={8} style={{padding: '15px', paddingTop: 0, paddingBottom: 0}}>
                 <div className="empty_box">
-                  <div className="text">
-                    {loading ? 'Loading' : 'Call IMG'}
+                  <div className="text danger">
+                    {loading ? 'Loading' : 'NO DATES AVAILABLE'}
                   </div>
                 </div>
               </Col>
             </Row>
           </Container>
         )}
+        {loading && (
+          <Container className="no-data">
+            <Row>
+              <Col sm={12} md={6} lg={8}>
+                <div className="empty_box">
+                  <div className="text">
+                    Loading
+                  </div>
+                </div>
+              </Col>
+            </Row>
+          </Container>
+        )}
+        
       </AOSFadeInContainer>
     );
   }
