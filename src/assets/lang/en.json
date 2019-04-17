@@ -56,6 +56,7 @@
   "step_two.dates.header": "Select an upcoming {sport} camp",
   "step_two.dates.header_descripion": "Starting price may change based on selected date and seasonal demand",
   "step_two.dates.sold_out": "Sold out",
+  "step_two.dates.no_available_camps": "No available camps",
   "step_two.dates.check_in": "Check-in",
   "step_two.dates.check_out": "Check-out",
   "step_two.dates.selected.header": "Selected dates",
