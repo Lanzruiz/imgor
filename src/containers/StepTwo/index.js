@@ -81,7 +81,7 @@ class StepTwo extends React.Component {
     
     this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_CALENDAR);
 
-    this.scrollToCurrentComponent();
+    //this.scrollToCurrentComponent();
 
   }
 
