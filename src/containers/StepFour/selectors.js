@@ -14,6 +14,14 @@ export const stepFourDataSelector = createSelector(
   }
 );
 
+export const stepFourWeeksDataSelector = createSelector(
+  stepFourSelector,
+  function(stepFour = {}) {
+    return stepFour.weeksData;
+  }
+);
+
+
 export const stepFourWeekOneDataSelector = createSelector(
   stepFourSelector,
   function(stepFour = {}) {

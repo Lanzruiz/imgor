@@ -8,6 +8,7 @@ import * as stepFourTypes from '../constants/step.four';
 
 const initialState = {
   data: [],
+  weeksData: [],
   week_1_data: [],
   week_2_data: [],
   week_3_data: [],
@@ -23,7 +24,8 @@ const initialState = {
   secondaryProgramId: null,
 };
 
-export const emptyConcentrationId = '1337lorem';
+export const emptyConcentrationId = 'emptyConcentrationId';
+export const emptyConcentrationsSkipWeek = 'emptyConcentrationsSkipWeek';
 
 const emptyConcentration = {
   isDummy: true,
@@ -55,6 +57,14 @@ export default function(state = initialState, action) {
         return state;
       }
       return assign({}, state, { data: results });
+    }
+  
+    case stepFourTypes.STEP_FOUR_GET_CATALOG_CAMPS_CONCENTRATIONS: {
+      const { results } = payload;
+      if (isEqual(state.data, results)) {
+        return state;
+      }
+      return assign({}, state, { weeksData: results });
     }
 
     case stepFourTypes.STEP_FOUR_GET_CATALOG_CAMPS_WEEK_ONE: {

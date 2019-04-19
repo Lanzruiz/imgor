@@ -59,7 +59,7 @@ export default function(state = initialState, action) {
 
     case weeksTypes.CUSTOMIZE_WEEK: {
       const weeks = concat(state.weeks);
-      weeks[state.selectedWeekId].customize_id = payload;
+      weeks[payload.weekId || state.selectedWeekId].customize_id = payload.id;
       
       const skipWeeks = weeks.map((v, i) => {
         const week = {...v};
@@ -71,7 +71,7 @@ export default function(state = initialState, action) {
         return week;
       });
       
-      if(payload === emptyConcentrationId){
+      if(payload.id === emptyConcentrationId){
         return {
           ...state,
           weeks: skipWeeks
