@@ -14,7 +14,11 @@ export function getCatalogCampsHistogramRequestOnly({ sport, gender, businessTyp
         const total = data.total;
         const minAge = (data.results.age_from[0] || {}).name || 8;
         const maxAge = (data.results.age_to[0] || {}).name || 18;
-        const genders = (data.results.gender || []).map(v => v.name);
+  
+        const genderType = ((data.results.gender[0] || {}).name || '').toLowerCase();
+        const genderTypeAllOrBoth = !!(genderType === 'all' || genderType === 'both');
+        
+        const genders = genderTypeAllOrBoth ? ['Male', 'Female'] : (data.results.gender || []).map(v => v.name);
         
         dispatch({
           type: STEP_ZERO_DONE_CATALOG,
@@ -23,7 +27,7 @@ export function getCatalogCampsHistogramRequestOnly({ sport, gender, businessTyp
             total,
             minAge,
             maxAge,
-            genders: genders || ['Male', 'Female']
+            genders
           }
         })
       },
