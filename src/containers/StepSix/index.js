@@ -272,17 +272,17 @@ class StepSix extends React.Component {
                         </div>
                       </div>
                       <div className="unaccompanied">
-                        <LocaleString stringKey="step_six.unaccompanied" />
+                        <div className="unaccompanied__title">
+                          <LocaleString stringKey="step_six.unaccompanied" />
+                        </div>
                         <Paragraph>
                           <LocaleString stringKey="step_six.airlines_service" />
-                        </Paragraph>
-                        <Paragraph>
-                          <LocaleString stringKey="step_six.ages" />
                         </Paragraph>
                         <UnaccompaniedCheckboxContainer
                           unaccompanied={unaccompanied}
                           transportUnaccompanied={transportUnaccompanied}
                         />
+                        <AirportHasArrivalFlightBookedCheckbox />
                       </div>
                     </div>
                   </div>

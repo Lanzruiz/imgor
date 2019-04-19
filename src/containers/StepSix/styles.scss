@@ -335,6 +335,21 @@
             margin-bottom: 10px;
           }
         }
+        .unaccompanied{
+          padding-top: 20px;
+          &__title{
+            font-size: 15px;
+            color: $card-dark-blue-color;
+            text-transform: uppercase;
+            font-family: $proxima-nova;
+          }
+          &__radio-buttons{
+            display: flex;
+            &>div{
+              margin-right: 30px;
+            }
+          }
+        }
       }
     }
   }

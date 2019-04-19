@@ -16,7 +16,7 @@ const UnaccompaniedCheckboxContainer = (props) => {
     { value: 'false', stringKey: 'step_six.no', price: 0 },
   ];
   return (
-    <div className="step-six__radio-container">
+    <div className="step-six__radio-container unaccompanied__radio-buttons">
       <Field
         name={stepSixFormFieldNames.unaccompanied}
         type="radio"
