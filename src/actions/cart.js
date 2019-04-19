@@ -171,7 +171,7 @@ export function sendCartData(props){
         cart: cart,
         price: cart.price_total || 0,
         checkout_ready: !message,
-        message: ReactDOMServer.renderToString(<LocaleString stringKey={message}/>)
+        message: ReactDOMServer.renderToString(message ? <LocaleString stringKey={message}/> : '')
       });
     }
   }
