@@ -85,11 +85,12 @@ class StepOne extends React.Component {
   };
   
   render() {
-    const { sleepaway, age, gender, dataGender, participantId, dataInitialEmail, genderOptions, loading, minAge, maxAge, genders, hasData } = this.props;
+    const { sleepaway, age, gender, dataGender, participantId, dataInitialEmail, genderOptions, loading, minAge, maxAge, genders, hasData, dataBusinessType } = this.props;
   
     const boardingOptions = ['Boarding', 'Non-Boarding'];
     const range = createNumbersArray({ from: minAge, to: maxAge });
     const genderCollapsed = !!dataGender || (genderOptions && genderOptions.length < 2);
+    const shouldRenderAgesAsDropdown = (dataBusinessType || '').toLowerCase().indexOf('adult') !== -1;
   
     return (
       <AOSFadeInContainer className="step-zero" ref={this.stepZero}>
@@ -157,6 +158,7 @@ class StepOne extends React.Component {
                           <AgeRadioBtnContainer
                             age={age}
                             range={range}
+                            isDropdown={shouldRenderAgesAsDropdown}
                           />
                         )}
                       </div>
