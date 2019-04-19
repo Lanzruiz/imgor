@@ -3,7 +3,7 @@ import { Field } from 'redux-form';
 import Radio from '../../../components/Radio';
 import { stepOneFormFieldsName } from '../selectors';
 
-function AgeRadioBtnContainer({ range, age }) {
+function AgeRadioBtnContainer({ range, age, isDropdown }) {
   return (
     <div className="content__age--block">
       <Field
