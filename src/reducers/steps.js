@@ -6,7 +6,7 @@ import { PURGE } from 'redux-persist';
 import * as stepsTypes from '../constants/steps';
 
 const initialState = {
-  currentStep: 0,
+  currentStep: 1,
   maxStepValue: null,
   shouldShowEmailModal: true,
 };

@@ -5,10 +5,13 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Container, Row, Col } from 'react-grid-system';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import { reduxForm, formValueSelector } from 'redux-form';
+import { Field, Form, reduxForm, formValueSelector } from 'redux-form';
 import PropTypes from 'prop-types';
-import scrollToComponent from 'react-scroll-to-component';
 import cx from 'classnames';
+import include from 'lodash/includes';
+import toLower from 'lodash/toLower';
+import isEqual from 'lodash/isEqual';
+import scrollToComponent from 'react-scroll-to-component';
 // Components
 import EmailModal from '../../components/EmailModal';
 import Header from '../../components/Header';
@@ -16,6 +19,8 @@ import TabRow from '../../components/TabRow';
 import GreenBlock from '../../components/GreenBlock';
 import Button from '../../components/Button';
 import LocaleString from '../../components/LocaleString';
+import Radio from '../../components/Radio';
+import Dropdown from '../../components/Dropdown';
 import AOSFadeInContainer from '../../components/AOSFadeInContainer';
 import { gtmStateChange, stateChangeTypes } from '../../helpers/GTMService';
 import TabRowHeader from './components/TabRowHeader';
@@ -26,10 +31,11 @@ import { addParticipantByCardId } from '../../actions/participant';
 import * as stepsActions from '../../actions/steps';
 // Helpers
 import validation from '../../helpers/validate';
+import createNumbersArray from '../../helpers/createNumbersArray';
 import isStringsEqual from '../../helpers/isStringsEqual';
 // Constants
 import { minWeekCount, maxWeekCount } from '../../constants/weeks';
-import { stepOneSecondaryGroupSelector } from './selectors';
+import { stepOneFormFieldsName, stepOneSecondaryGroupSelector } from './selectors';
 // Selectors
 import {
   stepOneGroupSelector, stepOneDataSelector, stepOneTabIndexSelector, weeksCounterSelector,
@@ -48,7 +54,60 @@ class StepOne extends React.Component {
     super(props);
     this.stepOne = React.createRef();
   }
-  
+  static propTypes = {
+    weeksCounter: PropTypes.number,
+    weeksActions: PropTypes.shape({
+      incrementWeeksCounter: PropTypes.func.isRequired,
+      decrementWeeksCounter: PropTypes.func.isRequired,
+      setWeeksCounter: PropTypes.func.isRequired,
+    }),
+    stepOneActions: PropTypes.shape({
+      getCatalogCampsGroup: PropTypes.func.isRequired,
+      selectGroup: PropTypes.func.isRequired,
+      setTabIndex: PropTypes.func.isRequired,
+      stepOneSetPrice: PropTypes.func.isRequired,
+    }),
+    participantActions: PropTypes.shape({
+      addParticipantByCardId: PropTypes.func.isRequired,
+      setRefundablePropsForCart: PropTypes.func,
+    }),
+    participantId: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+    stepsActions: PropTypes.shape({
+      setStepsCounter: PropTypes.func.isRequired,
+    }),
+    data: PropTypes.arrayOf(
+      PropTypes.shape({
+        age_range: PropTypes.string,
+        business_type: PropTypes.string,
+        capacity_available: PropTypes.number,
+        name: PropTypes.string,
+        options: PropTypes.oneOfType([
+          PropTypes.bool,
+          PropTypes.arrayOf(
+            PropTypes.shape({
+              capacity_available: PropTypes.number,
+              name: PropTypes.string,
+              sold_out: PropTypes.bool,
+            }),
+          ),
+        ]),
+        sold_out: PropTypes.bool,
+        start_price: PropTypes.number,
+      }),
+    ),
+    tabIndex: PropTypes.number,
+    group: PropTypes.string,
+    sleepaway: PropTypes.string,
+    age: PropTypes.string,
+    gender: PropTypes.string,
+    weeksLengthNumber: PropTypes.number,
+    dataInitialEmail: PropTypes.string,
+    dataGender: PropTypes.string,
+  };
+
   static defaultProps = {
     weeksCounter: 0,
     shouldShowEmailModal: true,
@@ -57,66 +116,56 @@ class StepOne extends React.Component {
     tabIndex: 0,
     weeksLengthNumber: 0,
   };
-  
+
   componentDidMount() {
-    const { sport, gender, group, businessType, secondaryGroup, age, sleepaway} = this.props;
+    const { sport, dataGender, dataGroup, dataBusinessType, dataSecondaryGroup } = this.props;
     const args = {
       sport,
-      businessType,
-      boarding: sleepaway,
-      age,
-      gender,
-      group,
-      secondaryGroup,
+      gender: dataGender,
+      group: dataGroup,
+      businessType: dataBusinessType,
+      secondaryGroup: dataSecondaryGroup,
     };
-  
+    
     this.getCatalogCampsGroup(args);
     this.scrollToCurrentComponent();
   }
-  
   scrollToCurrentComponent = () => {
     scrollToComponent(this.stepOne.current, { offset: -200, align: 'middle', duration: 1000 });
-  };
-  
+  }
+
   componentDidUpdate(prevProps) {
-    const { sport, gender, group, businessType, secondaryGroup, age, sleepaway} = this.props;
+    const { sport, dataGender, dataGroup, dataBusinessType, dataSecondaryGroup } = this.props;
     const isSportChanged = !isStringsEqual(sport, prevProps.sport);
-    const isAgeChanged = !isStringsEqual(age, prevProps.age);
-    const isSleepawayChanged = !isStringsEqual(sleepaway, prevProps.sleepaway);
-    const isGenderChanged = !isStringsEqual(gender, prevProps.gender);
-    
-    if(isSportChanged || isAgeChanged || isSleepawayChanged || isGenderChanged) {
+    if (isSportChanged) {
       const args = {
         sport,
-        businessType,
-        boarding: sleepaway,
-        age,
-        gender,
-        group,
-        secondaryGroup,
+        gender: dataGender,
+        group: dataGroup,
+        businessType: dataBusinessType,
+        secondaryGroup: dataSecondaryGroup,
       };
-      
       this.getCatalogCampsGroup(args);
     }
   }
   
   getCatalogCampsGroup = (args) => {
-    for(let key in args) {
-      if(!args[ key ]) {
-        delete args[ key ];
+    for (let key in args) {
+      if (!args[key]) {
+        delete args[key];
       }
     }
-    if(args.sport) {
+    if (args.sport) {
       this.props.stepOneActions.getCatalogCampsGroup(args);
     }
   };
   
   closeEmailModal = () => {
     const { cartId, email } = this.props;
-    if(cartId && email) {
+    if (cartId && email) {
       this.props.participantActions.addParticipantByCardId({ cartId, email });
       
-      if(window.reactAppStart && typeof window.reactAppStart === 'function') {
+      if(window.reactAppStart && typeof window.reactAppStart === 'function'){
         window.reactAppStart({ cartId, email });
       }
       
@@ -150,13 +199,15 @@ class StepOne extends React.Component {
     this.props.stepOneActions.stepOneSetPrice(price);
   };
   
-  renderTabPanel = ({ id = '', colName = "" }) => {
+  renderTabPanel = ({ range = [], boardingOptions = [], genderOptions = [], id = '', colName = ""}) => {
+    const { sleepaway, age, gender, dataGender } = this.props;
+    
     const parsedColName = (colName || '')
     .toLowerCase()
     .replace(/,/g, '')
     .replace(/\s/g, '_');
     
-    const html = ReactDOMServer.renderToString(<LocaleString stringKey={`step_one.${id}.${parsedColName}.text`}/>);
+    const html = ReactDOMServer.renderToString(<LocaleString stringKey={`step_one.${id}.${parsedColName}.text`} />);
     
     const transformHtml = html.replace(/(&lt;)|(&quot;)|(&gt;)/ig, (intercept, fix1, fix2, fix3) => {
       if(intercept === fix1) {
@@ -171,22 +222,73 @@ class StepOne extends React.Component {
       return null;
     });
     
+    const genderCollapsed = !!dataGender || (genderOptions && genderOptions.length < 2);
+    
     return (
       <div className="tab-content__container tab-row__container content">
         <div className="content__first-col">
           <H2>
-            <LocaleString stringKey={`step_one.${id}.${parsedColName}.title`}/>
+            <LocaleString stringKey={`step_one.${id}.${parsedColName}.title`} />
           </H2>
-          <div dangerouslySetInnerHTML={{ __html: transformHtml }}/>
+          <div dangerouslySetInnerHTML={{__html: transformHtml}} />
+        </div>
+        <div className="content__second-col">
+          <Form onSubmit={this.props.handleSubmit(() => {})}>
+            <div className="content__form-control">
+              <H3>
+                <LocaleString stringKey="step_one.choose_sleepaway" />
+              </H3>
+              <SleepawayRadioBtn
+                options={[{ value: 'Boarding', stringKey: 'yes' },{ value: 'Non-Boarding', stringKey: 'no' }]}
+                sleepaway={sleepaway}
+                possibleValues={boardingOptions}
+                handleChange={() => { this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_BOARDING); }}
+              />
+            </div>
+            <div className="content__form-control">
+              <H3>
+                <LocaleString stringKey="step_one.select_camper_age" />
+              </H3>
+              {(range.length <= 15)
+                ? (
+                  <AgeRadioBtnContainer
+                    age={age}
+                    range={range}
+                  />
+                )
+                : (
+                  <Field
+                    name={stepOneFormFieldsName.age}
+                    component={args => <StepOneAgeDropdown {...args} range={range} />}
+                  />
+                )
+              }
+            </div>
+            <div className="content__form-control" style={{
+              visibility: genderCollapsed ? 'collapse': '',
+              display: genderCollapsed ? 'none': ''
+            }}
+            >
+              <H3>
+                <LocaleString stringKey="step_one.gender" />
+              </H3>
+              <GenderRadioBtnContainer
+                options={['Male', 'Female']}
+                value={gender}
+                possibleValues={genderOptions}
+                hasPredefinedValue={!!dataGender}
+              />
+            </div>
+          </Form>
         </div>
       </div>
     );
   };
-  
+ 
   render() {
     const { weeksCounter, participantId, data, tabIndex, group, dataInitialEmail } = this.props;
     
-    const parsedData = data.map(v => ({ ...v, id: (v.name || '').toLowerCase().replace(/\s/g, '_') }));
+    const parsedData = data.map(v => ({...v, id: (v.name || '').toLowerCase().replace(/\s/g, '_')}));
     
     return (
       <AOSFadeInContainer className="step-one" ref={this.stepOne}>
@@ -210,14 +312,17 @@ class StepOne extends React.Component {
             const selectedIndex = (
               isStringsEqual(row.name, group)
                 ? isStringsEqual(row.name, weekly_camp)
-                ? (weeksCounter > 0)
-                  ? tabIndex
-                  : 0
-                : tabIndex
+                  ? (weeksCounter > 0)
+                    ? tabIndex
+                    : 0
+                  : tabIndex
                 : 0
             );
+            
             const customTabName = ReactDOMServer.renderToString(<LocaleString stringKey={`step_one.${row.id}.tab_title`}/>);
+            
             const parseName = (name) => name.toLowerCase().replace(/,/g, '').replace(/\s/g, '_');
+            
             const weeklyCamp = ReactDOMServer.renderToString(<LocaleString stringKey={`step_one.${row.id}.${parseName(weekly_camp)}.tab`}/>);
             
             return (
@@ -229,29 +334,28 @@ class StepOne extends React.Component {
                   onSelect={this.setTabIndex}
                 >
                   <TabRow transparent>
-                    <TabRowSection className="mb-hidden"/>
+                    <TabRowSection className="mb-hidden" />
                     
                     {isStringsEqual(row.name, weekly_camp) && weeklyCamp && (
-                      <TabRowSection tabIndex={tabIndex} index={1} style={{ width: '75%' }}>
+                      <TabRowSection tabIndex={tabIndex} index={1} style={{width: '75%'}}>
                         <GreenBlock className="tab-row__green-block">
-                          <TabRowHeaderGreenBlock localeKey={`step_one.${row.id}.${parseName(weekly_camp)}.tab`}/>
+                          <TabRowHeaderGreenBlock localeKey={`step_one.${row.id}.${parseName(weekly_camp)}.tab`} />
                         </GreenBlock>
                       </TabRowSection>
                     )}
                     
                     {row.options && (row.options.map((option, idx) => {
-                      const tabGreenBox = ReactDOMServer.renderToString(<LocaleString
-                        stringKey={`step_one.${row.id}.${parseName(option.name)}.tab`}/>);
+                      const tabGreenBox = ReactDOMServer.renderToString(<LocaleString stringKey={`step_one.${row.id}.${parseName(option.name)}.tab`}/>);
                       
                       return tabGreenBox ? (
                         <TabRowSection key={idx} tabIndex={tabIndex} index={idx}>
-                          <GreenBlock className="tab-row__green-block">
-                            <TabRowHeaderGreenBlock localeKey={`step_one.${row.id}.${parseName(option.name)}.tab`}/>
+                          <GreenBlock  className="tab-row__green-block">
+                            <TabRowHeaderGreenBlock localeKey={`step_one.${row.id}.${parseName(option.name)}.tab`} />
                           </GreenBlock>
                         </TabRowSection>
-                      ) : <TabRowSection key={idx} className="mb-hidden"/>;
+                      ) : <TabRowSection key={idx}  className="mb-hidden" />
                     }))}
-                  
+                    
                   </TabRow>
                   
                   <TabRow className={cx('tab-row__container align-initial', {
@@ -266,7 +370,7 @@ class StepOne extends React.Component {
                           this.setPrice(0);
                         }}
                       >
-                        <TabRowHeader>
+                        <TabRowHeader >
                           <Fragment>
                             <div className="tab-row__header--title">
                               {customTabName || row.name}
@@ -280,11 +384,11 @@ class StepOne extends React.Component {
                       {
                         isStringsEqual(row.name, weekly_camp)
                           ? (
-                            <React.Fragment>
-                              
-                              <Tab
-                                onClick={() => this.selectGroup({ group: row.name, secondary_group: null })}
-                                className={cx(`
+                          <React.Fragment>
+                           
+                            <Tab
+                              onClick={() => this.selectGroup({ group: row.name, secondary_group: null })}
+                              className={cx(`
                                 tab-row__section
                                 tab-row__section--bg-white
                                 tab-row__section--center
@@ -293,64 +397,61 @@ class StepOne extends React.Component {
                                 react-d-flex--mb-column
                                 react-align-center
                                 react-justify-evenly`
-                                )}
-                              >
-                                <div
-                                  className="react-d-flex react-align-center react-justify-end w-35 tab-row__header--font-18 tab-row__header--trade-gothic-bold">
-                                  <Button
-                                    onClick={() => {
-                                      this.setWeeksCounter(minWeekCount);
-                                      this.setPrice(row.price);
-                                    }}
-                                  >
+                              )}
+                            >
+                              <div className="react-d-flex react-align-center react-justify-end w-35 tab-row__header--font-18 tab-row__header--trade-gothic-bold">
+                                <Button
+                                  onClick={() => {
+                                    this.setWeeksCounter(minWeekCount);
+                                    this.setPrice(row.price);
+                                  }}
+                                >
                                   <span className="tab-row__header">
-                                    {minWeekCount} <LocaleString stringKey="week"/>
+                                    {minWeekCount} <LocaleString stringKey="week" />
                                   </span>
-                                  </Button>
-                                  <span className="tab-row__separator" style={{ marginLeft: '20px' }}/>
-                                </div>
-                                <div
-                                  className="react-d-flex react-align-center react-justify-center tab-row__header--trade-gothic-bold">
-                                  <Button
-                                    className="tab-row__header tab-row__header--font-80 minus"
-                                    onClick={() => {
-                                      this.decrementWeeksCounter();
-                                      this.setPrice(row.price);
-                                    }}
-                                    children="-"
-                                  />
-                                  <span className="tab-row__header tab-row__header--font-100">
+                                </Button>
+                                <span className="tab-row__separator" style={{ marginLeft: '20px' }} />
+                              </div>
+                              <div className="react-d-flex react-align-center react-justify-center tab-row__header--trade-gothic-bold">
+                                <Button
+                                  className="tab-row__header tab-row__header--font-80 minus"
+                                  onClick={() => {
+                                    this.decrementWeeksCounter();
+                                    this.setPrice(row.price);
+                                  }}
+                                  children="-"
+                                />
+                                <span className="tab-row__header tab-row__header--font-100">
                                   {weeksCounter}
                                 </span>
-                                  <Button
-                                    className="tab-row__header tab-row__header--font-50 plus"
-                                    onClick={() => {
-                                      this.incrementWeeksCounter();
-                                      this.setPrice(row.price);
-                                    }}
-                                    children="+"
-                                  />
-                                </div>
-                                <div
-                                  className="react-d-flex react-align-center react-justify-start react-w-35 tab-row__header--font-18 tab-row__header--trade-gothic-bold">
-                                  <span className="tab-row__separator" style={{ marginRight: '20px' }}/>
-                                  <Button
-                                    buttonClassName="react-d-flex react-f-direction-column"
-                                    onClick={() => {
-                                      this.setWeeksCounter(maxWeekCount);
-                                      this.setPrice(row.price);
-                                    }}
-                                  >
+                                <Button
+                                  className="tab-row__header tab-row__header--font-50 plus"
+                                  onClick={() => {
+                                    this.incrementWeeksCounter();
+                                    this.setPrice(row.price);
+                                  }}
+                                  children="+"
+                                />
+                              </div>
+                              <div className="react-d-flex react-align-center react-justify-start react-w-35 tab-row__header--font-18 tab-row__header--trade-gothic-bold">
+                                <span className="tab-row__separator" style={{ marginRight: '20px' }} />
+                                <Button
+                                  buttonClassName="react-d-flex react-f-direction-column"
+                                  onClick={() => {
+                                    this.setWeeksCounter(maxWeekCount);
+                                    this.setPrice(row.price);
+                                  }}
+                                >
                                   <span className="tab-row__header">
-                                    <LocaleString stringKey="up_to"/>
+                                    <LocaleString stringKey="up_to" />
                                   </span>
-                                    <span className="tab-row__header">
-                                    {maxWeekCount} <LocaleString stringKey="week"/>
+                                  <span className="tab-row__header">
+                                    {maxWeekCount} <LocaleString stringKey="week" />
                                   </span>
-                                  </Button>
-                                </div>
-                              </Tab>
-                            </React.Fragment>
+                                </Button>
+                              </div>
+                            </Tab>
+                          </React.Fragment>
                           ) : (
                             <React.Fragment>
                               {row.options && (
@@ -375,6 +476,8 @@ class StepOne extends React.Component {
                                         tab-row__hover`
                                       )}
                                     >
+                                     
+  
                                       <div className={cx('tab-row__wrapper', {
                                         'tab-row__container--disabled': ((tabIndex > 0) && ((idx + 1 !== tabIndex) && !isStringsEqual(group, row.name))) || option.sold_out,
                                         'sold-out-block': option.sold_out,
@@ -386,7 +489,7 @@ class StepOne extends React.Component {
                                           {option.name}
                                         </span>
                                         <span className="sold-out-text">
-                                          {option.sold_out && <LocaleString stringKey="sold_out"/>}
+                                          {option.sold_out && <LocaleString stringKey="sold_out" />}
                                         </span>
                                       </div>
                                     </Tab>
@@ -399,23 +502,38 @@ class StepOne extends React.Component {
                     </TabList>
                   </TabRow>
                   <React.Fragment>
-                    <TabPanel/>
+                    <TabPanel />
                     {
                       isStringsEqual(row.name, weekly_camp) && row.options.length === 0
                         ? (
-                          <TabPanel>
-                            {this.renderTabPanel({ id: row.id, colName: weekly_camp })}
-                          </TabPanel>
+                            <TabPanel>
+                              {this.renderTabPanel({
+                                range: createNumbersArray({ from: 8, to: 18 }),
+                                boardingOptions: ['Boarding', 'Non-Boarding'],
+                                genderOptions: ['Male', 'Female'],
+                                id: row.id,
+                                colName: weekly_camp
+                              })}
+                            </TabPanel>
                         ) : (
-                          row.options.map((option, idx) => {
-                            return (
-                              <TabPanel key={idx}>
-                                {this.renderTabPanel({
-                                  id: row.id, colName: option.name
-                                })}
-                              </TabPanel>
-                            );
-                          })
+                          row.options && (
+                            row.options.map((option, idx) => {
+                              const { age_from, age_to, boarding_options, gender_options } = option;
+                              const range = createNumbersArray({ from: age_from, to: age_to });
+
+                              return (
+                                <TabPanel key={idx}>
+                                  {this.renderTabPanel({
+                                    range,
+                                    boardingOptions: boarding_options,
+                                    genderOptions: gender_options,
+                                    id: row.id,
+                                    colName: option.name
+                                  })}
+                                </TabPanel>
+                              );
+                            })
+                          )
                         )
                     }
                   </React.Fragment>
@@ -454,62 +572,135 @@ function H2({ children }) {
   );
 }
 
+function H3({ children }) {
+  return (
+    <h3 className="content__header content__header--h3">
+      {children}
+    </h3>
+  );
+}
+
+function SleepawayRadioBtn({ options, sleepaway, possibleValues, handleChange }) {
+  return (
+    <Field
+      className="content__radio-btn"
+      name={stepOneFormFieldsName.sleepaway}
+      type="radio"
+      options={options}
+      component={({ input, options }) => (
+        options.map(({ value, stringKey }) => {
+          const isDisabled = !include(possibleValues, value);
+          const radioBtnClassNames = cx('content__sleepaway-label react-mb-10', {
+            'content__sleepaway-label--disabled': isDisabled,
+          });
+          return (
+            <div key={value} className={radioBtnClassNames}>
+              <Radio
+                {...input}
+                className="content__radio-btn--font-16"
+                value={value}
+                checked={isEqual(sleepaway, value)}
+                disabled={isDisabled}
+                handleChange={handleChange}
+              >
+                <LocaleString stringKey={`step_one.sleepaway_${stringKey}`} />{' '}
+                {isDisabled && (
+                  <span className="content__radio-btn--sold-out">
+                    <LocaleString stringKey="sold-out" />
+                  </span>
+                )}
+              </Radio>
+            </div>
+          );
+      }))}
+    />
+  );
+}
+
+function AgeRadioBtnContainer ({ range, age }) {
+  return (
+    <div className="content__age--block">
+      <Field
+        name={stepOneFormFieldsName.age}
+        type="radio"
+        options={range}
+        component={({ input, options }) => {
+          return (
+            options.map((value) => (
+              <div key={value} className="content__age react-text-left react-mb-10">
+                <Radio
+                  {...input}
+                  className="content__radio-btn--font-16"
+                  checked={`${age}` === `${value}`}
+                  children={value}
+                  value={value}
+                />
+              </div>
+            ))
+          );
+        }}
+      />
+    </div>
+  );
+}
+
+function GenderRadioBtnContainer ({ options, value, possibleValues }) {
+  const defaultPossibleValues = ['Male', 'Female'];
+  const computedPossibleValues = include(possibleValues, 'All') ? defaultPossibleValues : possibleValues;
+  
+  return (
+    <div className="content__radio-container">
+      <Field
+        className="content__radio-btn"
+        name={stepOneFormFieldsName.gender}
+        type="radio"
+        options={options}
+        component={({ input, options }) => (
+          options.map((gender) => {
+            const lowerCaseOptionValue = toLower(gender);
+            const isDisabled = !include(computedPossibleValues.map(toLower), lowerCaseOptionValue);
+            const radioBtnClassNames = cx('content__label', { 'content__label--disabled': isDisabled });
+            
+            return (
+              <div key={lowerCaseOptionValue} className={radioBtnClassNames}>
+                <Radio
+                  {...input}
+                  className="content__radio-btn--font-16"
+                  value={lowerCaseOptionValue}
+                  checked={isEqual(lowerCaseOptionValue, toLower(value))}
+                  disabled={isDisabled}
+                >
+                  <LocaleString stringKey={lowerCaseOptionValue}/>
+                  {isDisabled && (
+                    <span className="content__radio-btn--sold-out">
+                      <LocaleString stringKey="sold-out"/>
+                    </span>
+                  )}
+                </Radio>
+              </div>
+            );
+          })
+        )}
+      />
+    </div>
+  );
+}
+
 const selector = formValueSelector('wizard');
 
-StepOne.propTypes = {
-  weeksCounter: PropTypes.number,
-  weeksActions: PropTypes.shape({
-    incrementWeeksCounter: PropTypes.func.isRequired,
-    decrementWeeksCounter: PropTypes.func.isRequired,
-    setWeeksCounter: PropTypes.func.isRequired,
-  }),
-  stepOneActions: PropTypes.shape({
-    getCatalogCampsGroup: PropTypes.func.isRequired,
-    selectGroup: PropTypes.func.isRequired,
-    setTabIndex: PropTypes.func.isRequired,
-    stepOneSetPrice: PropTypes.func.isRequired,
-  }),
-  participantActions: PropTypes.shape({
-    addParticipantByCardId: PropTypes.func.isRequired,
-    setRefundablePropsForCart: PropTypes.func,
-  }),
-  participantId: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
-  stepsActions: PropTypes.shape({
-    setStepsCounter: PropTypes.func.isRequired,
-  }),
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      age_range: PropTypes.string,
-      business_type: PropTypes.string,
-      capacity_available: PropTypes.number,
-      name: PropTypes.string,
-      options: PropTypes.oneOfType([
-        PropTypes.bool,
-        PropTypes.arrayOf(
-          PropTypes.shape({
-            capacity_available: PropTypes.number,
-            name: PropTypes.string,
-            sold_out: PropTypes.bool,
-          }),
-        ),
-      ]),
-      sold_out: PropTypes.bool,
-      start_price: PropTypes.number,
-    }),
-  ),
-  tabIndex: PropTypes.number,
-  group: PropTypes.string,
-  sleepaway: PropTypes.string,
-  age: PropTypes.string,
-  gender: PropTypes.string,
-  weeksLengthNumber: PropTypes.number,
-  dataInitialEmail: PropTypes.string,
-  dataGender: PropTypes.string,
-};
-
+function StepOneAgeDropdown(args) {
+  const { range, input } = args;
+  const { value, onChange } = input;
+  return (
+    <div className="step-one__dropdown-age">
+      <Dropdown
+        options={range.map(number => ({ id: '' + number, display_name: '' + number, name: '' + number }))}
+        handleChange={onChange}
+        selectedOption={value || <LocaleString stringKey="select_camper_age" />}
+      />
+    </div>
+  );
+}
 
 function mapStateToProps(state) {
   return {
