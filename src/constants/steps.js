@@ -4,7 +4,6 @@ export const CLOSE_EMAIL_MODAL = 'CLOSE_EMAIL_MODAL';
 export const SET_STEPS_COUNTER = 'SET_STEPS_COUNTER';
 
 export const stepsEnum = {
-  zero: 0,
   one: 1,
   two: 2,
   three: 3,
@@ -12,7 +11,6 @@ export const stepsEnum = {
   five: 5,
   six: 6,
   seven: 7,
-  '0': 'zero',
   '1': 'one',
   '2': 'two',
   '3': 'three',

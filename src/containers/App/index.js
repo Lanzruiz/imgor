@@ -15,7 +15,6 @@ import AOS from 'aos';
 import ReactLocalization from '../../providers/ReactLocalization';
 // Components
 import WizardForm from '../WizardForm';
-import StepZero from '../StepZero';
 import StepOne from '../StepOne';
 import StepTwo from '../StepTwo';
 import StepThree from '../StepThree';
@@ -65,14 +64,14 @@ class App extends React.Component {
     packageType: '',
     businessType: '',
   };
-  
+
   constructor(props) {
     super(props);
     // To add more steps just add component into this array
     const isBusinessTypeForAdult = (props.dataBusinessType || '').toLowerCase() === 'Adult Program'.toLowerCase();
 
     this.wizardFormChildren = [
-      <StepZero
+      <StepOne
         key="0"
         dataGroup={props.dataGroup}
         dataSecondaryGroup={props.dataSecondaryGroup}
@@ -80,26 +79,18 @@ class App extends React.Component {
         dataBusinessType={props.dataBusinessType}
         dataInitialEmail={(props.dataInitial || {}).email}
       />,
-      <StepOne
-        key="1"
-        dataGroup={props.dataGroup}
-        dataSecondaryGroup={props.dataSecondaryGroup}
-        dataGender={props.dataGender}
-        dataBusinessType={props.dataBusinessType}
-        dataInitialEmail={(props.dataInitial || {}).email}
-      />,
-      <StepTwo key="2" />,
+      <StepTwo key="1" />,
       <StepThree
-        key="3"
+        key="2"
       />,
       <StepFour
-        key="4"
+        key="3"
         programType="Concentration"
       />,
-      <StepFive key="5" />,
-      <StepSix key="6" />,
+      <StepFive key="4" />,
+      <StepSix key="5" />,
       <StepFinal
-        key="7"
+        key="6"
         isBusinessTypeForAdult={isBusinessTypeForAdult}
       />,
     ];
