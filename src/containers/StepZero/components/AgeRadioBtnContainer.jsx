@@ -6,6 +6,14 @@ import Radio from '../../../components/Radio';
 import { stepOneFormFieldsName } from '../selectors';
 
 function AgeRadioBtnContainer({ range, age, isDropdown }) {
+  if(isDropdown){
+    return (
+      <Field
+        name={stepOneFormFieldsName.age}
+        component={args => <AgeDropdown {...args} range={range} />}
+      />
+    )
+  }
   
   return (
     <div className="content__age--block">
@@ -38,7 +46,7 @@ function AgeDropdown(args) {
   const { value, onChange } = input;
   
   return (
-    <div className="step-one__dropdown-age">
+    <div className="step-zero__dropdown-age">
       <Dropdown
         options={range.map(number => ({ id: '' + number, display_name: '' + number, name: '' + number }))}
         handleChange={onChange}

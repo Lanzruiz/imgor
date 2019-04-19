@@ -90,7 +90,7 @@ class StepOne extends React.Component {
     const boardingOptions = ['Boarding', 'Non-Boarding'];
     const range = createNumbersArray({ from: minAge, to: maxAge });
     const genderCollapsed = !!dataGender || (genderOptions && genderOptions.length < 2);
-    const shouldRenderAgesAsDropdown = (dataBusinessType || '').toLowerCase().indexOf('Adult') !== -1;
+    const shouldRenderAgesAsDropdown = (dataBusinessType || '').toLowerCase().indexOf('adult') !== -1;
   
     return (
       <AOSFadeInContainer className="step-zero" ref={this.stepZero}>
