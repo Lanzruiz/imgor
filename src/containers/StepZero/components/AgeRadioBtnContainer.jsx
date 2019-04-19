@@ -1,9 +1,12 @@
 import React from 'react';
 import { Field } from 'redux-form';
+import Dropdown from '../../../components/Dropdown';
+import LocaleString from '../../../components/LocaleString';
 import Radio from '../../../components/Radio';
 import { stepOneFormFieldsName } from '../selectors';
 
 function AgeRadioBtnContainer({ range, age, isDropdown }) {
+  
   return (
     <div className="content__age--block">
       <Field
@@ -25,6 +28,21 @@ function AgeRadioBtnContainer({ range, age, isDropdown }) {
             ))
           );
         }}
+      />
+    </div>
+  );
+}
+
+function AgeDropdown(args) {
+  const { range, input } = args;
+  const { value, onChange } = input;
+  
+  return (
+    <div className="step-one__dropdown-age">
+      <Dropdown
+        options={range.map(number => ({ id: '' + number, display_name: '' + number, name: '' + number }))}
+        handleChange={onChange}
+        selectedOption={value || <LocaleString stringKey="select_camper_age" />}
       />
     </div>
   );
