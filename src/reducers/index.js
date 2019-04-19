@@ -8,6 +8,7 @@ import weeks from './weeks';
 import training from './training';
 import cart from './cart';
 import stepOne from './step.one';
+import stepZero from './step.zero';
 import participant from './participant';
 import stepFive from './step.five';
 import stepTwo from './step.two';
@@ -23,6 +24,7 @@ export default (history) => combineReducers({
   steps,
   weeks,
   training,
+  stepZero,
   stepOne,
   stepTwo,
   stepThree,
