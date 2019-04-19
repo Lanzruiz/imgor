@@ -147,7 +147,7 @@ class StepTwo extends React.Component {
   }
 
   scrollToCurrentComponent = () => {
-    scrollToComponent(this.stepTwo.current, { offset: -200, align: 'middle', duration: 1000 });
+    //scrollToComponent(this.stepTwo.current, { offset: -200, align: 'middle', duration: 1000 });
   };
 
   render() {

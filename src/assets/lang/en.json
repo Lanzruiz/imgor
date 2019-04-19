@@ -1,7 +1,7 @@
 {
-  "step_zero.header": "Choose camp, age & gender",
-  "step_zero.sub_header": "Choose a basic options",
-  "step_zero.choose_sleepaway": "Choose Sleepaway Camp Option",
+  "step_zero.header": "Choose camper options",
+  "step_zero.sub_header": "",
+  "step_zero.choose_sleepaway": "Select Sleepaway Camp Option",
   "step_zero.sleepaway_yes": "Yes, sleepaway camp with room in an IMG Academy residence hall, including 3 meals per day",
   "step_zero.sleepaway_no": "No, include a daily lunch only & plan on lodging off campus",
   "step_zero.select_camper_age": "select camper age",
