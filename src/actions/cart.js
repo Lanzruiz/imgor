@@ -163,6 +163,10 @@ export function sendCartData(props){
     if(window.reactAppUpdate && typeof window.reactAppUpdate === 'function' ){
       const { form, cart } = getState();
       const email = ((form.wizard || {}).values || {}).email || '';
+      
+      const sleepaway =  ((form.wizard || {}).values || {}).sleepaway || '';
+      const age = ((form.wizard || {}).values || {}).age || '';
+      const gender = ((form.wizard || {}).values || {}).gender || '';
     
       const message = getValidationMessage(props);
   
@@ -170,7 +174,7 @@ export function sendCartData(props){
         email: email,
         cart: cart,
         price: cart.price_total || 0,
-        checkout_ready: !message,
+        checkout_ready: (!message && gender && age && sleepaway),
         message: ReactDOMServer.renderToString(message ? <LocaleString stringKey={message}/> : '')
       });
     }
@@ -181,7 +185,11 @@ function getValidationMessage(props) {
   const { step } = props;
   let stringKey;
   
-  switch(step) {
+  switch(step || 0) {
+    case stepsEnum.zero: {
+      stringKey = stepOneValidation(props);
+      break;
+    }
     case stepsEnum.one: {
       stringKey = stepOneValidation(props);
       break;
