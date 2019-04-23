@@ -10,7 +10,6 @@ import isEqual from 'lodash/isEqual';
 import Button from '../../components/Button';
 // Components
 import Header from '../../components/Header';
-import Card, { CardContent, CardContentRow, CardContentCol, CardContentText } from '../../components/Card';
 import LocaleString from '../../components/LocaleString';
 import Carousel, { CarouselItem } from '../../components/Carousel';
 import DatePickerReduxForm from '../../components/DatePicker';
@@ -183,7 +182,7 @@ class StepSix extends React.Component {
 
   render() {
     const {
-      airlines, airportPickup, transport, unaccompanied, dropoff, departing, transportUnaccompanied, transportationId,
+      airlines, airportPickup, transport, unaccompanied, dropoff, departing, transportUnaccompanied,
       departingTransport, selectedTransportValue, stepFourData, hasArrivalBookedFlight, arrivalFlightNumber,
       arrivalDateTime, airportPickupAirline, airportDepartingAirline, departingFlightNumber, departingDateTime,
       dropoffOtherLocation, departingOtherLocation, hasTransportationCartData, hasDepartingBookedFlight
@@ -278,11 +277,48 @@ class StepSix extends React.Component {
                         <Paragraph>
                           <LocaleString stringKey="step_six.airlines_service" />
                         </Paragraph>
-                        <UnaccompaniedCheckboxContainer
-                          unaccompanied={unaccompanied}
-                          transportUnaccompanied={transportUnaccompanied}
-                        />
-                        <AirportHasArrivalFlightBookedCheckbox />
+                        <div className="unaccompanied__has-unaccompanied">
+                          <UnaccompaniedCheckboxContainer
+                            unaccompanied={unaccompanied}
+                            transportUnaccompanied={transportUnaccompanied}
+                          />
+                        </div>
+                        <div className="unaccompanied__booked-flight">
+                          <AirportHasArrivalFlightBookedCheckbox />
+                        </div>
+                        {hasArrivalBookedFlight && (
+                          <div className="unaccompanied__flight-details">
+                            <div className="flight-details__box">
+                              <div className="unaccompanied__subtitle">
+                                FLIGHT NUMBER
+                              </div>
+                              <ArrivalFlightNumberTextInput />
+                            </div>
+                            <div className="flight-details">
+                              <div className="flight-details__box">
+                                <div className="unaccompanied__subtitle">
+                                  ARRIVAL AIRLINE
+                                </div>
+                                <AirlinesDropdownContainer airlines={airlines} />
+                              </div>
+                              <div className="flight-details__box">
+                                <div className="unaccompanied__subtitle">
+                                  ARRIVAL DATE & TIME
+                                </div>
+                                <DatePickerReduxForm
+                                  isClearable
+                                  name={stepSixFormFieldNames.arrivalDateTime}
+                                  className="step-six__text-input step-six__form-field"
+                                  placeholder="Arrival Date & Time"
+                                  minDate={new Date()}
+                                />
+                              </div>
+                            </div>
+                            <p className="description step-six__paragraph step-six__paragraph--small">
+                              <LocaleString stringKey={'step_six.provide_later_description'} />
+                            </p>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -303,50 +339,62 @@ class StepSix extends React.Component {
                           value={departingTransport}
                         />
                       </div>
+                      <div className="unaccompanied">
+                        <div className="unaccompanied__title">
+                          <LocaleString stringKey="step_six.unaccompanied" />
+                        </div>
+                        <Paragraph>
+                          <LocaleString stringKey="step_six.airlines_service" />
+                        </Paragraph>
+                        <div className="unaccompanied__has-unaccompanied">
+                          <UnaccompaniedCheckboxContainer
+                            unaccompanied={unaccompanied}
+                            transportUnaccompanied={transportUnaccompanied}
+                          />
+                        </div>
+                        <div className="unaccompanied__booked-flight">
+                          <AirportHasDepartingFlightBookedCheckbox />
+                        </div>
+                        {hasDepartingBookedFlight && (
+                          <div className="unaccompanied__flight-details">
+                            <div className="flight-details__box">
+                              <div className="unaccompanied__subtitle">
+                                FLIGHT NUMBER
+                              </div>
+                              <FlightNumberDepartingTextInput />
+                            </div>
+                            
+                            <div className="flight-details">
+                              <div className="flight-details__box">
+                                <div className="unaccompanied__subtitle">
+                                  ARRIVAL AIRLINE
+                                </div>
+                                <AirlinesDepartingDropdownContainer airlines={airlines} />
+                              </div>
+                              <div className="flight-details__box">
+                                <div className="unaccompanied__subtitle">
+                                  ARRIVAL DATE & TIME
+                                </div>
+                                <DatePickerReduxForm
+                                  isClearable
+                                  name={stepSixFormFieldNames.departingDateTime}
+                                  className="step-six__text-input step-six__form-field"
+                                  placeholder="Departing Date & Time"
+                                  minDate={new Date()}
+                                />
+                              </div>
+                            </div>
+                            <p className="description step-six__paragraph step-six__paragraph--small">
+                              <LocaleString stringKey={'step_six.provide_later_description'} />
+                            </p>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 )}
               </Col>
               
-              
-              <Col md={5} lg={4} style={{ paddingRight: 0, paddingLeft: 0, marginBottom: 15, zIndex: 15 }}>
-                <Card
-                  id={0}
-                  className="step-six__transportation-card-container"
-                  cardHeader={<LocaleString stringKey="step_six.travel" />}
-                  color="dark"
-                  header={<LocaleString stringKey="step_six.airport_pickup" />}
-                  label={<LocaleString stringKey="step_five.popular_item" />}
-                  price="99"// TODO: rewrite that!
-                  selectedId={transportationId}
-                  headerSize="extra-small"
-                  priceDescription={<LocaleString stringKey="step_six.starting_at" />}
-                  onClick={this.selectTransportationOption}
-                  onRemove={this.unselectTransportationOption}
-                  customNonSelectedButtonTitle={<LocaleString stringKey="step_six.configure_travel" />}
-                >
-                  <CardContent className="step-six__transportation-card">
-                    <CardContentRow>
-                      <CardContentCol>
-                        <Image
-                          className="card-content__img"
-                          defaultSrc={stubImage}
-                          src="step_six.transport.image_path"
-                        />
-                      </CardContentCol>
-                      <CardContentCol>
-                        {/*<AirportPickupCheckboxContainer*/}
-                        {/*  handleChange={this.handlePickupChange}*/}
-                        {/*  airportPickup={airportPickup}*/}
-                        {/*/>*/}
-                      </CardContentCol>
-                    </CardContentRow>
-                    <CardContentText>
-                    
-                    </CardContentText>
-                  </CardContent>
-                </Card>
-              </Col>
               <Col md={7} lg={8} style={{ padding: 0, marginBottom: '15px', marginTop: '30px' }}>
                 <Carousel render={!!airportPickup}>
                   <CarouselItem>
@@ -392,7 +440,7 @@ class StepSix extends React.Component {
                           {/*<TransportRadioContainer*/}
                           {/*  options={transport}*/}
                           {/*  value={selectedTransportValue}*/}
-                          {/*/>*/}
+                          />
                         </Col>
                         <Col md={12} lg={7} xl={6}>
                           <AirportHasArrivalFlightBookedCheckbox />

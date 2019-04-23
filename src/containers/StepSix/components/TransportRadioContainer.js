@@ -20,7 +20,7 @@ function TransportRadioContainer(props) {
         return (
           <Dropdown
             whiteArrow
-            selectedOption={name || <LocaleString stringKey="step_six.select_airline"/>}
+            selectedOption={name || <LocaleString stringKey="step_six.select_airport"/>}
             options={options}
             handleChange={(id) => {
               const selectedItem = find(options, [ 'id', id ]);

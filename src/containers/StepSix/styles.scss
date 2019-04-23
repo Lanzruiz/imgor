@@ -343,10 +343,52 @@
             text-transform: uppercase;
             font-family: $proxima-nova;
           }
+          &__subtitle{
+            color: $card-blue-color;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+          }
           &__radio-buttons{
             display: flex;
             &>div{
               margin-right: 30px;
+            }
+            label{
+              color: $card-dark-blue-color;
+              font-size: 15px;
+              text-transform: uppercase;
+              cursor: pointer;
+            }
+          }
+          &__flight-details{
+            .flight-details{
+              display: flex;
+              justify-content: space-between;
+              &__box{
+                flex: 1;
+                margin-top: 10px;
+                margin-right: 20px;
+                &:last-child{
+                  margin-right: 0;
+                }
+                .step-six__form-field{
+                  border: 1px solid $card-dark-blue-color;
+                  border-radius: 3px;
+                  max-width: 250px;
+                  height: auto;
+                  input{
+                    padding: 7px 10px 7px 10px;
+                  }
+                  .dropdown__container{
+                    border: none;
+                  }
+                }
+              }
+            }
+            .description{
+              margin-top: 5px;
+              max-width: 80%;
             }
           }
         }

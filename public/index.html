@@ -36,6 +36,12 @@
           window.initReactApp({ email: 'test@test.com' });
         }
 			});
+
+			setTimeout(() => {
+        if(window.initReactApp && typeof window.initReactApp === 'function') {
+          window.initReactApp({ email: 'test@test.com' });
+        }
+			}, 250)
 		</script>
 
 		<!-- data-business_type: [Adult Program, Youth Camp] -->
@@ -45,7 +51,7 @@
 			data-external_init="true"
 			data-rep-email="repemail@pls.com"
       data-sport="golf"
-      data-gender=""
+      data-gender="male"
       data-group=""
       data-secondary_group=""
       data-business_type="Youth Camp"
