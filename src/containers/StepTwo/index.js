@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import moment from 'moment';
-import scrollToComponent from 'react-scroll-to-component';
+//import scrollToComponent from 'react-scroll-to-component';
 import isEqual from 'lodash/isEqual';
 // Components
 import Header from '../../components/Header';
@@ -81,7 +81,7 @@ class StepTwo extends React.Component {
     
     this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_CALENDAR);
 
-    this.scrollToCurrentComponent();
+    //this.scrollToCurrentComponent();
 
   }
 
@@ -146,9 +146,9 @@ class StepTwo extends React.Component {
     this.setDefaultState();
   }
 
-  scrollToCurrentComponent = () => {
-    scrollToComponent(this.stepTwo.current, { offset: -200, align: 'middle', duration: 1000 });
-  };
+  //scrollToCurrentComponent = () => {
+    //scrollToComponent(this.stepTwo.current, { offset: -200, align: 'middle', duration: 1000 });
+  //};
 
   render() {
     const { data, weeksCounter, sport, selectedDate, boarding } = this.props;

@@ -182,6 +182,10 @@ function getValidationMessage(props) {
   let stringKey;
   
   switch(step) {
+    case stepsEnum.zero: {
+      stringKey = stepOneValidation(props);
+      break;
+    }
     case stepsEnum.one: {
       stringKey = stepOneValidation(props);
       break;
