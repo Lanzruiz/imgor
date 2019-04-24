@@ -311,7 +311,7 @@
       }
     }
 
-    .pick-up, .drop-off{
+    .pick-up, .drop-off, .summary{
       padding: 0 20px 20px 20px;
       .content{
         padding-top: 30px;
@@ -321,11 +321,25 @@
           align-items: center;
           color: $card-dark-blue-color;
           font-weight: bold;
-          font-size: 15px;
+          font-size: 16px;
           img{
             width: 25px;
             margin-right: 12px;
           }
+        }
+        .subtitle{
+          color: $card-blue-color;
+          font-weight: bold;
+          margin: 10px 0;
+          text-transform: uppercase;
+        }
+        .label{
+          display: flex;
+          align-items: center;
+          color: $card-dark-blue-color;
+          font-weight: bold;
+          font-size: 14px;
+          text-transform: uppercase;
         }
         .airport{
           padding-top: 20px;
@@ -392,6 +406,34 @@
             }
           }
         }
+      }
+    }
+
+    .summary {
+      padding-bottom: 30px;
+      &__box{
+        margin-top: 20px;
+        padding-left: 10px;
+      }
+      &__item{
+        margin: 10px 0;
+        color: $card-dark-blue-color;
+        font-size: 15px;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+    }
+    .transport-button{
+      background-color: $card-body-bg;
+      font-family: $proxima-nova;
+      margin-top: 0;
+      button{
+        background: $card-blue-color;
+        color: white;
+        line-height: 42px;
+        text-transform: uppercase;
+        font-size: 14px;
+        font-weight: bold;
       }
     }
   }

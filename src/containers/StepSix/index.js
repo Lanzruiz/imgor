@@ -1,4 +1,5 @@
 // Modules
+import find from 'lodash/find';
 import React, { Fragment } from 'react';
 import { Container, Row, Col } from 'react-grid-system';
 import { connect } from 'react-redux';
@@ -209,7 +210,17 @@ class StepSix extends React.Component {
       display_name: `${v.airport} - $${v.price}`,
       name: v.package_product_id,
     }));
-
+    
+    const shouldDisplayArrival = airportPickupArrivalAndDeparting || airportPickupArrivalOnly;
+    const shouldDisplayDeparture = airportPickupArrivalAndDeparting || airportPickupDepartingOnly;
+  
+    const arrivalData = [selectedTransportValue, airportPickupAirline, arrivalDateTime, arrivalFlightNumber];
+    const departureData = [departingTransport, airportDepartingAirline, departingDateTime, departingFlightNumber];
+    
+    const dataToCheck = [...(shouldDisplayArrival ? arrivalData : []), ...(shouldDisplayDeparture ? departureData : [])];
+    
+    const shouldDisplaySummary = airportPickup && dataToCheck.filter(v => !v).length === 0;
+    
     return (
       <AOSFadeInContainer className="step-six" ref={this.stepSix}>
         <Container style={{ marginBottom: '65px' }}>
@@ -253,7 +264,7 @@ class StepSix extends React.Component {
                   </div>
                 </div>
   
-                {(airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && (
+                {shouldDisplayArrival && (
                   <div className="section pick-up">
                     <div className="content">
                       <div className="title">
@@ -324,7 +335,7 @@ class StepSix extends React.Component {
                   </div>
                 )}
   
-                {(airportPickupArrivalAndDeparting || airportPickupDepartingOnly) && (
+                {shouldDisplayDeparture && (
                   <div className="section drop-off">
                     <div className="content">
                       <div className="title">
@@ -392,6 +403,62 @@ class StepSix extends React.Component {
                       </div>
                     </div>
                   </div>
+                )}
+                
+                {shouldDisplaySummary && (
+                  <div className="section summary">
+                    <div className="content">
+                      <div className="title">
+                        SUMMARY OF TRAVEL ARRANGEMENTS
+                      </div>
+                      {(airportPickupArrivalAndDeparting || airportPickupArrivalOnly) && (
+                        <div className="summary__box">
+                          <div className="subtitle">
+                            ARRIVAL
+                          </div>
+                          <div className="label">ARRIVAL AIRPORT: </div>
+                          <div className="summary__item">
+                            { (find(parsedTransport, [ 'name', selectedTransportValue ]) || {}).display_name  }
+                          </div>
+                          <div className="label">ARRIVAL AIRLINE: </div>
+                          <div className="summary__item">{ airportPickupAirline }</div>
+                          <div className="label">ARRIVAL DATE: </div>
+                          <div className="summary__item">{ arrivalDateTime }</div>
+                          <div className="label">FLIGHT NUMBER: </div>
+                          <div className="summary__item">{ arrivalFlightNumber }</div>
+                          <div className="label">UNACCOMPANIED MINOR:</div>
+                          <div className="summary__item">Yes</div>
+                        </div>
+                      )}
+    
+                      {(airportPickupArrivalAndDeparting || airportPickupDepartingOnly) && (
+                        <div className="summary__box">
+                          <div className="subtitle">
+                            DEPARTING
+                          </div>
+                          <div className="label">DEPARTURE AIRPORT: </div>
+                          <div className="summary__item">
+                            { (find(parsedTransport, [ 'name', departingTransport ]) || {}).display_name }
+                          </div>
+                          <div className="label">DEPARTURE AIRLINE: </div>
+                          <div className="summary__item">{ airportDepartingAirline }</div>
+                          <div className="label">DEPARTURE DATE: </div>
+                          <div className="summary__item">{ departingDateTime }</div>
+                          <div className="label">FLIGHT NUMBER: </div>
+                          <div className="summary__item">{ departingFlightNumber }</div>
+                          <div className="label">UNACCOMPANIED MINOR:</div>
+                          <div className="summary__item">Yes</div>
+                        </div>
+                      )}
+                    </div>
+                    
+                  </div>
+                )}
+                
+                {shouldDisplaySummary && (
+                  <Button className="transport-button" onClick={hasTransportationCartData ? this.unselectTransportationOption : this.addTransportDataToCart}>
+                    { hasTransportationCartData ? 'Remove' : 'Confirm' }
+                  </Button>
                 )}
               </Col>
               
