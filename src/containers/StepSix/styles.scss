@@ -416,11 +416,27 @@
         padding-left: 10px;
       }
       &__item{
+        display: flex;
+        align-items: center;
         margin: 10px 0;
         color: $card-dark-blue-color;
-        font-size: 15px;
+        font-size: 14px;
         text-transform: uppercase;
         cursor: pointer;
+
+        .label{
+          margin-right: 8px;
+        }
+
+        @media screen and (max-width: $mobile){
+          align-items: flex-start;
+          flex-direction: column;
+          .label{
+            margin-right: 0;
+            margin-bottom: 4px;
+          }
+        }
+
       }
     }
     .transport-button{

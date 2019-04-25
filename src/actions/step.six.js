@@ -239,7 +239,7 @@ const stepSixDeleteDepartingProductInTheCart = ({cartId, participantId, productI
 };
 
 
-export function stepSixAddTransportToCart({ cartId, participantId }){
+export function stepSixAddTransportToCart({ cartId, participantId, hasArrivalBookedFlight, hasDepartingBookedFlight }){
   return async (dispatch, getState) => {
     
     const {
@@ -248,13 +248,15 @@ export function stepSixAddTransportToCart({ cartId, participantId }){
       cart: { stepSixUnnacompaniedProductId, stepSixDepartingProductId, stepSixArrivalProductId }
     } = getState();
     
+    console.log(values);
+    
     const cartPayload = {
       airportPickupType: values[stepSixFormFieldNames.airportPickup],  //both, arrival, departing
       unaccompanied: Boolean(values[stepSixFormFieldNames.unaccompanied] || false),
       arrival: {
         transport: Number(values[stepSixFormFieldNames.transport] || 0),
         flight: {
-          booked: values[stepSixFormFieldNames.hasArrivalBookedFlight],
+          booked: hasArrivalBookedFlight,
           airline: values[stepSixFormFieldNames.airportPickupAirline] || null,
           number: values[stepSixFormFieldNames.arrivalFlightNumber] || null,
           date: values[stepSixFormFieldNames.arrivalDateTime] || null,
@@ -265,7 +267,7 @@ export function stepSixAddTransportToCart({ cartId, participantId }){
       departing:{
         transport: Number(values[stepSixFormFieldNames.departingTransport] || 0),
         flight: {
-          booked: values[stepSixFormFieldNames.hasDepartingBookedFlight],
+          booked: hasDepartingBookedFlight,
           airline: values[stepSixFormFieldNames.departingAirline] || null,
           number: values[stepSixFormFieldNames.departingFlightNumber] || null,
           date: values[stepSixFormFieldNames.departingDateTime] || null,
