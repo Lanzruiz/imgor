@@ -163,7 +163,43 @@
   "step_six.flight_number": "Flight Number",
   "step_six.select_airline": "Select Airline",
   "step_six.select_airport": "Select Airport",
-  "step_six.summary": "Summary",
+
+  "step_six.arrival": "ARRIVAL",
+  "step_six.arrival.title": "ARRIVAL INFO",
+  "step_six.arrival.airport": "ARRIVAL AIRPORT",
+  "step_six.arrival.location": "DROPOFF LOCATION",
+  "step_six.arrival.flight_number": "FIGHT NUMBER",
+  "step_six.arrival.airline": "ARRIVAL AIRLINE",
+  "step_six.arrival.date": "ARRIVAL DATE & TIME",
+
+  "step_six.summary.arrival": "ARRIVAL",
+  "step_six.summary.arrival.airport": "ARRIVAL AIRPORT:",
+  "step_six.summary.arrival.location": "DROPOFF LOCATION:",
+  "step_six.summary.arrival.flight_number": "FIGHT NUMBER:",
+  "step_six.summary.arrival.airline": "ARRIVAL AIRLINE:",
+  "step_six.summary.arrival.date": "ARRIVAL DATE:",
+  "step_six.summary.arrival.unaccompanied": "UNACCOMPANIED MINOR:",
+
+
+  "step_six.departure": "DEPARTING",
+  "step_six.departure.title": "DEPARTURE INFO",
+  "step_six.departure.airport": "DEPARTURE AIRPORT",
+  "step_six.departure.location": "PICK UP LOCATION",
+  "step_six.departure.flight_number": "FIGHT NUMBER",
+  "step_six.departure.airline": "DEPARTURE AIRLINE",
+  "step_six.departure.date": "DEPARTURE DATE & TIME",
+
+  "step_six.summary.departure": "DEPARTING",
+  "step_six.summary.departure.airport": "DEPARTURE AIRPORT:",
+  "step_six.summary.departure.location": "PICK UP LOCATION:",
+  "step_six.summary.departure.flight_number": "FIGHT NUMBER:",
+  "step_six.summary.departure.airline": "DEPARTURE AIRLINE:",
+  "step_six.summary.departure.date": "DEPARTURE DATE:",
+  "step_six.summary.departure.unaccompanied": "UNACCOMPANIED MINOR:",
+
+
+  "step_six.summary": "SUMMARY OF TRAVEL ARRANGEMENTS",
+
   "step_four.no-available-training": "no available training for this week",
   "week_1": "Week 1",
   "week_2": "Week 2",

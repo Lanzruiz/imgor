@@ -275,10 +275,12 @@ class StepSix extends React.Component {
                     <div className="content">
                       <div className="title">
                         <img src={planeImg} alt="airplane" />
-                        ARRIVAL INFO
+                        <LocaleString stringKey="step_six.arrival.title" />
                       </div>
                       <div className="airport">
-                        <div className="airport__title">ARRIVAL AIRPORT</div>
+                        <div className="airport__title">
+                          <LocaleString stringKey="step_six.arrival.airport" />
+                        </div>
                         <div className="dropdown">
                           <TransportRadioContainer
                             name={stepSixFormFieldNames.transport}
@@ -288,7 +290,9 @@ class StepSix extends React.Component {
                         </div>
                       </div>
                       <div className="location">
-                        <div className="location__title">DROPOFF LOCATION</div>
+                        <div className="location__title">
+                          <LocaleString stringKey="step_six.arrival.location" />
+                        </div>
                         <DropoffCheckboxContainer dropoff={dropoff} />
                         <DropoffLocationTextField dropoff={dropoff} />
                       </div>
@@ -313,20 +317,20 @@ class StepSix extends React.Component {
                           <div className="unaccompanied__flight-details">
                             <div className="flight-details__box">
                               <div className="unaccompanied__subtitle">
-                                FLIGHT NUMBER
+                                <LocaleString stringKey="step_six.arrival.flight_number" />
                               </div>
                               <ArrivalFlightNumberTextInput />
                             </div>
                             <div className="flight-details">
                               <div className="flight-details__box">
                                 <div className="unaccompanied__subtitle">
-                                  ARRIVAL AIRLINE
+                                  <LocaleString stringKey="step_six.arrival.airline" />
                                 </div>
                                 <AirlinesDropdownContainer airlines={airlines} />
                               </div>
                               <div className="flight-details__box">
                                 <div className="unaccompanied__subtitle">
-                                  ARRIVAL DATE & TIME
+                                  <LocaleString stringKey="step_six.arrival.date" />
                                 </div>
                                 <DatePickerReduxForm
                                   isClearable
@@ -352,10 +356,12 @@ class StepSix extends React.Component {
                     <div className="content">
                       <div className="title">
                         <img src={planeImg} alt="airplane" />
-                        DEPARTURE INFO
+                        <LocaleString stringKey="step_six.departure.title" />
                       </div>
                       <div className="airport">
-                        <div className="airport__title">DEPARTURE AIRPORT</div>
+                        <div className="airport__title">
+                          <LocaleString stringKey="step_six.departure.airport" />
+                        </div>
                         <TransportRadioContainer
                           name={stepSixFormFieldNames.departingTransport}
                           options={parsedTransport}
@@ -364,7 +370,9 @@ class StepSix extends React.Component {
                       </div>
                       
                       <div className="location">
-                        <div className="location__title">PICK UP LOCATION</div>
+                        <div className="location__title">
+                          <LocaleString stringKey="step_six.departure.location" />
+                        </div>
                         <DepartingCheckboxContainer departing={departing} />
                         <PickUpLocationTextField departing={departing} />
                       </div>
@@ -391,7 +399,7 @@ class StepSix extends React.Component {
                           <div className="unaccompanied__flight-details">
                             <div className="flight-details__box">
                               <div className="unaccompanied__subtitle">
-                                FLIGHT NUMBER
+                                <LocaleString stringKey="step_six.departure.flight_number" />
                               </div>
                               <FlightNumberDepartingTextInput />
                             </div>
@@ -399,13 +407,13 @@ class StepSix extends React.Component {
                             <div className="flight-details">
                               <div className="flight-details__box">
                                 <div className="unaccompanied__subtitle">
-                                  ARRIVAL AIRLINE
+                                  <LocaleString stringKey="step_six.departure.airline" />
                                 </div>
                                 <AirlinesDepartingDropdownContainer airlines={airlines} />
                               </div>
                               <div className="flight-details__box">
                                 <div className="unaccompanied__subtitle">
-                                  ARRIVAL DATE & TIME
+                                  <LocaleString stringKey="step_six.departure.date" />
                                 </div>
                                 <DatePickerReduxForm
                                   isClearable
@@ -430,39 +438,51 @@ class StepSix extends React.Component {
                   <div className="section summary">
                     <div className="content">
                       <div className="title">
-                        SUMMARY OF TRAVEL ARRANGEMENTS
+                        <LocaleString stringKey="step_six.summary" />
                       </div>
                       {shouldDisplayArrival && (
                         <div className="summary__box">
                           <div className="subtitle">
-                            ARRIVAL
+                            <LocaleString stringKey="step_six.summary.arrival" />
                           </div>
                           <div className="summary__item">
-                            <div className="label">ARRIVAL AIRPORT: </div>
+                            <div className="label">
+                              <LocaleString stringKey="step_six.summary.arrival.airport" />
+                            </div>
                             { (find(parsedTransport, [ 'name', selectedTransportValue ]) || {}).display_name  }
                           </div>
                           <div className="summary__item">
-                            <div className="label">ARRIVAL DROPOFF: </div>
+                            <div className="label">
+                              <LocaleString stringKey="step_six.summary.arrival.location" />
+                            </div>
                             { locations[dropoff] ?  <LocaleString stringKey={locations[dropoff]} /> : dropoff }
                           </div>
                           {hasArrivalBookedFlight && (
                             <Fragment>
                               <div className="summary__item">
-                                <div className="label">ARRIVAL AIRLINE: </div>
+                                <div className="label">
+                                  <LocaleString stringKey="step_six.summary.arrival.airline" />
+                                </div>
                                 { airportPickupAirline }
                               </div>
                               <div className="summary__item">
-                                <div className="label">ARRIVAL DATE: </div>
+                                <div className="label">
+                                  <LocaleString stringKey="step_six.summary.arrival.date" />
+                                </div>
                                 { arrivalDateTime }
                               </div>
                               <div className="summary__item">
-                                <div className="label">FLIGHT NUMBER: </div>
+                                <div className="label">
+                                  <LocaleString stringKey="step_six.summary.arrival.flight_number" />
+                                </div>
                                 { arrivalFlightNumber }
                               </div>
                             </Fragment>
                           )}
                           <div className="summary__item">
-                            <div className="label">UNACCOMPANIED MINOR:</div>
+                            <div className="label">
+                              <LocaleString stringKey="step_six.summary.arrival.unaccompanied" />
+                            </div>
                             {arrivalUnaccompanied === 'true'
                               ? `Yes +$${transportUnaccompanied && transportUnaccompanied.price}`
                               : `No`
@@ -474,34 +494,46 @@ class StepSix extends React.Component {
                       {shouldDisplayDeparture && (
                         <div className="summary__box">
                           <div className="subtitle">
-                            DEPARTING
+                            <LocaleString stringKey="step_six.summary.departure" />
                           </div>
                           <div className="summary__item">
-                            <div className="label">DEPARTURE AIRPORT: </div>
+                            <div className="label">
+                              <LocaleString stringKey="step_six.summary.departure.airport" />
+                            </div>
                             { (find(parsedTransport, [ 'name', departingTransport ]) || {}).display_name }
                           </div>
                           <div className="summary__item">
-                            <div className="label">DEPARTURE PICK UP: </div>
+                            <div className="label">
+                              <LocaleString stringKey="step_six.summary.departure.location" />
+                            </div>
                             { locations[departing] ?  <LocaleString stringKey={locations[departing]} /> : departing }
                           </div>
                           {hasDepartingBookedFlight && (
                             <Fragment>
                               <div className="summary__item">
-                                <div className="label">DEPARTURE AIRLINE: </div>
+                                <div className="label">
+                                  <LocaleString stringKey="step_six.summary.departure.airline" />
+                                </div>
                                 { airportDepartingAirline }
                               </div>
                               <div className="summary__item">
-                                <div className="label">DEPARTURE DATE: </div>
+                                <div className="label">
+                                  <LocaleString stringKey="step_six.summary.departure.date" />
+                                </div>
                                 { departingDateTime }
                               </div>
                               <div className="summary__item">
-                                <div className="label">FLIGHT NUMBER: </div>
+                                <div className="label">
+                                  <LocaleString stringKey="step_six.summary.departure.flight_number" />
+                                </div>
                                 { departingFlightNumber }
                               </div>
                             </Fragment>
                           )}
                           <div className="summary__item">
-                            <div className="label">UNACCOMPANIED MINOR:</div>
+                            <div className="label">
+                              <LocaleString stringKey="step_six.summary.departure.unaccompanied" />
+                            </div>
                             {departureUnaccompanied === 'true'
                               ? `Yes +$${transportUnaccompanied && transportUnaccompanied.price}`
                               : `No`
