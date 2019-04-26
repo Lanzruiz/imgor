@@ -136,7 +136,6 @@ class renderDatePicker extends React.Component {
                   onChange={this.handleChange}
                   onBlur={() => { input.onBlur(); }}
                   timeFormat="HH:mm"
-                  onChangeRaw={this.handleDateChangeRaw}
                   timeIntervals={5}
                   timeCaption="Time"
                   maxDate={this.props.maxDate}
@@ -146,6 +145,7 @@ class renderDatePicker extends React.Component {
                   scrollableYearDropdown={true}
                   yearDropdownItemNumber={50}
                   openToDate={openToDate}
+                  ref={el => this.onDatepickerRef(el)}
                 />
               </div>
             );
@@ -160,9 +160,7 @@ class renderDatePicker extends React.Component {
     this.setState({ selectedDate: date });
     this.props.input.onChange(date);
   }
-  handleDateChangeRaw = (e) => {
-    e.preventDefault();
-  }
+  onDatepickerRef(el) { if (el && el.input) { el.input.readOnly = true; } }
 };
 
 export default DatePickerReduxForm;
