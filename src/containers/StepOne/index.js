@@ -72,7 +72,15 @@ class StepOne extends React.Component {
   
     this.getCatalogCampsGroup(args);
     this.scrollToCurrentComponent();
+    this.sendStepToDrupal();
   }
+
+  sendStepToDrupal = () => {
+    //console.log(1);
+    if(window.reactAppStart && typeof window.reactAppStart === 'function') {
+      window.updateBookingSteps(1);
+    }
+  };
   
   scrollToCurrentComponent = () => {
     scrollToComponent(this.stepOne.current, { offset: -200, align: 'middle', duration: 500 });

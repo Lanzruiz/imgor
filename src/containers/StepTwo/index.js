@@ -82,8 +82,15 @@ class StepTwo extends React.Component {
     this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_CALENDAR);
 
     //this.scrollToCurrentComponent();
-
+    this.sendStepToDrupal();
   }
+
+  sendStepToDrupal = () => {
+    //console.log(1);
+    if(window.reactAppStart && typeof window.reactAppStart === 'function') {
+      window.updateBookingSteps(2);
+    }
+  };
 
   componentDidUpdate(prevProps) {
     const {

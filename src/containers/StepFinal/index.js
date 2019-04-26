@@ -62,7 +62,15 @@ class StepFinal extends React.Component {
     
     this.finalStepGetCatalogPositions({ sport, participant });
     //this.scrollToCurrentComponent();
+    this.sendStepToDrupal();
   }
+
+  sendStepToDrupal = () => {
+    //console.log(1);
+    if(window.reactAppStart && typeof window.reactAppStart === 'function') {
+      window.updateBookingSteps(7);
+    }
+  };
 
   scrollToCurrentComponent = () => {
     scrollToComponent(this, { align: 'top', duration: 500 });
