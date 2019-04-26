@@ -240,6 +240,7 @@ class StepFinal extends React.Component {
                                 inputClassName="step-final__input cursor-pointer"
                                 className="step-final__input"
                                 showTimeSelect={false}
+                                readOnly={false}
                                 isClearable={false}
                                 dateFormat="MM/DD/YYYY"
                                 maxDate={new Date()}
@@ -381,7 +382,7 @@ class StepFinal extends React.Component {
                 </Col>
               </Row>
               )}
-              <Row><div class="end-of-configurator"><p>end of camp builder</p></div></Row>
+              <Row><div className="end-of-configurator"><p>end of camp builder</p></div></Row>
             </Container>
           </AOSFadeInContainer>
         );
