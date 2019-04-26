@@ -18,6 +18,8 @@ import AirportHasArrivalFlightBookedCheckbox from './components/AirportHasArriva
 import AirportHasDepartingFlightBookedCheckbox from './components/AirportHasDepartingFlightBookedCheckbox';
 import AirportPickupCheckboxContainer from './components/AirportPickupCheckboxContainer';
 import ArrivalFlightNumberTextInput from './components/ArrivalFlightNumberTextInput';
+import DropoffCheckboxContainer from './components/DropoffCheckboxContainer';
+import DropoffLocationTextField from './components/DropoffLocationTextField';
 import FlightNumberDepartingTextInput from './components/FlightNumberDepartingTextInput';
 import Paragraph from './components/Paragraph';
 import UnaccompaniedCheckboxContainer from './components/UnaccompaniedCheckboxContainer';
@@ -180,7 +182,7 @@ class StepSix extends React.Component {
 
   render() {
     const {
-      airlines, airportPickup, transport, unaccompanied, transportUnaccompanied,
+      airlines, airportPickup, transport, unaccompanied, dropoff, pickUp, transportUnaccompanied,
       departingTransport, selectedTransportValue, stepFourData, hasArrivalBookedFlight, arrivalFlightNumber,
       arrivalDateTime, airportPickupAirline, airportDepartingAirline, departingFlightNumber, departingDateTime,
       dropoffOtherLocation, departingOtherLocation, hasTransportationCartData, hasDepartingBookedFlight,
@@ -348,6 +350,12 @@ class StepSix extends React.Component {
                           value={departingTransport}
                         />
                       </div>
+                      <div className="location">
+                        <div className="location__title">DROPOFF LOCATION</div>
+                        <DropoffCheckboxContainer dropoff={dropoff} />
+                        <DropoffLocationTextField dropoff={dropoff} />
+                      </div>
+                      
                       <div className="unaccompanied">
                         <div className="unaccompanied__title">
                           <LocaleString stringKey="step_six.unaccompanied" />
