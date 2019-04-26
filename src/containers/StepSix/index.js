@@ -18,10 +18,12 @@ import AirportHasArrivalFlightBookedCheckbox from './components/AirportHasArriva
 import AirportHasDepartingFlightBookedCheckbox from './components/AirportHasDepartingFlightBookedCheckbox';
 import AirportPickupCheckboxContainer from './components/AirportPickupCheckboxContainer';
 import ArrivalFlightNumberTextInput from './components/ArrivalFlightNumberTextInput';
+import DepartingCheckboxContainer from './components/DepartingCheckboxContainer';
 import DropoffCheckboxContainer from './components/DropoffCheckboxContainer';
 import DropoffLocationTextField from './components/DropoffLocationTextField';
 import FlightNumberDepartingTextInput from './components/FlightNumberDepartingTextInput';
 import Paragraph from './components/Paragraph';
+import PickUpLocationTextField from './components/PickUpLocationTextField';
 import UnaccompaniedCheckboxContainer from './components/UnaccompaniedCheckboxContainer';
 import TransportRadioContainer from './components/TransportRadioContainer';
 import AirlinesDepartingDropdownContainer from './components/AirlinesDepartingDropdownContainer';
@@ -61,7 +63,10 @@ import {
   stepSixDropoffOtherLocationSelector,
   stepSixTransportCartData,
   stepSixHasArrivalBookedFlightSelector,
-  stepSixHasDepartingBookedFlightSelector, stepSixArrivalUnaccompaniedSelector, stepSixDepartureUnaccompaniedSelector,
+  stepSixHasDepartingBookedFlightSelector,
+  stepSixArrivalUnaccompaniedSelector,
+  stepSixDepartureUnaccompaniedSelector,
+  departingFormFieldNames,
 } from './selectors';
 import { stepFiveDataPerPageSelector } from '../StepFive/selectors';
 import { sportSelector, businessTypeSelector, packageTypeSelector } from '../InitialComponent/selectors';
@@ -182,12 +187,14 @@ class StepSix extends React.Component {
 
   render() {
     const {
-      airlines, airportPickup, transport, unaccompanied, dropoff, pickUp, transportUnaccompanied,
+      airlines, airportPickup, transport, unaccompanied, dropoff, departing, transportUnaccompanied,
       departingTransport, selectedTransportValue, stepFourData, hasArrivalBookedFlight, arrivalFlightNumber,
       arrivalDateTime, airportPickupAirline, airportDepartingAirline, departingFlightNumber, departingDateTime,
       dropoffOtherLocation, departingOtherLocation, hasTransportationCartData, hasDepartingBookedFlight,
       arrivalUnaccompanied, departureUnaccompanied
     } = this.props;
+    
+    console.log(this.props);
     
     const airportPickupArrivalAndDeparting = isEqual(airportPickup, airportPickupInformation.both);
     const airportPickupArrivalOnly = isEqual(airportPickup, airportPickupInformation.arrival);
@@ -208,17 +215,25 @@ class StepSix extends React.Component {
     const arrivalData = [
       selectedTransportValue,
       arrivalUnaccompanied,
+      dropoff,
       ...(hasArrivalBookedFlight ? [airportPickupAirline, arrivalDateTime, arrivalFlightNumber] : [])
     ];
     const departureData = [
       departingTransport,
       departureUnaccompanied,
+      departing,
       ...(hasDepartingBookedFlight ? [airportDepartingAirline, departingDateTime, departingFlightNumber] : [])
     ];
     
     const dataToCheck = [...(shouldDisplayArrival ? arrivalData : []), ...(shouldDisplayDeparture ? departureData : [])];
     
     const shouldDisplaySummary = airportPickup && dataToCheck.filter(v => !v).length === 0;
+    
+    const locations = {
+      [departingFormFieldNames.imgaCampusCenter]: 'step_six.campus_center',
+      [departingFormFieldNames.imgaClubHouse]: 'step_six.club_house',
+      [departingFormFieldNames.other]: 'step_six.other',
+    };
     
     return (
       <AOSFadeInContainer className="step-six" ref={this.stepSix}>
@@ -279,6 +294,11 @@ class StepSix extends React.Component {
                             value={selectedTransportValue}
                           />
                         </div>
+                      </div>
+                      <div className="location">
+                        <div className="location__title">DROPOFF LOCATION</div>
+                        <DropoffCheckboxContainer dropoff={dropoff} />
+                        <DropoffLocationTextField dropoff={dropoff} />
                       </div>
                       <div className="unaccompanied">
                         <div className="unaccompanied__title">
@@ -350,11 +370,13 @@ class StepSix extends React.Component {
                           value={departingTransport}
                         />
                       </div>
+                      
                       <div className="location">
-                        <div className="location__title">DROPOFF LOCATION</div>
-                        <DropoffCheckboxContainer dropoff={dropoff} />
-                        <DropoffLocationTextField dropoff={dropoff} />
+                        <div className="location__title">PICK UP LOCATION</div>
+                        <DepartingCheckboxContainer departing={departing} />
+                        <PickUpLocationTextField departing={departing} />
                       </div>
+                      
                       
                       <div className="unaccompanied">
                         <div className="unaccompanied__title">
@@ -427,6 +449,10 @@ class StepSix extends React.Component {
                             <div className="label">ARRIVAL AIRPORT: </div>
                             { (find(parsedTransport, [ 'name', selectedTransportValue ]) || {}).display_name  }
                           </div>
+                          <div className="summary__item">
+                            <div className="label">ARRIVAL DROPOFF: </div>
+                            { locations[dropoff] ?  <LocaleString stringKey={locations[dropoff]} /> : dropoff }
+                          </div>
                           {hasArrivalBookedFlight && (
                             <Fragment>
                               <div className="summary__item">
@@ -461,6 +487,10 @@ class StepSix extends React.Component {
                           <div className="summary__item">
                             <div className="label">DEPARTURE AIRPORT: </div>
                             { (find(parsedTransport, [ 'name', departingTransport ]) || {}).display_name }
+                          </div>
+                          <div className="summary__item">
+                            <div className="label">DEPARTURE PICK UP: </div>
+                            { locations[departing] ?  <LocaleString stringKey={locations[departing]} /> : departing }
                           </div>
                           {hasDepartingBookedFlight && (
                             <Fragment>

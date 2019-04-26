@@ -253,6 +253,8 @@ export function stepSixAddTransportToCart({ cartId, participantId, hasArrivalBoo
     const cartPayload = {
       airportPickupType: values[stepSixFormFieldNames.airportPickup],  //both, arrival, departing
       unaccompanied: Boolean(values[stepSixFormFieldNames.unaccompanied] || false),
+      arrivalUnaccompanied: Boolean(values[stepSixFormFieldNames.arrivalUnaccompanied] || false),
+      departureUnaccompanied: Boolean(values[stepSixFormFieldNames.departureUnaccompanied] || false),
       arrival: {
         transport: Number(values[stepSixFormFieldNames.transport] || 0),
         flight: {
@@ -276,6 +278,8 @@ export function stepSixAddTransportToCart({ cartId, participantId, hasArrivalBoo
         }
       },
     };
+    
+    console.log(cartPayload);
   
     const unacommpaniedProductBody = {
       attributes: { type: 'unacompannied' },
@@ -333,13 +337,13 @@ export function stepSixAddTransportToCart({ cartId, participantId, hasArrivalBoo
     if(cartPayload.airportPickupType === 'departing') {
       jobs.push(sendDepartingRequest({ ...params, productId: stepSixDepartingProductId, body: departingProductBody}, dispatch));
     }
-    
-    await Promise.all(jobs);
-    
-    dispatch({
-      type: stepSixTypes.STEP_SIX_ADD_TRANSPORTATION_TO_CART,
-      payload: cartPayload
-    })
+    //
+    // await Promise.all(jobs);
+    //
+    // dispatch({
+    //   type: stepSixTypes.STEP_SIX_ADD_TRANSPORTATION_TO_CART,
+    //   payload: cartPayload
+    // })
   }
 }
 
