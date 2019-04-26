@@ -381,7 +381,7 @@ class StepFinal extends React.Component {
                 </Col>
               </Row>
               )}
-
+              <Row><div class="end-of-configurator"><p>end</p></div></Row>
             </Container>
           </AOSFadeInContainer>
         );
