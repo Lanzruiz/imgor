@@ -85,7 +85,10 @@ class StepOne extends React.Component {
   };
   
   render() {
-    const { sleepaway, age, gender, dataGender, participantId, dataInitialEmail, genderOptions, loading, minAge, maxAge, genders, hasData, dataBusinessType } = this.props;
+    const {
+      sleepaway, age, gender, dataGender, participantId, dataInitialEmail,
+      genderOptions, loading, minAge, maxAge, genders, hasData, dataBusinessType
+    } = this.props;
   
     const boardingOptions = ['Boarding', 'Non-Boarding'];
     const range = createNumbersArray({ from: minAge, to: maxAge });

@@ -75,7 +75,7 @@ class StepOne extends React.Component {
   }
   
   scrollToCurrentComponent = () => {
-    scrollToComponent(this.stepOne.current, { offset: -200, align: 'middle', duration: 1000 });
+    scrollToComponent(this.stepOne.current, { offset: -200, align: 'middle', duration: 500 });
   };
   
   componentDidUpdate(prevProps) {

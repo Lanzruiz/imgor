@@ -28,17 +28,36 @@ class AirportHasArrivalFlightBookedCheckbox extends React.Component {
         type="checkbox"
         component={({ input }) => {
           return (
-            <label className={'step-six__initial-label radio-btn__container radio-btn__container--checkbox'}>
-              <input
-                {...input}
-                className="radio-btn__btn"
-                type="checkbox"
-                checked={input.checked}
-                value={input.value}
-                disabled={!isNumber(transportationId)}
-              />
-              <LocaleString stringKey={'step_six.has_booked_flight'} />
-            </label>
+            <div className="unaccompanied__radio-buttons">
+              <label className={'step-six__initial-label radio-btn__container radio-btn__container--checkbox'}>
+                <input
+                  {...input}
+                  className="radio-btn__btn"
+                  type="checkbox"
+                  checked={input.checked}
+                  value={input.value}
+                  onChange={() => {input.onChange(true); input.onBlur()}}
+                  onBlur={() => {}}
+                  onFocus={() => {}}
+                  disabled={!isNumber(transportationId)}
+                />
+                <LocaleString stringKey={'step_six.enter_flight_info'} />
+              </label>
+              <label className={'step-six__initial-label radio-btn__container radio-btn__container--checkbox'}>
+                <input
+                  {...input}
+                  className="radio-btn__btn"
+                  type="checkbox"
+                  checked={!input.checked}
+                  value={!input.value}
+                  onChange={() => {input.onChange(false); input.onBlur()}}
+                  onFocus={() => {}}
+                  onBlur={() => {}}
+                  disabled={!isNumber(transportationId)}
+                />
+                <LocaleString stringKey={'step_six.provide_later'} />
+              </label>
+            </div>
           );
         }}
       />
