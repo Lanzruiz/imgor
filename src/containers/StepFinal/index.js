@@ -66,8 +66,7 @@ class StepFinal extends React.Component {
   }
 
   sendStepToDrupal = () => {
-    //console.log(1);
-    if(window.reactAppStart && typeof window.reactAppStart === 'function') {
+    if(window.updateBookingSteps) {
       window.updateBookingSteps(7);
     }
   };
