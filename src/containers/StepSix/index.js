@@ -157,14 +157,9 @@ class StepSix extends React.Component {
   };
   
   unselectTransportationOption = () => {
-  
-    const { hasArrivalBookedFlight, hasDepartingBookedFlight } = this.props;
-    
     this.props.stepSixActions.stepSixUnselectTransportationOption({
       cartId: this.props.cartId,
       participantId: this.props.participantId,
-      hasArrivalBookedFlight,
-      hasDepartingBookedFlight
     });
   };
   
@@ -187,14 +182,11 @@ class StepSix extends React.Component {
 
   render() {
     const {
-      airlines, airportPickup, transport, unaccompanied, dropoff, departing, transportUnaccompanied,
+      airlines, airportPickup, transport, dropoff, departing, transportUnaccompanied,
       departingTransport, selectedTransportValue, stepFourData, hasArrivalBookedFlight, arrivalFlightNumber,
       arrivalDateTime, airportPickupAirline, airportDepartingAirline, departingFlightNumber, departingDateTime,
-      dropoffOtherLocation, departingOtherLocation, hasTransportationCartData, hasDepartingBookedFlight,
-      arrivalUnaccompanied, departureUnaccompanied
+      hasTransportationCartData, hasDepartingBookedFlight, arrivalUnaccompanied, departureUnaccompanied
     } = this.props;
-    
-    console.log(this.props);
     
     const airportPickupArrivalAndDeparting = isEqual(airportPickup, airportPickupInformation.both);
     const airportPickupArrivalOnly = isEqual(airportPickup, airportPickupInformation.arrival);
