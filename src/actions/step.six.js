@@ -248,8 +248,6 @@ export function stepSixAddTransportToCart({ cartId, participantId }){
       cart: { stepSixUnnacompaniedProductId, stepSixDepartingProductId, stepSixArrivalProductId }
     } = getState();
     
-    console.log(values);
-    
     const cartPayload = {
       airportPickupType: values[stepSixFormFieldNames.airportPickup],  //both, arrival, departing
       unaccompanied: Boolean(values[stepSixFormFieldNames.unaccompanied] || false),
