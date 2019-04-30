@@ -57,10 +57,17 @@ class StepFour extends React.Component {
       this.getCatalogCamConcentrations();
     }
     this.scrollToCurrentComponent();
+    this.sendStepToDrupal();
   }
 
+  sendStepToDrupal = () => {
+    if(window.updateBookingSteps) {
+      window.updateBookingSteps(4);
+    }
+  };
+
   scrollToCurrentComponent = () => {
-    scrollToComponent(this.stepFour.current, { offset: 0, align: 'middle', duration: 1500 });
+    scrollToComponent(this.stepFour.current, { offset: 0, align: 'middle', duration: 500 });
   };
 
   componentWillUnmount() {

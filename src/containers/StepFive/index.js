@@ -51,7 +51,14 @@ class StepFive extends React.Component {
     scrollToComponent(this.stepFour.current, { align: 'top', duration: 500 });
     this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_GEAR);
     //this.scrollToCurrentComponent();
+    this.sendStepToDrupal();
   }
+
+  sendStepToDrupal = () => {
+    if(window.updateBookingSteps) {
+      window.updateBookingSteps(5);
+    }
+  };
 
   scrollToCurrentComponent = () => {
     scrollToComponent(this, { align: 'top', duration: 500 });
