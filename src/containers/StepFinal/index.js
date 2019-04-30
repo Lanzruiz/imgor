@@ -62,7 +62,14 @@ class StepFinal extends React.Component {
     
     this.finalStepGetCatalogPositions({ sport, participant });
     //this.scrollToCurrentComponent();
+    this.sendStepToDrupal();
   }
+
+  sendStepToDrupal = () => {
+    if(window.updateBookingSteps) {
+      window.updateBookingSteps(7);
+    }
+  };
 
   scrollToCurrentComponent = () => {
     scrollToComponent(this, { align: 'top', duration: 500 });
@@ -233,6 +240,7 @@ class StepFinal extends React.Component {
                                 inputClassName="step-final__input cursor-pointer"
                                 className="step-final__input"
                                 showTimeSelect={false}
+                                readOnly={false}
                                 isClearable={false}
                                 dateFormat="MM/DD/YYYY"
                                 maxDate={new Date()}
@@ -374,7 +382,7 @@ class StepFinal extends React.Component {
                 </Col>
               </Row>
               )}
-
+              <Row><div className="end-of-configurator"><p>end of camp builder</p></div></Row>
             </Container>
           </AOSFadeInContainer>
         );

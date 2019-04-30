@@ -1,5 +1,5 @@
 // Modules
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Col } from 'react-grid-system';
 import { connect } from 'react-redux';
@@ -98,10 +98,23 @@ class StepFourWeekConcentrationComponent extends React.Component {
           <p>
             <LocaleString stringKey="step_four.no-available-training" />
           </p>
-          {!isLastWeek && (
+          {!isLastWeek && customizeId !== emptyConcentrationId && (
             <Button className="empty-week__button" onClick={() => this.customizeWeek(id)}>
               <LocaleString stringKey="continue" />
             </Button>
+          )}
+          {isFirstWeek && (
+            <Fragment>
+              {customizeId === emptyConcentrationId ? (
+                <Button className="empty-week__button" onClick={() => this.deleteSelectedConcentration(emptyConcentrationId)}>
+                  <LocaleString stringKey="remove" />
+                </Button>
+              ): (
+                <Button className="empty-week__button" onClick={() => this.customizeWeek(emptyConcentrationId)}>
+                  <LocaleString stringKey="step_four.skip-additional-training" />
+                </Button>
+              )}
+            </Fragment>
           )}
         </div>
       )
