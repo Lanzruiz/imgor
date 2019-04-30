@@ -10,42 +10,34 @@ import { ScreenClassRender } from 'react-grid-system';
 import './styles.scss';
 
 class DatePickerReduxForm extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    name: PropTypes.string.isRequired,
-    showTimeSelect: PropTypes.bool,
-    readOnly: PropTypes.bool,
-    dateFormat: PropTypes.string,
-    isClearable: PropTypes.bool,
-    placeholder: PropTypes.string,
-    portal: PropTypes.bool,
-    showYearDropdown: PropTypes.bool,
-    maxDate: PropTypes.instanceOf(Date),
-    minDate: PropTypes.instanceOf(Date),
-    withPopperPlacement: PropTypes.bool,
-    openToDate: PropTypes.instanceOf(Date),
-  };
-
   static defaultProps = {
     showTimeSelect: true,
     readOnly: false,
-    dateFormat: 'YYYY-MM-DD hh:mm A',
+    dateFormat: 'Y-MM-DD hh:mm a',
     isClearable: true,
     showYearDropdown: false,
     maxDate: null,
     minDate: null,
     withPopperPlacement: true
   };
-
+  
+  normalizeDate = (value) => {
+    if (value) {
+      return moment(value).format(this.props.dateFormat);
+    }
+    return value;
+  };
+  
   render() {
     const { className, name, dateFormat, isClearable, placeholder, portal, showTimeSelect, readOnly, showYearDropdown, openToDate } = this.props;
+    
     return (
       <Field
         {...this.props}
         className={className}
         dateFormat={dateFormat}
         name={name}
-        component={renderDatePicker}
+        component={RenderDatePicker}
         isClearable={isClearable}
         placeholder={placeholder}
         withPortal={portal}
@@ -57,16 +49,9 @@ class DatePickerReduxForm extends React.Component {
       />
     );
   }
-
-  normalizeDate = (value) => {
-    if (value) {
-      return moment(value).format(this.props.dateFormat);
-    }
-    return value;
-  }
 }
 
-class renderDatePicker extends React.Component {
+class RenderDatePicker extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -81,7 +66,18 @@ class renderDatePicker extends React.Component {
       });
     }
   }
+  
+  
+  handleChange = (date) => {
+    const d = moment(date);
+    this.setState({ selectedDate: date });
+    this.props.input.onChange(d);
+  };
+  
+  static onDatepickerRef(el) {
 
+  }
+  
   render() {
     const {
       className, dateFormat, input, placeholder, showTimeSelect, readOnly, meta, isClearable, withPortal, showYearDropdown,
@@ -122,8 +118,8 @@ class renderDatePicker extends React.Component {
             return (
               <div className={`${datePickerContainerClassName} ${showTimeSelect ? 'with-time-select' : ''}`}>
                 <DatePicker
-                  {...input}
                   fixedHeight
+                  value={input.value}
                   withPortal={withPortal}
                   isClearable={isClearable}
                   showTimeSelect={showTimeSelect}
@@ -135,17 +131,17 @@ class renderDatePicker extends React.Component {
                   // popperPlacement={'bottom'}
                   onChange={this.handleChange}
                   onBlur={() => { input.onBlur(); }}
-                  timeFormat="hh:mm"
+                  timeFormat="hh:mm a"
                   timeIntervals={5}
                   timeCaption="Time"
-                  maxDate={this.props.maxDate}
-                  minDate={this.props.minDate}
+                  maxDate={this.props.maxDate || moment().add(1, "years").toDate()}
+                  minDate={this.props.minDate || null}
                   popperModifiers={popperModifiers}
                   showYearDropdown={showYearDropdown}
                   scrollableYearDropdown={true}
                   yearDropdownItemNumber={50}
                   openToDate={openToDate}
-                  ref={el => this.onDatepickerRef(el)}
+                  ref={el => RenderDatePicker.onDatepickerRef(el)}
                 />
               </div>
             );
@@ -156,11 +152,23 @@ class renderDatePicker extends React.Component {
     );
   }
 
-  handleChange = (date) => {
-    this.setState({ selectedDate: date });
-    this.props.input.onChange(date);
-  }
-  onDatepickerRef(el) { if (el && el.input) { el.input.readOnly = true; } }
+};
+
+
+DatePickerReduxForm.propTypes = {
+  className: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  showTimeSelect: PropTypes.bool,
+  readOnly: PropTypes.bool,
+  dateFormat: PropTypes.string,
+  isClearable: PropTypes.bool,
+  placeholder: PropTypes.string,
+  portal: PropTypes.bool,
+  showYearDropdown: PropTypes.bool,
+  maxDate: PropTypes.instanceOf(Date),
+  minDate: PropTypes.instanceOf(Date),
+  withPopperPlacement: PropTypes.bool,
+  openToDate: PropTypes.instanceOf(Date),
 };
 
 export default DatePickerReduxForm;
