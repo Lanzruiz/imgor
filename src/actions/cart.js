@@ -139,7 +139,7 @@ export function purchaseRequest(args, stubData) {
         Api.req({
           res200: (data) => {
             if (window && args.cartId) {
-              window.location = `${args.shopifyUrl}?order=${args.cartId}&${linkerParam}`;
+              window.location = `${args.shopifyUrl}?order=${args.cartId}&${args.linkerParam}`;
             }
           },
           res404: () => { console.log('Api.putCartCartId => 404'); },
