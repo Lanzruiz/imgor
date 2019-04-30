@@ -140,7 +140,7 @@ export function purchaseRequest(args, stubData) {
             // dispatch( updateCart({ ...data.cart }), );
             
             if (window && args.cartId) {
-              window.location = `${args.shopifyUrl}?order=${args.cartId}`;
+              window.location = `${args.shopifyUrl}?order=${args.cartId}&${args.linkerParam}`;
             }
           },
           res404: () => { console.log('Api.putCartCartId => 404'); },
