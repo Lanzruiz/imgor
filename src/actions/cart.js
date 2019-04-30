@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 // Constants
 import isEqual from 'lodash/isEqual';
 import isNumber from 'lodash/isNumber';
