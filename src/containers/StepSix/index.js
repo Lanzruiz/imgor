@@ -144,8 +144,15 @@ class StepSix extends React.Component {
     this.stepSixGetCatalogTransportUnaccompanied();
     this.getCatalogTransport();
     this.getCatalogAirlines();
-    //this.scrollToCurrentComponent();
+    //this.scrollToCurrentComponent()
+    this.sendStepToDrupal();
   }
+
+  sendStepToDrupal = () => {
+    if(window.updateBookingSteps) {
+      window.updateBookingSteps(6);
+    }
+  };
 
   componentDidUpdate(prevProps) {
     const { step } = this.props;

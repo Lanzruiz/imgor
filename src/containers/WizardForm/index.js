@@ -116,6 +116,10 @@ class WizardForm extends React.Component {
   componentDidMount() {
     const { step } = this.props;
     switch(step) {
+      case stepsEnum.zero: {
+        this.goingToStepOne();
+        break;
+      }
       case stepsEnum.one: {
         this.goingToStepTwo();
         break;
@@ -156,6 +160,7 @@ class WizardForm extends React.Component {
     const {
       age, gender, group, step, startDate, endDate, stepTreeSelectedId, secondaryGroup, weeksCounter,
       stepThreeSelectedCardWithSecondaryProgramsId, stepFourSecondaryProgramId, participantId, cartId, product,
+      sleepaway
     } = this.props;
 
     const isStepOneGroupChanged = (group !== prevProps.group);
@@ -164,6 +169,7 @@ class WizardForm extends React.Component {
     const isStepTreeSelectedIdChanged = (prevProps.stepTreeSelectedId !== stepTreeSelectedId);
     const isWeeksCounterChanged = (weeksCounter !== prevProps.weeksCounter);
     const isAgeChanged = (age !== prevProps.age);
+    const isSleepawayChanged = (sleepaway !== prevProps.sleepaway);
     const isGenderChanged = (gender !== prevProps.gender);
 
     const shouldGoingToStepTwo = (
@@ -176,6 +182,15 @@ class WizardForm extends React.Component {
     );
 
     switch(true) {
+      case !!(isAgeChanged || isGenderChanged || isSleepawayChanged): {
+        this.goingToStepOne({
+          sleepaway: prevProps.sleepaway,
+          gender: prevProps.gender,
+          age: prevProps.age,
+        });
+        break;
+      }
+      
       case isEqual(step, stepsEnum.one): {
         this.goingToStepTwo({
           group: prevProps.group,
@@ -260,7 +275,6 @@ class WizardForm extends React.Component {
   render() {
     const { children, step, valid, dataDisplayFooter } = this.props;
     
-    
     const startIndex = 0;
     if (typeof children !== 'function') {
       return (
@@ -283,7 +297,7 @@ class WizardForm extends React.Component {
           transitionEnterTimeout={500}
           transitionLeaveTimeout={300}
         >
-          {children().slice(startIndex, step)}
+          {children().slice(startIndex, (step + 1))}
         </CSSTransitionGroup>
         <Footer
           arrowUp={arrowPosition}
@@ -358,8 +372,12 @@ class WizardForm extends React.Component {
   renderMessage = () => {
     const { step } = this.props;
     let stringKey;
-
+    
     switch(step) {
+      case stepsEnum.zero: {
+        stringKey = this.stepZeroValidation();
+        break;
+      }
       case stepsEnum.one: {
         stringKey = this.stepOneValidation();
         break;
@@ -394,9 +412,18 @@ class WizardForm extends React.Component {
 
     return <LocaleString stringKey={stringKey} />;
   };
-
+  
+  goingToStepOne = () => {
+    const { sleepaway, gender, age } = this.props;
+    
+    if ((isString(sleepaway) && isString(gender) && isString(age))) {
+      this.goingToStepByStepNymber(stepsEnum.one);
+    }
+  };
+  
   goingToStepTwo = (prevProps = {}) => {
     const { group, sleepaway, gender, age, weeksCounter, cartId, participantId, secondaryGroup, isWeeklyCamp } = this.props;
+    
     if ((isString(sleepaway) && isString(gender) && isString(age))) {
       if (((isWeeklyCamp) && (weeksCounter > 0)) || (group && secondaryGroup)) {
         if (!isEqual({ gender, age }, { gender: prevProps.gender, age: prevProps.age })) {
@@ -672,6 +699,38 @@ class WizardForm extends React.Component {
     //   this.goingToStepByStepNymber(stepsEnum.six);
     // }
   // };
+  
+  stepZeroValidation = () => {
+    const { age, gender, participantId, sleepaway } = this.props;
+    switch(true) {
+      case (!isString(participantId) && !isNumber(participantId)): {
+        return 'enter_email';
+      }
+      case (!isString(age) && !isString(gender) && !isString(sleepaway)): {
+        return 'choose_sleepaway_age_and_gender';
+      }
+      case (!isString(age) && !isString(sleepaway)): {
+        return 'choose_age_sleepaway';
+      }
+      case (isString(age) && !isString(gender) && !isString(sleepaway)): {
+        return 'choose_sleepaway_and_gender';
+      }
+      case (isString(sleepaway) && !isString(gender) && !isString(age)): {
+        return 'choose_age_and_gender';
+      }
+      case (isString(sleepaway) && isString(gender) && !isString(age)): {
+        return 'choose_age';
+      }
+      case (!isString(sleepaway) && isString(gender) && isString(age)): {
+        return 'choose_sleepaway';
+      }
+      case (isString(sleepaway) && !isString(gender) && isString(age)): {
+        return 'choose_gender';
+      }
+      default:
+        return '';
+    }
+  };
 
   stepOneValidation = () => {
     const { age, gender, group, participantId, sleepaway, weeksCounter } = this.props;
