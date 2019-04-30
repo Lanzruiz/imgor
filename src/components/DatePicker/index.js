@@ -13,7 +13,7 @@ class DatePickerReduxForm extends React.Component {
   static defaultProps = {
     showTimeSelect: true,
     readOnly: false,
-    dateFormat: 'YYYY-MM-DD HH:mm',
+    dateFormat: 'Y-MM-d hh:mm a',
     isClearable: true,
     showYearDropdown: false,
     maxDate: null,
@@ -74,11 +74,11 @@ class RenderDatePicker extends React.Component {
   };
   
   static onDatepickerRef(el) {
-    if (el && el.input) {
-      el.input.readOnly = true;
-    }
+    // if (el && el.input && el.input.addEndEventListener) {
+    //
+    // }
   }
-
+  
   render() {
     const {
       className, dateFormat, input, placeholder, showTimeSelect, readOnly, meta, isClearable, withPortal, showYearDropdown,
@@ -120,6 +120,7 @@ class RenderDatePicker extends React.Component {
               <div className={`${datePickerContainerClassName} ${showTimeSelect ? 'with-time-select' : ''}`}>
                 <DatePicker
                   fixedHeight
+                  awareOfUnicodeTokens
                   value={input.value}
                   withPortal={withPortal}
                   isClearable={isClearable}
@@ -142,6 +143,7 @@ class RenderDatePicker extends React.Component {
                   scrollableYearDropdown={true}
                   yearDropdownItemNumber={50}
                   openToDate={openToDate}
+                  onKeyPress={this.handleKeyPress}
                   ref={el => RenderDatePicker.onDatepickerRef(el)}
                 />
               </div>
