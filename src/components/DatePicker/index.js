@@ -14,6 +14,7 @@ class DatePickerReduxForm extends React.Component {
     className: PropTypes.string,
     name: PropTypes.string.isRequired,
     showTimeSelect: PropTypes.bool,
+    readOnly: PropTypes.bool,
     dateFormat: PropTypes.string,
     isClearable: PropTypes.bool,
     placeholder: PropTypes.string,
@@ -27,6 +28,7 @@ class DatePickerReduxForm extends React.Component {
 
   static defaultProps = {
     showTimeSelect: true,
+    readOnly: false,
     dateFormat: 'YYYY-MM-DD HH:mm',
     isClearable: true,
     showYearDropdown: false,
@@ -36,7 +38,7 @@ class DatePickerReduxForm extends React.Component {
   };
 
   render() {
-    const { className, name, dateFormat, isClearable, placeholder, portal, showTimeSelect, showYearDropdown, openToDate } = this.props;
+    const { className, name, dateFormat, isClearable, placeholder, portal, showTimeSelect, readOnly, showYearDropdown, openToDate } = this.props;
     return (
       <Field
         {...this.props}
@@ -49,6 +51,7 @@ class DatePickerReduxForm extends React.Component {
         withPortal={portal}
         normalize={this.normalizeDate}
         showTimeSelect={showTimeSelect}
+        readOnly={readOnly}
         showYearDropdown={showYearDropdown}
         openToDate={openToDate}
       />
@@ -81,7 +84,7 @@ class renderDatePicker extends React.Component {
 
   render() {
     const {
-      className, dateFormat, input, placeholder, showTimeSelect, meta, isClearable, withPortal, showYearDropdown,
+      className, dateFormat, input, placeholder, showTimeSelect, readOnly, meta, isClearable, withPortal, showYearDropdown,
       openToDate
     } = this.props;
     const { touched, error } = meta;
@@ -124,6 +127,7 @@ class renderDatePicker extends React.Component {
                   withPortal={withPortal}
                   isClearable={isClearable}
                   showTimeSelect={showTimeSelect}
+                  readOnly={readOnly}
                   dateFormat={dateFormat || 'MM/DD/YYYY'}
                   selected={selected}
                   placeholderText={placeholder}
@@ -141,6 +145,7 @@ class renderDatePicker extends React.Component {
                   scrollableYearDropdown={true}
                   yearDropdownItemNumber={50}
                   openToDate={openToDate}
+                  ref={el => this.onDatepickerRef(el)}
                 />
               </div>
             );
@@ -155,6 +160,7 @@ class renderDatePicker extends React.Component {
     this.setState({ selectedDate: date });
     this.props.input.onChange(date);
   }
+  onDatepickerRef(el) { if (el && el.input) { el.input.readOnly = true; } }
 };
 
 export default DatePickerReduxForm;
