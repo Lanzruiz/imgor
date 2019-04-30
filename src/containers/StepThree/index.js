@@ -104,8 +104,15 @@ class StepThree extends React.Component {
     this.getCatalogCampsLevels();
   
     this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_PROGRAM);
-    //this.scrollToCurrentComponent();
+    this.scrollToCurrentComponent();
+    this.sendStepToDrupal();
   }
+
+  sendStepToDrupal = () => {
+    if(window.updateBookingSteps) {
+      window.updateBookingSteps(3);
+    }
+  };
 
   componentDidUpdate(prevProps) {
     const { selectedId, stepTwoSelectedDate, cartStepThreeProductId } = this.props;

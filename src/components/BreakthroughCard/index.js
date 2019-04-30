@@ -50,14 +50,14 @@ const BreakthroughCard = (props) => {
         <CardContentCol>
           <div className="breakthrough-card__container">
             <div className="breakthrough-card__column breakthrough-card__column--center breakthrough-card__column--lh-20">
-              <span className="breakthrough-card__column--position">
-                <LocaleString stringKey="position" />
+              <span className="breakthrough-card__column--position breakthrough-card__column--ratio">
+                <LocaleString stringKey="breakthroug-ratio" />
               </span>
-              <span className="breakthrough-card__column--specific">
-                <LocaleString stringKey="specific" />
+              <span className="breakthrough-card__column--specific breakthrough-card__column--small-group">
+                <LocaleString stringKey="small_group" />
               </span>
-              <span className="breakthrough-card__column--coaching">
-                <LocaleString stringKey="coaching" />
+              <span className="breakthrough-card__column--coaching breakthrough-card__column--instruction">
+                <LocaleString stringKey="instruction" />
               </span>
             </div>
             <ImagePlus className="breakthrough-card__image" />
@@ -66,14 +66,11 @@ const BreakthroughCard = (props) => {
         <CardContentCol>
           <div className="breakthrough-card__container">
             <div className="breakthrough-card__column breakthrough-card__column--center breakthrough-card__column--lh-20">
-              <span className="breakthrough-card__column--small-group">
-                <LocaleString stringKey="small_group" />
-              </span>
               <span className="breakthrough-card__column--skills">
                 <LocaleString stringKey="skills" />
               </span>
-              <span className="breakthrough-card__column--training">
-                <LocaleString stringKey="training" />
+              <span className="breakthrough-card__column--training breakthrough-card__column--instruction">
+                <LocaleString stringKey="instruction" />
               </span>
             </div>
           </div>

@@ -27,22 +27,26 @@ class AirportPickupCheckboxContainer extends React.Component {
       { value: both, stringKey: 'step_six.roundtrip' },
       { value: arrival, stringKey: 'step_six.pickup' },
       { value: departing, stringKey: 'step_six.dropoff' },
+      { value: undefined, stringKey: 'step_six.no-need-travel' },
     ];
+    
     return (
-      <div className="step-six__card-content">
+      <div className="step-six__card-content transport__options__checkboxes">
         <Field
           name={stepSixFormFieldNames.airportPickup}
           type="radio"
           options={options}
           component={({ input, options }) => (
             options.map(({ value, stringKey }, idx) => {
+              const parsedAirportPickup = airportPickup === null ? undefined : airportPickup;
+              
               return (
                 <Radio
                   {...input}
                   key={idx}
                   className="step-six__initial-label"
                   value={value}
-                  checked={isEqual(airportPickup, value)}
+                  checked={isEqual(parsedAirportPickup, value)}
                   children={<LocaleString stringKey={stringKey} />}
                   handleChange={handleChange}
                 />

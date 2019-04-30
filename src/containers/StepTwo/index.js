@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import moment from 'moment';
-import scrollToComponent from 'react-scroll-to-component';
+//import scrollToComponent from 'react-scroll-to-component';
 import isEqual from 'lodash/isEqual';
 // Components
 import Header from '../../components/Header';
@@ -42,57 +42,6 @@ class StepTwo extends React.Component {
     super(props);
     this.stepTwo = React.createRef();
   }
-  static propTypes = {
-    boarding: PropTypes.bool,
-    stepOneActions: PropTypes.shape({
-      stepOneSetCampLength: PropTypes.func.isRequired,
-    }),
-    stepTwoActions: PropTypes.shape({
-      getCatalogCampsCalendarRequest: PropTypes.func.isRequired,
-      selectDate: PropTypes.func.isRequired,
-      stepTwoSetDefaultState: PropTypes.func.isRequired,
-      stepTwoSetCampDaysLength: PropTypes.func.isRequired,
-    }),
-    weeksActions: PropTypes.shape({
-      setOnlyWeeks: PropTypes.func.isRequired,
-    }),
-    data: PropTypes.arrayOf(
-      PropTypes.shape({
-        capacity: PropTypes.arrayOf(
-          PropTypes.shape({
-            available: PropTypes.number,
-            boarding: PropTypes.bool,
-          }),
-        ),
-        capacity_end_date: PropTypes.date,
-        capacity_start_date: PropTypes.date,
-        display_length: PropTypes.string,
-        display_sport: PropTypes.string,
-        length: PropTypes.string,
-        length_days: PropTypes.number,
-        program_types: PropTypes.arrayOf(
-          PropTypes.shape({
-            capacity: PropTypes.number,
-            display_name: PropTypes.string,
-            name: PropTypes.string,
-            sold_out: PropTypes.bool,
-          }),
-        ),
-        sport: PropTypes.string,
-        selectedDate: PropTypes.shape({
-          capacity_start_date: PropTypes.date,
-          capacity_end_date: PropTypes.date,
-        }),
-      }),
-    ),
-    sleepaway: PropTypes.string,
-    age: PropTypes.string,
-    gender: PropTypes.string,
-    group: PropTypes.string,
-    secondary_group: PropTypes.string,
-    weeksCounter: PropTypes.number,
-    isWeeklyCamp: PropTypes.bool,
-  };
 
   static defaultProps = {
     data: [],
@@ -132,9 +81,15 @@ class StepTwo extends React.Component {
     
     this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_CALENDAR);
 
-    this.scrollToCurrentComponent();
-
+    //this.scrollToCurrentComponent();
+    this.sendStepToDrupal();
   }
+
+  sendStepToDrupal = () => {
+    if(window.updateBookingSteps) {
+      window.updateBookingSteps(2);
+    }
+  };
 
   componentDidUpdate(prevProps) {
     const {
@@ -197,9 +152,9 @@ class StepTwo extends React.Component {
     this.setDefaultState();
   }
 
-  scrollToCurrentComponent = () => {
-    scrollToComponent(this.stepTwo.current, { offset: -200, align: 'middle', duration: 1000 });
-  }
+  //scrollToCurrentComponent = () => {
+    //scrollToComponent(this.stepTwo.current, { offset: -200, align: 'middle', duration: 1000 });
+  //};
 
   render() {
     const { data, weeksCounter, sport, selectedDate, boarding } = this.props;
@@ -214,7 +169,23 @@ class StepTwo extends React.Component {
       }
       return isAvailable;
     }, true);
-    
+  
+    // const hasAnyData = data && data.length > 0;
+    //
+    // if(!hasAnyData){
+    //   return (
+    //     <Container>
+    //       <Row>
+    //         <Col>
+    //           <div className="description__no-available-camps">
+    //             <LocaleString stringKey="step_two.dates.no_available_camps" />
+    //           </div>
+    //         </Col>
+    //       </Row>
+    //     </Container>
+    //   )
+    // }
+  
     return (
       <AOSFadeInContainer className="step-two" ref={this.stepTwo}>
         <Container>
@@ -272,7 +243,7 @@ class StepTwo extends React.Component {
                     <ScreenClassRender render={(cl) => {
                       const groupSize = 5;
                       const perPage = cl === 'xs' ? 2 : 5;
-  
+                      
                       const dataGrouped = data.reduce((acc, v, index) => {
                         const i = Math.floor(index / groupSize);
                         acc[i] = [...(acc[i] || []), v];
@@ -528,6 +499,58 @@ class StepTwo extends React.Component {
     this.props.stepTwoActions.stepTwoSetDefaultState();
   }
 }
+
+StepTwo.propTypes = {
+  boarding: PropTypes.bool,
+  stepOneActions: PropTypes.shape({
+    stepOneSetCampLength: PropTypes.func.isRequired,
+  }),
+  stepTwoActions: PropTypes.shape({
+    getCatalogCampsCalendarRequest: PropTypes.func.isRequired,
+    selectDate: PropTypes.func.isRequired,
+    stepTwoSetDefaultState: PropTypes.func.isRequired,
+    stepTwoSetCampDaysLength: PropTypes.func.isRequired,
+  }),
+  weeksActions: PropTypes.shape({
+    setOnlyWeeks: PropTypes.func.isRequired,
+  }),
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      capacity: PropTypes.arrayOf(
+        PropTypes.shape({
+          available: PropTypes.number,
+          boarding: PropTypes.bool,
+        }),
+      ),
+      capacity_end_date: PropTypes.date,
+      capacity_start_date: PropTypes.date,
+      display_length: PropTypes.string,
+      display_sport: PropTypes.string,
+      length: PropTypes.string,
+      length_days: PropTypes.number,
+      program_types: PropTypes.arrayOf(
+        PropTypes.shape({
+          capacity: PropTypes.number,
+          display_name: PropTypes.string,
+          name: PropTypes.string,
+          sold_out: PropTypes.bool,
+        }),
+      ),
+      sport: PropTypes.string,
+      selectedDate: PropTypes.shape({
+        capacity_start_date: PropTypes.date,
+        capacity_end_date: PropTypes.date,
+      }),
+    }),
+  ),
+  sleepaway: PropTypes.string,
+  age: PropTypes.string,
+  gender: PropTypes.string,
+  group: PropTypes.string,
+  secondary_group: PropTypes.string,
+  weeksCounter: PropTypes.number,
+  isWeeklyCamp: PropTypes.bool,
+};
 
 function mapStateToProps(state) {
   return {

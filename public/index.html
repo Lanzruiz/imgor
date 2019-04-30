@@ -30,15 +30,18 @@
 		<!-- ---------------------------------- -->
 		<button id="eee">Init app</button>
 		<script>
-			//some event
 			document.getElementById('eee').addEventListener('click', () => {
-
 			  //invoke initReactApp
 			  if(window.initReactApp && typeof window.initReactApp === 'function') {
           window.initReactApp({ email: 'test@test.com' });
         }
+			});
 
-			})
+			setTimeout(() => {
+        if(window.initReactApp && typeof window.initReactApp === 'function') {
+          window.initReactApp({ email: 'test@test.com' });
+        }
+			}, 250)
 		</script>
 
 		<!-- data-business_type: [Adult Program, Youth Camp] -->

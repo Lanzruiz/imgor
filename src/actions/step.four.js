@@ -4,7 +4,7 @@ import isNumber from 'lodash/isNumber';
 import assign from 'lodash/assign';
 // Constants
 import * as stepFourTypes from '../constants/step.four';
-import { emptyConcentrationId } from '../reducers/step.four';
+import { emptyConcentrationId, emptyConcentrationsSkipWeek } from '../reducers/step.four';
 import { stepsEnum } from '../constants/steps';
 // Api
 import Api from '../api';
@@ -17,6 +17,13 @@ import { setStepsCounter } from './steps';
 function getCatalogCamps(data) {
   return {
     type: stepFourTypes.STEP_FOUR_GET_CATALOG_CAMPS,
+    payload: data,
+  };
+}
+
+function getCatalogCampsConcentrations(data) {
+  return {
+    type: stepFourTypes.STEP_FOUR_GET_CATALOG_CAMPS_CONCENTRATIONS,
     payload: data,
   };
 }
@@ -128,6 +135,42 @@ export function getCatalogCampRequest({ business_type, program_type, sport, age,
       },
     });
   }
+}
+
+export function getCatalogCamConcentrations({ business_type, sport, age, gender, start_date, end_date }) {
+  return function (dispatch) {
+    Api.req({
+      apiCall: Api.getCatalogCampsConcetrations,
+      res200: (data) => {
+        if(data.results) {
+          dispatch(getCatalogCampsConcentrations(data));
+          
+          const hasAnyConcetration = data.results.filter(v => !!v.concentrations).length > 0;
+          
+          data.results.forEach((v, i) => {
+            if(!v.concentrations){
+              dispatch(customizeWeek(emptyConcentrationsSkipWeek, i));
+            }
+            
+            if(hasAnyConcetration && i === 0){
+              dispatch(customizeWeek(null, i));
+            }
+          })
+        }
+        return Promise.resolve(data.results);
+      },
+      res404: () => console.log('Api.getCatalogCamps() => 404'),
+      reject: console.error,
+      apiCallParams: {
+        business_type,
+        sport,
+        age,
+        gender,
+        start_date,
+        end_date,
+      },
+    });
+  };
 }
 
 export function getCatalogCampWeekOneRequest({ business_type, program_type, sport, age, gender, start_date, end_date }) {
@@ -379,8 +422,6 @@ export function stepFourSetDefaultState() {
 }
 
 export function stepFourSetSecondaryProgramIdRequest({ campId, cartId, participantId, productId }) {
-  
-  
   return function(dispatch) {
   
     Api.getCatalogCampCampId(campId)
@@ -410,12 +451,16 @@ export function stepFourSetSecondaryProgramIdRequest({ campId, cartId, participa
 export function stepFourCustomizeWeekRequest({ cartId, product, participantId, quantity, productId, type, nextWeekId, currentWeekId }) {
   return async function(dispatch) {
     dispatch( customizeWeek(productId) );
-
+    
+    if(isEqual(productId, emptyConcentrationsSkipWeek)){
+      if (isNumber(nextWeekId) && (nextWeekId > (currentWeekId - 1))) {
+        dispatch( selectWeek(nextWeekId), );
+      }
+      return;
+    }
+    
     if (isEqual(productId, emptyConcentrationId)) {
-      dispatch( setStepsCounter(stepsEnum.seven), );
-      // if (isNumber(nextWeekId)) {
-      //   dispatch( selectWeek(nextWeekId) );
-      // }
+      dispatch( setStepsCounter(stepsEnum.seven) );
       return;
     }
 

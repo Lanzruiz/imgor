@@ -24,10 +24,10 @@ export function decrementWeeksCounter() {
   };
 };
 
-export function customizeWeek(id) {
+export function customizeWeek(id, weekId) {
   return {
     type: weeksTypes.CUSTOMIZE_WEEK,
-    payload: id,
+    payload: { id: id, weekId: weekId },
   };
 };
 
