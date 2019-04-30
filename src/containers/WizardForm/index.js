@@ -151,8 +151,8 @@ class WizardForm extends React.Component {
         return;
     }
     
-    window.reactAppFinish = async () => {
-      await this.purchaseHandler();
+    window.reactAppFinish = async (GAlinkerParam) => {
+      await this.purchaseHandler(GAlinkerParam);
     };
   }
 
@@ -332,6 +332,7 @@ class WizardForm extends React.Component {
     const data = {
       cartId,
       shopifyUrl,
+      linkerParam,
       participantId,
       position,
       age,
