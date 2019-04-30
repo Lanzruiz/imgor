@@ -137,12 +137,6 @@ export function purchaseRequest(args, stubData) {
         
         Api.req({
           res200: (data) => {
-            var linkerParam  = '';
-
-            if(typeof ga !== 'undefined'){
-              linkerParam = ga.getAll()[0].get('linkerParam');
-            }
-            
             if (window && args.cartId) {
               window.location = `${args.shopifyUrl}?order=${args.cartId}&${linkerParam}`;
             }

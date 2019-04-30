@@ -151,8 +151,8 @@ class WizardForm extends React.Component {
         return;
     }
     
-    window.reactAppFinish = async () => {
-      await this.purchaseHandler();
+    window.reactAppFinish = async (GAlinkerParam) => {
+      await this.purchaseHandler(GAlinkerParam);
     };
   }
 
@@ -314,12 +314,13 @@ class WizardForm extends React.Component {
     );
   }
 
-  purchaseHandler = async () => {
+  purchaseHandler = async (GAlinkerParam) => {
     const {
       cartId, redirectUrlShopify, firstName, lastName, position, finalStepDateOfBirth, shirtSize, guardianFirstName,
       guardianLastName, finalStepPhone, participantId, gender, age, guardianEmail, guardianPhone, email, dataRepEmail
     } = this.props;
 
+    const linkerParam = GAlinkerParam;
     const shopifyUrl = redirectUrlShopify || process.env.REACT_APP_REDIRECT_URL_SHOPIFY;
     const stubData = {
       address: {
