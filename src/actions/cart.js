@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 // Constants
 import isEqual from 'lodash/isEqual';
 import isNumber from 'lodash/isNumber';
@@ -139,7 +140,7 @@ export function purchaseRequest(args, stubData) {
           res200: (data) => {
             var linkerParam  = '';
 
-            if(typeof ga !== 'undefined'){
+            if(ga && typeof ga !== 'undefined'){
               linkerParam = ga.getAll()[0].get('linkerParam');
             }
             
