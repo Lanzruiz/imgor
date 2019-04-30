@@ -137,10 +137,14 @@ export function purchaseRequest(args, stubData) {
         
         Api.req({
           res200: (data) => {
-            // dispatch( updateCart({ ...data.cart }), );
+            var linkerParam  = '';
+
+            if(typeof ga !== 'undefined'){
+              linkerParam = ga.getAll()[0].get('linkerParam');
+            }
             
             if (window && args.cartId) {
-              window.location = `${args.shopifyUrl}?order=${args.cartId}`;
+              window.location = `${args.shopifyUrl}?order=${args.cartId}&${linkerParam}`;
             }
           },
           res404: () => { console.log('Api.putCartCartId => 404'); },
