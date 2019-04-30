@@ -104,6 +104,9 @@ class StepFour extends React.Component {
   
     const tabListClassName = cx('step-four-tabs__tab-list', { 'react-hidden': isEqual(weeks.length, 1) });
   
+    console.log(weeksData);
+    const hasAnyConcentration = weeksData.filter(v => !!v.concentrations).length > 0;
+    
     if (hasSecondaryProgram) {
       return (
         <AOSFadeInContainer className="step-four" ref={this.stepFour}>
@@ -200,37 +203,41 @@ class StepFour extends React.Component {
     
     });
     
-    return (
-      <AOSFadeInContainer className={`step-four`} ref={this.stepFour}>
-        <Container>
-          <Row>
-            <Col>
-              <Header
-                header="step_four.header"
-                subHeader="step_four.sub_header"
-                formatString={{ stepNumber: stepsEnum.four }}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <Tabs
-                className="step-four__tabs step-four-tabs"
-                selectedTabClassName="step-four-tabs__tab--selected"
-                selectedTabPanelClassName="step-four-tabs__tab-tanel--selected"
-                selectedIndex={selectedWeekId}
-                onSelect={this.selectWeek}
-              >
-                <TabList className={tabListClassName}>
-                  {tabsList}
-                </TabList>
-                {tabPanels}
-              </Tabs>
-            </Col>
-          </Row>
-        </Container>
-      </AOSFadeInContainer>
-    );
+    if(hasAnyConcentration){
+      return (
+        <AOSFadeInContainer className={`step-four`} ref={this.stepFour}>
+          <Container>
+            <Row>
+              <Col>
+                <Header
+                  header="step_four.header"
+                  subHeader="step_four.sub_header"
+                  formatString={{ stepNumber: stepsEnum.four }}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Tabs
+                  className="step-four__tabs step-four-tabs"
+                  selectedTabClassName="step-four-tabs__tab--selected"
+                  selectedTabPanelClassName="step-four-tabs__tab-tanel--selected"
+                  selectedIndex={selectedWeekId}
+                  onSelect={this.selectWeek}
+                >
+                  <TabList className={tabListClassName}>
+                    {tabsList}
+                  </TabList>
+                  {tabPanels}
+                </Tabs>
+              </Col>
+            </Row>
+          </Container>
+        </AOSFadeInContainer>
+      );
+    }
+    
+    return null;
   }
 
   customizeWeek = (id) => {
