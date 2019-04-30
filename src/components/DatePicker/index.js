@@ -13,7 +13,7 @@ class DatePickerReduxForm extends React.Component {
   static defaultProps = {
     showTimeSelect: true,
     readOnly: false,
-    dateFormat: 'Y-MM-d hh:mm a',
+    dateFormat: 'Y-MM-DD hh:mm a',
     isClearable: true,
     showYearDropdown: false,
     maxDate: null,
@@ -69,8 +69,10 @@ class RenderDatePicker extends React.Component {
   
   
   handleChange = (date) => {
+    console.log(date);
+    const d = moment(date);
     this.setState({ selectedDate: date });
-    this.props.input.onChange(date);
+    this.props.input.onChange(d);
   };
   
   static onDatepickerRef(el) {
@@ -115,12 +117,17 @@ class RenderDatePicker extends React.Component {
             const popperPlacement = this.props.withPopperPlacement
               ? config[screenClass] ? config[screenClass].popperPlacement : 'top'
               : 'bottom';
+  
+            // console.log(input.value);
+            
+            // const parsedFormatOut = dateFormat.replace('dd', 'DD');
+            // const value = input.value ? moment(input.value).format(parsedFormatOut) : '';
+            // console.log(moment(input.value, parsedFormatIn));
             
             return (
               <div className={`${datePickerContainerClassName} ${showTimeSelect ? 'with-time-select' : ''}`}>
                 <DatePicker
                   fixedHeight
-                  awareOfUnicodeTokens
                   value={input.value}
                   withPortal={withPortal}
                   isClearable={isClearable}
@@ -143,7 +150,6 @@ class RenderDatePicker extends React.Component {
                   scrollableYearDropdown={true}
                   yearDropdownItemNumber={50}
                   openToDate={openToDate}
-                  onKeyPress={this.handleKeyPress}
                   ref={el => RenderDatePicker.onDatepickerRef(el)}
                 />
               </div>
