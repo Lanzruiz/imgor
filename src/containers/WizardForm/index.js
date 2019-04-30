@@ -332,6 +332,7 @@ class WizardForm extends React.Component {
     const data = {
       cartId,
       shopifyUrl,
+      linkerParam,
       participantId,
       position,
       age,
