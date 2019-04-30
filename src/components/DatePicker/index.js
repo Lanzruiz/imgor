@@ -69,16 +69,13 @@ class RenderDatePicker extends React.Component {
   
   
   handleChange = (date) => {
-    console.log(date);
     const d = moment(date);
     this.setState({ selectedDate: date });
     this.props.input.onChange(d);
   };
   
   static onDatepickerRef(el) {
-    // if (el && el.input && el.input.addEndEventListener) {
-    //
-    // }
+
   }
   
   render() {
@@ -117,12 +114,6 @@ class RenderDatePicker extends React.Component {
             const popperPlacement = this.props.withPopperPlacement
               ? config[screenClass] ? config[screenClass].popperPlacement : 'top'
               : 'bottom';
-  
-            // console.log(input.value);
-            
-            // const parsedFormatOut = dateFormat.replace('dd', 'DD');
-            // const value = input.value ? moment(input.value).format(parsedFormatOut) : '';
-            // console.log(moment(input.value, parsedFormatIn));
             
             return (
               <div className={`${datePickerContainerClassName} ${showTimeSelect ? 'with-time-select' : ''}`}>
