@@ -71,6 +71,7 @@
     "step_four.skip_week_description": "I'm set with the basic camp training. Do not add any training concentrations.",
     "step_four.skip_this_week": "Skip this.week",
     "step_four.no-available-training": "no available training for this week",
+    "step_four.skip-additional-training": " Skip Additional Training",
     "class": "Class",
     "week": "week",
     "week_1": "Week 1",

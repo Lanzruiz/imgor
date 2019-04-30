@@ -145,9 +145,15 @@ export function getCatalogCamConcentrations({ business_type, sport, age, gender,
         if(data.results) {
           dispatch(getCatalogCampsConcentrations(data));
           
+          const hasAnyConcetration = data.results.filter(v => !!v.concentrations).length > 0;
+          
           data.results.forEach((v, i) => {
             if(!v.concentrations){
               dispatch(customizeWeek(emptyConcentrationsSkipWeek, i));
+            }
+            
+            if(hasAnyConcetration && i === 0){
+              dispatch(customizeWeek(null, i));
             }
           })
         }
