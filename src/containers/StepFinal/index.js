@@ -132,7 +132,7 @@ class StepFinal extends React.Component {
           isTablet = true;
         }
         return (
-          <AOSFadeInContainer className="step-final">
+          <AOSFadeInContainer className="step-final" id="step-7">
             <Container>
               <Row>
                 <Col>

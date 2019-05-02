@@ -187,7 +187,7 @@ class StepTwo extends React.Component {
     // }
   
     return (
-      <AOSFadeInContainer className="step-two" ref={this.stepTwo}>
+      <AOSFadeInContainer className="step-two" id="step-2" ref={this.stepTwo}>
         <Container>
           <Row>
             <Col>

@@ -80,7 +80,7 @@ class StepFive extends React.Component {
     const currentStepNumber = (stepFourData.length > 0) ? stepsEnum.five : stepsEnum.four;
 
     return (
-      <AOSFadeInContainer className="step-five" ref={this.stepFive}>
+      <AOSFadeInContainer className="step-five" id="step-5" ref={this.stepFive}>
         <Container style={{ marginBottom: '65px' }}>
           <Row>
             <Col>

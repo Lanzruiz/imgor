@@ -196,7 +196,7 @@ class StepOne extends React.Component {
     const parsedData = data.map(v => ({ ...v, id: (v.name || '').toLowerCase().replace(/\s/g, '_') }));
     
     return (
-      <AOSFadeInContainer className="step-one" ref={this.stepOne}>
+      <AOSFadeInContainer className="step-one" id="step-1" ref={this.stepOne}>
         {!dataInitialEmail && (
           <EmailModal
             onSubmit={this.closeEmailModal}

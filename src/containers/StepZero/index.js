@@ -100,7 +100,7 @@ class StepOne extends React.Component {
     const shouldRenderAgesAsDropdown = (dataBusinessType || '').toLowerCase().indexOf('adult') !== -1;
   
     return (
-      <AOSFadeInContainer className="step-zero" ref={this.stepZero}>
+      <AOSFadeInContainer className="step-zero" id="step-0" ref={this.stepZero}>
         {!dataInitialEmail && (
           <EmailModal
             onSubmit={this.closeEmailModal}

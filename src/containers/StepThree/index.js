@@ -138,7 +138,7 @@ class StepThree extends React.Component {
     const { selectedId, data, selectedCardWithSecondaryProgramsId, viaLogoPath } = this.props;
     
     return (
-      <AOSFadeInContainer className="step-three" ref={this.stepThree}>
+      <AOSFadeInContainer className="step-three" id="step-3" ref={this.stepThree}>
         <Container>
           <Row>
             <Col>
