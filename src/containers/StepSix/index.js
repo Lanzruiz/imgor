@@ -2,7 +2,7 @@
 import React, { Fragment } from 'react';
 import { Container, Row, Col } from 'react-grid-system';
 import { connect } from 'react-redux';
-import scrollToComponent from 'react-scroll-to-component';
+//import scrollToComponent from 'react-scroll-to-component';
 import PropTypes from 'prop-types';
 import { reduxForm, change } from 'redux-form';
 import { bindActionCreators } from 'redux';
@@ -157,12 +157,12 @@ class StepSix extends React.Component {
   componentDidUpdate(prevProps) {
     const { step } = this.props;
     if ((step !== prevProps.step) && (prevProps.step > step) && ((prevProps.step - 1) === step)) {
-      scrollToComponent(this.stepSix.current, { align: 'top', duration: 500 });
+      //scrollToComponent(this.stepSix.current, { align: 'top', duration: 500 });
     }
   }
 
   scrollToCurrentComponent = () => {
-    scrollToComponent(this, { align: 'top', duration: 500 });
+    //scrollToComponent(this, { align: 'top', duration: 500 });
   }
 
   componentWillUnmount() {
