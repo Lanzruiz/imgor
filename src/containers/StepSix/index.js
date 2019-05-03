@@ -235,7 +235,7 @@ class StepSix extends React.Component {
     };
     
     return (
-      <AOSFadeInContainer className="step-six" ref={this.stepSix}>
+      <AOSFadeInContainer className="step-six" id="step-6" ref={this.stepSix}>
         <Container style={{ marginBottom: '65px' }}>
           <Row>
             <Col>
