@@ -13,6 +13,8 @@ export const stepSixFormFieldNames = {
   transport: 'transport',
   transportation: 'transportation',
   unaccompanied: 'unaccompanied',
+  arrivalUnaccompanied: 'arrival_unaccompanied',
+  departureUnaccompanied: 'departure_unaccompanied',
   dropoff: 'dropoff',
   dropoffOtherLocation: 'dropoff_other_location',
   pickUpOtherLocation: 'pick_up_other_location',
@@ -86,6 +88,14 @@ export function stepSixSelectedTransportSelector(state = {}) {
 
 export function stepSixUnaccompaniedSelector(state = {}) {
   return selector(state, stepSixFormFieldNames.unaccompanied);
+};
+
+export function stepSixArrivalUnaccompaniedSelector(state = {}) {
+  return selector(state, stepSixFormFieldNames.arrivalUnaccompanied);
+};
+
+export function stepSixDepartureUnaccompaniedSelector(state = {}) {
+  return selector(state, stepSixFormFieldNames.departureUnaccompanied);
 };
 
 function stepSixSelector(state = {}) {

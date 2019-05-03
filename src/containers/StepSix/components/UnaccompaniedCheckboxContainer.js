@@ -7,18 +7,17 @@ import isEqual from 'lodash/isEqual';
 import Radio from '../../../components/Radio';
 import LocaleString from '../../../components/LocaleString';
 // Constants
-import { stepSixFormFieldNames } from '../selectors';
 
 const UnaccompaniedCheckboxContainer = (props) => {
-  const { unaccompanied, transportUnaccompanied } = props;
+  const { unaccompanied, transportUnaccompanied, name } = props;
   const options = [
     { value: 'true', stringKey: 'step_six.yes', price: transportUnaccompanied && transportUnaccompanied.price },
     { value: 'false', stringKey: 'step_six.no', price: 0 },
   ];
   return (
-    <div className="step-six__radio-container">
+    <div className="step-six__radio-container unaccompanied__radio-buttons">
       <Field
-        name={stepSixFormFieldNames.unaccompanied}
+        name={name}
         type="radio"
         options={options}
         component={({ input, options }) => (

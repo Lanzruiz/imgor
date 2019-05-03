@@ -63,6 +63,10 @@
       }
       &__time-container{
         border-left: 1px solid $card-blue-color;
+        width: 94px;
+        .react-datepicker__time-box{
+          width: 94px;
+        }
       }
       &__year{
         &-read-view--down-arrow{
@@ -111,7 +115,7 @@
     .react-datepicker__navigation{
       &--next{
         border-left-color: white;
-        right: 70px;
+        right: 90px;
       }
       &--previous{
         border-right-color: white;
