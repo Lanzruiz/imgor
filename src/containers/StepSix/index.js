@@ -281,7 +281,10 @@ class StepSix extends React.Component {
                   <div className="section pick-up">
                     <div className="content">
                       <div className="title">
-                        <img src={planeImg} alt="airplane" />
+                        <Image
+                          defaultSrc={planeImg}
+                          src="step_six.plane"
+                        />
                         <LocaleString stringKey="step_six.arrival.title" />
                       </div>
                       <div className="airport">
@@ -362,7 +365,10 @@ class StepSix extends React.Component {
                   <div className="section drop-off">
                     <div className="content">
                       <div className="title">
-                        <img src={planeImg} alt="airplane" />
+                        <Image
+                          defaultSrc={planeImg}
+                          src="step_six.plane"
+                        />
                         <LocaleString stringKey="step_six.departure.title" />
                       </div>
                       <div className="airport">
