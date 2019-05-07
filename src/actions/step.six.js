@@ -6,7 +6,7 @@ import { change, untouch } from 'redux-form';
 import { updateCart } from './cart';
 // Constants
 import * as stepSixTypes from '../constants/step.six';
-import { stepSixFormFieldNames } from '../containers/StepSix/selectors';
+import { departingFormFieldNames, stepSixFormFieldNames } from '../containers/StepSix/selectors';
 // Api
 import Api from '../api';
 
@@ -260,7 +260,7 @@ export function stepSixAddTransportToCart({ cartId, participantId }){
           airline: values[stepSixFormFieldNames.airportPickupAirline] || null,
           number: values[stepSixFormFieldNames.arrivalFlightNumber] || null,
           date: values[stepSixFormFieldNames.arrivalDateTime] || null,
-          location: values[stepSixFormFieldNames.dropoff] || null,
+          location: departingFormFieldNames.imgaCampusCenter,
           location_other: values[stepSixFormFieldNames.pickUpOtherLocation] || null,
         }
       },
@@ -271,7 +271,7 @@ export function stepSixAddTransportToCart({ cartId, participantId }){
           airline: values[stepSixFormFieldNames.departingAirline] || null,
           number: values[stepSixFormFieldNames.departingFlightNumber] || null,
           date: values[stepSixFormFieldNames.departingDateTime] || null,
-          location: values[stepSixFormFieldNames.departing] || null,
+          location: departingFormFieldNames.imgaCampusCenter,
           location_other: values[stepSixFormFieldNames.dropoffOtherLocation] || null,
         }
       },
@@ -381,12 +381,12 @@ export function stepSixUnselectTransportationOption({ cartId, participantId }) {
       stepSixFormFieldNames.transport,
       stepSixFormFieldNames.arrivalFlightNumber,
       stepSixFormFieldNames.arrivalDateTime,
-      stepSixFormFieldNames.dropoff,
+      // stepSixFormFieldNames.dropoff,
       stepSixFormFieldNames.dropoffOtherLocation,
       stepSixFormFieldNames.departingTransport,
       stepSixFormFieldNames.departingFlightNumber,
       stepSixFormFieldNames.departingDateTime,
-      stepSixFormFieldNames.departing,
+      // stepSixFormFieldNames.departing,
       stepSixFormFieldNames.pickUpOtherLocation,
       stepSixFormFieldNames.airportPickupAirline,
       stepSixFormFieldNames.departingAirline,
