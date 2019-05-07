@@ -367,6 +367,8 @@
           }
           &__radio-buttons{
             display: flex;
+            margin-bottom: 10px;
+
             &>div{
               margin-right: 30px;
             }
@@ -395,6 +397,9 @@
                   height: auto;
                   input{
                     padding: 7px 10px 7px 10px;
+                    @media screen and (max-width: $mobile){
+                      font-size: 14px;
+                    }
                   }
                   .dropdown__container{
                     border: none;
