@@ -152,9 +152,9 @@ class StepTwo extends React.Component {
     this.setDefaultState();
   }
 
-  //scrollToCurrentComponent = () => {
+  scrollToCurrentComponent = () => {
     //scrollToComponent(this.stepTwo.current, { offset: -200, align: 'middle', duration: 1000 });
-  //};
+  };
 
   render() {
     const { data, weeksCounter, sport, selectedDate, boarding } = this.props;
@@ -187,7 +187,7 @@ class StepTwo extends React.Component {
     // }
   
     return (
-      <AOSFadeInContainer className="step-two" ref={this.stepTwo}>
+      <AOSFadeInContainer className="step-two" id="step-2" ref={this.stepTwo}>
         <Container>
           <Row>
             <Col>

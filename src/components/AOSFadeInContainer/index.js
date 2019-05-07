@@ -10,10 +10,10 @@ class AOSFadeInContainer extends React.Component {
         <div
           children={children}
           data-aos="fade-up"
-          data-aos-offset="200"
+          data-aos-offset="100"
           data-aos-duration="300"
           data-aos-easing="linear"
-          data-aos-delay="200"
+          data-aos-delay="100"
           {...rest}
         />
       </VisibilitySensor>

@@ -4,7 +4,7 @@ import { Container, Row, Col } from 'react-grid-system';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import scrollToComponent from 'react-scroll-to-component';
+//import scrollToComponent from 'react-scroll-to-component';
 // Containers
 import StepFiveCatalogGear from '../StepFiveCatalogGear';
 import StepFiveCatalogGearUpsellNew from '../StepFiveCatalogGearUpsellNew';
@@ -48,7 +48,7 @@ class StepFive extends React.Component {
   static defaultProps = {};
 
   componentDidMount() {
-    scrollToComponent(this.stepFour.current, { align: 'top', duration: 500 });
+    //scrollToComponent(this.stepFour.current, { align: 'top', duration: 500 });
     this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_GEAR);
     //this.scrollToCurrentComponent();
     this.sendStepToDrupal();
@@ -61,7 +61,7 @@ class StepFive extends React.Component {
   };
 
   scrollToCurrentComponent = () => {
-    scrollToComponent(this, { align: 'top', duration: 500 });
+    //scrollToComponent(this, { align: 'top', duration: 500 });
   }
 
   componentWillUnmount() {
@@ -80,7 +80,7 @@ class StepFive extends React.Component {
     const currentStepNumber = (stepFourData.length > 0) ? stepsEnum.five : stepsEnum.four;
 
     return (
-      <AOSFadeInContainer className="step-five" ref={this.stepFive}>
+      <AOSFadeInContainer className="step-five" id="step-5" ref={this.stepFive}>
         <Container style={{ marginBottom: '65px' }}>
           <Row>
             <Col>

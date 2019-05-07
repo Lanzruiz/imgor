@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Col, Container, Row } from 'react-grid-system';
 import { connect } from 'react-redux';
-import scrollToComponent from 'react-scroll-to-component';
+//import scrollToComponent from 'react-scroll-to-component';
 import { bindActionCreators } from 'redux';
 import { formValueSelector, reduxForm } from 'redux-form';
 import { addParticipantByCardId } from '../../actions/participant';
@@ -41,7 +41,7 @@ class StepOne extends React.Component {
   }
 
   componentDidMount() {
-    this.scrollToCurrentComponent();
+    //this.scrollToCurrentComponent();
     this.sendStepToDrupal();
   }
 
@@ -52,7 +52,7 @@ class StepOne extends React.Component {
   };
   
   scrollToCurrentComponent = () => {
-    scrollToComponent(this.stepZero.current, { offset: -200, align: 'middle', duration: 1000 });
+    //scrollToComponent(this.stepZero.current, { offset: -200, align: 'middle', duration: 1000 });
   };
 
   componentDidUpdate(prevProps) {
@@ -103,7 +103,7 @@ class StepOne extends React.Component {
     const shouldRenderAgesAsDropdown = (dataBusinessType || '').toLowerCase().indexOf('adult') !== -1;
   
     return (
-      <AOSFadeInContainer className="step-zero" ref={this.stepZero}>
+      <AOSFadeInContainer className="step-zero" id="step-0" ref={this.stepZero}>
         {!dataInitialEmail && (
           <EmailModal
             onSubmit={this.closeEmailModal}

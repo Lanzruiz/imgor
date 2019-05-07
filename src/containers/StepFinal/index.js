@@ -2,7 +2,7 @@
 import React, { Fragment } from 'react';
 import { Container, Row, Col } from 'react-grid-system';
 import { Form, Field } from 'redux-form';
-import scrollToComponent from 'react-scroll-to-component';
+//import scrollToComponent from 'react-scroll-to-component';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -72,7 +72,7 @@ class StepFinal extends React.Component {
   };
 
   scrollToCurrentComponent = () => {
-    scrollToComponent(this, { align: 'top', duration: 500 });
+    //scrollToComponent(this, { align: 'top', duration: 500 });
   }
 
   componentWillMount() {
@@ -132,7 +132,7 @@ class StepFinal extends React.Component {
           isTablet = true;
         }
         return (
-          <AOSFadeInContainer className="step-final">
+          <AOSFadeInContainer className="step-final" id="step-7">
             <Container>
               <Row>
                 <Col>
@@ -399,7 +399,7 @@ class StepFinal extends React.Component {
   };
 
   scrollToComponent = () => {
-    scrollToComponent(this.stepFinal.current, { align: 'top', duration: 500 });
+    //scrollToComponent(this.stepFinal.current, { align: 'top', duration: 500 });
   }
 }
 

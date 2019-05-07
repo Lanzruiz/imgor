@@ -18,7 +18,7 @@ import StepFourEslSecondaryProgram from './components/StepFourEslSecondaryProgra
 import StepFourPerformanceSecondaryProgram from './components/StepFourPerformanceSecondaryProgram';
 import StepFourSatSecondaryProgram from './components/StepFourSatSecondaryProgram';
 import AOSFadeInContainer from '../../components/AOSFadeInContainer';
-import scrollToComponent from 'react-scroll-to-component';
+//import scrollToComponent from 'react-scroll-to-component';
 // Action
 import * as weeksActions from '../../actions/weeks';
 import * as stepsActions from '../../actions/steps';
@@ -56,7 +56,7 @@ class StepFour extends React.Component {
     if (!hasSecondaryProgram && isEqual(currentStep, stepsEnum.four)) {
       this.getCatalogCamConcentrations();
     }
-    this.scrollToCurrentComponent();
+    //this.scrollToCurrentComponent();
     this.sendStepToDrupal();
   }
 
@@ -67,7 +67,7 @@ class StepFour extends React.Component {
   };
 
   scrollToCurrentComponent = () => {
-    scrollToComponent(this.stepFour.current, { offset: 0, align: 'middle', duration: 500 });
+    //scrollToComponent(this.stepFour.current, { offset: 0, align: 'middle', duration: 500 });
   };
 
   componentWillUnmount() {
@@ -117,7 +117,7 @@ class StepFour extends React.Component {
   
     if (hasSecondaryProgram) {
       return (
-        <AOSFadeInContainer className="step-four" ref={this.stepFour}>
+        <AOSFadeInContainer className="step-four" id="step-4" ref={this.stepFour}>
           <Container>
             <Row>
               <Col>
