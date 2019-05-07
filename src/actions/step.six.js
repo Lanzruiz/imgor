@@ -318,7 +318,7 @@ export function stepSixAddTransportToCart({ cartId, participantId }){
     
     const params = { participantId, cartId };
     
-    if(Boolean(cartPayload.unaccompanied)){
+    if(Boolean(cartPayload.arrivalUnaccompanied) || Boolean(cartPayload.departureUnaccompanied)){
       jobs.push(sendUnaccompaniedRequest({ ...params, productId: stepSixUnnacompaniedProductId, body: unacommpaniedProductBody }, dispatch));
     }
     
