@@ -346,11 +346,11 @@ class StepSix extends React.Component {
                                 />
                               </div>
                             </div>
-                            <p className="description step-six__paragraph step-six__paragraph--small">
-                              <LocaleString stringKey={'step_six.provide_later_description'} />
-                            </p>
                           </div>
                         )}
+                        <p className="description step-six__paragraph step-six__paragraph--small">
+                          <LocaleString stringKey={'step_six.provide_later_description'} />
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -432,11 +432,11 @@ class StepSix extends React.Component {
                                 />
                               </div>
                             </div>
-                            <p className="description step-six__paragraph step-six__paragraph--small">
-                              <LocaleString stringKey={'step_six.provide_later_description'} />
-                            </p>
                           </div>
                         )}
+                        <p className="description step-six__paragraph step-six__paragraph--small">
+                          <LocaleString stringKey={'step_six.provide_later_description'} />
+                        </p>
                       </div>
                     </div>
                   </div>
