@@ -17,8 +17,8 @@ const initialState = {
   upsellNewSelectedProducts: {},
   excursions: [],
   selectedExcurcionGear: {},
-  excursionsItemsStepCounter: 0,
-  upsellItemsStepCounter: 0,
+  excursionsItemsStepCounter: 6,
+  upsellItemsStepCounter: 6,
 };
 
 export default function(state = initialState, action) {

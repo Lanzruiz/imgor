@@ -86,25 +86,35 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
       this.props.stepFiveActions.stepFiveDeleteUpsellGearItemRequest(args);
     }
   }
-
-  render() {
-    const { stepFiveGearUpsellNew } = this.props;
-    const shouldRenderCatalogGearItem = stepFiveGearUpsellNew.length > 0;
-    return shouldRenderCatalogGearItem && (
-      <div className="upsell-new">
-        <CSSTransitionGroup
-          className="align-items-stretch"
-          component={Row}
-          transitionName="slide-top"
-          transitionEnterTimeout={500}
-          transitionLeaveTimeout={300}
-        >
-          {stepFiveGearUpsellNew.map(this.renderUpsellNew)}
-        </CSSTransitionGroup>
-      </div>
-    );
-  }
-
+  
+  setUpsellGearItemDate = ({ cardId, dateId }) => {
+    this.props.stepFiveActions.stepFiveSetUpsellGearItemDate({ cardId, dateId });
+  };
+  
+  updateUpsellGearItem = async (cardId, dates, shouldSendRequest) => {
+    if (shouldSendRequest) {
+      const { cartId, participantId, upsellNewSelectedProducts } = this.props;
+      const upsellNewSelectedProductsItem = upsellNewSelectedProducts[cardId];
+      const product = upsellNewSelectedProductsItem ? find(dates, ['id', upsellNewSelectedProductsItem.dateId]) : '';
+      const args = {
+        cartId,
+        participantId,
+        product,
+        cardId,
+        quantity: 1,
+        productId: upsellNewSelectedProductsItem.productId,
+        type: productTypesEnum.gearUpsell,
+      };
+      if (upsellNewSelectedProductsItem.needUpdate) {
+        await this.props.stepFiveActions.stepFiveUpdateUpsellGearItemRequest(args);
+      } else {
+        await this.props.stepFiveActions.stepFiveDeleteUpsellGearItemRequest(args);
+      }
+      
+      this.props.gtmAddCartProduct({ id: product.id });
+    }
+  };
+  
   getCatalogGearUpsellNew = () => {
     const { sport, startDate, endDate, gender } = this.props;
     const getCatalogGearUpsellNewArgs = {
@@ -115,7 +125,9 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
     };
     this.props.stepFiveActions.getCatalogGearUpsellNewRequest(getCatalogGearUpsellNewArgs);
   };
-
+  
+  
+  
   renderUpsellNew = (upsellNewItem) => {
     const { upsellNewSelectedProducts } = this.props;
     const { categories, description, name, image_url, dates = [] } = upsellNewItem;
@@ -123,19 +135,19 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
     const price = dates.length && dates[0].capacity_price;
     const id = toLower(name);
     const isCurrentItemSelected = upsellNewSelectedProducts[id] && upsellNewSelectedProducts[id].selected;
-
+    
     const tooltipMessage = upsellNewSelectedProducts[id] ? '' : <LocaleString stringKey="please_choose_date" />;
-
+    
     const customButtonTitle = (
       isCurrentItemSelected
         ? upsellNewSelectedProducts[id].needUpdate
-          ? <LocaleString stringKey="update" />
-          : <LocaleString stringKey="remove" />
+        ? <LocaleString stringKey="update" />
+        : <LocaleString stringKey="remove" />
         : <LocaleString stringKey="selected" />
     );
-
+    
     return (
-      <Col md={6} lg={4} key={id} className="card-column">
+      <Col md={12} lg={6} key={id} className="card-column">
         <Card
           id={id}
           cardHeader={name}
@@ -166,7 +178,7 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
       </Col>
     );
   };
-
+  
   renderDates = (dates, cardId) => {
     const { upsellNewSelectedProducts } = this.props;
     const options = dates.map(({ id, capacity_start_date }) => {
@@ -194,7 +206,7 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
       </div>
     );
   };
-
+  
   setUpsellGearItem = async (cardId, dates, shouldSendRequest) => {
     if (shouldSendRequest) {
       const { cartId, participantId, upsellNewSelectedProducts } = this.props;
@@ -210,38 +222,28 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
         type: productTypesEnum.gearUpsell,
       };
       await this.props.stepFiveActions.stepFiveSetUpsellGearItemRequest(args);
-  
-      this.props.gtmAddCartProduct({ id: product.id });
-    }
-  };
-
-  setUpsellGearItemDate = ({ cardId, dateId }) => {
-    this.props.stepFiveActions.stepFiveSetUpsellGearItemDate({ cardId, dateId });
-  };
-
-  updateUpsellGearItem = async (cardId, dates, shouldSendRequest) => {
-    if (shouldSendRequest) {
-      const { cartId, participantId, upsellNewSelectedProducts } = this.props;
-      const upsellNewSelectedProductsItem = upsellNewSelectedProducts[cardId];
-      const product = upsellNewSelectedProductsItem ? find(dates, ['id', upsellNewSelectedProductsItem.dateId]) : '';
-      const args = {
-        cartId,
-        participantId,
-        product,
-        cardId,
-        quantity: 1,
-        productId: upsellNewSelectedProductsItem.productId,
-        type: productTypesEnum.gearUpsell,
-      };
-      if (upsellNewSelectedProductsItem.needUpdate) {
-        await this.props.stepFiveActions.stepFiveUpdateUpsellGearItemRequest(args);
-      } else {
-        await this.props.stepFiveActions.stepFiveDeleteUpsellGearItemRequest(args);
-      }
       
       this.props.gtmAddCartProduct({ id: product.id });
     }
   };
+  
+  render() {
+    const { stepFiveGearUpsellNew } = this.props;
+    const shouldRenderCatalogGearItem = stepFiveGearUpsellNew.length > 0;
+    return shouldRenderCatalogGearItem && (
+      <div className="upsell-new">
+        <CSSTransitionGroup
+          className="align-items-stretch"
+          component={Row}
+          transitionName="slide-top"
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={300}
+        >
+          {stepFiveGearUpsellNew.map(this.renderUpsellNew)}
+        </CSSTransitionGroup>
+      </div>
+    );
+  }
 }
 
 function mapStateToProps(state) {

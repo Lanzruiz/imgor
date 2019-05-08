@@ -25,58 +25,6 @@ import { stepFiveDataPerPageSelector, stepFiveSelectedGearsSelector, stepFivePro
 import { productTypesEnum } from '../../constants/cart';
 
 class StepFiveCatalogGear extends React.Component {
-  static propTypes = {
-    data: PropTypes.arrayOf(
-      PropTypes.shape({
-        price: PropTypes.number,
-        image_url: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-        id: PropTypes.number,
-        categories: PropTypes.arrayOf(
-          PropTypes.shape({
-            display_name: PropTypes.string,
-          }),
-        ),
-        description: PropTypes.string,
-        display_name: PropTypes.string,
-        attributes: PropTypes.arrayOf(
-          PropTypes.shape({
-            key: PropTypes.string,
-            name: PropTypes.string,
-            display_name: PropTypes.string,
-            options: PropTypes.arrayOf(
-              PropTypes.shape({
-                id: PropTypes.string,
-                name: PropTypes.string,
-                display_name: PropTypes.string,
-              }),
-            ),
-          }),
-        ),
-        could_be_selected: PropTypes.bool,
-        selected_option_id: PropTypes.string,
-        quantity: PropTypes.number,
-        need_to_update: PropTypes.bool,
-      }),
-    ),
-    shouldRenderLoadMoreButton: PropTypes.bool,
-    stepFiveActions: PropTypes.shape({
-      stepFiveIncreaseItemsPerPage: PropTypes.func.isRequired,
-      postCartCartIdParticipantParticipantIdProductRequest: PropTypes.func.isRequired,
-      putCartCartIdParticipantParticipantIdProductIdRequest: PropTypes.func.isRequired,
-      deleteCartCartIdParticipantParticipantIdProductIdRequest: PropTypes.func.isRequired,
-      stepFiveIncrementSelectedGearQuantity: PropTypes.func.isRequired,
-      stepFiveDecrementSelectedGearQuantity: PropTypes.func.isRequired,
-      stepFiveSelectDropdownItem: PropTypes.func.isRequired,
-      getCatalogGearRequest: PropTypes.func.isRequired,
-    }),
-    selectedGear: PropTypes.objectOf(
-      PropTypes.shape({
-        id: PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
-        participantProductId: PropTypes.number
-      }),
-    ),
-  };
-
   static defaultProps = {
     data: [],
   };
@@ -89,7 +37,7 @@ class StepFiveCatalogGear extends React.Component {
 
   scrollToCurrentComponent = () => {
     scrollToComponent(this, { align: 'top', duration: 500 });
-  }
+  };
 
   componentWillUnmount() {
     const { selectedGear } = this.props;
@@ -97,28 +45,23 @@ class StepFiveCatalogGear extends React.Component {
       this.removeGear(key);
     }
   }
-
-  render() {
-    const { data } = this.props;
-    const isCatalogGearDataAvailable = data.length > 0;
-    return (
-      <div className="catalog-gear">
-        <CSSTransitionGroup
-          className="align-items-stretch"
-          component={Row}
-          transitionName="slide-top"
-          transitionEnterTimeout={500}
-          transitionLeaveTimeout={300}
-        >
-          {isCatalogGearDataAvailable
-            ? data.map(this.renderCardItem)
-            : this.renderNoGearAvailableBlock()
-          }
-        </CSSTransitionGroup>
-      </div>
-    );
-  }
-
+  
+  incrementSelectedGearCounter = (selectedGearId) => {
+    this.props.stepFiveActions.stepFiveIncrementSelectedGearQuantity(selectedGearId);
+  };
+  
+  decrementSelectedGearCounter = (selectedGearId) => {
+    this.props.stepFiveActions.stepFiveDecrementSelectedGearQuantity(selectedGearId);
+  };
+  
+  selectDropdownItem = ({ selectedOptionId, selectedGearId }) => {
+    this.props.stepFiveActions.stepFiveSelectDropdownItem({ selectedOptionId, selectedGearId });
+  };
+  
+  getCatalogGear = ({ gender }) => {
+    this.props.stepFiveActions.getCatalogGearRequest({ gender });
+  };
+  
   renderNoGearAvailableBlock = () => {
     return (
       <Col>
@@ -128,39 +71,39 @@ class StepFiveCatalogGear extends React.Component {
       </Col>
     );
   };
-
+  
   renderCardItem = (card) => {
     const { selectedGear } = this.props;
     const { price, image_url, id, categories = [], description, display_name, attributes = [], could_be_selected, selected_option_id, quantity, need_to_update } = card;
     const [ label = {}, header = {} ] = categories;
     const selectedGearId = selectedGear[id] ? selectedGear[id].id : null;
-
+    
     const onClickHandler = (
       (could_be_selected && (quantity > 0))
         ? this.setGear
         : () => {}
     );
-
+    
     const customButtonTitle = (
       need_to_update
         ? (quantity > 0)
-          ? <LocaleString stringKey="update" />
-          : <LocaleString stringKey="remove" />
+        ? <LocaleString stringKey="update" />
+        : <LocaleString stringKey="remove" />
         : selectedGearId
-          ? <LocaleString stringKey="remove" />
-          : <LocaleString stringKey="selected" />
+        ? <LocaleString stringKey="remove" />
+        : <LocaleString stringKey="selected" />
     );
-
+    
     const onRemoveHandler = (
       need_to_update
         ? (quantity > 0)
-          ? this.updateGearItem
-          : this.removeGear
+        ? this.updateGearItem
+        : this.removeGear
         : this.removeGear
     );
-
+    
     let tooltipMessage;
-
+    
     if (attributes.length && !selected_option_id) {
       tooltipMessage =  <LocaleString stringKey="please_first_choose_size" />;
     } else if (!quantity && !selectedGearId) {
@@ -168,9 +111,9 @@ class StepFiveCatalogGear extends React.Component {
     } else {
       tooltipMessage = null;
     }
-
+    
     return (
-      <Col md={6} lg={4} key={id} className="card-column">
+      <Col md={12} lg={6} key={id} className="card-column">
         <Card
           id={id}
           cardHeader={display_name}
@@ -204,15 +147,15 @@ class StepFiveCatalogGear extends React.Component {
                 )}
               </CardContentCol>
             </CardContentRow>
-              <CardContentText>
-                {description}
-              </CardContentText>
+            <CardContentText>
+              {description}
+            </CardContentText>
           </CardContent>
         </Card>
       </Col>
     );
   };
-
+  
   setGear = async (productId) => {
     const { cartId, participantId, data, stepFiveProducts } = this.props;
     const gearItem = find(data, ['id', productId]);
@@ -234,11 +177,11 @@ class StepFiveCatalogGear extends React.Component {
         delete args.attributes;
       }
       await this.props.stepFiveActions.postCartCartIdParticipantParticipantIdProductRequest(args);
-  
+      
       this.props.gtmAddCartProduct({ id: productId });
     }
   };
-
+  
   updateGearItem = async (productId) => {
     const { cartId, participantId, data, stepFiveProducts, selectedGear } = this.props;
     const gearItem = find(data, ['id', productId]);
@@ -261,11 +204,11 @@ class StepFiveCatalogGear extends React.Component {
         delete args.attributes;
       }
       await this.props.stepFiveActions.putCartCartIdParticipantParticipantIdProductIdRequest(args);
-  
+      
       this.props.gtmAddCartProduct({ id: productId });
     }
   };
-
+  
   removeGear = (productId) => {
     const { cartId, participantId, selectedGear } = this.props;
     const args = {
@@ -276,7 +219,7 @@ class StepFiveCatalogGear extends React.Component {
     };
     this.props.stepFiveActions.deleteCartCartIdParticipantParticipantIdProductIdRequest(args);
   };
-
+  
   renderCardAttributes = (attribute, selectedGearId, selectedOptionId) => {
     const { display_name, key, options } = attribute;
     const selectedOption = find(options, ['id', selectedOptionId]);
@@ -292,22 +235,28 @@ class StepFiveCatalogGear extends React.Component {
       </div>
     );
   };
-
-  incrementSelectedGearCounter = (selectedGearId) => {
-    this.props.stepFiveActions.stepFiveIncrementSelectedGearQuantity(selectedGearId);
-  };
-
-  decrementSelectedGearCounter = (selectedGearId) => {
-    this.props.stepFiveActions.stepFiveDecrementSelectedGearQuantity(selectedGearId);
-  };
-
-  selectDropdownItem = ({ selectedOptionId, selectedGearId }) => {
-    this.props.stepFiveActions.stepFiveSelectDropdownItem({ selectedOptionId, selectedGearId });
-  };
-
-  getCatalogGear = ({ gender }) => {
-    this.props.stepFiveActions.getCatalogGearRequest({ gender });
-  };
+  
+  render() {
+    const { data } = this.props;
+    const isCatalogGearDataAvailable = data.length > 0;
+    return (
+      <div className="catalog-gear">
+        <CSSTransitionGroup
+          className="align-items-stretch"
+          component={Row}
+          transitionName="slide-top"
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={300}
+        >
+          {isCatalogGearDataAvailable
+            ? data.map(this.renderCardItem)
+            : this.renderNoGearAvailableBlock()
+          }
+        </CSSTransitionGroup>
+      </div>
+    );
+  }
+  
 }
 
 function CardCounter(args) {
@@ -335,6 +284,58 @@ function CardCounter(args) {
     </div>
   );
 }
+
+StepFiveCatalogGear.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      price: PropTypes.number,
+      image_url: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+      id: PropTypes.number,
+      categories: PropTypes.arrayOf(
+        PropTypes.shape({
+          display_name: PropTypes.string,
+        }),
+      ),
+      description: PropTypes.string,
+      display_name: PropTypes.string,
+      attributes: PropTypes.arrayOf(
+        PropTypes.shape({
+          key: PropTypes.string,
+          name: PropTypes.string,
+          display_name: PropTypes.string,
+          options: PropTypes.arrayOf(
+            PropTypes.shape({
+              id: PropTypes.string,
+              name: PropTypes.string,
+              display_name: PropTypes.string,
+            }),
+          ),
+        }),
+      ),
+      could_be_selected: PropTypes.bool,
+      selected_option_id: PropTypes.string,
+      quantity: PropTypes.number,
+      need_to_update: PropTypes.bool,
+    }),
+  ),
+  shouldRenderLoadMoreButton: PropTypes.bool,
+  stepFiveActions: PropTypes.shape({
+    stepFiveIncreaseItemsPerPage: PropTypes.func.isRequired,
+    postCartCartIdParticipantParticipantIdProductRequest: PropTypes.func.isRequired,
+    putCartCartIdParticipantParticipantIdProductIdRequest: PropTypes.func.isRequired,
+    deleteCartCartIdParticipantParticipantIdProductIdRequest: PropTypes.func.isRequired,
+    stepFiveIncrementSelectedGearQuantity: PropTypes.func.isRequired,
+    stepFiveDecrementSelectedGearQuantity: PropTypes.func.isRequired,
+    stepFiveSelectDropdownItem: PropTypes.func.isRequired,
+    getCatalogGearRequest: PropTypes.func.isRequired,
+  }),
+  selectedGear: PropTypes.objectOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
+      participantProductId: PropTypes.number
+    }),
+  ),
+};
 
 function mapStateToProps(state) {
   return {

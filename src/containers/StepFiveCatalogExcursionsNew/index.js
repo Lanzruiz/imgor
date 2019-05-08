@@ -79,28 +79,63 @@ class StepFiveCatalogExcursionsNew extends React.Component {
       this.props.stepFiveActions.stepFiveDeleteExcursionGearItemRequest(args);
     }
   }
-
-  render() {
-    const { excursions } = this.props;
-    if (isEqual(excursions.length, 0)) return null;
-    return (
-      <div className="excursions">
-        <CSSTransitionGroup
-          component={Row}
-          transitionName="slide-top"
-          transitionEnterTimeout={500}
-          transitionLeaveTimeout={300}
-        >
-          {excursions.map(this.renderExcursionItem)}
-        </CSSTransitionGroup>
-      </div>
-    );
+  
+  setExcursionGearItemDate = (dateId, cardId) => {
+    this.props.stepFiveActions.setExcursionGearItemDate({ dateId, cardId });
   }
-
+  
+  setCatdHeadHeight = (height) => {
+    if (this.state.cardHeadHeight < height) {
+      this.setState(() => ({ cardHeadHeight: height }));
+    }
+  };
+  
+  setExcursionGearItemRequest = async (cardId, dates, shouldSendRequest) => {
+    if (shouldSendRequest) {
+      const { cartId, participantId, selectedExcurcionGear } = this.props;
+      const selectedExcurcionGearItem = selectedExcurcionGear[cardId];
+      const product = selectedExcurcionGearItem ? find(dates, ['id', selectedExcurcionGearItem.dateId]) : '';
+      const args = {
+        cartId,
+        participantId,
+        product,
+        cardId,
+        quantity: 1,
+        productId: product.id,
+        type: productTypesEnum.excursion,
+      };
+      await this.props.stepFiveActions.stepFiveSetExcursionGearItemRequest(args);
+    }
+  };
+  
+  updateExcursionGearItemRequest =  async (cardId, dates, shouldSendRequest) => {
+    if (shouldSendRequest) {
+      const { cartId, participantId, selectedExcurcionGear } = this.props;
+      const selectedExcurcionGearItem = selectedExcurcionGear[cardId];
+      const product = selectedExcurcionGearItem ? find(dates, ['id', selectedExcurcionGearItem.dateId]) : '';
+      const args = {
+        cartId,
+        participantId,
+        product,
+        cardId,
+        quantity: 1,
+        productId: selectedExcurcionGearItem.productId,
+        type: productTypesEnum.excursion,
+      };
+      if (selectedExcurcionGearItem.needUpdate) {
+        await this.props.stepFiveActions.stepFiveUpdateExcursionGearItemRequest(args);
+      } else {
+        await this.props.stepFiveActions.stepFiveDeleteExcursionGearItemRequest(args);
+      }
+      
+      this.props.gtmAddCartProduct({ id: product.id });
+    }
+  };
+  
   getCatalogExcursionsNew = ({ startDate, endDate }) => {
     this.props.stepFiveActions.stepFiveGetCatalogExcursionsNewRequest({ startDate, endDate });
   };
-
+  
   renderExcursionItem = (item) => {
     const { selectedExcurcionGear } = this.props;
     const { cardHeadHeight } = this.state;
@@ -114,12 +149,12 @@ class StepFiveCatalogExcursionsNew extends React.Component {
     const customButtonTitle = (
       isCurrentItemSelected
         ? selectedExcurcionGear[id].needUpdate
-          ? <LocaleString stringKey="update" />
-          : <LocaleString stringKey="remove" />
+        ? <LocaleString stringKey="update" />
+        : <LocaleString stringKey="remove" />
         : <LocaleString stringKey="selected" />
     );
     return (
-      <Col key={id} md={6} lg={4} className="excursion__item">
+      <Col key={id} md={12} lg={6} className="excursion__item">
         <Card
           id={id}
           cardHeader={name}
@@ -151,8 +186,8 @@ class StepFiveCatalogExcursionsNew extends React.Component {
         </Card>
       </Col>
     );
-  }
-
+  };
+  
   renderDates = (dates, cardId) => {
     const { selectedExcurcionGear } = this.props;
     const options = dates.map(({ id, capacity_start_date }) => {
@@ -181,56 +216,21 @@ class StepFiveCatalogExcursionsNew extends React.Component {
     );
   };
 
-  setExcursionGearItemDate = (dateId, cardId) => {
-    this.props.stepFiveActions.setExcursionGearItemDate({ dateId, cardId });
-  }
-
-  setCatdHeadHeight = (height) => {
-    if (this.state.cardHeadHeight < height) {
-      this.setState(() => ({ cardHeadHeight: height }));
-    }
-  };
-
-  setExcursionGearItemRequest = async (cardId, dates, shouldSendRequest) => {
-    if (shouldSendRequest) {
-      const { cartId, participantId, selectedExcurcionGear } = this.props;
-      const selectedExcurcionGearItem = selectedExcurcionGear[cardId];
-      const product = selectedExcurcionGearItem ? find(dates, ['id', selectedExcurcionGearItem.dateId]) : '';
-      const args = {
-        cartId,
-        participantId,
-        product,
-        cardId,
-        quantity: 1,
-        productId: product.id,
-        type: productTypesEnum.excursion,
-      };
-      await this.props.stepFiveActions.stepFiveSetExcursionGearItemRequest(args);
-    }
-  };
-
-  updateExcursionGearItemRequest =  async (cardId, dates, shouldSendRequest) => {
-    if (shouldSendRequest) {
-      const { cartId, participantId, selectedExcurcionGear } = this.props;
-      const selectedExcurcionGearItem = selectedExcurcionGear[cardId];
-      const product = selectedExcurcionGearItem ? find(dates, ['id', selectedExcurcionGearItem.dateId]) : '';
-      const args = {
-        cartId,
-        participantId,
-        product,
-        cardId,
-        quantity: 1,
-        productId: selectedExcurcionGearItem.productId,
-        type: productTypesEnum.excursion,
-      };
-      if (selectedExcurcionGearItem.needUpdate) {
-        await this.props.stepFiveActions.stepFiveUpdateExcursionGearItemRequest(args);
-      } else {
-        await this.props.stepFiveActions.stepFiveDeleteExcursionGearItemRequest(args);
-      }
-  
-      this.props.gtmAddCartProduct({ id: product.id });
-    }
+  render() {
+    const { excursions } = this.props;
+    if (isEqual(excursions.length, 0)) return null;
+    return (
+      <div className="excursions">
+        <CSSTransitionGroup
+          component={Row}
+          transitionName="slide-top"
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={300}
+        >
+          {excursions.map(this.renderExcursionItem)}
+        </CSSTransitionGroup>
+      </div>
+    );
   }
 }
 
