@@ -193,7 +193,7 @@ class StepOne extends React.Component {
   render() {
     const { weeksCounter, participantId, data, tabIndex, group, dataInitialEmail } = this.props;
     
-    const parsedData = data.map(v => ({ ...v, id: (v.name || '').toLowerCase().replace(/\s/g, '_') }));
+    const parsedData = data.map(v => ({ ...v, id: (v.name || '').toLowerCase().replace(/\s/g, '_') })).reverse();
     
     return (
       <AOSFadeInContainer className="step-one" id="step-1" ref={this.stepOne}>
