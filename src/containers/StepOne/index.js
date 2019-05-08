@@ -195,9 +195,10 @@ class StepOne extends React.Component {
     
     const parsedData = data.map(v => ({ ...v, id: (v.name || '').toLowerCase().replace(/\s/g, '_') }));
     
-    const hasWeekChoose = !!parsedData.find(v => v.name !== "Year-Round Weekly Camps");
+    const weekYearRound = parsedData.find(v => v.name === "Year-Round Weekly Camps");
+    const hasWeekRound = !!weekYearRound;
     
-    const parsedDataWithFlip = [...parsedData.filter(v => v.name !== "Year-Round Weekly Camps"), ...(hasWeekChoose ? [parsedData[0]] : [])];
+    const parsedDataWithFlip = [...parsedData.filter(v => v.name !== 'Year-Round Weekly Camps'), ...(hasWeekRound ? [weekYearRound] : [])];
     
     return (
       <AOSFadeInContainer className="step-one" id="step-1" ref={this.stepOne}>
