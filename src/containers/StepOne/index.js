@@ -193,7 +193,11 @@ class StepOne extends React.Component {
   render() {
     const { weeksCounter, participantId, data, tabIndex, group, dataInitialEmail } = this.props;
     
-    const parsedData = data.map(v => ({ ...v, id: (v.name || '').toLowerCase().replace(/\s/g, '_') })).reverse();
+    const parsedData = data.map(v => ({ ...v, id: (v.name || '').toLowerCase().replace(/\s/g, '_') }));
+    
+    const hasWeekChoose = !!parsedData.find(v => v.name !== "Year-Round Weekly Camps");
+    
+    const parsedDataWithFlip = [...parsedData.filter(v => v.name !== "Year-Round Weekly Camps"), ...(hasWeekChoose ? [parsedData[0]] : [])];
     
     return (
       <AOSFadeInContainer className="step-one" id="step-1" ref={this.stepOne}>
@@ -213,7 +217,7 @@ class StepOne extends React.Component {
               />
             </Col>
           </Row>
-          {parsedData.map((row, index) => {
+          {parsedDataWithFlip.map((row, index) => {
             const selectedIndex = (
               isStringsEqual(row.name, group)
                 ? isStringsEqual(row.name, weekly_camp)
