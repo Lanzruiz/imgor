@@ -2,22 +2,34 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Row, Col } from 'react-grid-system';
+import { Row, Col, Container } from 'react-grid-system';
 import { CSSTransitionGroup } from 'react-transition-group';
 import { bindActionCreators } from 'redux';
 import toLower from 'lodash/toLower';
 import find from 'lodash/find';
 import scrollToComponent from 'react-scroll-to-component';
+import AOSFadeInContainer from '../../components/AOSFadeInContainer';
 // Components
 import Card, { CardContent, CardContentRow, CardContentCol, CardContentText } from '../../components/Card';
+import LoadMoreButton from '../../components/LoadMoreButton';
 import LocaleString from '../../components/LocaleString';
 import Dropdown from '../../components/Dropdown';
 import Image from '../../components/Image';
 import { gtmAddCartProduct } from '../../helpers/GTMService';
+import { sportSelector } from '../InitialComponent/selectors';
 // Selectors
-import { stepOneGenderSelector, cartIdSelector, participantIdSelector } from '../StepOne/selectors';
+import {
+  stepOneGenderSelector,
+  cartIdSelector,
+  participantIdSelector,
+  weeksCounterSelector
+} from '../StepOne/selectors';
 import { stepTwoStartDateSelector, stepTwoEndDateSelector } from '../StepTwo/selectors';
-import { stepFiveUpsellPerPageSelector, stepFiveUpsellNewSelectedProductsSelector } from '../StepFive/selectors';
+import {
+  stepFiveUpsellPerPageSelector,
+  stepFiveUpsellNewSelectedProductsSelector,
+  stepFiveShouldRenderUpsellLoadMoreButtonSelector
+} from '../StepFive/selectors';
 // Actions
 import * as stepFiveActions from '../../actions/step.five';
 // Constants
@@ -66,13 +78,18 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
   };
 
   componentDidMount() {
-    this.getCatalogGearUpsellNew();
+    const { weeksCounter } = this.props;
+    
+    const shouldGetGetUpSell = weeksCounter >= 2;
+    if(shouldGetGetUpSell){
+      this.getCatalogGearUpsellNew();
+    }
     //this.scrollToCurrentComponent();
   }
 
   scrollToCurrentComponent = () => {
     scrollToComponent(this, { align: 'top', duration: 500 });
-  }
+  };
 
   componentWillUnmount() {
     const { upsellNewSelectedProducts, cartId, participantId, } = this.props;
@@ -86,25 +103,39 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
       this.props.stepFiveActions.stepFiveDeleteUpsellGearItemRequest(args);
     }
   }
-
-  render() {
-    const { stepFiveGearUpsellNew } = this.props;
-    const shouldRenderCatalogGearItem = stepFiveGearUpsellNew.length > 0;
-    return shouldRenderCatalogGearItem && (
-      <div className="upsell-new">
-        <CSSTransitionGroup
-          className="align-items-stretch"
-          component={Row}
-          transitionName="slide-top"
-          transitionEnterTimeout={500}
-          transitionLeaveTimeout={300}
-        >
-          {stepFiveGearUpsellNew.map(this.renderUpsellNew)}
-        </CSSTransitionGroup>
-      </div>
-    );
-  }
-
+  
+  loadMore = () => {
+    this.props.stepFiveActions.stepFiveIncreaseUpsellItemsPerPage();
+  };
+  
+  setUpsellGearItemDate = ({ cardId, dateId }) => {
+    this.props.stepFiveActions.stepFiveSetUpsellGearItemDate({ cardId, dateId });
+  };
+  
+  updateUpsellGearItem = async (cardId, dates, shouldSendRequest) => {
+    if (shouldSendRequest) {
+      const { cartId, participantId, upsellNewSelectedProducts } = this.props;
+      const upsellNewSelectedProductsItem = upsellNewSelectedProducts[cardId];
+      const product = upsellNewSelectedProductsItem ? find(dates, ['id', upsellNewSelectedProductsItem.dateId]) : '';
+      const args = {
+        cartId,
+        participantId,
+        product,
+        cardId,
+        quantity: 1,
+        productId: upsellNewSelectedProductsItem.productId,
+        type: productTypesEnum.gearUpsell,
+      };
+      if (upsellNewSelectedProductsItem.needUpdate) {
+        await this.props.stepFiveActions.stepFiveUpdateUpsellGearItemRequest(args);
+      } else {
+        await this.props.stepFiveActions.stepFiveDeleteUpsellGearItemRequest(args);
+      }
+      
+      this.props.gtmAddCartProduct({ id: product.id });
+    }
+  };
+  
   getCatalogGearUpsellNew = () => {
     const { sport, startDate, endDate, gender } = this.props;
     const getCatalogGearUpsellNewArgs = {
@@ -115,7 +146,9 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
     };
     this.props.stepFiveActions.getCatalogGearUpsellNewRequest(getCatalogGearUpsellNewArgs);
   };
-
+  
+  
+  
   renderUpsellNew = (upsellNewItem) => {
     const { upsellNewSelectedProducts } = this.props;
     const { categories, description, name, image_url, dates = [] } = upsellNewItem;
@@ -123,19 +156,19 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
     const price = dates.length && dates[0].capacity_price;
     const id = toLower(name);
     const isCurrentItemSelected = upsellNewSelectedProducts[id] && upsellNewSelectedProducts[id].selected;
-
+    
     const tooltipMessage = upsellNewSelectedProducts[id] ? '' : <LocaleString stringKey="please_choose_date" />;
-
+    
     const customButtonTitle = (
       isCurrentItemSelected
         ? upsellNewSelectedProducts[id].needUpdate
-          ? <LocaleString stringKey="update" />
-          : <LocaleString stringKey="remove" />
+        ? <LocaleString stringKey="update" />
+        : <LocaleString stringKey="remove" />
         : <LocaleString stringKey="selected" />
     );
-
+    
     return (
-      <Col md={6} lg={4} key={id} className="card-column">
+      <Col md={12} lg={6} key={id} className="card-column">
         <Card
           id={id}
           cardHeader={name}
@@ -166,7 +199,7 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
       </Col>
     );
   };
-
+  
   renderDates = (dates, cardId) => {
     const { upsellNewSelectedProducts } = this.props;
     const options = dates.map(({ id, capacity_start_date }) => {
@@ -194,7 +227,7 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
       </div>
     );
   };
-
+  
   setUpsellGearItem = async (cardId, dates, shouldSendRequest) => {
     if (shouldSendRequest) {
       const { cartId, participantId, upsellNewSelectedProducts } = this.props;
@@ -210,38 +243,37 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
         type: productTypesEnum.gearUpsell,
       };
       await this.props.stepFiveActions.stepFiveSetUpsellGearItemRequest(args);
-  
-      this.props.gtmAddCartProduct({ id: product.id });
-    }
-  };
-
-  setUpsellGearItemDate = ({ cardId, dateId }) => {
-    this.props.stepFiveActions.stepFiveSetUpsellGearItemDate({ cardId, dateId });
-  };
-
-  updateUpsellGearItem = async (cardId, dates, shouldSendRequest) => {
-    if (shouldSendRequest) {
-      const { cartId, participantId, upsellNewSelectedProducts } = this.props;
-      const upsellNewSelectedProductsItem = upsellNewSelectedProducts[cardId];
-      const product = upsellNewSelectedProductsItem ? find(dates, ['id', upsellNewSelectedProductsItem.dateId]) : '';
-      const args = {
-        cartId,
-        participantId,
-        product,
-        cardId,
-        quantity: 1,
-        productId: upsellNewSelectedProductsItem.productId,
-        type: productTypesEnum.gearUpsell,
-      };
-      if (upsellNewSelectedProductsItem.needUpdate) {
-        await this.props.stepFiveActions.stepFiveUpdateUpsellGearItemRequest(args);
-      } else {
-        await this.props.stepFiveActions.stepFiveDeleteUpsellGearItemRequest(args);
-      }
       
       this.props.gtmAddCartProduct({ id: product.id });
     }
   };
+  
+  render() {
+    const { stepFiveGearUpsellNew, shouldRenderLoadMoreButton } = this.props;
+    const shouldRenderCatalogGearItem = stepFiveGearUpsellNew.length > 0;
+    return shouldRenderCatalogGearItem && (
+      <AOSFadeInContainer className="step-five" id="step-5-1">
+        <Container style={{ marginBottom: '65px' }}>
+          <div className="upsell-new">
+            <CSSTransitionGroup
+              className="align-items-stretch"
+              component={Row}
+              transitionName="slide-top"
+              transitionEnterTimeout={500}
+              transitionLeaveTimeout={300}
+            >
+              {stepFiveGearUpsellNew.map(this.renderUpsellNew)}
+            </CSSTransitionGroup>
+          </div>
+          <LoadMoreButton
+            shouldRender={shouldRenderLoadMoreButton}
+            onClick={this.loadMore}
+          />
+        </Container>
+      </AOSFadeInContainer>
+      
+    );
+  }
 }
 
 function mapStateToProps(state) {
@@ -252,7 +284,10 @@ function mapStateToProps(state) {
     endDate: stepTwoEndDateSelector(state),
     cartId: cartIdSelector(state),
     participantId: participantIdSelector(state),
+    sport: sportSelector(state),
     upsellNewSelectedProducts: stepFiveUpsellNewSelectedProductsSelector(state),
+    shouldRenderLoadMoreButton: stepFiveShouldRenderUpsellLoadMoreButtonSelector(state),
+    weeksCounter: weeksCounterSelector(state),
   };
 }
 
