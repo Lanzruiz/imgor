@@ -108,6 +108,8 @@ class StepFour extends React.Component {
   
     const tabsList = [];
     const tabPanels = [];
+    
+    const hasSelectedNoAdditionalTraning = (weeks[0] || {}).customize_id === emptyConcentrationId;
   
     const tabListClassName = cx('step-four-tabs__tab-list', { 'react-hidden': isEqual(weeks.length, 1) });
   
@@ -142,7 +144,9 @@ class StepFour extends React.Component {
       );
     }
     
-    (weeksData || []).forEach((week, index) => {
+    const weeksDataParsed = !hasSelectedNoAdditionalTraning ? (weeksData || []) : (weeksData ? [weeksData[0]] : []);
+    
+    weeksDataParsed.forEach((week, index) => {
       const lastWeek = (weeksData.length - 1) === index;
       
       if(index === 0 && week.concentrations && !week.concentrations.find(v => v.product.id === emptyConcentrationId)){
