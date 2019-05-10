@@ -3,24 +3,31 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Col, Row } from 'react-grid-system';
+import { Col, Container, Row } from 'react-grid-system';
 import isEqual from 'lodash/isEqual';
 import toLower from 'lodash/toLower';
 import scrollToComponent from 'react-scroll-to-component';
 import find from 'lodash/find';
 import { CSSTransitionGroup } from 'react-transition-group';
+import AOSFadeInContainer from '../../components/AOSFadeInContainer';
 // Components
 import Card, { CardContent, CardContentCol, CardContentRow, CardContentText } from '../../components/Card';
+import Header from '../../components/Header';
 import Image from '../../components/Image';
+import LoadMoreButton from '../../components/LoadMoreButton';
 import LocaleString from '../../components/LocaleString';
 import Dropdown from '../../components/Dropdown';
 // Actions
 import * as stepFiveActions from '../../actions/step.five';
 import { gtmAddCartProduct } from '../../helpers/GTMService';
 // Selectors
-import { cartIdSelector, participantIdSelector } from '../StepOne/selectors';
+import { cartIdSelector, participantIdSelector, weeksCounterSelector } from '../StepOne/selectors';
 import { stepTwoStartDateSelector, stepTwoEndDateSelector } from '../StepTwo/selectors';
-import { stepFiveExcurcionsPerPageSelector, stepFiveSelectedExcurcionGearSelector } from '../StepFive/selectors';
+import {
+  stepFiveExcurcionsPerPageSelector,
+  stepFiveSelectedExcurcionGearSelector,
+  stepFiveShouldRenderExcursionsLoadMoreButtonSelector
+} from '../StepFive/selectors';
 // Constants
 import { productTypesEnum } from '../../constants/cart';
 // Helpers
@@ -59,8 +66,13 @@ class StepFiveCatalogExcursionsNew extends React.Component {
   };
 
   componentDidMount() {
-    const { startDate, endDate } = this.props;
-    this.getCatalogExcursionsNew({ startDate, endDate });
+    const { startDate, endDate, weeksCounter } = this.props;
+    
+    const shouldGetExcursion = weeksCounter >= 2;
+    
+    if(shouldGetExcursion){
+      this.getCatalogExcursionsNew({ startDate, endDate });
+    }
     //this.scrollToCurrentComponent();
   }
 
@@ -80,9 +92,13 @@ class StepFiveCatalogExcursionsNew extends React.Component {
     }
   }
   
+  loadMore = () => {
+    this.props.stepFiveActions.stepFiveIncreaseExcursionsItemsPerPage();
+  };
+  
   setExcursionGearItemDate = (dateId, cardId) => {
     this.props.stepFiveActions.setExcursionGearItemDate({ dateId, cardId });
-  }
+  };
   
   setCatdHeadHeight = (height) => {
     if (this.state.cardHeadHeight < height) {
@@ -217,19 +233,37 @@ class StepFiveCatalogExcursionsNew extends React.Component {
   };
 
   render() {
-    const { excursions } = this.props;
+    const { excursions, shouldRenderLoadMoreButton } = this.props;
+    
     if (isEqual(excursions.length, 0)) return null;
+    
     return (
-      <div className="excursions">
-        <CSSTransitionGroup
-          component={Row}
-          transitionName="slide-top"
-          transitionEnterTimeout={500}
-          transitionLeaveTimeout={300}
-        >
-          {excursions.map(this.renderExcursionItem)}
-        </CSSTransitionGroup>
-      </div>
+      <AOSFadeInContainer className="step-five" id="step-5-2">
+        <Container style={{ marginBottom: '65px' }}>
+          <Row>
+            <Col>
+              <Header
+                header="step_five.excursion_title"
+                subHeader="step_five.excursion_subtitle"
+              />
+            </Col>
+          </Row>
+          <div className="excursions">
+            <CSSTransitionGroup
+              component={Row}
+              transitionName="slide-top"
+              transitionEnterTimeout={500}
+              transitionLeaveTimeout={300}
+            >
+              {excursions.map(this.renderExcursionItem)}
+            </CSSTransitionGroup>
+          </div>
+          <LoadMoreButton
+            shouldRender={shouldRenderLoadMoreButton}
+            onClick={this.loadMore}
+          />
+        </Container>
+      </AOSFadeInContainer>
     );
   }
 }
@@ -238,10 +272,12 @@ function mapStateToProps(state) {
   return {
     excursions: stepFiveExcurcionsPerPageSelector(state),
     selectedExcurcionGear: stepFiveSelectedExcurcionGearSelector(state),
+    shouldRenderLoadMoreButton: stepFiveShouldRenderExcursionsLoadMoreButtonSelector(state),
     cartId: cartIdSelector(state),
     participantId: participantIdSelector(state),
     startDate: stepTwoStartDateSelector(state),
     endDate: stepTwoEndDateSelector(state),
+    weeksCounter: weeksCounterSelector(state),
   };
 }
 

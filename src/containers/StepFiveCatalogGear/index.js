@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Row, Col } from 'react-grid-system';
+import { Row, Col, Container } from 'react-grid-system';
 import { bindActionCreators } from 'redux';
 import VisibilitySensor from 'react-visibility-sensor';
 import { CSSTransitionGroup } from 'react-transition-group';
@@ -10,17 +10,30 @@ import Img from 'react-image';
 import find from 'lodash/find';
 import isEqual from 'lodash/isEqual';
 import scrollToComponent from 'react-scroll-to-component';
+import AOSFadeInContainer from '../../components/AOSFadeInContainer';
 // Components
 import Button from '../../components/Button';
 import Card, { CardContent, CardContentRow, CardContentCol, CardContentText } from '../../components/Card';
+import Header from '../../components/Header';
+import LoadMoreButton from '../../components/LoadMoreButton';
 import LocaleString from '../../components/LocaleString';
 import Dropdown from '../../components/Dropdown';
 // Actions
 import * as stepFiveActions from '../../actions/step.five';
 import { gtmAddCartProduct } from '../../helpers/GTMService';
 // Selectors
-import { cartIdSelector, participantIdSelector, stepOneGenderSelector } from '../StepOne/selectors';
-import { stepFiveDataPerPageSelector, stepFiveSelectedGearsSelector, stepFiveProductsSelector } from '../StepFive/selectors';
+import {
+  cartIdSelector,
+  participantIdSelector,
+  stepOneGenderSelector,
+  weeksCounterSelector
+} from '../StepOne/selectors';
+import {
+  stepFiveDataPerPageSelector,
+  stepFiveSelectedGearsSelector,
+  stepFiveProductsSelector,
+  stepFiveShouldRenderLoadMoreButtonSelector
+} from '../StepFive/selectors';
 // Constants
 import { productTypesEnum } from '../../constants/cart';
 
@@ -30,8 +43,12 @@ class StepFiveCatalogGear extends React.Component {
   };
 
   componentDidMount() {
-    const { gender } = this.props;
-    this.getCatalogGear({ gender });
+    const { gender, weeksCounter } = this.props;
+    const shouldGetGer = weeksCounter >= 2;
+    
+    if(shouldGetGer){
+      this.getCatalogGear({ gender });
+    }
     //this.scrollToCurrentComponent();
   }
 
@@ -45,6 +62,10 @@ class StepFiveCatalogGear extends React.Component {
       this.removeGear(key);
     }
   }
+  
+  loadMore = () => {
+    this.props.stepFiveActions.stepFiveIncreaseItemsPerPage();
+  };
   
   incrementSelectedGearCounter = (selectedGearId) => {
     this.props.stepFiveActions.stepFiveIncrementSelectedGearQuantity(selectedGearId);
@@ -237,23 +258,39 @@ class StepFiveCatalogGear extends React.Component {
   };
   
   render() {
-    const { data } = this.props;
+    const { data, shouldRenderLoadMoreButton } = this.props;
     const isCatalogGearDataAvailable = data.length > 0;
-    return (
-      <div className="catalog-gear">
-        <CSSTransitionGroup
-          className="align-items-stretch"
-          component={Row}
-          transitionName="slide-top"
-          transitionEnterTimeout={500}
-          transitionLeaveTimeout={300}
-        >
-          {isCatalogGearDataAvailable
-            ? data.map(this.renderCardItem)
-            : this.renderNoGearAvailableBlock()
-          }
-        </CSSTransitionGroup>
-      </div>
+    return isCatalogGearDataAvailable && (
+      <AOSFadeInContainer className="step-five" id="step-5" ref={this.stepFive}>
+        <Container style={{ marginBottom: '65px' }}>
+          <Row>
+            <Col>
+              <Header
+                header="step_five.gear_title"
+                subHeader="step_five.gear_subtitle"
+              />
+            </Col>
+          </Row>
+          <div className="catalog-gear">
+            <CSSTransitionGroup
+              className="align-items-stretch"
+              component={Row}
+              transitionName="slide-top"
+              transitionEnterTimeout={500}
+              transitionLeaveTimeout={300}
+            >
+              {isCatalogGearDataAvailable
+                ? data.map(this.renderCardItem)
+                : this.renderNoGearAvailableBlock()
+              }
+            </CSSTransitionGroup>
+          </div>
+          <LoadMoreButton
+            shouldRender={shouldRenderLoadMoreButton}
+            onClick={this.loadMore}
+          />
+        </Container>
+      </AOSFadeInContainer>
     );
   }
   
@@ -345,6 +382,8 @@ function mapStateToProps(state) {
     participantId: participantIdSelector(state),
     stepFiveProducts: stepFiveProductsSelector(state),
     selectedGear: stepFiveSelectedGearsSelector(state),
+    shouldRenderLoadMoreButton: stepFiveShouldRenderLoadMoreButtonSelector(state),
+    weeksCounter: weeksCounterSelector(state),
   };
 }
 

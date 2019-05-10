@@ -2,22 +2,34 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Row, Col } from 'react-grid-system';
+import { Row, Col, Container } from 'react-grid-system';
 import { CSSTransitionGroup } from 'react-transition-group';
 import { bindActionCreators } from 'redux';
 import toLower from 'lodash/toLower';
 import find from 'lodash/find';
 import scrollToComponent from 'react-scroll-to-component';
+import AOSFadeInContainer from '../../components/AOSFadeInContainer';
 // Components
 import Card, { CardContent, CardContentRow, CardContentCol, CardContentText } from '../../components/Card';
+import LoadMoreButton from '../../components/LoadMoreButton';
 import LocaleString from '../../components/LocaleString';
 import Dropdown from '../../components/Dropdown';
 import Image from '../../components/Image';
 import { gtmAddCartProduct } from '../../helpers/GTMService';
+import { sportSelector } from '../InitialComponent/selectors';
 // Selectors
-import { stepOneGenderSelector, cartIdSelector, participantIdSelector } from '../StepOne/selectors';
+import {
+  stepOneGenderSelector,
+  cartIdSelector,
+  participantIdSelector,
+  weeksCounterSelector
+} from '../StepOne/selectors';
 import { stepTwoStartDateSelector, stepTwoEndDateSelector } from '../StepTwo/selectors';
-import { stepFiveUpsellPerPageSelector, stepFiveUpsellNewSelectedProductsSelector } from '../StepFive/selectors';
+import {
+  stepFiveUpsellPerPageSelector,
+  stepFiveUpsellNewSelectedProductsSelector,
+  stepFiveShouldRenderUpsellLoadMoreButtonSelector
+} from '../StepFive/selectors';
 // Actions
 import * as stepFiveActions from '../../actions/step.five';
 // Constants
@@ -66,13 +78,18 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
   };
 
   componentDidMount() {
-    this.getCatalogGearUpsellNew();
+    const { weeksCounter } = this.props;
+    
+    const shouldGetGetUpSell = weeksCounter >= 2;
+    if(shouldGetGetUpSell){
+      this.getCatalogGearUpsellNew();
+    }
     //this.scrollToCurrentComponent();
   }
 
   scrollToCurrentComponent = () => {
     scrollToComponent(this, { align: 'top', duration: 500 });
-  }
+  };
 
   componentWillUnmount() {
     const { upsellNewSelectedProducts, cartId, participantId, } = this.props;
@@ -86,6 +103,10 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
       this.props.stepFiveActions.stepFiveDeleteUpsellGearItemRequest(args);
     }
   }
+  
+  loadMore = () => {
+    this.props.stepFiveActions.stepFiveIncreaseUpsellItemsPerPage();
+  };
   
   setUpsellGearItemDate = ({ cardId, dateId }) => {
     this.props.stepFiveActions.stepFiveSetUpsellGearItemDate({ cardId, dateId });
@@ -228,20 +249,29 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
   };
   
   render() {
-    const { stepFiveGearUpsellNew } = this.props;
+    const { stepFiveGearUpsellNew, shouldRenderLoadMoreButton } = this.props;
     const shouldRenderCatalogGearItem = stepFiveGearUpsellNew.length > 0;
     return shouldRenderCatalogGearItem && (
-      <div className="upsell-new">
-        <CSSTransitionGroup
-          className="align-items-stretch"
-          component={Row}
-          transitionName="slide-top"
-          transitionEnterTimeout={500}
-          transitionLeaveTimeout={300}
-        >
-          {stepFiveGearUpsellNew.map(this.renderUpsellNew)}
-        </CSSTransitionGroup>
-      </div>
+      <AOSFadeInContainer className="step-five" id="step-5-1">
+        <Container style={{ marginBottom: '65px' }}>
+          <div className="upsell-new">
+            <CSSTransitionGroup
+              className="align-items-stretch"
+              component={Row}
+              transitionName="slide-top"
+              transitionEnterTimeout={500}
+              transitionLeaveTimeout={300}
+            >
+              {stepFiveGearUpsellNew.map(this.renderUpsellNew)}
+            </CSSTransitionGroup>
+          </div>
+          <LoadMoreButton
+            shouldRender={shouldRenderLoadMoreButton}
+            onClick={this.loadMore}
+          />
+        </Container>
+      </AOSFadeInContainer>
+      
     );
   }
 }
@@ -254,7 +284,10 @@ function mapStateToProps(state) {
     endDate: stepTwoEndDateSelector(state),
     cartId: cartIdSelector(state),
     participantId: participantIdSelector(state),
+    sport: sportSelector(state),
     upsellNewSelectedProducts: stepFiveUpsellNewSelectedProductsSelector(state),
+    shouldRenderLoadMoreButton: stepFiveShouldRenderUpsellLoadMoreButtonSelector(state),
+    weeksCounter: weeksCounterSelector(state),
   };
 }
 

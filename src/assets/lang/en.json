@@ -120,11 +120,8 @@
 
   "step_five.gear_title": "Enhance Your Camp",
   "step_five.gear_subtitle": "Recommended gear for your selected camp",
-  "step_five.upsell_title": "UPSELL",
-  "step_five.upsell_subtitle": "Select your upsell",
-  "step_five.excursion_title": "EXCURSION",
-  "step_five.excursion_subtitle": "Select your excursion",
-
+  "step_five.excursion_title": "Experiences",
+  "step_five.excursion_subtitle": "Choose a excursion",
 
   "step_six.header": "Services For your Convenience",
   "step_six.sub_header": "Make your camp journey headache free",
