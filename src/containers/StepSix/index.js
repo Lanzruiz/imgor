@@ -18,20 +18,16 @@ import AirportHasArrivalFlightBookedCheckbox from './components/AirportHasArriva
 import AirportHasDepartingFlightBookedCheckbox from './components/AirportHasDepartingFlightBookedCheckbox';
 import AirportPickupCheckboxContainer from './components/AirportPickupCheckboxContainer';
 import ArrivalFlightNumberTextInput from './components/ArrivalFlightNumberTextInput';
-import DepartingCheckboxContainer from './components/DepartingCheckboxContainer';
-import DropoffCheckboxContainer from './components/DropoffCheckboxContainer';
-import DropoffLocationTextField from './components/DropoffLocationTextField';
 import FlightNumberDepartingTextInput from './components/FlightNumberDepartingTextInput';
-import Paragraph from './components/Paragraph';
-import PickUpLocationTextField from './components/PickUpLocationTextField';
 import UnaccompaniedCheckboxContainer from './components/UnaccompaniedCheckboxContainer';
 import TransportRadioContainer from './components/TransportRadioContainer';
 import AirlinesDepartingDropdownContainer from './components/AirlinesDepartingDropdownContainer';
 import AirlinesDropdownContainer from './components/AirlinesDropdownContainer';
 import AOSFadeInContainer from '../../components/AOSFadeInContainer';
+import Paragraph from './components/Paragraph';
 // Images
 import stubImage from '../../assets/img/2018-Suburban.png';
-import planeImg from '../../assets/img/plane.svg';
+import planeImage from '../../assets/img/plane.svg';
 // Actions
 import * as stepSixActions from '../../actions/step.six';
 import * as stepsActions from '../../actions/steps';
@@ -214,13 +210,11 @@ class StepSix extends React.Component {
     const arrivalData = [
       selectedTransportValue,
       arrivalUnaccompanied,
-      dropoff,
       ...(hasArrivalBookedFlight ? [airportPickupAirline, arrivalDateTime, arrivalFlightNumber] : [])
     ];
     const departureData = [
       departingTransport,
       departureUnaccompanied,
-      departing,
       ...(hasDepartingBookedFlight ? [airportDepartingAirline, departingDateTime, departingFlightNumber] : [])
     ];
     
@@ -282,8 +276,9 @@ class StepSix extends React.Component {
                     <div className="content">
                       <div className="title">
                         <Image
-                          defaultSrc={planeImg}
+                          defaultSrc={planeImage}
                           src="step_six.plane"
+                          className="icon-airplane"
                         />
                         <LocaleString stringKey="step_six.arrival.title" />
                       </div>
@@ -299,13 +294,13 @@ class StepSix extends React.Component {
                           />
                         </div>
                       </div>
-                      <div className="location">
-                        <div className="location__title">
-                          <LocaleString stringKey="step_six.arrival.location" />
-                        </div>
-                        <DropoffCheckboxContainer dropoff={dropoff} />
-                        <DropoffLocationTextField dropoff={dropoff} />
-                      </div>
+                      {/*<div className="location">*/}
+                      {/*  <div className="location__title">*/}
+                      {/*    <LocaleString stringKey="step_six.arrival.location" />*/}
+                      {/*  </div>*/}
+                      {/*  <DropoffCheckboxContainer dropoff={dropoff} />*/}
+                      {/*  <DropoffLocationTextField dropoff={dropoff} />*/}
+                      {/*</div>*/}
                       <div className="unaccompanied">
                         <div className="unaccompanied__title">
                           <LocaleString stringKey="step_six.unaccompanied" />
@@ -351,11 +346,11 @@ class StepSix extends React.Component {
                                 />
                               </div>
                             </div>
-                            <p className="description step-six__paragraph step-six__paragraph--small">
-                              <LocaleString stringKey={'step_six.provide_later_description'} />
-                            </p>
                           </div>
                         )}
+                        <p className="description step-six__paragraph step-six__paragraph--small">
+                          <LocaleString stringKey={'step_six.provide_later_description'} />
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -366,8 +361,9 @@ class StepSix extends React.Component {
                     <div className="content">
                       <div className="title">
                         <Image
-                          defaultSrc={planeImg}
+                          defaultSrc={planeImage}
                           src="step_six.plane"
+                          className="icon-airplane"
                         />
                         <LocaleString stringKey="step_six.departure.title" />
                       </div>
@@ -382,14 +378,13 @@ class StepSix extends React.Component {
                         />
                       </div>
                       
-                      <div className="location">
-                        <div className="location__title">
-                          <LocaleString stringKey="step_six.departure.location" />
-                        </div>
-                        <DepartingCheckboxContainer departing={departing} />
-                        <PickUpLocationTextField departing={departing} />
-                      </div>
-                      
+                      {/*<div className="location">*/}
+                      {/*  <div className="location__title">*/}
+                      {/*    <LocaleString stringKey="step_six.departure.location" />*/}
+                      {/*  </div>*/}
+                      {/*  <DepartingCheckboxContainer departing={departing} />*/}
+                      {/*  <PickUpLocationTextField departing={departing} />*/}
+                      {/*</div>*/}
                       
                       <div className="unaccompanied">
                         <div className="unaccompanied__title">
@@ -437,11 +432,11 @@ class StepSix extends React.Component {
                                 />
                               </div>
                             </div>
-                            <p className="description step-six__paragraph step-six__paragraph--small">
-                              <LocaleString stringKey={'step_six.provide_later_description'} />
-                            </p>
                           </div>
                         )}
+                        <p className="description step-six__paragraph step-six__paragraph--small">
+                          <LocaleString stringKey={'step_six.provide_later_description'} />
+                        </p>
                       </div>
                     </div>
                   </div>

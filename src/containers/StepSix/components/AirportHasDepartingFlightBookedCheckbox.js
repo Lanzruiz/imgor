@@ -41,7 +41,9 @@ class AirportHasArrivalFlightBookedCheckbox extends React.Component {
                   onFocus={() => {}}
                   disabled={!isNumber(transportationId)}
                 />
-                <LocaleString stringKey={'step_six.enter_flight_info'} />
+                <div>
+                  <LocaleString stringKey={'step_six.enter_flight_info'} />
+                </div>
               </label>
               <label className={'step-six__initial-label radio-btn__container radio-btn__container--checkbox'}>
                 <input
@@ -55,7 +57,9 @@ class AirportHasArrivalFlightBookedCheckbox extends React.Component {
                   onBlur={() => {}}
                   disabled={!isNumber(transportationId)}
                 />
-                <LocaleString stringKey={'step_six.provide_later'} />
+                <div>
+                  <LocaleString stringKey={'step_six.provide_later'} />
+                </div>
               </label>
             </div>
           );
