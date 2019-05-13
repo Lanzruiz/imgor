@@ -66,19 +66,20 @@ class StepFiveCatalogExcursionsNew extends React.Component {
   };
 
   componentDidMount() {
-    const { startDate, endDate, weeksCounter } = this.props;
+    const { startDate, endDate } = this.props;
+    // const { startDate, endDate, weeksCounter } = this.props;
     
-    const shouldGetExcursion = weeksCounter >= 2;
-    
-    if(shouldGetExcursion){
-      this.getCatalogExcursionsNew({ startDate, endDate });
-    }
+    // const shouldGetExcursion = weeksCounter >= 2;
+    //
+    // if(shouldGetExcursion){
+    // }
+    this.getCatalogExcursionsNew({ startDate, endDate });
     //this.scrollToCurrentComponent();
   }
 
   scrollToCurrentComponent = () => {
     scrollToComponent(this, { align: 'top', duration: 500 });
-  }
+  };
 
   componentWillUnmount() {
     const { selectedExcurcionGear, cartId, participantId } = this.props;

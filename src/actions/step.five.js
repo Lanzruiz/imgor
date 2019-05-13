@@ -7,11 +7,11 @@ import { updateCart } from './cart';
 // Api
 import Api from '../api';
 
-export function getCatalogGearRequest({ gender }) {
+export function getCatalogGearRequest({ gender, age }) {
   return function(dispatch) {
     Api.req({
       apiCall: Api.getCatalogGear,
-      apiCallParams: { gender },
+      apiCallParams: { gender, age },
       res200: (data) => {
         dispatch( getCatalogGear(data), );
         if (data.results && (data.results.length === 0)) {

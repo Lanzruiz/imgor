@@ -13,8 +13,9 @@ import Header from '../../components/Header';
 import Image from '../../components/Image';
 import AirportPickupCheckboxContainer from './components/AirportPickupCheckboxContainer';
 import AOSFadeInContainer from '../../components/AOSFadeInContainer';
-import StepFiveCatalogExcursionsNew from '../StepFiveCatalogExcursionsNew'
-import StepFiveCatalogGearUpsellNew from '../StepFiveCatalogGearUpsellNew'
+import StepFiveCatalogExcursionsNew from '../StepFiveCatalogExcursionsNew';
+import StepFiveCatalogGearUpsellNew from '../StepFiveCatalogGearUpsellNew';
+import StepFiveCatalogGear from '../StepFiveCatalogGear';
 // Images
 import stubImage from '../../assets/img/2018-Suburban.png';
 // Actions
@@ -236,7 +237,7 @@ class StepSix extends React.Component {
               </Col>
             </Row>
             <Row style={{ display: 'flex' }}>
-              <Col lg={6} md={6} xs={12} style={{ paddingRight: 15, paddingLeft: 15, marginBottom: 15, zIndex: 15 }}>
+              <Col className="service-card" lg={6} md={6} xs={12} style={{ paddingRight: 15, paddingLeft: 15, marginBottom: 15, zIndex: 15 }}>
                 <div className="section transport">
                   <div className="transport__header">
                     <div className="transport__header__title">
@@ -308,12 +309,14 @@ class StepSix extends React.Component {
                 )}
               </Col>
           
+              <StepFiveCatalogGearUpsellNew />
             </Row>
           </Container>
         </AOSFadeInContainer>
       
-        <StepFiveCatalogGearUpsellNew/>
         <StepFiveCatalogExcursionsNew/>
+        <StepFiveCatalogGear/>
+
       </Fragment>
     );
   }

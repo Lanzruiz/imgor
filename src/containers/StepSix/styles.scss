@@ -8,6 +8,13 @@
       color: $card-blue-color;
     }
 
+    .service-card{
+      margin-top: 1rem;
+      .card__head{
+        min-height: 0;
+      }
+    }
+
     .h-100 {
       height: 100%;
     }
