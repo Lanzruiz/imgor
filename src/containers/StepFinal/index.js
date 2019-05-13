@@ -330,7 +330,7 @@ class StepFinal extends React.Component {
 
               {!isBusinessTypeForAdult && (
               <Row>
-                <Col sm={12} style={{ padding: '15px' }}>
+                <Col sm={12} md={4} lg={4} style={{ padding: '15px' }}>
                   <Card
                     buttonBlock={false}
                     cardHeader={<LocaleString stringKey="step_final.guardian_information" />}
@@ -341,7 +341,7 @@ class StepFinal extends React.Component {
                     <CardContent>
                       <CardContentRow>
                         <CardContentCol>
-                          <Form autoComplete="off" className="step-final__form" style={{ maxWidth: (!isMobile && isTablet) ? '100%' : 'calc(100%/3)', marginRight: 'auto' }} onSubmit={() => {}}>
+                          <Form autoComplete="off" className="step-final__form" style={{ marginRight: 'auto' }} onSubmit={() => {}}>
                             <label className="step-final__form-control">
                               <Input
                                 inputClassName="step-final__input"
