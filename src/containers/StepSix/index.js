@@ -556,7 +556,7 @@ class StepSix extends React.Component {
                 
                 {shouldDisplaySummary && (
                   <Button className="transport-button" onClick={hasTransportationCartData ? this.unselectTransportationOption : this.addTransportDataToCart}>
-                    { hasTransportationCartData ? 'Remove' : 'Confirm' }
+                    { hasTransportationCartData ? 'Remove' : 'Select' }
                   </Button>
                 )}
               </Col>
