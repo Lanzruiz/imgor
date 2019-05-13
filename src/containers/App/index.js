@@ -34,6 +34,8 @@ import { selectGroup } from '../../actions/step.one';
 // Styles
 import './styles.scss';
 
+export const BLACKLIST_OF_FIELDS_FOR_SPORT = { fashion: ['position'] };
+
 class App extends React.Component {
   static propTypes = {
     stepActions: PropTypes.shape({
@@ -179,7 +181,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { lang, redirectUrlShopify, contentPath, valid, dataBusinessType, dataDisplayFooter, dataRepEmail } = this.props;
+    const { lang, redirectUrlShopify, contentPath, valid, dataBusinessType, dataDisplayFooter, dataRepEmail, sport } = this.props;
 
     const isBusinessTypeForAdult = (dataBusinessType || '').toLowerCase() === 'Adult Program'.toLowerCase();
 
@@ -191,6 +193,7 @@ class App extends React.Component {
           isBusinessTypeForAdult={isBusinessTypeForAdult}
           dataDisplayFooter={dataDisplayFooter}
           dataRepEmail={dataRepEmail}
+          sport={sport}
         >
           {() => this.wizardFormChildren}
         </WizardForm>
