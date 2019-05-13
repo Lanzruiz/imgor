@@ -56,6 +56,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
     isFirstWeek: PropTypes.bool,
     isEmptyConcentrations: PropTypes.bool,
     isLastWeek: PropTypes.bool,
+    scrollToSelectedTab: PropTypes.func,
   };
   
   reorderConcentrations = (items) => {
@@ -265,16 +266,19 @@ class StepFourWeekConcentrationComponent extends React.Component {
     if (stepFourConcentrationProductId) {
       if (isEqual(emptyConcentrationId, id)) {
         await this.deleteSelectedConcentration(id);
+        this.props.scrollToSelectedTab();
         return;
       }
       args.productId = stepFourConcentrationProductId;
 
       await this.props.weeksActions.updateSelectedConcentration(args);
       this.props.gtmAddCartProduct({ id });
+      this.props.scrollToSelectedTab();
       return;
     }
 
     await this.props.stepFourActions.stepFourCustomizeWeekRequest(args);
+    this.props.scrollToSelectedTab();
 
     setTimeout(() => { this.props.gtmAddCartProduct({ id }) }, 1000)
   };
