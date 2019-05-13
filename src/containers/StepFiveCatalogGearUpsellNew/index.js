@@ -23,7 +23,7 @@ import {
   stepOneGenderSelector,
   cartIdSelector,
   participantIdSelector,
-  weeksCounterSelector
+  weeksCounterSelector, stepOneGroupSelector
 } from '../StepOne/selectors';
 import { stepTwoStartDateSelector, stepTwoEndDateSelector } from '../StepTwo/selectors';
 import {
@@ -79,8 +79,12 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
   };
 
   componentDidMount() {
-    // const { weeksCounter } = this.props;
-    this.getCatalogGearUpsellNew();
+    const { weeksCounter, group } = this.props;
+    
+    if(group !== "Year-Round Weekly Camps" || weeksCounter > 1){
+      this.getCatalogGearUpsellNew();
+    }
+    
     //this.scrollToCurrentComponent();
   }
 
@@ -291,6 +295,7 @@ function mapStateToProps(state) {
     upsellNewSelectedProducts: stepFiveUpsellNewSelectedProductsSelector(state),
     shouldRenderLoadMoreButton: stepFiveShouldRenderUpsellLoadMoreButtonSelector(state),
     weeksCounter: weeksCounterSelector(state),
+    group: stepOneGroupSelector(state),
   };
 }
 
