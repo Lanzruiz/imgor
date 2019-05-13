@@ -80,11 +80,12 @@ class Api {
     });
   };
 
-  async getCatalogExcursionsNew({ startDate, endDate }) {
+  async getCatalogExcursionsNew({ startDate, endDate, age }) {
     return await instance.get('catalog/excursions-new', {
       params: {
         start_date: startDate,
         end_date: endDate,
+        age: age
       },
     });
   };

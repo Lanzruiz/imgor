@@ -260,11 +260,11 @@ function stepFiveGetCatalogExcursionsNew(data) {
   };
 };
 
-export function stepFiveGetCatalogExcursionsNewRequest({ startDate, endDate }) {
+export function stepFiveGetCatalogExcursionsNewRequest({ startDate, endDate, age }) {
   return function(dispatch) {
     Api.req({
       apiCall: Api.getCatalogExcursionsNew,
-      apiCallParams: { startDate, endDate },
+      apiCallParams: { startDate, endDate, age },
       res200: data => {
         return dispatch(stepFiveGetCatalogExcursionsNew(data),);
       },

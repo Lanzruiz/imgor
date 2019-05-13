@@ -21,7 +21,7 @@ import Dropdown from '../../components/Dropdown';
 import * as stepFiveActions from '../../actions/step.five';
 import { gtmAddCartProduct } from '../../helpers/GTMService';
 // Selectors
-import { cartIdSelector, participantIdSelector, weeksCounterSelector } from '../StepOne/selectors';
+import { cartIdSelector, participantIdSelector, stepOneAgeSelector, weeksCounterSelector } from '../StepOne/selectors';
 import { stepTwoStartDateSelector, stepTwoEndDateSelector } from '../StepTwo/selectors';
 import {
   stepFiveExcurcionsPerPageSelector,
@@ -66,14 +66,14 @@ class StepFiveCatalogExcursionsNew extends React.Component {
   };
 
   componentDidMount() {
-    const { startDate, endDate } = this.props;
+    const { startDate, endDate, age } = this.props;
     // const { startDate, endDate, weeksCounter } = this.props;
     
     // const shouldGetExcursion = weeksCounter >= 2;
     //
     // if(shouldGetExcursion){
     // }
-    this.getCatalogExcursionsNew({ startDate, endDate });
+    this.getCatalogExcursionsNew({ startDate, endDate, age });
     //this.scrollToCurrentComponent();
   }
 
@@ -149,8 +149,8 @@ class StepFiveCatalogExcursionsNew extends React.Component {
     }
   };
   
-  getCatalogExcursionsNew = ({ startDate, endDate }) => {
-    this.props.stepFiveActions.stepFiveGetCatalogExcursionsNewRequest({ startDate, endDate });
+  getCatalogExcursionsNew = ({ startDate, endDate, age }) => {
+    this.props.stepFiveActions.stepFiveGetCatalogExcursionsNewRequest({ startDate, endDate, age });
   };
   
   renderExcursionItem = (item) => {
@@ -279,6 +279,7 @@ function mapStateToProps(state) {
     startDate: stepTwoStartDateSelector(state),
     endDate: stepTwoEndDateSelector(state),
     weeksCounter: weeksCounterSelector(state),
+    age: stepOneAgeSelector(state)
   };
 }
 
