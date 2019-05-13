@@ -71,10 +71,11 @@ class Api {
     });
   };
 
-  async getCatalogGear({ gender }) {
+  async getCatalogGear({ gender, age }) {
     return await instance.get('catalog/gear', {
       params: {
         gender,
+        age
       },
     });
   };

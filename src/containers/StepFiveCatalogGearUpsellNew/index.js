@@ -1,14 +1,15 @@
 // Modules
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Row, Col, Container } from 'react-grid-system';
-import { CSSTransitionGroup } from 'react-transition-group';
+// import { Row, Col, Container } from 'react-grid-system';
+import { Col } from 'react-grid-system';
+// import { CSSTransitionGroup } from 'react-transition-group';
 import { bindActionCreators } from 'redux';
 import toLower from 'lodash/toLower';
 import find from 'lodash/find';
 import scrollToComponent from 'react-scroll-to-component';
-import AOSFadeInContainer from '../../components/AOSFadeInContainer';
+// import AOSFadeInContainer from '../../components/AOSFadeInContainer';
 // Components
 import Card, { CardContent, CardContentRow, CardContentCol, CardContentText } from '../../components/Card';
 import LoadMoreButton from '../../components/LoadMoreButton';
@@ -22,7 +23,7 @@ import {
   stepOneGenderSelector,
   cartIdSelector,
   participantIdSelector,
-  weeksCounterSelector
+  weeksCounterSelector, stepOneGroupSelector
 } from '../StepOne/selectors';
 import { stepTwoStartDateSelector, stepTwoEndDateSelector } from '../StepTwo/selectors';
 import {
@@ -78,12 +79,12 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
   };
 
   componentDidMount() {
-    const { weeksCounter } = this.props;
+    const { weeksCounter, group } = this.props;
     
-    const shouldGetGetUpSell = weeksCounter >= 2;
-    if(shouldGetGetUpSell){
+    if(group !== "Year-Round Weekly Camps" || weeksCounter > 1){
       this.getCatalogGearUpsellNew();
     }
+    
     //this.scrollToCurrentComponent();
   }
 
@@ -147,8 +148,6 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
     this.props.stepFiveActions.getCatalogGearUpsellNewRequest(getCatalogGearUpsellNewArgs);
   };
   
-  
-  
   renderUpsellNew = (upsellNewItem) => {
     const { upsellNewSelectedProducts } = this.props;
     const { categories, description, name, image_url, dates = [] } = upsellNewItem;
@@ -168,7 +167,7 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
     );
     
     return (
-      <Col md={12} lg={6} key={id} className="card-column">
+      <Col md={12} lg={6} key={id} className="card-column service-card">
         <Card
           id={id}
           cardHeader={name}
@@ -252,26 +251,34 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
     const { stepFiveGearUpsellNew, shouldRenderLoadMoreButton } = this.props;
     const shouldRenderCatalogGearItem = stepFiveGearUpsellNew.length > 0;
     return shouldRenderCatalogGearItem && (
-      <AOSFadeInContainer className="step-five" id="step-5-1">
-        <Container style={{ marginBottom: '65px' }}>
-          <div className="upsell-new">
-            <CSSTransitionGroup
-              className="align-items-stretch"
-              component={Row}
-              transitionName="slide-top"
-              transitionEnterTimeout={500}
-              transitionLeaveTimeout={300}
-            >
-              {stepFiveGearUpsellNew.map(this.renderUpsellNew)}
-            </CSSTransitionGroup>
-          </div>
+      <Fragment>
+        {/*<AOSFadeInContainer className="step-five" id="step-5-1">*/}
+        {/*  <Container style={{ marginBottom: '65px' }}>*/}
+        {/*    <div className="upsell-new">*/}
+        {/*      <CSSTransitionGroup*/}
+        {/*        className="align-items-stretch"*/}
+        {/*        component={Row}*/}
+        {/*        transitionName="slide-top"*/}
+        {/*        transitionEnterTimeout={500}*/}
+        {/*        transitionLeaveTimeout={300}*/}
+        {/*      >*/}
+        {/*        {stepFiveGearUpsellNew.map(this.renderUpsellNew)}*/}
+        {/*      </CSSTransitionGroup>*/}
+        {/*    </div>*/}
+        {/*    <LoadMoreButton*/}
+        {/*      shouldRender={shouldRenderLoadMoreButton}*/}
+        {/*      onClick={this.loadMore}*/}
+        {/*    />*/}
+        {/*  </Container>*/}
+        {/*</AOSFadeInContainer>*/}
+        {stepFiveGearUpsellNew.map(this.renderUpsellNew)}
+        <Col xs={12} lg={12}>
           <LoadMoreButton
             shouldRender={shouldRenderLoadMoreButton}
             onClick={this.loadMore}
           />
-        </Container>
-      </AOSFadeInContainer>
-      
+        </Col>
+      </Fragment>
     );
   }
 }
@@ -288,6 +295,7 @@ function mapStateToProps(state) {
     upsellNewSelectedProducts: stepFiveUpsellNewSelectedProductsSelector(state),
     shouldRenderLoadMoreButton: stepFiveShouldRenderUpsellLoadMoreButtonSelector(state),
     weeksCounter: weeksCounterSelector(state),
+    group: stepOneGroupSelector(state),
   };
 }
 

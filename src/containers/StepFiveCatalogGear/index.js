@@ -36,6 +36,7 @@ import {
 } from '../StepFive/selectors';
 // Constants
 import { productTypesEnum } from '../../constants/cart';
+import { stepOneAgeSelector } from '../StepZero/selectors';
 
 class StepFiveCatalogGear extends React.Component {
   static defaultProps = {
@@ -43,12 +44,14 @@ class StepFiveCatalogGear extends React.Component {
   };
 
   componentDidMount() {
-    const { gender, weeksCounter } = this.props;
-    const shouldGetGer = weeksCounter >= 2;
+    const { gender, age } = this.props;
+    // const { gender, weeksCounter } = this.props;
+    // const shouldGetGer = weeksCounter >= 2;
+    //
+    // if(shouldGetGer){
+    // }
     
-    if(shouldGetGer){
-      this.getCatalogGear({ gender });
-    }
+    this.getCatalogGear({ gender, age });
     //this.scrollToCurrentComponent();
   }
 
@@ -79,8 +82,8 @@ class StepFiveCatalogGear extends React.Component {
     this.props.stepFiveActions.stepFiveSelectDropdownItem({ selectedOptionId, selectedGearId });
   };
   
-  getCatalogGear = ({ gender }) => {
-    this.props.stepFiveActions.getCatalogGearRequest({ gender });
+  getCatalogGear = ({ gender, age }) => {
+    this.props.stepFiveActions.getCatalogGearRequest({ gender, age });
   };
   
   renderNoGearAvailableBlock = () => {
@@ -379,6 +382,7 @@ function mapStateToProps(state) {
     cartId: cartIdSelector(state),
     data: stepFiveDataPerPageSelector(state),
     gender: stepOneGenderSelector(state),
+    age: stepOneAgeSelector(state),
     participantId: participantIdSelector(state),
     stepFiveProducts: stepFiveProductsSelector(state),
     selectedGear: stepFiveSelectedGearsSelector(state),
