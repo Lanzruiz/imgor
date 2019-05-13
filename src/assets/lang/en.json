@@ -152,7 +152,7 @@
   "step_six.step_of": "step {current} of {max}",
   "step_six.unaccompanied": "*Unaccompanied Minor?",
   "step_six.unaccompanied.clear": "Unaccompanied Minor",
-  "step_six.airlines_service": "*This is a separate service from the airlines. To avoid complications it is highly recommended that you setup the unaccompanied minor service with the airline as well.",
+  "step_six.airlines_service": "*This is a separate service from the airlines.",
   "step_six.ages": "*Ages 12 and under.",
   "step_six.arrival_flight_information": "Arrival Flight Information",
   "step_six.schedule": "We need at least 12 hours advance notice based on Bradenton local time to schedule your Pick up / Drop off. If you need an earlier service, call us at {phone}.",
