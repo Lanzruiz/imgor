@@ -185,6 +185,7 @@ class StepFour extends React.Component {
                 maxWeekCounter={weeks.length}
                 isFirstWeek={index === 0}
                 isLastWeek={lastWeek}
+                scrollToSelectedTab={this.scrollToSelectedTab}
               />
             ))}
             {!week.concentrations && (
@@ -203,6 +204,7 @@ class StepFour extends React.Component {
                 isFirstWeek={index === 0}
                 isEmptyConcentrations={true}
                 isLastWeek={lastWeek}
+                scrollToSelectedTab={this.scrollToSelectedTab}
               />
             )}
           </Row>
@@ -246,14 +248,29 @@ class StepFour extends React.Component {
 
   customizeWeek = (id) => {
     this.props.weeksActions.customizeWeek(id);
+    this.scrollToSelectedTab();
   };
 
   selectWeek = (id) => {
     this.props.weeksActions.selectWeek(id);
+    this.scrollToSelectedTab();
   };
 
   nextStep = () => {
     this.props.stepsActions.incrementStepsCounter();
+  };
+  
+  scrollToSelectedTab = () => {
+    setTimeout(() => {
+      const tabs = document.querySelector('.step-four-tabs__tab-list');
+      if(tabs){
+        const selectedTab = tabs.querySelector('.step-four-tabs__tab--selected');
+        if(tabs && selectedTab){
+          const scrollToPos = selectedTab.offsetLeft > 100 ? selectedTab.offsetLeft -100 : 0;
+          tabs.scrollTo(scrollToPos, 0);
+        }
+      }
+    }, 0)
   };
 
   getCatalogCamp = () => {
