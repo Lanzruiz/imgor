@@ -1,7 +1,6 @@
 // Modules
 import { createSelector } from 'reselect';
 import moment from 'moment';
-import find from 'lodash/find';
 // Constants
 import { daysInWeek } from '../../constants/weeks';
 import { weekly_camp } from '../StepOne/index';
@@ -31,11 +30,17 @@ export const stepTwoDataSelector = createSelector(
   function(data = [], isWeeklyCamp = false, weeksCounter = 0) {
     let weeksCount = weeksCounter;
     let result = [];
+    const dataCloned = [...data];
+    
+    if(!isWeeklyCamp) return data;
+    
+    if(isWeeklyCamp && weeksCounter === 1) return data;
+    
     if (isWeeklyCamp) {
-      if (weeksCount === 1) return data;
-      result = findWeeksDurations(data);
-      while(weeksCount > 1) {
-        result = findWeeksDurations(result);
+      result = findWeeksDurations(dataCloned);
+      
+      while(weeksCount > 2) {
+        result = findWeeksDurations([...result]);
         --weeksCount;
       }
       return result;
@@ -84,16 +89,23 @@ export const stepTwoCampDaysLengthSelector = createSelector(
 );
 
 function findWeeksDurations(arr = []) {
-  const result = [];
   const dateFormat = 'YYYY-MM-DD';
-  for (let i = 0; i < arr.length; i++) {
-    const computedData = moment(arr[i].capacity_start_date, dateFormat).add(daysInWeek, 'days').format(dateFormat);
+  
+  return arr.reduce( (acc, v, i) => {
+    if(i === 0){
+      acc = [...acc, v];
+      return acc;
+    }
+  
+    const computedData = moment(v.capacity_start_date, dateFormat).add(daysInWeek, 'days').format(dateFormat);
     const nextWeek = arr.find(({ capacity_start_date }) => (computedData === capacity_start_date));
-    if (nextWeek) {
-      if (!find(nextWeek.program_types, ['sold_out', true])) {
-        result.push(arr[i]);
+    
+    if(nextWeek){
+      if(nextWeek.program_types.find(v => !v.sold_out)){
+        acc = [...acc, v];
       }
     }
-  }
-  return result;
+    
+    return acc;
+  }, []);
 };
