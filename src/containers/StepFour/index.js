@@ -153,9 +153,9 @@ class StepFour extends React.Component {
     weeksDataParsed.forEach((week, index) => {
       const lastWeek = (weeksData.length - 1) === index;
       
-      let weekConcentrations = cloneDeep(week.concentrations);
+      let weekConcentrations = cloneDeep((week || { concentrations: [] }).concentrations);
       
-      if(index === 0 && !(week.concentrations || []).find(v => v.product.id === emptyConcentrationId)){
+      if(index === 0 && !((week || { concentrations: [] }).concentrations || []).find(v => v.product.id === emptyConcentrationId)){
         weekConcentrations = [
           ...(weekConcentrations ? weekConcentrations : []),
           {
