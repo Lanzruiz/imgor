@@ -125,13 +125,6 @@ class StepFinal extends React.Component {
     
     return (
       <ScreenClassRender render={(screenClass) => {
-        let isMobile = false;
-        let isTablet = false;
-        if (isEqual(screenClass, 'sm') || isEqual(screenClass, 'xs')) {
-          isMobile = true;
-        } else if (isEqual(screenClass, 'md')) {
-          isTablet = true;
-        }
         return (
           <AOSFadeInContainer className="step-final" id="step-7">
             <Container>
@@ -328,7 +321,12 @@ class StepFinal extends React.Component {
 
               {!isBusinessTypeForAdult && (
               <Row>
-                <Col sm={12} style={{ padding: '15px' }}>
+                <Col
+                  sm={12}
+                  md={4}
+                  lg={4}
+                  style={{ padding: '15px' }}
+                >
                   <Card
                     buttonBlock={false}
                     cardHeader={<LocaleString stringKey="step_final.guardian_information" />}
@@ -339,7 +337,7 @@ class StepFinal extends React.Component {
                     <CardContent>
                       <CardContentRow>
                         <CardContentCol>
-                          <Form autoComplete="off" className="step-final__form" style={{ maxWidth: (!isMobile && isTablet) ? '100%' : 'calc(100%/3)', marginRight: 'auto' }} onSubmit={() => {}}>
+                          <Form autoComplete="off" className="step-final__form" style={{ marginRight: 'auto' }} onSubmit={() => {}}>
                             <label className="step-final__form-control">
                               <Input
                                 inputClassName="step-final__input"
