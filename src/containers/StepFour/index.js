@@ -150,8 +150,8 @@ class StepFour extends React.Component {
       const lastWeek = (weeksData.length - 1) === index;
       
       if(index === 0 && week.concentrations && !week.concentrations.find(v => v.product.id === emptyConcentrationId)){
-        week.concentrations = [
-          ...week.concentrations,
+        (week || { concentrations: [] }).concentrations = [
+          ...((week || {}).concentrations || []),
           {
             product: {
               id: emptyConcentrationId,
@@ -170,7 +170,7 @@ class StepFour extends React.Component {
       tabPanels.push(
         <TabPanel key={index} className="step-four-tabs__tab-panel">
           <Row>
-            {(week.concentrations || []).map(v => (
+            {((week || {}).concentrations || []).map(v => (
               <StepFourWeekConcentrationComponent
                 key={v.product.id}
                 age={age}
@@ -188,7 +188,7 @@ class StepFour extends React.Component {
                 scrollToSelectedTab={this.scrollToSelectedTab}
               />
             ))}
-            {!week.concentrations && (
+            {!(week || {}).concentrations && (
               <StepFourWeekConcentrationComponent
                 key={emptyConcentrationsSkipWeek}
                 age={age}
