@@ -203,13 +203,11 @@ class StepSix extends React.Component {
     const arrivalData = [
       selectedTransportValue,
       arrivalUnaccompanied,
-      dropoff,
       ...(hasArrivalBookedFlight ? [airportPickupAirline, arrivalDateTime, arrivalFlightNumber] : [])
     ];
     const departureData = [
       departingTransport,
       departureUnaccompanied,
-      departing,
       ...(hasDepartingBookedFlight ? [airportDepartingAirline, departingDateTime, departingFlightNumber] : [])
     ];
     

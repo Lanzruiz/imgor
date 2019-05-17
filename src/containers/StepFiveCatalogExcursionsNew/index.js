@@ -176,7 +176,7 @@ class StepFiveCatalogExcursionsNew extends React.Component {
           id={id}
           cardHeader={name}
           color="dark"
-          header={header.display_name}
+          header={(header || {}).display_name || ''}
           price={price}
           selectedId={isCurrentItemSelected ? id : null}
           headerSize="extra-small"

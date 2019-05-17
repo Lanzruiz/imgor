@@ -277,7 +277,6 @@
         justify-content: space-between;
         text-transform: uppercase;
         &__title{
-          font-weight: 300;
           font-size: 18px;
         }
         &__price{
@@ -286,11 +285,9 @@
           align-items: flex-end;
           .price{
             font-size: 16px;
-            font-weight: bold;
           }
           .starting{
             font-size: 13px;
-            font-weight: bold;
           }
         }
       }
@@ -306,7 +303,6 @@
         &__title{
           text-transform: uppercase;
           color: $card-blue-color;
-          font-weight: bold;
         }
         &__checkboxes{
           padding: 10px 0 0 10px;
@@ -327,16 +323,14 @@
           display: flex;
           align-items: center;
           color: $card-dark-blue-color;
-          font-weight: bold;
           font-size: 16px;
-          img{
+          .icon-airplane, img{
             width: 25px;
             margin-right: 12px;
           }
         }
         .subtitle{
           color: $card-blue-color;
-          font-weight: bold;
           margin: 10px 0;
           text-transform: uppercase;
         }
@@ -344,7 +338,6 @@
           display: flex;
           align-items: center;
           color: $card-dark-blue-color;
-          font-weight: bold;
           font-size: 14px;
           text-transform: uppercase;
         }
@@ -352,7 +345,6 @@
           padding-top: 20px;
           &__title{
             color: $card-blue-color;
-            font-weight: bold;
             margin-bottom: 10px;
           }
           .step-six__form-field{
@@ -373,15 +365,17 @@
             color: $card-dark-blue-color;
             text-transform: uppercase;
             font-family: $proxima-nova;
+            margin-bottom: 10px;
           }
           &__subtitle{
             color: $card-blue-color;
-            font-weight: bold;
             margin-bottom: 10px;
             text-transform: uppercase;
           }
           &__radio-buttons{
             display: flex;
+            margin-bottom: 10px;
+
             &>div{
               margin-right: 30px;
             }
@@ -410,6 +404,9 @@
                   height: auto;
                   input{
                     padding: 7px 10px 7px 10px;
+                    @media screen and (max-width: $mobile){
+                      font-size: 14px;
+                    }
                   }
                   .dropdown__container{
                     border: none;
@@ -466,7 +463,6 @@
         line-height: 42px;
         text-transform: uppercase;
         font-size: 14px;
-        font-weight: bold;
       }
     }
   }

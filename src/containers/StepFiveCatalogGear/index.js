@@ -142,8 +142,8 @@ class StepFiveCatalogGear extends React.Component {
           id={id}
           cardHeader={display_name}
           color="dark"
-          header={header.display_name}
-          label={label.display_name}
+          header={(header || {}).display_name || ''}
+          label={(label || {}).display_name || ''}
           price={price}
           selectedId={selectedGearId}
           headerSize="extra-small"

@@ -59,6 +59,9 @@ const BreakthroughCard = (props) => {
               <span className="breakthrough-card__column--coaching breakthrough-card__column--instruction">
                 <LocaleString stringKey="instruction" />
               </span>
+              <span className="breakthrough-card__column--coaching breakthrough-card__column--per-day">
+                <LocaleString stringKey="per_day" />
+              </span>
             </div>
             <ImagePlus className="breakthrough-card__image" />
           </div>
