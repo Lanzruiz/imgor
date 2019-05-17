@@ -29,11 +29,9 @@ class Api {
       params: {
         sport,
         gender,
-        group,
         boarding,
         age,
         business_type: businessType,
-        secondary_group: secondaryGroup,
       },
     });
   };
