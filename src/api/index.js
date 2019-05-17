@@ -33,7 +33,7 @@ class Api {
         boarding,
         age,
         business_type: businessType,
-        secondary_group: secondaryGroup,
+        // secondary_group: secondaryGroup,
       },
     });
   };
