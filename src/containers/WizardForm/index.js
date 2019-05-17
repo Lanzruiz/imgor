@@ -21,6 +21,7 @@ import * as stepThreeActions from '../../actions/step.three';
 import * as stepSixActions from '../../actions/step.six';
 import * as trainingActions from '../../actions/training';
 import * as cartActions from '../../actions/cart';
+import { validationWithBlacklist } from '../../helpers/blackListOfFields';
 import { gtmStateChange, stateChangeTypes } from '../../helpers/GTMService';
 // Selectors
 import {
@@ -901,7 +902,7 @@ class WizardForm extends React.Component {
   stepFinalValidation = () => {
     const {
       ageNumber, finalStepDateOfBirth, firstName, lastName, position, positions, shirtSize, guardianFirstName,
-      guardianLastName, guardianEmail, guardianPhone, isBusinessTypeForAdult
+      guardianLastName, guardianEmail, guardianPhone, isBusinessTypeForAdult, sport
     } = this.props;
     const adultAge = 18;
     const isAdult = ageNumber <= adultAge;
@@ -922,7 +923,7 @@ class WizardForm extends React.Component {
       // case finalStepDateOfBirth && !isEqual( calculateAge(finalStepDateOfBirth), ageNumber ): {
       //   return 'camper_age_is_not_equal';
       // }
-      case !isEmpty(positions) && !position : {
+      case validationWithBlacklist(!isEmpty(positions) && !position, sport, 'position') : {
         return 'step_final.no_position_message';
       }
       case !shirtSize: {

@@ -19,6 +19,7 @@ import DatePickerReduxForm from '../../components/DatePicker';
 import AOSFadeInContainer from '../../components/AOSFadeInContainer';
 // Actions
 import * as finalStepActions from '../../actions/final.step';
+import { shouldRenderField } from '../../helpers/blackListOfFields';
 import { gtmStateChange, stateChangeTypes } from '../../helpers/GTMService';
 import { cartIdSelector, participantIdSelector, stepOneAgeSelector } from '../StepOne/selectors';
 // Selectors
@@ -73,7 +74,7 @@ class StepFinal extends React.Component {
 
   scrollToCurrentComponent = () => {
     //scrollToComponent(this, { align: 'top', duration: 500 });
-  }
+  };
 
   componentWillMount() {
     this.setDefaultState();
@@ -107,7 +108,10 @@ class StepFinal extends React.Component {
   };
 
   render() {
-    const { positions, selectedPosition, shirtSize, age, isBusinessTypeForAdult, refundable, refundableLoading, insurancePrice } = this.props;
+    const { positions, selectedPosition, shirtSize, age, sport, isBusinessTypeForAdult, refundable, refundableLoading, insurancePrice } = this.props;
+    
+    const shouldRenderPosition =  shouldRenderField(sport, stepFinalFormFieldNames.position);
+    
     const options = [
       {
         stringKey: 'step_final.required_insurance_yes_title',
@@ -195,7 +199,7 @@ class StepFinal extends React.Component {
                 <Col
                   sm={12}
                   md={12}
-                  lg={4}
+                  lg={shouldRenderPosition ? 4 : 6}
                   style={{ padding: '15px' }}
                 >
                   <Card
@@ -270,38 +274,35 @@ class StepFinal extends React.Component {
                     </CardContent>
                   </Card>
                 </Col>
+  
+                {shouldRenderPosition && (
+                  <Col sm={12} md={6} lg={4} style={{ padding: '15px' }}>
+                    <Card
+                      buttonBlock={false}
+                      cardHeader={<LocaleString stringKey="step_final.position" />}
+                      cardHeaderCapitalize={true}
+                      id={1}
+                      priceBlock={false}
+                      style={{ marginBottom: 0 }}
+                    >
+                      <CardContent>
+                        <CardContentRow>
+                          <CardContentCol className="step-final__position">
+                            <PositionRadioBtn
+                              options={positions}
+                              position={selectedPosition}
+                            />
+                          </CardContentCol>
+                        </CardContentRow>
+                      </CardContent>
+                    </Card>
+                  </Col>
+                )}
                 
                 <Col
                   sm={12}
                   md={6}
-                  lg={4}
-                  style={{ padding: '15px' }}
-                >
-                  <Card
-                    buttonBlock={false}
-                    cardHeader={<LocaleString stringKey="step_final.position" />}
-                    cardHeaderCapitalize={true}
-                    id={1}
-                    priceBlock={false}
-                    style={{ marginBottom: 0 }}
-                  >
-                    <CardContent>
-                      <CardContentRow>
-                        <CardContentCol className="step-final__position">
-                          <PositionRadioBtn
-                            options={positions}
-                            position={selectedPosition}
-                          />
-                        </CardContentCol>
-                      </CardContentRow>
-                    </CardContent>
-                  </Card>
-                </Col>
-                
-                <Col
-                  sm={12}
-                  md={6}
-                  lg={4}
+                  lg={shouldRenderPosition ? 4 : 6}
                   style={{ padding: '15px' }}
                 >
                   <Card
