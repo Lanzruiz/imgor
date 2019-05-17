@@ -56,6 +56,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
     isFirstWeek: PropTypes.bool,
     isEmptyConcentrations: PropTypes.bool,
     isLastWeek: PropTypes.bool,
+    scrollToSelectedTab: PropTypes.func,
   };
   
   reorderConcentrations = (items) => {
@@ -126,7 +127,8 @@ class StepFourWeekConcentrationComponent extends React.Component {
       <Col md={6} lg={4} key={id} className="card-column">
         <Card
           id={id}
-          cardHeader={isNotSkipWeek ? hasElsOrSat ? 'Education' : 'Training' : ''}
+          //cardHeader={isNotSkipWeek ? hasElsOrSat ? 'Education' : 'Training' : ''}
+          cardHeader={isSkipWeekAndFirst ? 'No Additional Training' : secondary_program_type}
           color="dark"
           header={isSkipWeekAndFirst ? 'No Additional Training' : secondary_program_type}
           label={computedLabel}
@@ -265,16 +267,19 @@ class StepFourWeekConcentrationComponent extends React.Component {
     if (stepFourConcentrationProductId) {
       if (isEqual(emptyConcentrationId, id)) {
         await this.deleteSelectedConcentration(id);
+        this.props.scrollToSelectedTab();
         return;
       }
       args.productId = stepFourConcentrationProductId;
 
       await this.props.weeksActions.updateSelectedConcentration(args);
       this.props.gtmAddCartProduct({ id });
+      this.props.scrollToSelectedTab();
       return;
     }
 
     await this.props.stepFourActions.stepFourCustomizeWeekRequest(args);
+    this.props.scrollToSelectedTab();
 
     setTimeout(() => { this.props.gtmAddCartProduct({ id }) }, 1000)
   };
