@@ -109,6 +109,9 @@ class StepFinal extends React.Component {
 
   render() {
     const { positions, selectedPosition, shirtSize, age, sport, isBusinessTypeForAdult, refundable, refundableLoading, insurancePrice } = this.props;
+    
+    const shouldRenderPosition =  shouldRenderField(sport, stepFinalFormFieldNames.position);
+    
     const options = [
       {
         stringKey: 'step_final.required_insurance_yes_title',
@@ -196,7 +199,7 @@ class StepFinal extends React.Component {
                 <Col
                   sm={12}
                   md={12}
-                  lg={4}
+                  lg={shouldRenderPosition ? 4 : 6}
                   style={{ padding: '15px' }}
                 >
                   <Card
@@ -272,7 +275,7 @@ class StepFinal extends React.Component {
                   </Card>
                 </Col>
   
-                {shouldRenderField(sport, stepFinalFormFieldNames.position) && (
+                {shouldRenderPosition && (
                   <Col sm={12} md={6} lg={4} style={{ padding: '15px' }}>
                     <Card
                       buttonBlock={false}
@@ -299,7 +302,7 @@ class StepFinal extends React.Component {
                 <Col
                   sm={12}
                   md={6}
-                  lg={4}
+                  lg={shouldRenderPosition ? 4 : 6}
                   style={{ padding: '15px' }}
                 >
                   <Card
