@@ -93,16 +93,16 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
   };
 
   componentWillUnmount() {
-    const { upsellNewSelectedProducts, cartId, participantId, } = this.props;
-    for (let key in upsellNewSelectedProducts) {
-      const args = {
-        cartId,
-        participantId,
-        productId: upsellNewSelectedProducts[key].productId,
-        cardId: upsellNewSelectedProducts[key].dateId,
-      };
-      this.props.stepFiveActions.stepFiveDeleteUpsellGearItemRequest(args);
-    }
+    // const { upsellNewSelectedProducts, cartId, participantId, } = this.props;
+    // for (let key in upsellNewSelectedProducts) {
+    //   const args = {
+    //     cartId,
+    //     participantId,
+    //     productId: upsellNewSelectedProducts[key].productId,
+    //     cardId: upsellNewSelectedProducts[key].dateId,
+    //   };
+    //   this.props.stepFiveActions.stepFiveDeleteUpsellGearItemRequest(args);
+    // }
   }
   
   loadMore = () => {

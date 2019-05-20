@@ -13,14 +13,18 @@ import { updateCart } from './cart';
 import { setStepsCounter } from './steps';
 
 export function incrementWeeksCounter() {
-  return {
-    type: weeksTypes.INCREMENT_WEEKS_COUNTER,
-  };
+  return dispatch => {
+    dispatch({
+      type: weeksTypes.INCREMENT_WEEKS_COUNTER,
+    });
+  }
 };
 
 export function decrementWeeksCounter() {
-  return {
-    type: weeksTypes.DECREMENT_WEEKS_COUNTER,
+  return dispatch => {
+    dispatch({
+      type: weeksTypes.DECREMENT_WEEKS_COUNTER,
+    });
   };
 };
 

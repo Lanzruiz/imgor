@@ -114,21 +114,19 @@ class StepSix extends React.Component {
   };
   
   setDefaultState = () => {
-    const {
-      dispatch, cartId, participantId, cartStepSixArrivalProductId, cartStepSixDepartingProductId, cartStepSixUnnacompaniedProductId,
-    } = this.props;
+    const { dispatch } = this.props;
     for (let key in stepSixFormFieldNames) {
       dispatch( change('wizard', stepSixFormFieldNames[key], ''), );
     }
-    if (cartStepSixArrivalProductId) {
-      this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixArrivalProductId, type: 'arrival_transport' });
-    }
-    if (cartStepSixDepartingProductId) {
-      this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixDepartingProductId, type: 'departing_transport' });
-    }
-    if (cartStepSixUnnacompaniedProductId) {
-      this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixUnnacompaniedProductId, type: 'unacompannied' });
-    }
+    // if (cartStepSixArrivalProductId) {
+    //   this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixArrivalProductId, type: 'arrival_transport' });
+    // }
+    // if (cartStepSixDepartingProductId) {
+    //   this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixDepartingProductId, type: 'departing_transport' });
+    // }
+    // if (cartStepSixUnnacompaniedProductId) {
+    //   this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixUnnacompaniedProductId, type: 'unacompannied' });
+    // }
     
     this.props.stepSixActions.stepSixSetDefaultState();
   };

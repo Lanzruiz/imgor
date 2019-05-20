@@ -342,10 +342,10 @@ class StepThree extends React.Component {
   };
 
   setDefaultState = () => {
-    const { cartId, participantId, cartStepThreeProductId } = this.props;
-    if (cartStepThreeProductId) {
-      this.props.stepThreeActions.stepThreeDeleteProduct({ cartId, participantId, productId: cartStepThreeProductId });
-    }
+    // const { cartId, participantId, cartStepThreeProductId } = this.props;
+    // if (cartStepThreeProductId) {
+    //   this.props.stepThreeActions.stepThreeDeleteProduct({ cartId, participantId, productId: cartStepThreeProductId });
+    // }
     this.props.stepThreeActions.stepThreeSetDefaultState();
     this.props.trainingActions.setDefaultState();
   };

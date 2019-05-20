@@ -2,12 +2,18 @@
 import * as stepTwoTypes from '../constants/step.two';
 // Api
 import Api from '../api';
+import { deleteAllProductsFromCart } from './cart';
+import { recalculateInsurancePrice } from './final.step';
 
 export function getCatalogCampsCalendarRequest(args) {
   return function(dispatch) {
     Api.req({
       apiCall: Api.getCatalogCampsCalendar,
-      res200: data => dispatch(getCatalogCampsCalendar(data)),
+      res200: data => {
+        dispatch(getCatalogCampsCalendar(data));
+        dispatch(deleteAllProductsFromCart());
+        dispatch(recalculateInsurancePrice());
+      },
       res404: () => console.log('Api.getCatalogCampsCalendar() => 404'), // TODO: Add error handler!
       reject: err => console.log(err), // TODO: Add error handler!
       apiCallParams: {
@@ -33,10 +39,13 @@ function getCatalogCampsCalendar(data) {
 }
 
 export function selectDate(date) {
-  return {
-    type: stepTwoTypes.STEP_TWO_SELECT_DATE,
-    payload: date,
-  };
+  return dispatch => {
+    dispatch({
+      type: stepTwoTypes.STEP_TWO_SELECT_DATE,
+      payload: date,
+    });
+    dispatch(deleteAllProductsFromCart());
+  }
 }
 
 function getCatalogCampsHistogram(data) {
