@@ -92,10 +92,10 @@ class StepFiveCatalogGear extends React.Component {
   }
 
   componentWillUnmount() {
-    const { selectedGear } = this.props;
-    for (let key in selectedGear) {
-      this.removeGear(key);
-    }
+    // const { selectedGear } = this.props;
+    // for (let key in selectedGear) {
+    //   this.removeGear(key);
+    // }
   }
 
   render() {

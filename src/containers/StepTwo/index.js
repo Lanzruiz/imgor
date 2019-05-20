@@ -331,9 +331,9 @@ class StepTwo extends React.Component {
         isAvailable
           ?
           () => {
-            if(selectedDate.capacity_start_date !== capacity_start_date){
-              this.props.cartActions.deleteAllProductsFromCart(stepsEnum.two);
-            }
+            // if(selectedDate.capacity_start_date !== capacity_start_date){
+            //   this.props.cartActions.deleteAllProductsFromCart(stepsEnum.two);
+            // }
             
             if (!isWeeklyCamp) {
               const weeksCounter = length_days / daysInWeek;

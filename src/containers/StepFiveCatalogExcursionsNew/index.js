@@ -69,15 +69,15 @@ class StepFiveCatalogExcursionsNew extends React.Component {
   }
 
   componentWillUnmount() {
-    const { selectedExcurcionGear, cartId, participantId } = this.props;
-    for (let key in selectedExcurcionGear) {const args = {
-      cartId,
-      participantId,
-      productId: selectedExcurcionGear[key].productId,
-      cardId: selectedExcurcionGear[key].dateId,
-    };
-      this.props.stepFiveActions.stepFiveDeleteExcursionGearItemRequest(args);
-    }
+    // const { selectedExcurcionGear, cartId, participantId } = this.props;
+    // for (let key in selectedExcurcionGear) {const args = {
+    //   cartId,
+    //   participantId,
+    //   productId: selectedExcurcionGear[key].productId,
+    //   cardId: selectedExcurcionGear[key].dateId,
+    // };
+    //   this.props.stepFiveActions.stepFiveDeleteExcursionGearItemRequest(args);
+    // }
   }
 
   render() {

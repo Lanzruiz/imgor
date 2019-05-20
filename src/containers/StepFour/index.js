@@ -70,7 +70,7 @@ class StepFour extends React.Component {
   };
 
   componentWillUnmount() {
-    this.setDefaultProps();
+    // this.setDefaultProps();
   }
   
   reorderConcentrations = (items) => {
