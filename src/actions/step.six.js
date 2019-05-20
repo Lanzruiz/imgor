@@ -314,28 +314,28 @@ export function stepSixAddTransportToCart({ cartId, participantId }){
       refundable: false,
     };
     
-    let jobs = [];
+    // let jobs = [];
     
     const params = { participantId, cartId };
     
     if(Boolean(cartPayload.arrivalUnaccompanied) || Boolean(cartPayload.departureUnaccompanied)){
-      jobs.push(sendUnaccompaniedRequest({ ...params, productId: stepSixUnnacompaniedProductId, body: unacommpaniedProductBody }, dispatch));
+      await sendUnaccompaniedRequest({ ...params, productId: stepSixUnnacompaniedProductId, body: unacommpaniedProductBody }, dispatch);
     }
     
     if(cartPayload.airportPickupType === 'both') {
-      jobs.push(sendArrivalRequest({ ...params, productId: stepSixArrivalProductId, body: arrivalProductBody}, dispatch));
-      jobs.push(sendDepartingRequest({ ...params, productId: stepSixDepartingProductId, body: departingProductBody}, dispatch));
+      await sendArrivalRequest({ ...params, productId: stepSixArrivalProductId, body: arrivalProductBody}, dispatch);
+      await sendDepartingRequest({ ...params, productId: stepSixDepartingProductId, body: departingProductBody}, dispatch);
     }
     
     if(cartPayload.airportPickupType === 'arrival') {
-      jobs.push(sendArrivalRequest({ ...params, productId: stepSixArrivalProductId, body: arrivalProductBody}, dispatch));
+      await sendArrivalRequest({ ...params, productId: stepSixArrivalProductId, body: arrivalProductBody}, dispatch);
     }
     
     if(cartPayload.airportPickupType === 'departing') {
-      jobs.push(sendDepartingRequest({ ...params, productId: stepSixDepartingProductId, body: departingProductBody}, dispatch));
+      await sendDepartingRequest({ ...params, productId: stepSixDepartingProductId, body: departingProductBody}, dispatch);
     }
 
-    await Promise.all(jobs);
+    // await Promise.all(jobs);
 
     dispatch({
       type: stepSixTypes.STEP_SIX_ADD_TRANSPORTATION_TO_CART,
