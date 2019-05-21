@@ -75,13 +75,27 @@ class StepFiveCatalogExcursionsNew extends React.Component {
     // }
     this.getCatalogExcursionsNew({ startDate, endDate, age });
     //this.scrollToCurrentComponent();
+    //this.sendStepToDrupal();
   }
+  
+  sendStepToDrupal = () => {
+    if(window.updateBookingSteps) {
+      window.updateBookingSteps(6);
+    }
+  };
+
+  sendRemoveStepToDrupal = () => {
+    if(window.updateBookingSteps) {
+      window.updateBookingRemoveSteps(6);
+    }
+  };
 
   scrollToCurrentComponent = () => {
     scrollToComponent(this, { align: 'top', duration: 500 });
   };
 
   componentWillUnmount() {
+    //this.sendRemoveStepToDrupal();
     // const { selectedExcurcionGear, cartId, participantId } = this.props;
     // for (let key in selectedExcurcionGear) {const args = {
     //   cartId,
@@ -239,7 +253,7 @@ class StepFiveCatalogExcursionsNew extends React.Component {
     if (isEqual(excursions.length, 0)) return null;
     
     return (
-      <AOSFadeInContainer className="step-five" id="step-5-2">
+      <AOSFadeInContainer className="step-five" id="step-6">
         <Container style={{ marginBottom: '65px' }}>
           <Row>
             <Col>

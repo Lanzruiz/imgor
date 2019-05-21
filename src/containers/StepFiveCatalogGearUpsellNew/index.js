@@ -86,13 +86,27 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
     }
     
     //this.scrollToCurrentComponent();
+    //this.sendStepToDrupal();
   }
+  
+  sendStepToDrupal = () => {
+    if(window.updateBookingSteps) {
+      window.updateBookingSteps(5);
+    }
+  };
+
+  sendRemoveStepToDrupal = () => {
+    if(window.updateBookingSteps) {
+      window.updateBookingRemoveSteps(5);
+    }
+  };
 
   scrollToCurrentComponent = () => {
     scrollToComponent(this, { align: 'top', duration: 500 });
   };
 
   componentWillUnmount() {
+    //this.sendRemoveStepToDrupal();
     // const { upsellNewSelectedProducts, cartId, participantId, } = this.props;
     // for (let key in upsellNewSelectedProducts) {
     //   const args = {
@@ -252,7 +266,7 @@ class StepFiveCatalogGearUpsellNew extends React.Component {
     const shouldRenderCatalogGearItem = stepFiveGearUpsellNew.length > 0;
     return shouldRenderCatalogGearItem && (
       <Fragment>
-        {/*<AOSFadeInContainer className="step-five" id="step-5-1">*/}
+        {/*<AOSFadeInContainer className="step-five" id="step-5">*/}
         {/*  <Container style={{ marginBottom: '65px' }}>*/}
         {/*    <div className="upsell-new">*/}
         {/*      <CSSTransitionGroup*/}

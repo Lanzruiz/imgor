@@ -53,13 +53,27 @@ class StepFiveCatalogGear extends React.Component {
     
     this.getCatalogGear({ gender, age });
     //this.scrollToCurrentComponent();
+    //this.sendStepToDrupal();
   }
+  
+  sendStepToDrupal = () => {
+    if(window.updateBookingSteps) {
+      window.updateBookingSteps(7);
+    }
+  };
+
+  sendRemoveStepToDrupal = () => {
+    if(window.updateBookingSteps) {
+      window.updateBookingRemoveSteps(7);
+    }
+  };
 
   scrollToCurrentComponent = () => {
     scrollToComponent(this, { align: 'top', duration: 500 });
   };
 
   componentWillUnmount() {
+    //this.sendRemoveStepToDrupal();
     // const { selectedGear } = this.props;
     // for (let key in selectedGear) {
     //   this.removeGear(key);
@@ -264,7 +278,7 @@ class StepFiveCatalogGear extends React.Component {
     const { data, shouldRenderLoadMoreButton } = this.props;
     const isCatalogGearDataAvailable = data.length > 0;
     return isCatalogGearDataAvailable && (
-      <AOSFadeInContainer className="step-five" id="step-5" ref={this.stepFive}>
+      <AOSFadeInContainer className="step-five" id="step-7" ref={this.stepFive}>
         <Container style={{ marginBottom: '65px' }}>
           <Row>
             <Col>
