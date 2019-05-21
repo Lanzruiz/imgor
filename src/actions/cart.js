@@ -19,6 +19,7 @@ import * as cartTypes from '../constants/cart';
 import { weekly_camp } from '../containers/StepOne';
 import { airportPickupInformation, departingFormFieldNames } from '../containers/StepSix/selectors';
 import { recalculateInsurancePrice } from './final.step';
+import { stepFiveDeleteAllItems } from './step.five';
 import { setStepsCounter } from './steps';
 import { saveTrainingId } from './training';
 import { addParticipantByCardId } from './participant';
@@ -103,7 +104,7 @@ export function deleteAllProductsFromCart(){
           apiCall: Api.deleteCartCartIdParticipantParticipantIdProductId,
           res200: async (data) => {
             dispatch(selectWeek(0));
-            return await dispatch(
+            await dispatch(
               updateCart(assign({}, data.cart, {
                 stepThreeProductId: null,
                 [`stepFourConcentrationProduct_${1}`]: null,
@@ -120,6 +121,7 @@ export function deleteAllProductsFromCart(){
                 [`stepFourConcentrationProduct_${12}`]: null,
               })),
             );
+            await dispatch(stepFiveDeleteAllItems());
           },
           res404: () => console.log('Api.createCart() => 404'), // TODO: Add error handler!
           reject: (err) => console.log(err), // TODO: Add error handler!

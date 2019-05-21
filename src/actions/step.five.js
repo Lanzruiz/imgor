@@ -350,6 +350,13 @@ export function stepFiveDeleteExcursionGearItemRequest({ cartId, participantId, 
   }
 };
 
+export function stepFiveDeleteAllItems(){
+  return {
+    type: stepFiveTypes.STEP_FIVE_DELETE_ALL_SELECTED_ITEMS,
+    payload: { },
+  }
+}
+
 export function stepFiveIncreaseExcursionsItemsPerPage() {
   return {
     type: stepFiveTypes.STEP_FIVE_INCREASE_EXCURSION_ITEMS_PER_PAGE,
