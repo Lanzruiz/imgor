@@ -154,7 +154,7 @@ class StepFiveCatalogGear extends React.Component {
       <Col md={12} lg={6} key={id} className="card-column">
         <Card
           id={id}
-          cardHeader={display_name}
+          cardHeader={display_name.replace("Campus Services Other", "")}
           color="dark"
           header={(header || {}).display_name || ''}
           label={(label || {}).display_name || ''}
