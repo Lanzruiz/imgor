@@ -261,6 +261,15 @@ export default function(state = initialState, action) {
       const maxItemsCount = state.excursions.length;
       return assign({}, state, { excursionsItemsStepCounter: (excursionsItemsPerPage <= maxItemsCount) ? excursionsItemsPerPage : maxItemsCount });
     }
+    
+    case stepFiveTypes.STEP_FIVE_DELETE_ALL_SELECTED_ITEMS: {
+      return {
+        ...state,
+        selectedExcurcionGear: {},
+        upsellNewSelectedProducts: {},
+        selectedGear: {}
+      }
+    }
 
     case PURGE: {
       return assign({}, initialState);
