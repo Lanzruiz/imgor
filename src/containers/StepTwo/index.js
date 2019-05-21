@@ -332,7 +332,8 @@ class StepTwo extends React.Component {
           ?
           () => {
             if(selectedDate.capacity_start_date !== capacity_start_date){
-              this.props.cartActions.deleteAllProductsFromCart(stepsEnum.two);
+              //TODO: check it !!!
+              // this.props.cartActions.deleteAllProductsFromCart(stepsEnum.two);
             }
             
             if (!isWeeklyCamp) {

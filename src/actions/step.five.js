@@ -7,11 +7,11 @@ import { updateCart } from './cart';
 // Api
 import Api from '../api';
 
-export function getCatalogGearRequest({ gender }) {
+export function getCatalogGearRequest({ gender, age }) {
   return function(dispatch) {
     Api.req({
       apiCall: Api.getCatalogGear,
-      apiCallParams: { gender },
+      apiCallParams: { gender, age },
       res200: (data) => {
         dispatch( getCatalogGear(data), );
         if (data.results && (data.results.length === 0)) {
@@ -76,7 +76,9 @@ export function getCatalogGearUpsellNewRequest({ business_type, package_type, sp
   return function(dispatch) {
     Api.req({
       apiCall: Api.getCatalogGearUpsellNew,
-      res200: data => dispatch( getCatalogGearUpsellNew(data), ),
+      res200: data => {
+        return dispatch(getCatalogGearUpsellNew(data),);
+      },
       res404: () => console.log('Api.getCatalogGearUpsellNew() => 404'),
       reject: console.error,
       apiCallParams: {
@@ -258,12 +260,14 @@ function stepFiveGetCatalogExcursionsNew(data) {
   };
 };
 
-export function stepFiveGetCatalogExcursionsNewRequest({ startDate, endDate }) {
+export function stepFiveGetCatalogExcursionsNewRequest({ startDate, endDate, age }) {
   return function(dispatch) {
     Api.req({
       apiCall: Api.getCatalogExcursionsNew,
-      apiCallParams: { startDate, endDate },
-      res200: data => dispatch( stepFiveGetCatalogExcursionsNew(data), ),
+      apiCallParams: { startDate, endDate, age },
+      res200: data => {
+        return dispatch(stepFiveGetCatalogExcursionsNew(data),);
+      },
       res404: console.log,
       reject: console.error,
     });
@@ -345,6 +349,13 @@ export function stepFiveDeleteExcursionGearItemRequest({ cartId, participantId, 
     });
   }
 };
+
+export function stepFiveDeleteAllItems(){
+  return {
+    type: stepFiveTypes.STEP_FIVE_DELETE_ALL_SELECTED_ITEMS,
+    payload: { },
+  }
+}
 
 export function stepFiveIncreaseExcursionsItemsPerPage() {
   return {

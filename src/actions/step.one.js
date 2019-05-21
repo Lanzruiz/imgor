@@ -23,7 +23,7 @@ export function getCatalogCampsGroup({ sport, businessType, boarding, age, gende
           dispatch(setTabIndex(1));
         }
         
-        dispatch( stepOneGetCatalogGroup(data) )
+        dispatch( stepOneGetCatalogGroup(data) );
       },
       res404: () => console.log('Api.getCatalogCampsGroup() => Error 404'), // TODO: Add error handler
       reject: err => console.error,

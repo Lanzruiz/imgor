@@ -117,6 +117,12 @@
   "step_five.apparel": "Apparel",
   "step_five.popular_item": "Popular Item",
   "step_five.off_campus_excursion": "Off Campus Excursion",
+
+  "step_five.gear_title": "Enhance Your Camp",
+  "step_five.gear_subtitle": "Recommended gear for your selected camp",
+  "step_five.excursion_title": "Experiences",
+  "step_five.excursion_subtitle": "Choose a excursion",
+
   "step_six.header": "Services For your Convenience",
   "step_six.sub_header": "Make your camp journey headache free",
   "step_six.airport_pickup": "Airport Pickup",

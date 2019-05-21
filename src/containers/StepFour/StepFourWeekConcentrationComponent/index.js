@@ -245,7 +245,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
     
     const { weekId, cartId, participantId, maxWeekCounter, stepFourConcentrationProductId } = this.props;
     
-    const data = flatten(this.props.weeksData.map(v => v.concentrations )).map(v => v.product);
+    const data = flatten(this.props.weeksData.map(v => (v || {}).concentrations )).map(v => v.product);
     
     const selectedItem = find(data, ['id', id]);
     

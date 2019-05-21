@@ -29,11 +29,9 @@ class Api {
       params: {
         sport,
         gender,
-        group,
         boarding,
         age,
         business_type: businessType,
-        secondary_group: secondaryGroup,
       },
     });
   };
@@ -71,19 +69,21 @@ class Api {
     });
   };
 
-  async getCatalogGear({ gender }) {
+  async getCatalogGear({ gender, age }) {
     return await instance.get('catalog/gear', {
       params: {
         gender,
+        age
       },
     });
   };
 
-  async getCatalogExcursionsNew({ startDate, endDate }) {
+  async getCatalogExcursionsNew({ startDate, endDate, age }) {
     return await instance.get('catalog/excursions-new', {
       params: {
         start_date: startDate,
         end_date: endDate,
+        age: age
       },
     });
   };
