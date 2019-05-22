@@ -76,6 +76,12 @@ export function removeCustomizedWeek(id) {
   }
 }
 
+export function cleanUpSelectedWeeksConcentrations (){
+  return {
+    type: weeksTypes.CLEAN_UP_SELECTED_WEEKS
+  }
+}
+
 export function deleteSelectedConcentration({ cartId, participantId, productId, id, currentWeekId, nextWeekId }) {
   return function(dispatch) {
     Api.req({
