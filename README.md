@@ -1,13 +1,20 @@
 # Imgor rebuild
 
-Description: IMG-or is a widget to help create order 
+Repository: https://git.largeinc.com/atlargeinc/imgor-v3-react
+- Need to have access
 
-###Requirements
+### Requirements
 
 - **NodeJs 10.15+**
 - **Yarn 1.12+**
 
 `API STAGE: https://imgor-api-dev.largeinc.com/api/v1/`
+
+- Branch `master` is the main branch which all task should have branch from it
+
+- Clone project on your local machine
+
+- Go to directory folder and follow steps below:
 
 ### Getting started
 1. ##### Create .env file from example
