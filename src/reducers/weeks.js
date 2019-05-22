@@ -87,6 +87,11 @@ export default function(state = initialState, action) {
       currentWeek.customize_id = null;
       return assign({}, state, { weeks });
     }
+    
+    case weeksTypes.CLEAN_UP_SELECTED_WEEKS: {
+      const weeks = state.weeks.map(v => ({id: v.id, customize_id: null}));
+      return assign({}, state, { weeks });
+    }
 
     case weeksTypes.SET_WEEK_PRICE: {
       const weeks = concat(state.weeks);
