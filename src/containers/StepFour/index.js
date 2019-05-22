@@ -66,11 +66,18 @@ class StepFour extends React.Component {
     }
   };
 
+  sendRemoveStepToDrupal = () => {
+    if(window.updateBookingSteps) {
+      window.updateBookingRemoveSteps(4);
+    }
+  };
+
   scrollToCurrentComponent = () => {
     //scrollToComponent(this.stepFour.current, { offset: 0, align: 'middle', duration: 500 });
   };
 
   componentWillUnmount() {
+    this.sendRemoveStepToDrupal();
     // this.setDefaultProps();
   }
   

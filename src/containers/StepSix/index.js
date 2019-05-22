@@ -90,7 +90,13 @@ class StepSix extends React.Component {
 
   sendStepToDrupal = () => {
     if(window.updateBookingSteps) {
-      window.updateBookingSteps(6);
+      window.updateBookingSteps(5);
+    }
+  };
+
+  sendRemoveStepToDrupal = () => {
+    if(window.updateBookingSteps) {
+      window.updateBookingRemoveSteps(5);
     }
   };
 
@@ -106,6 +112,7 @@ class StepSix extends React.Component {
   };
 
   componentWillUnmount() {
+    this.sendRemoveStepToDrupal();
     this.setDefaultState();
   }
   
@@ -222,7 +229,7 @@ class StepSix extends React.Component {
   
     return (
       <Fragment>
-        <AOSFadeInContainer className="step-six" id="step-6" ref={this.stepSix}>
+        <AOSFadeInContainer className="step-six" id="step-5" ref={this.stepSix}>
           <Container style={{ marginBottom: '65px' }}>
             <Row>
               <Col>

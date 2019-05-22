@@ -23,7 +23,7 @@ import { stepFiveDeleteAllItems } from './step.five';
 import { setStepsCounter } from './steps';
 import { saveTrainingId } from './training';
 import { addParticipantByCardId } from './participant';
-import { selectWeek } from './weeks';
+import { cleanUpSelectedWeeksConcentrations, selectWeek } from './weeks';
 
 export function updateCart(cart) {
   return (dispatch) => {
@@ -121,6 +121,7 @@ export function deleteAllProductsFromCart(){
                 [`stepFourConcentrationProduct_${12}`]: null,
               })),
             );
+            await dispatch(cleanUpSelectedWeeksConcentrations());
             await dispatch(stepFiveDeleteAllItems());
           },
           res404: () => console.log('Api.createCart() => 404'), // TODO: Add error handler!

@@ -130,7 +130,14 @@ class StepThree extends React.Component {
     }
   }
 
+  sendRemoveStepToDrupal = () => {
+    if(window.updateBookingSteps) {
+      window.updateBookingRemoveSteps(3);
+    }
+  };
+
   componentWillUnmount() {
+    this.sendRemoveStepToDrupal();
     this.setDefaultState();
   }
 

@@ -68,7 +68,13 @@ class StepFinal extends React.Component {
 
   sendStepToDrupal = () => {
     if(window.updateBookingSteps) {
-      window.updateBookingSteps(7);
+      window.updateBookingSteps(6);
+    }
+  };
+
+  sendRemoveStepToDrupal = () => {
+    if(window.updateBookingSteps) {
+      window.updateBookingRemoveSteps(6);
     }
   };
 
@@ -77,6 +83,7 @@ class StepFinal extends React.Component {
   };
 
   componentWillMount() {
+    this.sendRemoveStepToDrupal();
     this.setDefaultState();
   }
 
@@ -129,7 +136,7 @@ class StepFinal extends React.Component {
     return (
       <ScreenClassRender render={(screenClass) => {
         return (
-          <AOSFadeInContainer className="step-final" id="step-7">
+          <AOSFadeInContainer className="step-final" id="step-8">
             <Container>
               <Row>
                 <Col>

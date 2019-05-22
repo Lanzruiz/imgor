@@ -148,7 +148,14 @@ class StepTwo extends React.Component {
     }
   }
 
+  sendRemoveStepToDrupal = () => {
+    if(window.updateBookingSteps) {
+      window.updateBookingRemoveSteps(2);
+    }
+  };
+
   componentWillUnmount() {
+    this.sendRemoveStepToDrupal();
     this.setDefaultState();
   }
 
