@@ -1,9 +1,13 @@
 # Imgor rebuild
 
+Description: IMG-or is a widget to help create order 
+
 ###Requirements
 
 - **NodeJs 10.15+**
 - **Yarn 1.12+**
+
+`API STAGE: https://imgor-api-dev.largeinc.com/api/v1/`
 
 ### Getting started
 1. ##### Create .env file from example
