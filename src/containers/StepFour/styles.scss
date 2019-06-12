@@ -173,6 +173,7 @@
     &__tab-list {
       display: flex;
       flex-direction: row;
+      overflow-x: auto;
     }
 
     &__tab {
@@ -190,7 +191,7 @@
 
       @include breakpoint($mobile) {
         white-space: nowrap;
-        font-size: 12px;
+        font-size: 13px;
       }
 
       &--selected {

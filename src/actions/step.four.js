@@ -148,7 +148,7 @@ export function getCatalogCamConcentrations({ business_type, sport, age, gender,
           const hasAnyConcetration = data.results.filter(v => !!v.concentrations).length > 0;
           
           data.results.forEach((v, i) => {
-            if(!v.concentrations){
+            if(!(v || {}).concentrations){
               dispatch(customizeWeek(emptyConcentrationsSkipWeek, i));
             }
             

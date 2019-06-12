@@ -8,6 +8,7 @@ import cx from 'classnames';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
 import isNumber from 'lodash/isNumber';
+import cloneDeep from 'lodash/cloneDeep';
 // Components
 import Header from '../../components/Header';
 import LocaleString from '../../components/LocaleString';
@@ -65,12 +66,19 @@ class StepFour extends React.Component {
     }
   };
 
+  sendRemoveStepToDrupal = () => {
+    if(window.updateBookingSteps) {
+      window.updateBookingRemoveSteps(4);
+    }
+  };
+
   scrollToCurrentComponent = () => {
     //scrollToComponent(this.stepFour.current, { offset: 0, align: 'middle', duration: 500 });
   };
 
   componentWillUnmount() {
-    this.setDefaultProps();
+    this.sendRemoveStepToDrupal();
+    // this.setDefaultProps();
   }
   
   reorderConcentrations = (items) => {
@@ -108,8 +116,13 @@ class StepFour extends React.Component {
   
     const tabsList = [];
     const tabPanels = [];
+    
+    const hasSelectedNoAdditionalTraning = (weeks[0] || {}).customize_id === emptyConcentrationId;
   
     const tabListClassName = cx('step-four-tabs__tab-list', { 'react-hidden': isEqual(weeks.length, 1) });
+  
+    const hasAnyConcentration = weeksData.filter(v => !!v.concentrations).length > 0;
+    const firstWeekIsEmpty = !(weeksData[0] || {}).concentrations;
   
     if (hasSecondaryProgram) {
       return (
@@ -142,19 +155,27 @@ class StepFour extends React.Component {
       );
     }
     
-    (weeksData || []).forEach((week, index) => {
+    const weeksDataParsed = !hasSelectedNoAdditionalTraning ? (weeksData || []) : (weeksData ? [weeksData[0]] : []);
+    
+    weeksDataParsed.forEach((week, index) => {
       const lastWeek = (weeksData.length - 1) === index;
       
-      if(index === 0 && week.concentrations && !week.concentrations.find(v => v.product.id === emptyConcentrationId)){
-        week.concentrations = [
-          ...week.concentrations,
+      let weekConcentrations = cloneDeep((week || { concentrations: [] }).concentrations);
+      
+      if(index === 0 && !((week || { concentrations: [] }).concentrations || []).find(v => v.product.id === emptyConcentrationId)){
+        weekConcentrations = [
+          ...(weekConcentrations ? weekConcentrations : []),
           {
             product: {
               id: emptyConcentrationId,
               secondary_program_type: 'props week'
             }
           }
-        ]
+        ];
+        
+        if(weekConcentrations.length === 1){
+          weekConcentrations = undefined;
+        }
       }
       
       tabsList.push(
@@ -166,7 +187,7 @@ class StepFour extends React.Component {
       tabPanels.push(
         <TabPanel key={index} className="step-four-tabs__tab-panel">
           <Row>
-            {(week.concentrations || []).map(v => (
+            {(weekConcentrations || []).map(v => (
               <StepFourWeekConcentrationComponent
                 key={v.product.id}
                 age={age}
@@ -181,9 +202,11 @@ class StepFour extends React.Component {
                 maxWeekCounter={weeks.length}
                 isFirstWeek={index === 0}
                 isLastWeek={lastWeek}
+                firstWeekIsEmpty={firstWeekIsEmpty}
+                scrollToSelectedTab={this.scrollToSelectedTab}
               />
             ))}
-            {!week.concentrations && (
+            {!weekConcentrations && (
               <StepFourWeekConcentrationComponent
                 key={emptyConcentrationsSkipWeek}
                 age={age}
@@ -199,57 +222,76 @@ class StepFour extends React.Component {
                 isFirstWeek={index === 0}
                 isEmptyConcentrations={true}
                 isLastWeek={lastWeek}
+                scrollToSelectedTab={this.scrollToSelectedTab}
               />
             )}
           </Row>
         </TabPanel>
       )
-    
     });
     
-    return (
-      <AOSFadeInContainer className={`step-four`} id="step-4" ref={this.stepFour}>
-        <Container>
-          <Row>
-            <Col>
-              <Header
-                header="step_four.header"
-                subHeader="step_four.sub_header"
-                formatString={{ stepNumber: stepsEnum.four }}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <Tabs
-                className="step-four__tabs step-four-tabs"
-                selectedTabClassName="step-four-tabs__tab--selected"
-                selectedTabPanelClassName="step-four-tabs__tab-tanel--selected"
-                selectedIndex={selectedWeekId}
-                onSelect={this.selectWeek}
-              >
-                <TabList className={tabListClassName}>
-                  {tabsList}
-                </TabList>
-                {tabPanels}
-              </Tabs>
-            </Col>
-          </Row>
-        </Container>
-      </AOSFadeInContainer>
-    );
+    if(hasAnyConcentration){
+      return (
+        <AOSFadeInContainer className={`step-four`} ref={this.stepFour}>
+          <Container>
+            <Row>
+              <Col>
+                <Header
+                  header="step_four.header"
+                  subHeader="step_four.sub_header"
+                  formatString={{ stepNumber: stepsEnum.four }}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Tabs
+                  className="step-four__tabs step-four-tabs"
+                  selectedTabClassName="step-four-tabs__tab--selected"
+                  selectedTabPanelClassName="step-four-tabs__tab-tanel--selected"
+                  selectedIndex={selectedWeekId}
+                  onSelect={this.selectWeek}
+                >
+                  <TabList className={tabListClassName}>
+                    {tabsList}
+                  </TabList>
+                  {tabPanels}
+                </Tabs>
+              </Col>
+            </Row>
+          </Container>
+        </AOSFadeInContainer>
+      );
+    }
+    
+    return null;
   }
 
   customizeWeek = (id) => {
     this.props.weeksActions.customizeWeek(id);
+    this.scrollToSelectedTab();
   };
 
   selectWeek = (id) => {
     this.props.weeksActions.selectWeek(id);
+    this.scrollToSelectedTab();
   };
 
   nextStep = () => {
     this.props.stepsActions.incrementStepsCounter();
+  };
+  
+  scrollToSelectedTab = () => {
+    setTimeout(() => {
+      const tabs = document.querySelector('.step-four-tabs__tab-list');
+      if(tabs){
+        const selectedTab = tabs.querySelector('.step-four-tabs__tab--selected');
+        if(tabs && selectedTab){
+          const scrollToPos = selectedTab.offsetLeft > 100 ? selectedTab.offsetLeft -100 : 0;
+          tabs.scrollTo(scrollToPos, 0);
+        }
+      }
+    }, 0)
   };
 
   getCatalogCamp = () => {
@@ -388,6 +430,7 @@ StepFour.propTypes = {
 function mapStateToProps(state) {
   return {
     weeks: weeksItemsSelector(state),
+    weekOneData: state.stepFour.week_1_data,
     weeksData: stepFourWeeksDataSelector(state),
     selectedWeekId: weeksSelectedWeekIdSelector(state),
     age: stepOneAgeSelector(state),

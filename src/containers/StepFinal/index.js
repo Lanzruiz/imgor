@@ -19,6 +19,7 @@ import DatePickerReduxForm from '../../components/DatePicker';
 import AOSFadeInContainer from '../../components/AOSFadeInContainer';
 // Actions
 import * as finalStepActions from '../../actions/final.step';
+import { shouldRenderField } from '../../helpers/blackListOfFields';
 import { gtmStateChange, stateChangeTypes } from '../../helpers/GTMService';
 import { cartIdSelector, participantIdSelector, stepOneAgeSelector } from '../StepOne/selectors';
 // Selectors
@@ -67,15 +68,22 @@ class StepFinal extends React.Component {
 
   sendStepToDrupal = () => {
     if(window.updateBookingSteps) {
-      window.updateBookingSteps(7);
+      window.updateBookingSteps(6);
+    }
+  };
+
+  sendRemoveStepToDrupal = () => {
+    if(window.updateBookingSteps) {
+      window.updateBookingRemoveSteps(6);
     }
   };
 
   scrollToCurrentComponent = () => {
     //scrollToComponent(this, { align: 'top', duration: 500 });
-  }
+  };
 
   componentWillMount() {
+    this.sendRemoveStepToDrupal();
     this.setDefaultState();
   }
 
@@ -107,7 +115,10 @@ class StepFinal extends React.Component {
   };
 
   render() {
-    const { positions, selectedPosition, shirtSize, age, isBusinessTypeForAdult, refundable, refundableLoading, insurancePrice } = this.props;
+    const { positions, selectedPosition, shirtSize, age, sport, isBusinessTypeForAdult, refundable, refundableLoading, insurancePrice } = this.props;
+    
+    const shouldRenderPosition =  shouldRenderField(sport, stepFinalFormFieldNames.position);
+    
     const options = [
       {
         stringKey: 'step_final.required_insurance_yes_title',
@@ -124,15 +135,8 @@ class StepFinal extends React.Component {
     
     return (
       <ScreenClassRender render={(screenClass) => {
-        let isMobile = false;
-        let isTablet = false;
-        if (isEqual(screenClass, 'sm') || isEqual(screenClass, 'xs')) {
-          isMobile = true;
-        } else if (isEqual(screenClass, 'md')) {
-          isTablet = true;
-        }
         return (
-          <AOSFadeInContainer className="step-final" id="step-7">
+          <AOSFadeInContainer className="step-final" id="step-8">
             <Container>
               <Row>
                 <Col>
@@ -202,7 +206,7 @@ class StepFinal extends React.Component {
                 <Col
                   sm={12}
                   md={12}
-                  lg={4}
+                  lg={shouldRenderPosition ? 4 : 6}
                   style={{ padding: '15px' }}
                 >
                   <Card
@@ -277,38 +281,35 @@ class StepFinal extends React.Component {
                     </CardContent>
                   </Card>
                 </Col>
+  
+                {shouldRenderPosition && (
+                  <Col sm={12} md={6} lg={4} style={{ padding: '15px' }}>
+                    <Card
+                      buttonBlock={false}
+                      cardHeader={<LocaleString stringKey="step_final.position" />}
+                      cardHeaderCapitalize={true}
+                      id={1}
+                      priceBlock={false}
+                      style={{ marginBottom: 0 }}
+                    >
+                      <CardContent>
+                        <CardContentRow>
+                          <CardContentCol className="step-final__position">
+                            <PositionRadioBtn
+                              options={positions}
+                              position={selectedPosition}
+                            />
+                          </CardContentCol>
+                        </CardContentRow>
+                      </CardContent>
+                    </Card>
+                  </Col>
+                )}
                 
                 <Col
                   sm={12}
                   md={6}
-                  lg={4}
-                  style={{ padding: '15px' }}
-                >
-                  <Card
-                    buttonBlock={false}
-                    cardHeader={<LocaleString stringKey="step_final.position" />}
-                    cardHeaderCapitalize={true}
-                    id={1}
-                    priceBlock={false}
-                    style={{ marginBottom: 0 }}
-                  >
-                    <CardContent>
-                      <CardContentRow>
-                        <CardContentCol className="step-final__position">
-                          <PositionRadioBtn
-                            options={positions}
-                            position={selectedPosition}
-                          />
-                        </CardContentCol>
-                      </CardContentRow>
-                    </CardContent>
-                  </Card>
-                </Col>
-                
-                <Col
-                  sm={12}
-                  md={6}
-                  lg={4}
+                  lg={shouldRenderPosition ? 4 : 6}
                   style={{ padding: '15px' }}
                 >
                   <Card
@@ -330,7 +331,12 @@ class StepFinal extends React.Component {
 
               {!isBusinessTypeForAdult && (
               <Row>
-                <Col sm={12} style={{ padding: '15px' }}>
+                <Col
+                  sm={12}
+                  md={4}
+                  lg={4}
+                  style={{ padding: '15px' }}
+                >
                   <Card
                     buttonBlock={false}
                     cardHeader={<LocaleString stringKey="step_final.guardian_information" />}
@@ -341,7 +347,7 @@ class StepFinal extends React.Component {
                     <CardContent>
                       <CardContentRow>
                         <CardContentCol>
-                          <Form autoComplete="off" className="step-final__form" style={{ maxWidth: (!isMobile && isTablet) ? '100%' : 'calc(100%/3)', marginRight: 'auto' }} onSubmit={() => {}}>
+                          <Form autoComplete="off" className="step-final__form" style={{ marginRight: 'auto' }} onSubmit={() => {}}>
                             <label className="step-final__form-control">
                               <Input
                                 inputClassName="step-final__input"
