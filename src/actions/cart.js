@@ -170,6 +170,7 @@ export function sendCartData(props){
       const message = getValidationMessage(props);
   
       window.reactAppUpdate({
+        state: props,
         email: email,
         cart: cart,
         price: cart.price_total || 0,

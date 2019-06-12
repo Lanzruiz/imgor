@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { reduxForm } from 'redux-form';
-import scrollToComponent from 'react-scroll-to-component';
+//import scrollToComponent from 'react-scroll-to-component';
 import isNumber from 'lodash/isNumber';
 import isEqual from 'lodash/isEqual';
 import toLower from 'lodash/toLower';
@@ -104,7 +104,7 @@ class StepThree extends React.Component {
     this.getCatalogCampsLevels();
   
     this.props.gtmStateChange(stateChangeTypes.OR_CAMPER_PROGRAM);
-    this.scrollToCurrentComponent();
+    //this.scrollToCurrentComponent();
     this.sendStepToDrupal();
   }
 
@@ -138,7 +138,7 @@ class StepThree extends React.Component {
     const { selectedId, data, selectedCardWithSecondaryProgramsId, viaLogoPath } = this.props;
     
     return (
-      <AOSFadeInContainer className="step-three" ref={this.stepThree}>
+      <AOSFadeInContainer className="step-three" id="step-3" ref={this.stepThree}>
         <Container>
           <Row>
             <Col>
@@ -356,7 +356,7 @@ class StepThree extends React.Component {
   };
 
   scrollToCurrentComponent = () => {
-    scrollToComponent(this.stepThree.current, { align: 'top' });
+    //scrollToComponent(this.stepThree.current, { align: 'top' });
   }
 }
 

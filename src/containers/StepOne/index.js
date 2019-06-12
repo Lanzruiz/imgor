@@ -7,7 +7,7 @@ import { Container, Row, Col } from 'react-grid-system';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { reduxForm, formValueSelector } from 'redux-form';
 import PropTypes from 'prop-types';
-import scrollToComponent from 'react-scroll-to-component';
+//import scrollToComponent from 'react-scroll-to-component';
 import cx from 'classnames';
 // Components
 import EmailModal from '../../components/EmailModal';
@@ -71,7 +71,7 @@ class StepOne extends React.Component {
     };
   
     this.getCatalogCampsGroup(args);
-    this.scrollToCurrentComponent();
+    //this.scrollToCurrentComponent();
     this.sendStepToDrupal();
   }
 
@@ -82,7 +82,7 @@ class StepOne extends React.Component {
   };
   
   scrollToCurrentComponent = () => {
-    scrollToComponent(this.stepOne.current, { offset: -200, align: 'middle', duration: 500 });
+    //scrollToComponent(this.stepOne.current, { offset: -200, align: 'middle', duration: 500 });
   };
   
   componentDidUpdate(prevProps) {
@@ -196,7 +196,7 @@ class StepOne extends React.Component {
     const parsedData = data.map(v => ({ ...v, id: (v.name || '').toLowerCase().replace(/\s/g, '_') }));
     
     return (
-      <AOSFadeInContainer className="step-one" ref={this.stepOne}>
+      <AOSFadeInContainer className="step-one" id="step-1" ref={this.stepOne}>
         {!dataInitialEmail && (
           <EmailModal
             onSubmit={this.closeEmailModal}

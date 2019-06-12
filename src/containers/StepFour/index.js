@@ -8,7 +8,6 @@ import cx from 'classnames';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
 import isNumber from 'lodash/isNumber';
-import cloneDeep from 'lodash/cloneDeep';
 // Components
 import Header from '../../components/Header';
 import LocaleString from '../../components/LocaleString';
@@ -18,7 +17,7 @@ import StepFourEslSecondaryProgram from './components/StepFourEslSecondaryProgra
 import StepFourPerformanceSecondaryProgram from './components/StepFourPerformanceSecondaryProgram';
 import StepFourSatSecondaryProgram from './components/StepFourSatSecondaryProgram';
 import AOSFadeInContainer from '../../components/AOSFadeInContainer';
-import scrollToComponent from 'react-scroll-to-component';
+//import scrollToComponent from 'react-scroll-to-component';
 // Action
 import * as weeksActions from '../../actions/weeks';
 import * as stepsActions from '../../actions/steps';
@@ -56,7 +55,7 @@ class StepFour extends React.Component {
     if (!hasSecondaryProgram && isEqual(currentStep, stepsEnum.four)) {
       this.getCatalogCamConcentrations();
     }
-    this.scrollToCurrentComponent();
+    //this.scrollToCurrentComponent();
     this.sendStepToDrupal();
   }
 
@@ -67,7 +66,7 @@ class StepFour extends React.Component {
   };
 
   scrollToCurrentComponent = () => {
-    scrollToComponent(this.stepFour.current, { offset: 0, align: 'middle', duration: 500 });
+    //scrollToComponent(this.stepFour.current, { offset: 0, align: 'middle', duration: 500 });
   };
 
   componentWillUnmount() {
@@ -112,12 +111,9 @@ class StepFour extends React.Component {
   
     const tabListClassName = cx('step-four-tabs__tab-list', { 'react-hidden': isEqual(weeks.length, 1) });
   
-    const hasAnyConcentration = weeksData.filter(v => !!v.concentrations).length > 0;
-    const firstWeekIsEmpty = !(weeksData[0] || {}).concentrations;
-  
     if (hasSecondaryProgram) {
       return (
-        <AOSFadeInContainer className="step-four" ref={this.stepFour}>
+        <AOSFadeInContainer className="step-four" id="step-4" ref={this.stepFour}>
           <Container>
             <Row>
               <Col>
@@ -149,22 +145,16 @@ class StepFour extends React.Component {
     (weeksData || []).forEach((week, index) => {
       const lastWeek = (weeksData.length - 1) === index;
       
-      let weekConcentrations = cloneDeep(week.concentrations);
-      
-      if(index === 0 && !(week.concentrations || []).find(v => v.product.id === emptyConcentrationId)){
-        weekConcentrations = [
-          ...(weekConcentrations ? weekConcentrations : []),
+      if(index === 0 && week.concentrations && !week.concentrations.find(v => v.product.id === emptyConcentrationId)){
+        week.concentrations = [
+          ...week.concentrations,
           {
             product: {
               id: emptyConcentrationId,
               secondary_program_type: 'props week'
             }
           }
-        ];
-        
-        if(weekConcentrations.length === 1){
-          weekConcentrations = undefined;
-        }
+        ]
       }
       
       tabsList.push(
@@ -176,7 +166,7 @@ class StepFour extends React.Component {
       tabPanels.push(
         <TabPanel key={index} className="step-four-tabs__tab-panel">
           <Row>
-            {(weekConcentrations || []).map(v => (
+            {(week.concentrations || []).map(v => (
               <StepFourWeekConcentrationComponent
                 key={v.product.id}
                 age={age}
@@ -191,10 +181,9 @@ class StepFour extends React.Component {
                 maxWeekCounter={weeks.length}
                 isFirstWeek={index === 0}
                 isLastWeek={lastWeek}
-                firstWeekIsEmpty={firstWeekIsEmpty}
               />
             ))}
-            {!weekConcentrations && (
+            {!week.concentrations && (
               <StepFourWeekConcentrationComponent
                 key={emptyConcentrationsSkipWeek}
                 age={age}
@@ -215,43 +204,40 @@ class StepFour extends React.Component {
           </Row>
         </TabPanel>
       )
+    
     });
     
-    if(hasAnyConcentration){
-      return (
-        <AOSFadeInContainer className={`step-four`} ref={this.stepFour}>
-          <Container>
-            <Row>
-              <Col>
-                <Header
-                  header="step_four.header"
-                  subHeader="step_four.sub_header"
-                  formatString={{ stepNumber: stepsEnum.four }}
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <Tabs
-                  className="step-four__tabs step-four-tabs"
-                  selectedTabClassName="step-four-tabs__tab--selected"
-                  selectedTabPanelClassName="step-four-tabs__tab-tanel--selected"
-                  selectedIndex={selectedWeekId}
-                  onSelect={this.selectWeek}
-                >
-                  <TabList className={tabListClassName}>
-                    {tabsList}
-                  </TabList>
-                  {tabPanels}
-                </Tabs>
-              </Col>
-            </Row>
-          </Container>
-        </AOSFadeInContainer>
-      );
-    }
-    
-    return null;
+    return (
+      <AOSFadeInContainer className={`step-four`} id="step-4" ref={this.stepFour}>
+        <Container>
+          <Row>
+            <Col>
+              <Header
+                header="step_four.header"
+                subHeader="step_four.sub_header"
+                formatString={{ stepNumber: stepsEnum.four }}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Tabs
+                className="step-four__tabs step-four-tabs"
+                selectedTabClassName="step-four-tabs__tab--selected"
+                selectedTabPanelClassName="step-four-tabs__tab-tanel--selected"
+                selectedIndex={selectedWeekId}
+                onSelect={this.selectWeek}
+              >
+                <TabList className={tabListClassName}>
+                  {tabsList}
+                </TabList>
+                {tabPanels}
+              </Tabs>
+            </Col>
+          </Row>
+        </Container>
+      </AOSFadeInContainer>
+    );
   }
 
   customizeWeek = (id) => {
@@ -402,7 +388,6 @@ StepFour.propTypes = {
 function mapStateToProps(state) {
   return {
     weeks: weeksItemsSelector(state),
-    weekOneData: state.stepFour.week_1_data,
     weeksData: stepFourWeeksDataSelector(state),
     selectedWeekId: weeksSelectedWeekIdSelector(state),
     age: stepOneAgeSelector(state),
