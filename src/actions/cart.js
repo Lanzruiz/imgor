@@ -1,4 +1,5 @@
 // Constants
+import assign from 'lodash/assign';
 import isEqual from 'lodash/isEqual';
 import isNumber from 'lodash/isNumber';
 import isString from 'lodash/isString';
@@ -17,9 +18,11 @@ import * as cartTypes from '../constants/cart';
 import { weekly_camp } from '../containers/StepOne';
 import { airportPickupInformation, departingFormFieldNames } from '../containers/StepSix/selectors';
 import { recalculateInsurancePrice } from './final.step';
+import { stepFiveDeleteAllItems } from './step.five';
 import { setStepsCounter } from './steps';
 import { saveTrainingId } from './training';
 import { addParticipantByCardId } from './participant';
+import { cleanUpSelectedWeeksConcentrations, selectWeek } from './weeks';
 
 export function updateCart(cart) {
   return (dispatch) => {
@@ -89,16 +92,37 @@ export function deleteAllProductsFromCart(){
   return async function (dispatch, getState){
     const { cart } = getState();
     const { participants } = cart;
-    
+
     const cartId = cart.id;
     const participantId = (participants[0] || {}).id || null;
     const products = (participants[0] || {}).products || [];
-    
+
     if(!isEmpty(products)){
       for(let index in products){
         await Api.req({
           apiCall: Api.deleteCartCartIdParticipantParticipantIdProductId,
-          res200: async (data) => await dispatch(updateCart(data.cart)),
+          res200: async (data) => {
+            dispatch(selectWeek(0));
+            await dispatch(
+              updateCart(assign({}, data.cart, {
+                stepThreeProductId: null,
+                [`stepFourConcentrationProduct_${1}`]: null,
+                [`stepFourConcentrationProduct_${2}`]: null,
+                [`stepFourConcentrationProduct_${3}`]: null,
+                [`stepFourConcentrationProduct_${4}`]: null,
+                [`stepFourConcentrationProduct_${5}`]: null,
+                [`stepFourConcentrationProduct_${6}`]: null,
+                [`stepFourConcentrationProduct_${7}`]: null,
+                [`stepFourConcentrationProduct_${8}`]: null,
+                [`stepFourConcentrationProduct_${9}`]: null,
+                [`stepFourConcentrationProduct_${10}`]: null,
+                [`stepFourConcentrationProduct_${11}`]: null,
+                [`stepFourConcentrationProduct_${12}`]: null,
+              })),
+            );
+            await dispatch(cleanUpSelectedWeeksConcentrations());
+            await dispatch(stepFiveDeleteAllItems());
+          },
           res404: () => console.log('Api.createCart() => 404'), // TODO: Add error handler!
           reject: (err) => console.log(err), // TODO: Add error handler!
           apiCallParams: {
@@ -108,7 +132,7 @@ export function deleteAllProductsFromCart(){
           },
         });
       }
-  
+
       // dispatch( updateCart(assign({}, getState(), { stepThreeProductId: null })), );
       dispatch( saveTrainingId(null), );
       dispatch(setStepsCounter(stepsEnum.two))

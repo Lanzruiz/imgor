@@ -15,7 +15,10 @@ export function getCatalogCampsLevelsRequest(args) {
   return function(dispatch) {
     Api.req({
       apiCall: Api.getCatalogCampsLevels,
-      res200: data => dispatch( getCatalogCampsLevels(data), ),
+      res200: data => {
+        dispatch(getCatalogCampsLevels(data),);
+        
+      },
       res404: () => console.log('Api.getCatalogCampsLevels() => 404'),
       reject: err => console.log(err),
       apiCallParams: {

@@ -17,8 +17,8 @@ const initialState = {
   upsellNewSelectedProducts: {},
   excursions: [],
   selectedExcurcionGear: {},
-  excursionsItemsStepCounter: 0,
-  upsellItemsStepCounter: 0,
+  excursionsItemsStepCounter: 6,
+  upsellItemsStepCounter: 6,
 };
 
 export default function(state = initialState, action) {
@@ -260,6 +260,15 @@ export default function(state = initialState, action) {
       const excursionsItemsPerPage = state.excursionsItemsStepCounter + state.itemsStepCounter;
       const maxItemsCount = state.excursions.length;
       return assign({}, state, { excursionsItemsStepCounter: (excursionsItemsPerPage <= maxItemsCount) ? excursionsItemsPerPage : maxItemsCount });
+    }
+    
+    case stepFiveTypes.STEP_FIVE_DELETE_ALL_SELECTED_ITEMS: {
+      return {
+        ...state,
+        selectedExcurcionGear: {},
+        upsellNewSelectedProducts: {},
+        selectedGear: {}
+      }
     }
 
     case PURGE: {

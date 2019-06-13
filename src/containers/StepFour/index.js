@@ -65,12 +65,19 @@ class StepFour extends React.Component {
     }
   };
 
+  sendRemoveStepToDrupal = () => {
+    if(window.updateBookingSteps) {
+      window.updateBookingRemoveSteps(4);
+    }
+  };
+
   scrollToCurrentComponent = () => {
     //scrollToComponent(this.stepFour.current, { offset: 0, align: 'middle', duration: 500 });
   };
 
   componentWillUnmount() {
-    this.setDefaultProps();
+    this.sendRemoveStepToDrupal();
+    // this.setDefaultProps();
   }
   
   reorderConcentrations = (items) => {
@@ -108,6 +115,8 @@ class StepFour extends React.Component {
   
     const tabsList = [];
     const tabPanels = [];
+    
+    const hasSelectedNoAdditionalTraning = (weeks[0] || {}).customize_id === emptyConcentrationId;
   
     const tabListClassName = cx('step-four-tabs__tab-list', { 'react-hidden': isEqual(weeks.length, 1) });
   
@@ -142,12 +151,14 @@ class StepFour extends React.Component {
       );
     }
     
-    (weeksData || []).forEach((week, index) => {
+    const weeksDataParsed = !hasSelectedNoAdditionalTraning ? (weeksData || []) : (weeksData ? [weeksData[0]] : []);
+    
+    weeksDataParsed.forEach((week, index) => {
       const lastWeek = (weeksData.length - 1) === index;
       
       if(index === 0 && week.concentrations && !week.concentrations.find(v => v.product.id === emptyConcentrationId)){
-        week.concentrations = [
-          ...week.concentrations,
+        (week || { concentrations: [] }).concentrations = [
+          ...((week || {}).concentrations || []),
           {
             product: {
               id: emptyConcentrationId,
@@ -166,7 +177,7 @@ class StepFour extends React.Component {
       tabPanels.push(
         <TabPanel key={index} className="step-four-tabs__tab-panel">
           <Row>
-            {(week.concentrations || []).map(v => (
+            {((week || {}).concentrations || []).map(v => (
               <StepFourWeekConcentrationComponent
                 key={v.product.id}
                 age={age}
@@ -181,9 +192,10 @@ class StepFour extends React.Component {
                 maxWeekCounter={weeks.length}
                 isFirstWeek={index === 0}
                 isLastWeek={lastWeek}
+                scrollToSelectedTab={this.scrollToSelectedTab}
               />
             ))}
-            {!week.concentrations && (
+            {!(week || {}).concentrations && (
               <StepFourWeekConcentrationComponent
                 key={emptyConcentrationsSkipWeek}
                 age={age}
@@ -199,6 +211,7 @@ class StepFour extends React.Component {
                 isFirstWeek={index === 0}
                 isEmptyConcentrations={true}
                 isLastWeek={lastWeek}
+                scrollToSelectedTab={this.scrollToSelectedTab}
               />
             )}
           </Row>
@@ -242,14 +255,29 @@ class StepFour extends React.Component {
 
   customizeWeek = (id) => {
     this.props.weeksActions.customizeWeek(id);
+    this.scrollToSelectedTab();
   };
 
   selectWeek = (id) => {
     this.props.weeksActions.selectWeek(id);
+    this.scrollToSelectedTab();
   };
 
   nextStep = () => {
     this.props.stepsActions.incrementStepsCounter();
+  };
+  
+  scrollToSelectedTab = () => {
+    setTimeout(() => {
+      const tabs = document.querySelector('.step-four-tabs__tab-list');
+      if(tabs){
+        const selectedTab = tabs.querySelector('.step-four-tabs__tab--selected');
+        if(tabs && selectedTab){
+          const scrollToPos = selectedTab.offsetLeft > 100 ? selectedTab.offsetLeft -100 : 0;
+          tabs.scrollTo(scrollToPos, 0);
+        }
+      }
+    }, 0)
   };
 
   getCatalogCamp = () => {

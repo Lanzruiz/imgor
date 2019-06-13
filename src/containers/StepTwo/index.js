@@ -148,7 +148,14 @@ class StepTwo extends React.Component {
     }
   }
 
+  sendRemoveStepToDrupal = () => {
+    if(window.updateBookingSteps) {
+      window.updateBookingRemoveSteps(2);
+    }
+  };
+
   componentWillUnmount() {
+    this.sendRemoveStepToDrupal();
     this.setDefaultState();
   }
 
@@ -332,7 +339,8 @@ class StepTwo extends React.Component {
           ?
           () => {
             if(selectedDate.capacity_start_date !== capacity_start_date){
-              this.props.cartActions.deleteAllProductsFromCart(stepsEnum.two);
+              //TODO: check it !!!
+              // this.props.cartActions.deleteAllProductsFromCart(stepsEnum.two);
             }
             
             if (!isWeeklyCamp) {

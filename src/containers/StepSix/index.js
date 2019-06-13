@@ -1,5 +1,4 @@
 // Modules
-import find from 'lodash/find';
 import React, { Fragment } from 'react';
 import { Container, Row, Col } from 'react-grid-system';
 import { connect } from 'react-redux';
@@ -11,27 +10,14 @@ import isEqual from 'lodash/isEqual';
 import Button from '../../components/Button';
 // Components
 import Header from '../../components/Header';
-import LocaleString from '../../components/LocaleString';
-import DatePickerReduxForm from '../../components/DatePicker';
 import Image from '../../components/Image';
-import AirportHasArrivalFlightBookedCheckbox from './components/AirportHasArrivalFlightBookedCheckbox';
-import AirportHasDepartingFlightBookedCheckbox from './components/AirportHasDepartingFlightBookedCheckbox';
 import AirportPickupCheckboxContainer from './components/AirportPickupCheckboxContainer';
-import ArrivalFlightNumberTextInput from './components/ArrivalFlightNumberTextInput';
-import DepartingCheckboxContainer from './components/DepartingCheckboxContainer';
-import DropoffCheckboxContainer from './components/DropoffCheckboxContainer';
-import DropoffLocationTextField from './components/DropoffLocationTextField';
-import FlightNumberDepartingTextInput from './components/FlightNumberDepartingTextInput';
-import Paragraph from './components/Paragraph';
-import PickUpLocationTextField from './components/PickUpLocationTextField';
-import UnaccompaniedCheckboxContainer from './components/UnaccompaniedCheckboxContainer';
-import TransportRadioContainer from './components/TransportRadioContainer';
-import AirlinesDepartingDropdownContainer from './components/AirlinesDepartingDropdownContainer';
-import AirlinesDropdownContainer from './components/AirlinesDropdownContainer';
 import AOSFadeInContainer from '../../components/AOSFadeInContainer';
+import StepFiveCatalogExcursionsNew from '../StepFiveCatalogExcursionsNew';
+import StepFiveCatalogGearUpsellNew from '../StepFiveCatalogGearUpsellNew';
+import StepFiveCatalogGear from '../StepFiveCatalogGear';
 // Images
 import stubImage from '../../assets/img/2018-Suburban.png';
-import planeImg from '../../assets/img/plane.svg';
 // Actions
 import * as stepSixActions from '../../actions/step.six';
 import * as stepsActions from '../../actions/steps';
@@ -40,6 +26,9 @@ import {
   participantIdSelector, cartIdSelector, cartStepSixUnnacompaniedProductIdSelector, cartStepSixDepartingProductIdSelector,
   cartStepSixArrivalProductIdSelector,
 } from '../../containers/StepOne/selectors';
+import DropOffSection from './sections/DropOffSection';
+import PickUpSection from './sections/PickUpSection';
+import SummarySection from './sections/SummarySection';
 import {
   stepSixAirportPickupSelector,
   stepSixTransportSelector,
@@ -100,7 +89,13 @@ class StepSix extends React.Component {
 
   sendStepToDrupal = () => {
     if(window.updateBookingSteps) {
-      window.updateBookingSteps(6);
+      window.updateBookingSteps(5);
+    }
+  };
+
+  sendRemoveStepToDrupal = () => {
+    if(window.updateBookingSteps) {
+      window.updateBookingRemoveSteps(5);
     }
   };
 
@@ -116,6 +111,7 @@ class StepSix extends React.Component {
   };
 
   componentWillUnmount() {
+    this.sendRemoveStepToDrupal();
     this.setDefaultState();
   }
   
@@ -124,21 +120,19 @@ class StepSix extends React.Component {
   };
   
   setDefaultState = () => {
-    const {
-      dispatch, cartId, participantId, cartStepSixArrivalProductId, cartStepSixDepartingProductId, cartStepSixUnnacompaniedProductId,
-    } = this.props;
+    const { dispatch } = this.props;
     for (let key in stepSixFormFieldNames) {
       dispatch( change('wizard', stepSixFormFieldNames[key], ''), );
     }
-    if (cartStepSixArrivalProductId) {
-      this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixArrivalProductId, type: 'arrival_transport' });
-    }
-    if (cartStepSixDepartingProductId) {
-      this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixDepartingProductId, type: 'departing_transport' });
-    }
-    if (cartStepSixUnnacompaniedProductId) {
-      this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixUnnacompaniedProductId, type: 'unacompannied' });
-    }
+    // if (cartStepSixArrivalProductId) {
+    //   this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixArrivalProductId, type: 'arrival_transport' });
+    // }
+    // if (cartStepSixDepartingProductId) {
+    //   this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixDepartingProductId, type: 'departing_transport' });
+    // }
+    // if (cartStepSixUnnacompaniedProductId) {
+    //   this.props.stepSixActions.stepSixDeleteProductInTheCart({ cartId, participantId, productId: cartStepSixUnnacompaniedProductId, type: 'unacompannied' });
+    // }
     
     this.props.stepSixActions.stepSixSetDefaultState();
   };
@@ -214,13 +208,11 @@ class StepSix extends React.Component {
     const arrivalData = [
       selectedTransportValue,
       arrivalUnaccompanied,
-      dropoff,
       ...(hasArrivalBookedFlight ? [airportPickupAirline, arrivalDateTime, arrivalFlightNumber] : [])
     ];
     const departureData = [
       departingTransport,
       departureUnaccompanied,
-      departing,
       ...(hasDepartingBookedFlight ? [airportDepartingAirline, departingDateTime, departingFlightNumber] : [])
     ];
     
@@ -233,22 +225,22 @@ class StepSix extends React.Component {
       [departingFormFieldNames.imgaClubHouse]: 'step_six.club_house',
       [departingFormFieldNames.other]: 'step_six.other',
     };
-    
+  
     return (
-      <AOSFadeInContainer className="step-six" ref={this.stepSix}>
-        <Container style={{ marginBottom: '65px' }}>
-          <Row>
-            <Col>
-              <Header
-                header="step_six.header"
-                subHeader="step_six.sub_header"
-                formatString={{ stepNumber: currentStepNumber }}
-              />
-            </Col>
-          </Row>
-          <Col>
-            <Row style={{display: 'flex'}}>
-              <Col lg={6} md={6} xs={12} style={{ paddingRight: 0, paddingLeft: 0, marginBottom: 15, zIndex: 15 }}>
+      <Fragment>
+        <AOSFadeInContainer className="step-six" id="step-5" ref={this.stepSix}>
+          <Container style={{ marginBottom: '65px' }}>
+            <Row>
+              <Col>
+                <Header
+                  header="step_six.header"
+                  subHeader="step_six.sub_header"
+                  formatString={{ stepNumber: currentStepNumber }}
+                />
+              </Col>
+            </Row>
+            <Row style={{ display: 'flex' }}>
+              <Col className="service-card" lg={6} md={6} xs={12} style={{ paddingRight: 15, paddingLeft: 15, marginBottom: 15, zIndex: 15 }}>
                 <div className="section transport">
                   <div className="transport__header">
                     <div className="transport__header__title">
@@ -276,294 +268,59 @@ class StepSix extends React.Component {
                     />
                   </div>
                 </div>
-  
+              
                 {shouldDisplayArrival && (
-                  <div className="section pick-up">
-                    <div className="content">
-                      <div className="title">
-                        <img src={planeImg} alt="airplane" />
-                        <LocaleString stringKey="step_six.arrival.title" />
-                      </div>
-                      <div className="airport">
-                        <div className="airport__title">
-                          <LocaleString stringKey="step_six.arrival.airport" />
-                        </div>
-                        <div className="dropdown">
-                          <TransportRadioContainer
-                            name={stepSixFormFieldNames.transport}
-                            options={parsedTransport}
-                            value={selectedTransportValue}
-                          />
-                        </div>
-                      </div>
-                      <div className="location">
-                        <div className="location__title">
-                          <LocaleString stringKey="step_six.arrival.location" />
-                        </div>
-                        <DropoffCheckboxContainer dropoff={dropoff} />
-                        <DropoffLocationTextField dropoff={dropoff} />
-                      </div>
-                      <div className="unaccompanied">
-                        <div className="unaccompanied__title">
-                          <LocaleString stringKey="step_six.unaccompanied" />
-                        </div>
-                        <Paragraph>
-                          <LocaleString stringKey="step_six.airlines_service" />
-                        </Paragraph>
-                        <div className="unaccompanied__has-unaccompanied">
-                          <UnaccompaniedCheckboxContainer
-                            name={stepSixFormFieldNames.arrivalUnaccompanied}
-                            unaccompanied={arrivalUnaccompanied}
-                            transportUnaccompanied={transportUnaccompanied}
-                          />
-                        </div>
-                        <div className="unaccompanied__booked-flight">
-                          <AirportHasArrivalFlightBookedCheckbox />
-                        </div>
-                        {hasArrivalBookedFlight && (
-                          <div className="unaccompanied__flight-details">
-                            <div className="flight-details__box">
-                              <div className="unaccompanied__subtitle">
-                                <LocaleString stringKey="step_six.arrival.flight_number" />
-                              </div>
-                              <ArrivalFlightNumberTextInput />
-                            </div>
-                            <div className="flight-details">
-                              <div className="flight-details__box">
-                                <div className="unaccompanied__subtitle">
-                                  <LocaleString stringKey="step_six.arrival.airline" />
-                                </div>
-                                <AirlinesDropdownContainer airlines={airlines} />
-                              </div>
-                              <div className="flight-details__box">
-                                <div className="unaccompanied__subtitle">
-                                  <LocaleString stringKey="step_six.arrival.date" />
-                                </div>
-                                <DatePickerReduxForm
-                                  isClearable
-                                  name={stepSixFormFieldNames.arrivalDateTime}
-                                  className="step-six__text-input step-six__form-field"
-                                  placeholder="Arrival Date & Time"
-                                  minDate={new Date()}
-                                />
-                              </div>
-                            </div>
-                            <p className="description step-six__paragraph step-six__paragraph--small">
-                              <LocaleString stringKey={'step_six.provide_later_description'} />
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+                  <PickUpSection
+                    options={parsedTransport} value={selectedTransportValue} dropoff={dropoff}
+                    unaccompanied={arrivalUnaccompanied} transportUnaccompanied={transportUnaccompanied}
+                    hasArrivalBookedFlight={hasArrivalBookedFlight} airlines={airlines}
+                  />
                 )}
-  
+              
                 {shouldDisplayDeparture && (
-                  <div className="section drop-off">
-                    <div className="content">
-                      <div className="title">
-                        <img src={planeImg} alt="airplane" />
-                        <LocaleString stringKey="step_six.departure.title" />
-                      </div>
-                      <div className="airport">
-                        <div className="airport__title">
-                          <LocaleString stringKey="step_six.departure.airport" />
-                        </div>
-                        <TransportRadioContainer
-                          name={stepSixFormFieldNames.departingTransport}
-                          options={parsedTransport}
-                          value={departingTransport}
-                        />
-                      </div>
-                      
-                      <div className="location">
-                        <div className="location__title">
-                          <LocaleString stringKey="step_six.departure.location" />
-                        </div>
-                        <DepartingCheckboxContainer departing={departing} />
-                        <PickUpLocationTextField departing={departing} />
-                      </div>
-                      
-                      
-                      <div className="unaccompanied">
-                        <div className="unaccompanied__title">
-                          <LocaleString stringKey="step_six.unaccompanied" />
-                        </div>
-                        <Paragraph>
-                          <LocaleString stringKey="step_six.airlines_service" />
-                        </Paragraph>
-                        <div className="unaccompanied__has-unaccompanied">
-                          <UnaccompaniedCheckboxContainer
-                            name={stepSixFormFieldNames.departureUnaccompanied}
-                            unaccompanied={departureUnaccompanied}
-                            transportUnaccompanied={transportUnaccompanied}
-                          />
-                        </div>
-                        <div className="unaccompanied__booked-flight">
-                          <AirportHasDepartingFlightBookedCheckbox />
-                        </div>
-                        {hasDepartingBookedFlight && (
-                          <div className="unaccompanied__flight-details">
-                            <div className="flight-details__box">
-                              <div className="unaccompanied__subtitle">
-                                <LocaleString stringKey="step_six.departure.flight_number" />
-                              </div>
-                              <FlightNumberDepartingTextInput />
-                            </div>
-                            
-                            <div className="flight-details">
-                              <div className="flight-details__box">
-                                <div className="unaccompanied__subtitle">
-                                  <LocaleString stringKey="step_six.departure.airline" />
-                                </div>
-                                <AirlinesDepartingDropdownContainer airlines={airlines} />
-                              </div>
-                              <div className="flight-details__box">
-                                <div className="unaccompanied__subtitle">
-                                  <LocaleString stringKey="step_six.departure.date" />
-                                </div>
-                                <DatePickerReduxForm
-                                  isClearable
-                                  name={stepSixFormFieldNames.departingDateTime}
-                                  className="step-six__text-input step-six__form-field"
-                                  placeholder="Departing Date & Time"
-                                  minDate={new Date()}
-                                />
-                              </div>
-                            </div>
-                            <p className="description step-six__paragraph step-six__paragraph--small">
-                              <LocaleString stringKey={'step_six.provide_later_description'} />
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+                  <DropOffSection
+                    options={parsedTransport} value={departingTransport} departing={departing}
+                    unaccompanied={departureUnaccompanied}
+                    transportUnaccompanied={transportUnaccompanied}
+                    hasDepartingBookedFlight={hasDepartingBookedFlight} airlines={airlines}
+                  />
                 )}
-                
+              
                 {shouldDisplaySummary && (
-                  <div className="section summary">
-                    <div className="content">
-                      <div className="title">
-                        <LocaleString stringKey="step_six.summary" />
-                      </div>
-                      {shouldDisplayArrival && (
-                        <div className="summary__box">
-                          <div className="subtitle">
-                            <LocaleString stringKey="step_six.summary.arrival" />
-                          </div>
-                          <div className="summary__item">
-                            <div className="label">
-                              <LocaleString stringKey="step_six.summary.arrival.airport" />
-                            </div>
-                            { (find(parsedTransport, [ 'name', selectedTransportValue ]) || {}).display_name  }
-                          </div>
-                          <div className="summary__item">
-                            <div className="label">
-                              <LocaleString stringKey="step_six.summary.arrival.location" />
-                            </div>
-                            { locations[dropoff] ?  <LocaleString stringKey={locations[dropoff]} /> : dropoff }
-                          </div>
-                          {hasArrivalBookedFlight && (
-                            <Fragment>
-                              <div className="summary__item">
-                                <div className="label">
-                                  <LocaleString stringKey="step_six.summary.arrival.airline" />
-                                </div>
-                                { airportPickupAirline }
-                              </div>
-                              <div className="summary__item">
-                                <div className="label">
-                                  <LocaleString stringKey="step_six.summary.arrival.date" />
-                                </div>
-                                { arrivalDateTime }
-                              </div>
-                              <div className="summary__item">
-                                <div className="label">
-                                  <LocaleString stringKey="step_six.summary.arrival.flight_number" />
-                                </div>
-                                { arrivalFlightNumber }
-                              </div>
-                            </Fragment>
-                          )}
-                          <div className="summary__item">
-                            <div className="label">
-                              <LocaleString stringKey="step_six.summary.arrival.unaccompanied" />
-                            </div>
-                            {arrivalUnaccompanied === 'true'
-                              ? `Yes +$${transportUnaccompanied && transportUnaccompanied.price}`
-                              : `No`
-                            }
-                          </div>
-                        </div>
-                      )}
-    
-                      {shouldDisplayDeparture && (
-                        <div className="summary__box">
-                          <div className="subtitle">
-                            <LocaleString stringKey="step_six.summary.departure" />
-                          </div>
-                          <div className="summary__item">
-                            <div className="label">
-                              <LocaleString stringKey="step_six.summary.departure.airport" />
-                            </div>
-                            { (find(parsedTransport, [ 'name', departingTransport ]) || {}).display_name }
-                          </div>
-                          <div className="summary__item">
-                            <div className="label">
-                              <LocaleString stringKey="step_six.summary.departure.location" />
-                            </div>
-                            { locations[departing] ?  <LocaleString stringKey={locations[departing]} /> : departing }
-                          </div>
-                          {hasDepartingBookedFlight && (
-                            <Fragment>
-                              <div className="summary__item">
-                                <div className="label">
-                                  <LocaleString stringKey="step_six.summary.departure.airline" />
-                                </div>
-                                { airportDepartingAirline }
-                              </div>
-                              <div className="summary__item">
-                                <div className="label">
-                                  <LocaleString stringKey="step_six.summary.departure.date" />
-                                </div>
-                                { departingDateTime }
-                              </div>
-                              <div className="summary__item">
-                                <div className="label">
-                                  <LocaleString stringKey="step_six.summary.departure.flight_number" />
-                                </div>
-                                { departingFlightNumber }
-                              </div>
-                            </Fragment>
-                          )}
-                          <div className="summary__item">
-                            <div className="label">
-                              <LocaleString stringKey="step_six.summary.departure.unaccompanied" />
-                            </div>
-                            {departureUnaccompanied === 'true'
-                              ? `Yes +$${transportUnaccompanied && transportUnaccompanied.price}`
-                              : `No`
-                            }
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                    
-                  </div>
+                  <SummarySection
+                    shouldDisplayArrival={shouldDisplayArrival} parsedTransport={parsedTransport}
+                    selectedTransportValue={selectedTransportValue} locations={locations}
+                    dropoff={dropoff} hasArrivalBookedFlight={hasArrivalBookedFlight}
+                    airportPickupAirline={airportPickupAirline} arrivalDateTime={arrivalDateTime}
+                    arrivalFlightNumber={arrivalFlightNumber}
+                    arrivalUnaccompanied={arrivalUnaccompanied}
+                    transportUnaccompanied={transportUnaccompanied}
+                    shouldDisplayDeparture={shouldDisplayDeparture}
+                    departingTransport={departingTransport} departing={departing}
+                    hasDepartingBookedFlight={hasDepartingBookedFlight}
+                    airportDepartingAirline={airportDepartingAirline}
+                    departingDateTime={departingDateTime} departingFlightNumber={departingFlightNumber}
+                    departureUnaccompanied={departureUnaccompanied}
+                  />
                 )}
-                
+              
                 {shouldDisplaySummary && (
-                  <Button className="transport-button" onClick={hasTransportationCartData ? this.unselectTransportationOption : this.addTransportDataToCart}>
-                    { hasTransportationCartData ? 'Remove' : 'Confirm' }
+                  <Button className="transport-button"
+                          onClick={hasTransportationCartData ? this.unselectTransportationOption : this.addTransportDataToCart}>
+                    {hasTransportationCartData ? 'Remove' : 'Confirm'}
                   </Button>
                 )}
               </Col>
-              
+          
+              <StepFiveCatalogGearUpsellNew />
             </Row>
-          </Col>
-        </Container>
-      </AOSFadeInContainer>
+          </Container>
+        </AOSFadeInContainer>
+      
+        <StepFiveCatalogExcursionsNew/>
+        <StepFiveCatalogGear/>
+
+      </Fragment>
     );
   }
 }
