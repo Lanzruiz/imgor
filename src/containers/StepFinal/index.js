@@ -333,8 +333,8 @@ class StepFinal extends React.Component {
               <Row>
                 <Col
                   sm={12}
-                  md={4}
-                  lg={4}
+                  md={6}
+                  lg={6}
                   style={{ padding: '15px' }}
                 >
                   <Card
