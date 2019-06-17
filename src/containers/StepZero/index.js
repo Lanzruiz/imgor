@@ -247,7 +247,7 @@ class StepOne extends React.Component {
               <Col sm={12} md={6} lg={8} style={{padding: '15px', paddingTop: 0, paddingBottom: 0}}>
                 <div className="empty_box">
                   <div className="text danger">
-                    {loading ? 'Loading' : 'NO DATES AVAILABLE'}
+                    {loading ? 'Loading' : 'There was an error connecting to our camp builder. Please call a camp advisor to make your reservation: 1-800-872-6425'}
                   </div>
                 </div>
               </Col>
