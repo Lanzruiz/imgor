@@ -122,7 +122,7 @@ class StepOne extends React.Component {
               </Col>
             </Row>
             <Row>
-              <Col sm={12} md={12} lg={genderCollapsed ? 6 : 4} style={{ padding: '15px' }}>
+              <Col sm={12} md={12} lg={genderCollapsed ? 12 : 12} style={{ padding: '15px' }}>
                 <Card
                   buttonBlock={false}
                   cardHeader={<LocaleString stringKey="step_zero.choose_sleepaway"/>}
@@ -152,7 +152,7 @@ class StepOne extends React.Component {
                   </CardContent>
                 </Card>
               </Col>
-              <Col sm={12} md={12} lg={genderCollapsed ? 6 : 4} style={{ padding: '15px' }}>
+              <Col sm={12} md={12} lg={genderCollapsed ? 12 : 12} style={{ padding: '15px' }}>
                 <Card
                   buttonBlock={false}
                   cardHeader={<LocaleString stringKey="step_zero.select_camper_age"/>}
@@ -176,7 +176,7 @@ class StepOne extends React.Component {
                   </CardContent>
                 </Card>
               </Col>
-              <Col sm={12} md={12} lg={genderCollapsed ? 0 : 4} style={{
+              <Col sm={12} md={12} lg={genderCollapsed ? 0 : 12} style={{
                 padding: '15px',
                 visibility: genderCollapsed ? 'collapse' : '',
                 display: genderCollapsed ? 'none' : ''
@@ -211,7 +211,7 @@ class StepOne extends React.Component {
         {loading || hasData || (
           <Container className="no-data">
             <Row>
-              <Col sm={12} md={6} lg={4}>
+              <Col sm={12} md={12} lg={12}>
                 <div className="step-two__questions questions">
                   <span className="questions__questions">
                     <LocaleString stringKey="step_two.questions.questions" />
@@ -244,7 +244,7 @@ class StepOne extends React.Component {
                   </div>
                 </div>
               </Col>
-              <Col sm={12} md={6} lg={8} style={{padding: '15px', paddingTop: 0, paddingBottom: 0}}>
+              <Col sm={12} md={12} lg={12} style={{padding: '15px', paddingTop: 0, paddingBottom: 0}}>
                 <div className="empty_box">
                   <div className="text danger">
                     {loading ? 'Loading' : 'There was an error connecting to our camp builder. Please call a camp advisor to make your reservation: 1-800-872-6425'}
@@ -257,7 +257,7 @@ class StepOne extends React.Component {
         {loading && (
           <Container className="no-data">
             <Row>
-              <Col sm={12} md={6} lg={8}>
+              <Col sm={12} md={12} lg={12}>
                 <div className="empty_box">
                   <div className="text">
                     Loading
