@@ -230,7 +230,7 @@ class StepOne extends React.Component {
             );
             const customTabName = ReactDOMServer.renderToString(<LocaleString stringKey={`step_one.${row.id}.tab_title`}/>);
             const parseName = (name) => name.toLowerCase().replace(/,/g, '').replace(/\s/g, '_');
-            const weeklyCamp = ReactDOMServer.renderToString(<LocaleString stringKey={`step_one.${row.id}.${parseName(weekly_camp)}.tab`}/>);
+            const weeklyCamp = ReactDOMServer.renderToString(<LocaleString stringKey={`step_one.${row.id}.weekly_camp.tab`}/>);
             
             return (
               <React.Fragment key={index}>
@@ -244,9 +244,9 @@ class StepOne extends React.Component {
                     <TabRowSection className="mb-hidden"/>
                     
                     {isStringsEqual(row.name, weekly_camp) && weeklyCamp && (
-                      <TabRowSection tabIndex={tabIndex} index={1} style={{ width: '75%' }}>
+                      <TabRowSection tabIndex={tabIndex} index={1} className="weekly__camps">
                         <GreenBlock className="tab-row__green-block">
-                          <TabRowHeaderGreenBlock localeKey={`step_one.${row.id}.${parseName(weekly_camp)}.tab`}/>
+                          <TabRowHeaderGreenBlock localeKey={`step_one.${row.id}.weekly_camp.tab`}/>
                         </GreenBlock>
                       </TabRowSection>
                     )}
@@ -256,7 +256,7 @@ class StepOne extends React.Component {
                         stringKey={`step_one.${row.id}.${parseName(option.name)}.tab`}/>);
                       
                       return tabGreenBox ? (
-                        <TabRowSection key={idx} tabIndex={tabIndex} index={idx}>
+                        <TabRowSection key={idx} tabIndex={tabIndex} index={idx} className="program__camps">
                           <GreenBlock className="tab-row__green-block">
                             <TabRowHeaderGreenBlock localeKey={`step_one.${row.id}.${parseName(option.name)}.tab`}/>
                           </GreenBlock>
