@@ -23,7 +23,7 @@ function GenderRadioBtnContainer({ options, value, possibleValues }) {
           options.map((gender) => {
             const lowerCaseOptionValue = toLower(gender);
             const isDisabled = !include(computedPossibleValues.map(toLower), lowerCaseOptionValue);
-            const radioBtnClassNames = cx('content__label', { 'content__label--disabled': isDisabled });
+            const radioBtnClassNames = cx('content__label gender', { 'content__label--disabled gender': isDisabled });
             
             return (
               <div key={lowerCaseOptionValue} className={radioBtnClassNames}>
