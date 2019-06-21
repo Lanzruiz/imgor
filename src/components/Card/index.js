@@ -78,6 +78,10 @@ class Card extends React.Component {
     customNonSelectedButtonTitle: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     onRemove: PropTypes.func,
     tooltipMessage: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
+    overRideButtonName: PropTypes.oneOfType([
+      PropTypes.element,
+      PropTypes.string,
+    ]),
   };
 
   static defaultProps = {
@@ -99,12 +103,13 @@ class Card extends React.Component {
     soldOut: false,
     customButtonTitle: '',
     customNonSelectedButtonTitle: '',
+    overRideButtonName: '',
   };
 
   render() {
     const {
       children, header, label, headerSize, color, cardHeader, imgSrc, id, soldOut,
-      selectedId, priceDescription, cardHeaderCapitalize, style, className
+      selectedId, priceDescription, cardHeaderCapitalize, style, className, overRideButtonName
     } = this.props;
 
     const isSelectedIdExists = (typeof selectedId === 'number' || typeof selectedId === 'string');
@@ -135,6 +140,8 @@ class Card extends React.Component {
       'card-body__text--capitalize': cardHeaderCapitalize,
     });
 
+    const overRideButtonNames = overRideButtonName;
+
     return (
       <div className={cardContainerClassNames} style={style}>
         {this.renderCardHead({ header, label, headerSize, color })}
@@ -149,7 +156,7 @@ class Card extends React.Component {
               {children}
             </div>
           </div>
-          {this.renderButtonBlock(buttonClassNames, isCurrentCardSelected)}
+          {this.renderButtonBlock(buttonClassNames, isCurrentCardSelected, overRideButtonNames)}
         </div>
       </div>
     );
@@ -216,19 +223,21 @@ class Card extends React.Component {
     );
   };
 
-  renderButtonBlock = (buttonClassNames, isCurrentCardSelected) => {
+  renderButtonBlock = (buttonClassNames, isCurrentCardSelected, overRideButtonNames) => {
     const { buttonBlock, soldOut, customButtonTitle, customNonSelectedButtonTitle, tooltipMessage } = this.props;
 
     const onClickHandler = soldOut && !isCurrentCardSelected ? null : this.onClickHandler;
 
     const buttonTitle = (
-      soldOut
-        ? <LocaleString stringKey="sold_out" />
-        : isCurrentCardSelected
-          ? customButtonTitle
+      !overRideButtonNames
+        ? soldOut
+          ? <LocaleString stringKey="sold_out" />
+          : isCurrentCardSelected
             ? customButtonTitle
-            : <LocaleString stringKey="card.remove" />
-          :  customNonSelectedButtonTitle ? customNonSelectedButtonTitle : <LocaleString stringKey="card.select" />
+              ? customButtonTitle
+              : <LocaleString stringKey="card.remove" />
+            :  customNonSelectedButtonTitle ? customNonSelectedButtonTitle : <LocaleString stringKey="card.select" />
+        : overRideButtonNames
     );
     return buttonBlock && (
       <div className="card-body__footer">
