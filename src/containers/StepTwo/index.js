@@ -208,37 +208,6 @@ class StepTwo extends React.Component {
           <Row>
             <Col>
               <div className="step-two__container">
-                <div className="step-two__questions questions">
-                  <span className="questions__questions">
-                    <LocaleString stringKey="step_two.questions.questions" />
-                  </span>
-                  <h2 className="questions__header">
-                    <LocaleString stringKey="step_two.questions.header" />
-                  </h2>
-                  <p className="questions__description">
-                    <LocaleString stringKey="step_two.questions.description" />
-                  </p>
-                  <div className="questions__icons icons">
-                    <div className="icons__container advisor-cta-call">
-                      <div className="icon-phone" />
-                      <span className="icons__text">
-                        <LocaleString stringKey="step_two.questions.call" />
-                      </span>
-                    </div>
-                    <div className="icons__container advisor-cta-chat">
-                      <div className="icon-message-bulb-square-o" />
-                      <span className="icons__text">
-                        <LocaleString stringKey="step_two.questions.chat" />
-                      </span>
-                    </div>
-                    <div className="icons__container advisor-cta-email">
-                      <div className="icon-file" />
-                      <span className="icons__text">
-                        <LocaleString stringKey="step_two.questions.email" />
-                      </span>
-                    </div>
-                  </div>
-                </div>
                 <div className="step-two__dates dates">
                   <h2 className="dates__header">
                     <LocaleString
@@ -248,8 +217,8 @@ class StepTwo extends React.Component {
                   </h2>
                   <div className="dates">
                     <ScreenClassRender render={(cl) => {
-                      const groupSize = 5;
-                      const perPage = cl === 'xs' ? 2 : 5;
+                      const groupSize = 4;
+                      const perPage = cl === 'xs' ? 2 : 4;
                       
                       const dataGrouped = data.reduce((acc, v, index) => {
                         const i = Math.floor(index / groupSize);
