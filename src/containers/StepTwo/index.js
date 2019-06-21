@@ -218,7 +218,14 @@ class StepTwo extends React.Component {
                   <div className="dates">
                     <ScreenClassRender render={(cl) => {
                       const groupSize = 4;
-                      const perPage = cl === 'xs' ? 2 : 3;
+                      const config = {
+                        xl: 5,
+                        lg: 4,
+                        md: 3,
+                        sm: 2,
+                        xs: 2,
+                      };
+                      const perPage = config[cl] ? config[cl] : 2;
                       
                       const dataGrouped = data.reduce((acc, v, index) => {
                         const i = Math.floor(index / groupSize);
