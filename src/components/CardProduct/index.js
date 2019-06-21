@@ -138,7 +138,7 @@ class CardProduct extends React.Component {
       <div className={cardContainerClassNames} style={style}>
         {this.renderButtonBlock(buttonClassNames, isCurrentCardSelected, overRideButtonNames)}
         <div className="card__body card-body">
-          <h4 className={cardHeaderClassNames}>{cardHeader} {label}</h4>
+          <h4 className={cardHeaderClassNames}>{cardHeader} &mdash; {label}</h4>
           <div className="card-body__body">
             <div className={contentBlockClassNames}>
               {children}
