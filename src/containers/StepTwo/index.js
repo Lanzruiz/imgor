@@ -434,30 +434,20 @@ class StepTwo extends React.Component {
           <div className="step-two__selected-date selected-date">
             <div className="selected-date__container">
               <div className="selected-date__info">
-                <div className="selected-date__check-in check-in">
-                  <span className="check-in__text">
-                    <LocaleString stringKey="step_two.dates.check_in" />
-                  </span>
-                </div>
-                <div className="selected-date__current-selected current-selected">
-                  <h2 className="current-selected__header">
-                    <LocaleString stringKey="step_two.dates.selected.header" />
-                  </h2>
-                  <div className="current-selected__days">
+                <h2 className="current-selected__header">
+                  <LocaleString stringKey="step_two.dates.selected.header" />
+                </h2>
+                <div className="check-in-out__dates">
+                  <div className="check-in__text">
+                    <span><LocaleString stringKey="step_two.dates.check_in" /></span>
                     <span>{startDateDay}</span>
-                    <span />
-                    <span>{endDateDay}</span>
-                  </div>
-                  <div className="current-selected__dates">
                     <span>{startDate}</span>
-                    <span>-</span>
+                  </div>
+                  <div className="check-out__text">
+                    <span><LocaleString stringKey="step_two.dates.check_out" /></span>
+                    <span>{endDateDay}</span>
                     <span>{endDate}</span>
                   </div>
-                </div>
-                <div className="selected-date__check-out check-out">
-                  <span className="check-out__text">
-                    <LocaleString stringKey="step_two.dates.check_out" />
-                  </span>
                 </div>
               </div>
             </div>
