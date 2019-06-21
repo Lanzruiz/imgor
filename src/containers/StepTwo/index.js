@@ -443,6 +443,9 @@ class StepTwo extends React.Component {
                     <span>{startDateDay}</span>
                     <span>{startDate}</span>
                   </div>
+                  <div className="check-through__text">
+                    <span>-</span>
+                  </div>
                   <div className="check-out__text">
                     <span><LocaleString stringKey="step_two.dates.check_out" /></span>
                     <span>{endDateDay}</span>
