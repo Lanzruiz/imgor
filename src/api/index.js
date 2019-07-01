@@ -11,8 +11,13 @@ class Api {
   async req({ apiCall, res200, res404, reject, apiCallParams }) {
     return await apiCall(apiCallParams)
       .then(function({ data, status }) {
-        if (status === 200) res200(data);
-        if (status === 404) res404();
+        if (status === 200) {
+          return res200(data);
+        }
+
+        if (status === 404) {
+          return res404();
+        }
       })
       .catch(function(err) {
         reject(err);
@@ -169,12 +174,12 @@ class Api {
     return await instance.get(`cart/${cartId}/refundable/calculate`);
   }
 
-  async putCartCartIdParticipantParticipantIdProductId({ attributes, cartId, participantId, productId, product, type, refundable = false }) {
+  async putCartCartIdParticipantParticipantIdProductId({ attributes, cartId, participantId, productId, product, type, refundable = false, quantity = 1 }) {
     return await instance.put(`cart/${cartId}/participant/${participantId}/product/${productId}`, {
       attributes,
       product,
       type,
-      quantity: 1,
+      quantity,
       refundable,
     });
   }
@@ -248,6 +253,9 @@ class Api {
     })
   }
   
+  async getLaundryService() {
+    return await instance.get('catalog/gear/laundry');
+  }
   
 }
 

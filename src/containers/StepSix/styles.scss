@@ -466,4 +466,24 @@
       }
     }
   }
+
+  .laundry-card {
+    .card-body__head {
+      padding: 10px 15px;
+    }
+    h4 {
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .laundry-card__quantity {
+      align-items: center;
+      display: flex;
+      color: #083451;
+      flex-direction: row;
+      height: 31px;
+      justify-content: space-around;
+      width: 100%;
+    }
+  }
 }
