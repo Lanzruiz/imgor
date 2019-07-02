@@ -425,7 +425,6 @@ class StepSix extends React.Component {
                     color="dark-blue"
                     price={laundryService.startingPrice}
                     headerSize="extra-small"
-                    style={{ height: 'auto' }}
                     customButtonTitle={this.getLaundryServiceButtonElement()}
                     className="laundry-card"
                     onClick={this.handleSelectLaundry}
@@ -433,13 +432,15 @@ class StepSix extends React.Component {
                   >
                     <CardContent>
                       <CardContentRow>
-                        <CardContentCol className="card-content__img-container">
+                        <CardContentCol className="card-content__img-container" style={{ background: '#fff' }}>
                           <Image className="card-content__img" defaultSrc={laundryService.list[0].image_url} />
                         </CardContentCol>
-                        <CardContentCol className="react-center-left react-flex-1">
-                          <LocaleString stringKey="quantity" />
-
-                          <div className="laundry-card__quantity">
+                        <CardContentCol className="react-center-left react-flex-1 laundry-card__right">
+                          <span className="laundry-card__quantity-title">
+                            <LocaleString stringKey="quantity" />
+                          </span>
+                          
+                          <div className="laundry-card__quantity-input">
                             <Button
                             onClick={() => {
                               this.setState({ laundryServiceQuantity: laundryServiceQuantity - 1 });

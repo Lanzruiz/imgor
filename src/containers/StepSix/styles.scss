@@ -468,15 +468,27 @@
   }
 
   .laundry-card {
+    font-family: Trade Gothic Bold Cn\ 20, Proxima Nova, Helvetica Neue, Helvetica, Arial, sans-serif;
+    
     .card-body__head {
       padding: 10px 15px;
     }
+
+    .laundry-card__right {
+      padding: 0 35px;
+    }
+
     h4 {
       font-size: 18px;
       font-weight: 500;
     }
 
-    .laundry-card__quantity {
+    .laundry-card__quantity-title {
+      color: #083451;
+      font-size: 15px;
+    }
+
+    .laundry-card__quantity-input {
       align-items: center;
       display: flex;
       color: #083451;
@@ -484,6 +496,10 @@
       height: 31px;
       justify-content: space-around;
       width: 100%;
+
+      div {
+        width: 100%;
+      }
     }
   }
 }
