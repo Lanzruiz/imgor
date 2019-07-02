@@ -100,10 +100,10 @@ export function stepThreeDeleteProduct({ cartId, participantId, productId }) {
 };
 
 export function stepThreeSetProductToTheCart({ campId, cartId, participantId, type = 'camp' }) {
-  return function(dispatch) {
+  return async function(dispatch) {
     dispatch( stepThreeSetSecondaryPrograms({ id: null, secondary_programs: [] }), );
     dispatch( setSecondaryProgramId(null), );
-    Api.getCatalogCampCampId(campId)
+    await Api.getCatalogCampCampId(campId)
       .then(data => data.data.results[0])
       .then(product => Api.postCartCartIdParticipantIdProduct({ cartId, participantId, product, quantity: 1, productId: product.id, type }))
       .then(data => {
@@ -119,11 +119,11 @@ export function stepThreeSetProductToTheCart({ campId, cartId, participantId, ty
 }
 
 export function stepThreeDeleteProductFromCartAndSetNew({ campId, cartId, participantId, productId }) {
-  return function(dispatch) {
+  return async function(dispatch) {
     dispatch( setStepsCounter(stepsEnum.three), );
     dispatch( stepThreeSetSecondaryPrograms({ id: null, secondary_programs: [] }), );
     dispatch( setSecondaryProgramId(null), );
-    Api.req({
+    await Api.req({
       apiCall: Api.deleteCartCartIdParticipantParticipantIdProductId,
       res200: ({ cart }) => {
         dispatch( updateCart(assign({}, cart, { stepThreeProductId: null })), );
