@@ -208,37 +208,6 @@ class StepTwo extends React.Component {
           <Row>
             <Col>
               <div className="step-two__container">
-                <div className="step-two__questions questions">
-                  <span className="questions__questions">
-                    <LocaleString stringKey="step_two.questions.questions" />
-                  </span>
-                  <h2 className="questions__header">
-                    <LocaleString stringKey="step_two.questions.header" />
-                  </h2>
-                  <p className="questions__description">
-                    <LocaleString stringKey="step_two.questions.description" />
-                  </p>
-                  <div className="questions__icons icons">
-                    <div className="icons__container advisor-cta-call">
-                      <div className="icon-phone" />
-                      <span className="icons__text">
-                        <LocaleString stringKey="step_two.questions.call" />
-                      </span>
-                    </div>
-                    <div className="icons__container advisor-cta-chat">
-                      <div className="icon-message-bulb-square-o" />
-                      <span className="icons__text">
-                        <LocaleString stringKey="step_two.questions.chat" />
-                      </span>
-                    </div>
-                    <div className="icons__container advisor-cta-email">
-                      <div className="icon-file" />
-                      <span className="icons__text">
-                        <LocaleString stringKey="step_two.questions.email" />
-                      </span>
-                    </div>
-                  </div>
-                </div>
                 <div className="step-two__dates dates">
                   <h2 className="dates__header">
                     <LocaleString
@@ -248,8 +217,15 @@ class StepTwo extends React.Component {
                   </h2>
                   <div className="dates">
                     <ScreenClassRender render={(cl) => {
-                      const groupSize = 5;
-                      const perPage = cl === 'xs' ? 2 : 5;
+                      const groupSize = 4;
+                      const config = {
+                        xl: 5,
+                        lg: 4,
+                        md: 3,
+                        sm: 2,
+                        xs: 2,
+                      };
+                      const perPage = config[cl] ? config[cl] : 2;
                       
                       const dataGrouped = data.reduce((acc, v, index) => {
                         const i = Math.floor(index / groupSize);
@@ -458,30 +434,23 @@ class StepTwo extends React.Component {
           <div className="step-two__selected-date selected-date">
             <div className="selected-date__container">
               <div className="selected-date__info">
-                <div className="selected-date__check-in check-in">
-                  <span className="check-in__text">
-                    <LocaleString stringKey="step_two.dates.check_in" />
-                  </span>
-                </div>
-                <div className="selected-date__current-selected current-selected">
-                  <h2 className="current-selected__header">
-                    <LocaleString stringKey="step_two.dates.selected.header" />
-                  </h2>
-                  <div className="current-selected__days">
+                <h2 className="current-selected__header">
+                  <LocaleString stringKey="step_two.dates.selected.header" />
+                </h2>
+                <div className="check-in-out__dates">
+                  <div className="check-in__text">
+                    <span><LocaleString stringKey="step_two.dates.check_in" /></span>
                     <span>{startDateDay}</span>
-                    <span />
-                    <span>{endDateDay}</span>
-                  </div>
-                  <div className="current-selected__dates">
                     <span>{startDate}</span>
+                  </div>
+                  <div className="check-through__text">
                     <span>-</span>
+                  </div>
+                  <div className="check-out__text">
+                    <span><LocaleString stringKey="step_two.dates.check_out" /></span>
+                    <span>{endDateDay}</span>
                     <span>{endDate}</span>
                   </div>
-                </div>
-                <div className="selected-date__check-out check-out">
-                  <span className="check-out__text">
-                    <LocaleString stringKey="step_two.dates.check_out" />
-                  </span>
                 </div>
               </div>
             </div>

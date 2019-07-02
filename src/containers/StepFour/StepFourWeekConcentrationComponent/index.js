@@ -153,6 +153,7 @@ class StepFourWeekConcentrationComponent extends React.Component {
           customNonSelectedButtonTitle={isNotSkipWeek ? null : <LocaleString stringKey="no-thanks" />}
           via={via_label}
           viaLogoPath={viaLogoPath}
+          overRideButtonName={isSkipWeekAndFirst ? 'No Additional Training' : secondary_program_type}
         >
           {this.renderCardContent(cardContentProps)}
         </Card>

@@ -206,7 +206,7 @@ class StepFinal extends React.Component {
                 <Col
                   sm={12}
                   md={12}
-                  lg={shouldRenderPosition ? 4 : 6}
+                  lg={shouldRenderPosition ? 12 : 12}
                   style={{ padding: '15px' }}
                 >
                   <Card
@@ -283,7 +283,7 @@ class StepFinal extends React.Component {
                 </Col>
   
                 {shouldRenderPosition && (
-                  <Col sm={12} md={6} lg={4} style={{ padding: '15px' }}>
+                  <Col sm={12} md={12} lg={6} style={{ padding: '15px' }}>
                     <Card
                       buttonBlock={false}
                       cardHeader={<LocaleString stringKey="step_final.position" />}
@@ -308,8 +308,8 @@ class StepFinal extends React.Component {
                 
                 <Col
                   sm={12}
-                  md={6}
-                  lg={shouldRenderPosition ? 4 : 6}
+                  md={12}
+                  lg={shouldRenderPosition ? 6 : 6}
                   style={{ padding: '15px' }}
                 >
                   <Card
@@ -327,14 +327,12 @@ class StepFinal extends React.Component {
                     </CardContent>
                   </Card>
                 </Col>
-              </Row>
 
-              {!isBusinessTypeForAdult && (
-              <Row>
+                {!isBusinessTypeForAdult && (
                 <Col
                   sm={12}
-                  md={4}
-                  lg={4}
+                  md={12}
+                  lg={12}
                   style={{ padding: '15px' }}
                 >
                   <Card
@@ -386,8 +384,8 @@ class StepFinal extends React.Component {
                     </CardContent>
                   </Card>
                 </Col>
+                )}
               </Row>
-              )}
               <Row><div className="end-of-configurator"><p>end of camp builder</p></div></Row>
             </Container>
           </AOSFadeInContainer>
@@ -438,7 +436,7 @@ function PositionRadioBtn({ options, prefix, position }) {
                     checked={position === position_id}
                     onChange={() => null}
                   />
-                  {name}
+                  <div>{name}</div>
                 </label>
               </li>
             );
@@ -491,7 +489,7 @@ function ShirtSizeRadioBtn({ shirtSize }) {
                           checked={shirtSize === value}
                           onChange={() => null}
                         />
-                        <LocaleString stringKey={stringKey} />
+                        <div><LocaleString stringKey={stringKey} /></div>
                       </label>
                     </li>
                   );
@@ -516,7 +514,7 @@ function ShirtSizeRadioBtn({ shirtSize }) {
                           checked={shirtSize === value}
                           onChange={() => null}
                         />
-                        <LocaleString stringKey={stringKey} />
+                        <div><LocaleString stringKey={stringKey} /></div>
                       </label>
                     </li>
                   );

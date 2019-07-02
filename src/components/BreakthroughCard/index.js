@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 // Components
-import Card, { CardContentRow, CardContentCol, ImagePlus } from '../Card';
+import CardProduct, { CardContentRow, CardContentCol } from '../CardProduct';
 import LocaleString from '../../components/LocaleString';
 // Images
 import footballGameChanger from '../../assets/img/football-game-changer.png';
@@ -12,7 +12,7 @@ import './styles.scss';
 const BreakthroughCard = (props) => {
   const { selectedId, onClick, onRemove, price, label, id, header, soldOut, displayViaLabel, viaLogoPath } = props;
   return (
-    <Card
+    <CardProduct
       cardHeader={<LocaleString stringKey="individualized_sport_training" />}
       color="dark-blue"
       header={header}
@@ -29,57 +29,24 @@ const BreakthroughCard = (props) => {
       via={displayViaLabel}
       soldOut={soldOut}
       viaLogoPath={viaLogoPath}
+      overRideButtonName={header}
     >
       <CardContentRow>
         <CardContentCol>
-          <div className="breakthrough-card__container">
-            <div className="breakthrough-card__column breakthrough-card__column--center breakthrough-card__column--lh-20">
-              <span className="breakthrough-card__column--core">
-                <LocaleString stringKey="core" />
-              </span>
-              <span className="breakthrough-card__column--group">
-                <LocaleString stringKey="group" />
-              </span>
-              <span className="breakthrough-card__column--training">
-                <LocaleString stringKey="training" />
-              </span>
-            </div>
-            <ImagePlus className="breakthrough-card__image" />
-          </div>
-        </CardContentCol>
-        <CardContentCol>
-          <div className="breakthrough-card__container">
-            <div className="breakthrough-card__column breakthrough-card__column--center breakthrough-card__column--lh-20">
-              <span className="breakthrough-card__column--position breakthrough-card__column--ratio">
-                <LocaleString stringKey="breakthroug-ratio" />
-              </span>
-              <span className="breakthrough-card__column--specific breakthrough-card__column--small-group">
-                <LocaleString stringKey="small_group" />
-              </span>
-              <span className="breakthrough-card__column--coaching breakthrough-card__column--instruction">
-                <LocaleString stringKey="instruction" />
-              </span>
-              <span className="breakthrough-card__column--coaching breakthrough-card__column--per-day">
-                <LocaleString stringKey="per_day" />
-              </span>
-            </div>
-            <ImagePlus className="breakthrough-card__image" />
-          </div>
-        </CardContentCol>
-        <CardContentCol>
-          <div className="breakthrough-card__container">
-            <div className="breakthrough-card__column breakthrough-card__column--center breakthrough-card__column--lh-20">
-              <span className="breakthrough-card__column--skills">
-                <LocaleString stringKey="skills" />
-              </span>
-              <span className="breakthrough-card__column--training breakthrough-card__column--instruction">
-                <LocaleString stringKey="instruction" />
-              </span>
-            </div>
-          </div>
+          <ul className="product-list">
+            <li>
+              <LocaleString stringKey="step_three.breakthrough.bullet.1" />
+            </li>
+            <li>
+              <LocaleString stringKey="step_three.breakthrough.bullet.2" />
+            </li>
+            <li>
+              <LocaleString stringKey="step_three.breakthrough.bullet.3" />
+            </li>
+          </ul>
         </CardContentCol>
       </CardContentRow>
-    </Card>
+    </CardProduct>
   );
 };
 

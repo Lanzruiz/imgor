@@ -206,6 +206,7 @@ class StepThree extends React.Component {
       onRemove: has_secondary_program ? this.discardCardWithSecondProgram : this.discardCard,
       label: computedLabel,
       soldOut: soldOut,
+      overRideButtonName: name,
     };
 
     switch(nameLowerCase) {

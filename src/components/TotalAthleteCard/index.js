@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 // Components
-import Card, { CardContentRow, CardContentCol, ImagePlus } from '../Card';
+import CardProduct, { CardContentRow, CardContentCol } from '../CardProduct';
 import LocaleString from '../../components/LocaleString';
 // Images
 import footballCore from '../../assets/img/football-core_copy_2.png';
@@ -12,7 +12,7 @@ import './styles.scss';
 const TotalAthleteCard = (props) => {
   const { selectedId, onClick, onRemove, price, label, id, header, soldOut, displayViaLabel } = props;
   return (
-    <Card
+    <CardProduct
       cardHeader={<LocaleString stringKey="group_sport_training" />}
       color="blue"
       header={header}
@@ -28,41 +28,24 @@ const TotalAthleteCard = (props) => {
       size="large"
       via={displayViaLabel}
       soldOut={soldOut}
+      overRideButtonName={header}
     >
       <CardContentRow>
         <CardContentCol>
-          <div className="total-athlete-card__container">
-            <div className="total-athlete-card__column total-athlete-card__column--center total-athlete-card__column--lh-20">
-              <span className="total-athlete-card__column--core">
-                <LocaleString stringKey="core" />
-              </span>
-              <span className="total-athlete-card__column--group">
-                <LocaleString stringKey="group" />
-              </span>
-              <span className="total-athlete-card__column--training">
-                <LocaleString stringKey="training" />
-              </span>
-            </div>
-            <ImagePlus className="total-athlete-card__image" />
-          </div>
-        </CardContentCol>
-        <CardContentCol>
-          <div className="core-card__container">
-            <div className="total-athlete-card__column total-athlete-card__column--center total-athlete-card__column--lh-16">
-              <span className="total-athlete-card__column--daily-training-concentration">
-                <LocaleString stringKey="daily-training-concentration" />
-              </span>
-              <span className="total-athlete-card__column--or">
-                -<LocaleString stringKey="or" />-
-              </span>
-              <span className="total-athlete-card__column--education-class">
-                <LocaleString stringKey="education-class" />
-              </span>
-            </div>
-          </div>
+          <ul className="product-list">
+            <li>
+              <LocaleString stringKey="step_three.totalathlete.bullet.1" />
+            </li>
+            <li>
+              <LocaleString stringKey="step_three.totalathlete.bullet.2" />
+            </li>
+            <li>
+              <LocaleString stringKey="step_three.totalathlete.bullet.3" />
+            </li>
+          </ul>
         </CardContentCol>
       </CardContentRow>
-    </Card>
+    </CardProduct>
   );
 };
 
