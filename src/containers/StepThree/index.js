@@ -243,9 +243,11 @@ class StepThree extends React.Component {
     const { cartId, participantId, cartStepThreeProductId, isWeeklyCamp, weeks, stepThree } = this.props;
 
     if (cartStepThreeProductId) {
-      await this.props.stepThreeActions.stepThreeDeleteProductFromCartAndSetNew({ campId: id, cartId, participantId, productId: cartStepThreeProductId });
+      await this.discardCard();
+      // await this.props.stepThreeActions.stepThreeDeleteProductFromCartAndSetNew({ campId: id, cartId, participantId, productId: cartStepThreeProductId });
     }
-    if (cartId && participantId && !cartStepThreeProductId) {
+
+    if (cartId && participantId) {
       if (isWeeklyCamp) {
         const firstWeekData = stepThree['stepThreeWeek_1_data'];
         const selectedItem = find(firstWeekData, ['id', id]);
@@ -270,7 +272,7 @@ class StepThree extends React.Component {
     this.props.stepThreeActions.stepThreeDiscardCardWithSecondProgram();
   };
 
-  discardCard = (id) => {
+  discardCard = async (id) => {
     const { cartId, participantId, cart, isWeeklyCamp, cartStepThreeProductId } = this.props;
 
     if (isWeeklyCamp) {
@@ -289,9 +291,9 @@ class StepThree extends React.Component {
         cart['stepOneSelectedProductWeek_12'],
       ];
 
-      this.props.stepThreeActions.stepThreeDeleteWeeklyCampProductsFromCartAndDiscardCard({ cartId, participantId, productIds: data });
+      await this.props.stepThreeActions.stepThreeDeleteWeeklyCampProductsFromCartAndDiscardCard({ cartId, participantId, productIds: data });
     } else {
-      this.props.stepThreeActions.stepThreeDeleteProductFromCartAndDiscardCard({ cartId, participantId, productId: cartStepThreeProductId });
+      await this.props.stepThreeActions.stepThreeDeleteProductFromCartAndDiscardCard({ cartId, participantId, productId: cartStepThreeProductId });
     }
   };
 
