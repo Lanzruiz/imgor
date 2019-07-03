@@ -15,6 +15,7 @@ const initialState = {
   arrivalData: null,
   unnacompaniedData: null,
   transportationCartData: null,
+  laundryService: null,
 };
 
 export default function(state = initialState, action) {
@@ -113,6 +114,16 @@ export default function(state = initialState, action) {
       return {
         ...state,
         transportationCartData: {}
+      }
+    }
+
+    case stepSixTypes.STEP_SIX_GET_LAUNDRY_SERVICE: {
+      return {
+        ...state,
+        laundryService: {
+          startingPrice: payload.starting_price,
+          list: payload.results,
+        },
       }
     }
 
