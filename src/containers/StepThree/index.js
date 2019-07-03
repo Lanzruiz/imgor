@@ -253,9 +253,11 @@ class StepThree extends React.Component {
     const { cartId, participantId, cartStepThreeProductId, isWeeklyCamp, weeks, stepThree } = this.props;
 
     if (cartStepThreeProductId) {
-      await this.props.stepThreeActions.stepThreeDeleteProductFromCartAndSetNew({ campId: id, cartId, participantId, productId: cartStepThreeProductId });
+      await this.discardCard();
+      // await this.props.stepThreeActions.stepThreeDeleteProductFromCartAndSetNew({ campId: id, cartId, participantId, productId: cartStepThreeProductId });
     }
-    if (cartId && participantId && !cartStepThreeProductId) {
+
+    if (cartId && participantId) {
       if (isWeeklyCamp) {
         const firstWeekData = stepThree['stepThreeWeek_1_data'];
         const selectedItem = find(firstWeekData, ['id', id]);
