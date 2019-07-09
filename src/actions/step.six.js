@@ -400,3 +400,65 @@ export function stepSixUnselectTransportationOption({ cartId, participantId }) {
     dispatch({ type: stepSixTypes.STEP_SIX_UNSELECT_TRANSPORTATION_CARD });
   };
 }
+
+function stepSixGetLaundryService(data) {
+  return {
+    type: stepSixTypes.STEP_SIX_GET_LAUNDRY_SERVICE,
+    payload: data,
+  };
+};
+
+export function stepSixGetLaundryServiceRequest() {
+  return function(dispatch) {
+    Api.req({
+      apiCall: Api.getLaundryService,
+      res200: data => dispatch(stepSixGetLaundryService(data)),
+      res404: () => console.log('Api.getLaundryGear() => Error 404'), // TODO: Add error handler
+      reject: err => console.log(err), // TODO: Add error handler
+    });
+  }
+};
+
+export function stepSixAddLaundryServiceToCart({ attributes, quantity, cartId, participantId, productId, type, product }) {
+  return function(dispatch) {
+    return Api.req({
+      apiCall: Api.postCartCartIdParticipantIdProduct,
+      apiCallParams: { attributes, cartId, quantity, participantId, product, productId, type },
+      res200: data => {
+        dispatch(updateCart(data.cart));
+        return data;
+      },
+      res404: () => console.log('Api.postCartCartIdParticipantIdProduct() => Error 404'), // TODO: Add error handler
+      reject: err => console.log(err), // TODO: Add error handler
+    })
+  }
+}
+
+export function stepSixRemoveLaundryServiceFromCart({ cartId, participantId, productId }) {
+  return function(dispatch) {
+    return Api.req({
+      apiCall: Api.deleteCartCartIdParticipantParticipantIdProductId,
+      apiCallParams: { cartId, participantId, productId },
+      res200: data => {
+        // dispatch(stepSixAddLaundryServiceToCart(data));
+        return dispatch(updateCart(data.cart));
+      },
+      res404: () => console.log('Api.deleteCartCartIdParticipantParticipantIdProductId() => Error 404'), // TODO: Add error handler
+      reject: err => console.log(err), // TODO: Add error handler
+    })
+  }
+}
+
+export function stepSixUpdateLaundryServiceFromCart({ cartId, participantId, productId, type, product, quantity }) {
+  return async function(dispatch) {
+    return Api.req({
+      apiCall: Api.putCartCartIdParticipantParticipantIdProductId,
+      apiCallParams: { cartId, participantId, productId, product, type, quantity },
+      res200: (data) => {
+        dispatch(updateCart(data.cart));
+      },
+      res404: console.log,
+      reject: console.error,
+    });
+  }
+}

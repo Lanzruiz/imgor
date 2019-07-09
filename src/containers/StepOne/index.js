@@ -240,7 +240,7 @@ class StepOne extends React.Component {
                   selectedIndex={selectedIndex}
                   onSelect={this.setTabIndex}
                 >
-                  <TabRow transparent>
+                  <TabRow transparent className={parseName(row.name)}>
                     <TabRowSection className="mb-hidden"/>
                     
                     {isStringsEqual(row.name, weekly_camp) && weeklyCamp && (
@@ -304,7 +304,8 @@ class StepOne extends React.Component {
                                 react-d-flex
                                 react-d-flex--mb-column
                                 react-align-center
-                                react-justify-evenly`
+                                react-justify-evenly
+                                weekly-selector-row`
                                 )}
                               >
                                 <div

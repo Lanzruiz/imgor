@@ -118,25 +118,6 @@ export function stepThreeSetProductToTheCart({ campId, cartId, participantId, ty
   }
 }
 
-export function stepThreeDeleteProductFromCartAndSetNew({ campId, cartId, participantId, productId }) {
-  return function(dispatch) {
-    dispatch( setStepsCounter(stepsEnum.three), );
-    dispatch( stepThreeSetSecondaryPrograms({ id: null, secondary_programs: [] }), );
-    dispatch( setSecondaryProgramId(null), );
-    Api.req({
-      apiCall: Api.deleteCartCartIdParticipantParticipantIdProductId,
-      res200: ({ cart }) => {
-        dispatch( updateCart(assign({}, cart, { stepThreeProductId: null })), );
-        dispatch( stepThreeSetProductToTheCart({ campId, cartId, participantId, type: 'camp' }), );
-        dispatch( setStepsCounter(stepsEnum.four), );
-      },
-      res404: console.log,
-      reject: console.error,
-      apiCallParams: { cartId, participantId, productId },
-    });
-  }
-}
-
 export function stepThreeDiscardCardWithSecondProgram() {
   return function(dispatch) {
     dispatch( setStepsCounter(stepsEnum.three), );
@@ -146,12 +127,12 @@ export function stepThreeDiscardCardWithSecondProgram() {
 }
 
 export function stepThreeDeleteProductFromCartAndDiscardCard({ cartId, participantId, productId }) {
-  return function(dispatch) {
+  return async function(dispatch) {
     dispatch( setStepsCounter(stepsEnum.three), );
     dispatch( stepThreeSetSecondaryPrograms({ id: null, secondary_programs: [] }), );
     dispatch( setSecondaryProgramId(null), );
 
-    Api.req({
+    return await Api.req({
       apiCall: Api.deleteCartCartIdParticipantParticipantIdProductId,
       res200: ({ cart }) => {
         dispatch( updateCart(assign({}, cart, { stepThreeProductId: null })), );
@@ -165,12 +146,12 @@ export function stepThreeDeleteProductFromCartAndDiscardCard({ cartId, participa
 }
 
 export function stepThreeDeleteWeeklyCampProductsFromCartAndDiscardCard({ cartId, participantId, productIds }) {
-  return function(dispatch) {
+  return async function(dispatch) {
     dispatch( setStepsCounter(stepsEnum.three), );
     dispatch( stepThreeSetSecondaryPrograms({ id: null, secondary_programs: [] }), );
     dispatch( setSecondaryProgramId(null), );
 
-    Promise.all(
+    return await Promise.all(
       productIds.map((productId) => {
         if ( isNumber(productId) ) {
           return (
@@ -224,7 +205,10 @@ export function stepThreeAddWeeklyCampToTheCart(data) {
         return data.data
       })
       .then(({ cart, participant_product_id }) => {
-        dispatch( updateCart(assign({}, cart, { [`stepOneSelectedProductWeek_${weekId}`]: participant_product_id })), );
+        dispatch(updateCart(assign({}, cart, {
+          [`stepOneSelectedProductWeek_${weekId}`]: participant_product_id,
+          stepThreeProductId: participant_product_id
+        })));
         if (String(weekId) === String(1)) {
           dispatch( saveTrainingId(campId), );
         }
