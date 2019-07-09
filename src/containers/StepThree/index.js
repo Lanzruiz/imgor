@@ -40,6 +40,10 @@ import { stepsEnum } from '../../constants/steps';
 import './styles.scss';
 
 class StepThree extends React.Component {
+  state = {
+    isProcessing: false,
+  }
+
   constructor(props) {
     super(props);
     this.stepThree = React.createRef();
@@ -240,6 +244,12 @@ class StepThree extends React.Component {
   };
 
   selectCard = async (id) => {
+    if (this.state.isProcessing) {
+      return null;
+    }
+
+    this.setState({ isProcessing: true });
+
     const { cartId, participantId, cartStepThreeProductId, isWeeklyCamp, weeks, stepThree } = this.props;
 
     if (cartStepThreeProductId) {
@@ -266,14 +276,23 @@ class StepThree extends React.Component {
     }
   
     this.props.gtmAddCartProduct({ id });
+
+    this.setState({ isProcessing: false });
   };
 
-  discardCardWithSecondProgram = () => {
-    this.props.stepThreeActions.stepThreeDiscardCardWithSecondProgram();
+  discardCardWithSecondProgram = async () => {
+    if (this.state.isProcessing) {
+      return null;
+    }
+
+    this.setState({ processing: true });
+    await this.props.stepThreeActions.stepThreeDiscardCardWithSecondProgram();
+    this.setState({ processing: false });
   };
 
   discardCard = async (id) => {
     const { cartId, participantId, cart, isWeeklyCamp, cartStepThreeProductId } = this.props;
+    this.setState({ isProcessing: true });
 
     if (isWeeklyCamp) {
       const data = [
@@ -295,6 +314,8 @@ class StepThree extends React.Component {
     } else {
       await this.props.stepThreeActions.stepThreeDeleteProductFromCartAndDiscardCard({ cartId, participantId, productId: cartStepThreeProductId });
     }
+
+    this.setState({ isProcessing: false });
   };
 
   saveTrainingId = (id) => {
