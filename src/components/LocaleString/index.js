@@ -9,12 +9,12 @@ const LocaleString = ({ stringKey, formatString }) => {
   if (!stringKey) return emptyString;
   return (
     <ReactLocalizationConsumer>
-      {({ strings }) => (
-        strings
+      {value => (
+        value && value.strings
           ? (
               formatString
-                ? strings.formatString(strings[stringKey], formatString)
-                : strings[stringKey]
+                ? value.strings.formatString(value.strings[stringKey], formatString)
+                : value.strings[stringKey]
             )
           : (
               emptyString
