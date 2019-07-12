@@ -63,6 +63,7 @@ import {
 import { stepFiveDataPerPageSelector } from '../StepFive/selectors';
 import { sportSelector, businessTypeSelector, packageTypeSelector } from '../InitialComponent/selectors';
 import { stepFourDataSelector } from '../StepFour/selectors';
+import { weeksWeeksSelector } from '../StepOne/selectors';
 // Constants
 import { stepsEnum } from '../../constants/steps';
 import { stepSixFormFieldNames, airportPickupInformation } from './selectors';
@@ -79,9 +80,7 @@ class StepSix extends React.Component {
   };
 
   state = {
-    laundryServiceQuantity: 1,
     selectedLaundryServiceId: null,
-    shouldUpdateLaundryService: false,
     isProcessingLaundryService: false,
   };
 
@@ -207,7 +206,7 @@ class StepSix extends React.Component {
   
     this.props.stepSixActions.stepSixAddLaundryServiceToCart({
       attributes: {},
-      quantity: this.state.laundryServiceQuantity,
+      quantity: this.props.laundryServiceQuantity,
       cartId: this.props.cartId,
       participantId: this.props.participantId,
       productId: this.props.laundryService.list[0].id,
@@ -228,27 +227,6 @@ class StepSix extends React.Component {
     }
 
     this.setState({ isProcessingLaundryService: true });
-
-    // Card component is designed like this, cannot change it for now
-    // It should be agnostic of the item being selected and the click handlers from the parent
-    // <Card onSelect={() => remove, update or add an item to card } />
-    if (this.state.shouldUpdateLaundryService) {
-      this.props.stepSixActions.stepSixUpdateLaundryServiceFromCart({
-        quantity: this.state.laundryServiceQuantity,
-        cartId: this.props.cartId,
-        participantId: this.state.participantId,
-        productId: this.state.selectedLaundryServiceId,
-        type: productTypesEnum.gear,
-        product: this.props.laundryService.list[0],
-      }).then(() => {
-        this.setState({
-          shouldUpdateLaundryService: false,
-          isProcessingLaundryService: false,
-        });
-      });
-
-      return null;
-    }
     
     this.props.stepSixActions.stepSixRemoveLaundryServiceFromCart({
       cartId: this.props.cartId,
@@ -257,7 +235,6 @@ class StepSix extends React.Component {
     }).then(() => {
       this.setState({
         isLaundryServiceSelected: false,
-        laundryServiceQuantity: 1,
         isProcessingLaundryService: false
       });
     })
@@ -272,10 +249,6 @@ class StepSix extends React.Component {
       return <LocaleString stringKey="select" />;
     }
 
-    if (this.state.shouldUpdateLaundryService) {
-      return <LocaleString stringKey="update" />;
-    }
-
     return <LocaleString stringKey="remove" />;
   }
 
@@ -288,10 +261,7 @@ class StepSix extends React.Component {
       laundryService,
     } = this.props;
 
-    const {
-      laundryServiceQuantity,
-      isLaundryServiceSelected,
-    } = this.state;
+    const { isLaundryServiceSelected } = this.state;
     
     const airportPickupArrivalAndDeparting = isEqual(airportPickup, airportPickupInformation.both);
     const airportPickupArrivalOnly = isEqual(airportPickup, airportPickupInformation.arrival);
@@ -442,26 +412,7 @@ class StepSix extends React.Component {
                           </span>
                           
                           <div className="laundry-card__quantity-input">
-                            <Button
-                            onClick={() => {
-                              this.setState({ laundryServiceQuantity: laundryServiceQuantity - 1 });
-                              if (isLaundryServiceSelected) {
-                                this.setState({ shouldUpdateLaundryService: true });
-                              }
-                            }}
-                            disabled={laundryServiceQuantity === 1}
-                            children="-"
-                            />
-                            <span>{laundryServiceQuantity}</span>
-                            <Button
-                              onClick={() => {
-                                this.setState({ laundryServiceQuantity: laundryServiceQuantity + 1 });
-                                if (isLaundryServiceSelected) {
-                                  this.setState({ shouldUpdateLaundryService: true });
-                                }
-                              }}
-                              children="+"
-                            />
+                            <span>{this.props.laundryServiceQuantity}</span>
                           </div>
                         </CardContentCol>
 
@@ -538,7 +489,8 @@ StepSix.propTypes = {
   laundryService: PropTypes.shape({
     startingPrice: PropTypes.number,
     list: PropTypes.array,
-  })
+  }),
+  weeksLength: PropTypes.number,
 };
 
 
@@ -583,7 +535,10 @@ function mapStateToProps(state) {
     dropoffOtherLocation: stepSixDropoffOtherLocationSelector(state),
     departingOtherLocation: stepSixPickUpOtherLocationSelector(state),
     hasTransportationCartData: stepSixTransportCartData(state),
-    laundryService: state.stepSix.laundryService
+    laundryService: state.stepSix.laundryService,
+    laundryServiceQuantity: weeksWeeksSelector(state).length > 1
+      ? weeksWeeksSelector(state).length
+      : 1,
   };
 }
 

@@ -291,6 +291,10 @@ class StepThree extends React.Component {
   };
 
   discardCard = async (id) => {
+    if (this.state.isProcessing) {
+      return null;
+    }
+
     const { cartId, participantId, cart, isWeeklyCamp, cartStepThreeProductId } = this.props;
     this.setState({ isProcessing: true });
 
