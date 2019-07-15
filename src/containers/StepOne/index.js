@@ -239,7 +239,7 @@ class StepOne extends React.Component {
                   disabledTabClassName="tab-row__section--disabled"
                   selectedIndex={selectedIndex}
                   onSelect={this.setTabIndex}
-                  className={"row--"+parseName(row.name)}
+                  className={"react-tabs row--"+parseName(row.name)}
                 >
                   <TabRow transparent className={parseName(row.name)}>
                     <TabRowSection className="mb-hidden"/>
