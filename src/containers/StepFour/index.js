@@ -232,7 +232,7 @@ class StepFour extends React.Component {
     
     if(hasAnyConcentration){
       return (
-        <AOSFadeInContainer className={`step-four`} ref={this.stepFour}>
+        <AOSFadeInContainer className="step-four" id="step-4" ref={this.stepFour}>
           <Container>
             <Row>
               <Col>
