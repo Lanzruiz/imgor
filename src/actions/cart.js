@@ -5,6 +5,7 @@ import isEqual from 'lodash/isEqual';
 import isNumber from 'lodash/isNumber';
 import isString from 'lodash/isString';
 import isEmpty from 'lodash/isEmpty';
+import get from 'lodash/get';
 import ReactDOMServer from 'react-dom/server';
 import React from 'react';
 import isEmail from 'validator/lib/isEmail';
@@ -15,6 +16,7 @@ import Api from '../api';
 import LocaleString from '../components/LocaleString';
 import { stepsEnum } from '../constants/steps';
 import isStringsEqual from '../helpers/isStringsEqual';
+import calculateAge from '../helpers/calculateAge';
 import * as cartTypes from '../constants/cart';
 import { weekly_camp } from '../containers/StepOne';
 import { airportPickupInformation, departingFormFieldNames } from '../containers/StepSix/selectors';
@@ -185,20 +187,25 @@ export function sendCartData(props){
   return (dispatch, getState) => {
     if(window.reactAppUpdate && typeof window.reactAppUpdate === 'function' ){
       const { form, cart } = getState();
-      const email = ((form.wizard || {}).values || {}).email || '';
-      
-      const sleepaway =  ((form.wizard || {}).values || {}).sleepaway || '';
-      const age = ((form.wizard || {}).values || {}).age || '';
-      const gender = ((form.wizard || {}).values || {}).gender || '';
+      const email = get(form, 'wizard.values.email', '');
+      const sleepaway = get(form, 'wizard.values.sleepaway', '');
+      const age = get(form, 'wizard.values.age', '');
+      const gender = get(form, 'wizard.values.gender', '');
     
       const message = getValidationMessage(props);
+
+      let isValidAge = false;
+
+      if (props && props.finalStepDateOfBirth && age) {
+        isValidAge = calculateAge(props.finalStepDateOfBirth) === Number.parseInt(age);
+      }
   
       window.reactAppUpdate({
         state: props,
         email: email,
         cart: cart,
         price: cart.price_total || 0,
-        checkout_ready: Boolean(!message && gender && age && sleepaway),
+        checkout_ready: Boolean(!message && gender && isValidAge && sleepaway),
         message: ReactDOMServer.renderToString(message ? <LocaleString stringKey={message}/> : '')
       });
     }
