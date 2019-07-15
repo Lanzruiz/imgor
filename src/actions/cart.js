@@ -198,7 +198,7 @@ export function sendCartData(props){
         email: email,
         cart: cart,
         price: cart.price_total || 0,
-        checkout_ready: (!message && gender && age && sleepaway),
+        checkout_ready: Boolean(!message && gender && age && sleepaway),
         message: ReactDOMServer.renderToString(message ? <LocaleString stringKey={message}/> : '')
       });
     }
