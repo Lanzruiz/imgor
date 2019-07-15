@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 // Constants
 import assign from 'lodash/assign';
 import isEqual from 'lodash/isEqual';
@@ -161,8 +162,6 @@ export function purchaseRequest(args, stubData) {
         
         Api.req({
           res200: (data) => {
-            // dispatch( updateCart({ ...data.cart }), );
-            
             if (window && args.cartId) {
               window.location = `${args.shopifyUrl}?order=${args.cartId}&${args.linkerParam}`;
             }

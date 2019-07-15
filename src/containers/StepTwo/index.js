@@ -554,8 +554,8 @@ function mapDispatchToProps(dispatch) {
     stepTwoActions: bindActionCreators(stepTwoActions, dispatch),
     weeksActions: bindActionCreators(weeksActions, dispatch),
     stepsActions: bindActionCreators(stepsActions, dispatch),
+    gtmStateChange: bindActionCreators(gtmStateChange, dispatch),
     cartActions: bindActionCreators(cartActions, dispatch),
-    gtmStateChange: bindActionCreators(gtmStateChange, dispatch)
   };
 }
 

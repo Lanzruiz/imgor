@@ -37,6 +37,9 @@ export function getCatalogCampsLevelsRequest(args) {
 };
 
 export function postCartCartIdParticipantIdProductRequest({ cartId, quantity, product, participantId, type, productId }) {
+  console.log('postCartCartIdParticipantIdProductRequest');
+  console.log(product);
+
   return function(dispatch) {
     Api.req({
       apiCall: Api.postCartCartIdParticipantIdProduct,
@@ -97,10 +100,10 @@ export function stepThreeDeleteProduct({ cartId, participantId, productId }) {
 };
 
 export function stepThreeSetProductToTheCart({ campId, cartId, participantId, type = 'camp' }) {
-  return function(dispatch) {
+  return async function(dispatch) {
     dispatch( stepThreeSetSecondaryPrograms({ id: null, secondary_programs: [] }), );
     dispatch( setSecondaryProgramId(null), );
-    Api.getCatalogCampCampId(campId)
+    await Api.getCatalogCampCampId(campId)
       .then(data => data.data.results[0])
       .then(product => Api.postCartCartIdParticipantIdProduct({ cartId, participantId, product, quantity: 1, productId: product.id, type }))
       .then(data => {

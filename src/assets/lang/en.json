@@ -1,4 +1,4 @@
-{
+{    
   "step_zero.header": "Choose camper options",
   "step_zero.sub_header": "",
   "step_zero.choose_sleepaway": "Housing",
@@ -93,6 +93,7 @@
   "step_four_week_ten_message": "Make a selection for week ten",
   "step_four_week_eleven_message": "Make a selection for week eleven",
   "step_four_week_twelve_message": "Make a selection for week twelve",
+  "step_four.skip-additional-training": " Skip Additional Training",
   "class": "Class",
   "week": "week",
   "up_to": "up to",
@@ -238,8 +239,8 @@
   "step_final.shirt_size.large": "large",
   "step_final.shirt_size.xx-large": "xx-large",
   "step_final.guardian_information": "Parent / Guardian Information",
-  "step_final.required_insurance": "Do you require a refundable camp reservation?",
-  "step_final.required_insurance_yes_title": "Yes, refundable camp reservation",
+  "step_final.required_insurance": "Do You Require a Flexible Camp Reservation?",
+  "step_final.required_insurance_yes_title": "Yes, I'd like flexible camp option at ${price}",
   "step_final.required_insurance_yes_description": "Refundable camps allow registrants a full refund for any cancellation made before noon the day prior to camp check-in, minus a 2.5% cancellation fee.",
   "step_final.required_insurance_no_title": "No, non-refundable camp reservation",
   "step_final.required_insurance_no_description": "Great! Please remember any changes made to non-refundable reservations come with a $75 change fee, as well as a charge for the difference due to an increase rate or credit on file for any decreased program rates.",

@@ -7,8 +7,6 @@ import LocaleString from '../../../components/LocaleString';
 import AirlinesDropdownContainer from '../components/AirlinesDropdownContainer';
 import AirportHasArrivalFlightBookedCheckbox from '../components/AirportHasArrivalFlightBookedCheckbox';
 import ArrivalFlightNumberTextInput from '../components/ArrivalFlightNumberTextInput';
-import DropoffCheckboxContainer from '../components/DropoffCheckboxContainer';
-import DropoffLocationTextField from '../components/DropoffLocationTextField';
 import Paragraph from '../components/Paragraph';
 import TransportRadioContainer from '../components/TransportRadioContainer';
 import UnaccompaniedCheckboxContainer from '../components/UnaccompaniedCheckboxContainer';
@@ -36,13 +34,13 @@ const PickUpSection = props => (
           />
         </div>
       </div>
-      <div className="location">
-        <div className="location__title">
-          <LocaleString stringKey="step_six.arrival.location"/>
-        </div>
-        <DropoffCheckboxContainer dropoff={props.dropoff}/>
-        <DropoffLocationTextField dropoff={props.dropoff}/>
-      </div>
+      {/*<div className="location">*/}
+      {/*  <div className="location__title">*/}
+      {/*    <LocaleString stringKey="step_six.arrival.location"/>*/}
+      {/*  </div>*/}
+      {/*  <DropoffCheckboxContainer dropoff={props.dropoff}/>*/}
+      {/*  <DropoffLocationTextField dropoff={props.dropoff}/>*/}
+      {/*</div>*/}
       <div className="unaccompanied">
         <div className="unaccompanied__title">
           <LocaleString stringKey="step_six.unaccompanied"/>

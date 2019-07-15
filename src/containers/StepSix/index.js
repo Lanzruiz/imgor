@@ -14,6 +14,7 @@ import Header from '../../components/Header';
 import Image from '../../components/Image';
 import Card, { CardContent, CardContentRow, CardContentCol, CardContentText } from '../../components/Card';
 import AirportPickupCheckboxContainer from './components/AirportPickupCheckboxContainer';
+// Images
 import AOSFadeInContainer from '../../components/AOSFadeInContainer';
 import StepFiveCatalogExcursionsNew from '../StepFiveCatalogExcursionsNew';
 import StepFiveCatalogGearUpsellNew from '../StepFiveCatalogGearUpsellNew';
@@ -62,6 +63,7 @@ import {
 import { stepFiveDataPerPageSelector } from '../StepFive/selectors';
 import { sportSelector, businessTypeSelector, packageTypeSelector } from '../InitialComponent/selectors';
 import { stepFourDataSelector } from '../StepFour/selectors';
+import { weeksWeeksSelector } from '../StepOne/selectors';
 // Constants
 import { stepsEnum } from '../../constants/steps';
 import { stepSixFormFieldNames, airportPickupInformation } from './selectors';
@@ -78,7 +80,7 @@ class StepSix extends React.Component {
   };
 
   state = {
-    laundryServiceQuantity: 1,
+    laundryServiceQuantity: this.props.laundryServiceQuantity,
     selectedLaundryServiceId: null,
     shouldUpdateLaundryService: false,
     isProcessingLaundryService: false,
@@ -256,7 +258,7 @@ class StepSix extends React.Component {
     }).then(() => {
       this.setState({
         isLaundryServiceSelected: false,
-        laundryServiceQuantity: 1,
+        laundryServiceQuantity: this.props.laundryServiceQuantity,
         isProcessingLaundryService: false
       });
     })
@@ -287,10 +289,7 @@ class StepSix extends React.Component {
       laundryService,
     } = this.props;
 
-    const {
-      laundryServiceQuantity,
-      isLaundryServiceSelected,
-    } = this.state;
+    const { laundryServiceQuantity, isLaundryServiceSelected } = this.state;
     
     const airportPickupArrivalAndDeparting = isEqual(airportPickup, airportPickupInformation.both);
     const airportPickupArrivalOnly = isEqual(airportPickup, airportPickupInformation.arrival);
@@ -537,7 +536,8 @@ StepSix.propTypes = {
   laundryService: PropTypes.shape({
     startingPrice: PropTypes.number,
     list: PropTypes.array,
-  })
+  }),
+  weeksLength: PropTypes.number,
 };
 
 
@@ -582,7 +582,10 @@ function mapStateToProps(state) {
     dropoffOtherLocation: stepSixDropoffOtherLocationSelector(state),
     departingOtherLocation: stepSixPickUpOtherLocationSelector(state),
     hasTransportationCartData: stepSixTransportCartData(state),
-    laundryService: state.stepSix.laundryService
+    laundryService: state.stepSix.laundryService,
+    laundryServiceQuantity: weeksWeeksSelector(state).length > 1
+      ? weeksWeeksSelector(state).length
+      : 1,
   };
 }
 

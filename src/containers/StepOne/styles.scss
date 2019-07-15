@@ -325,6 +325,13 @@
     &__container {
       margin-bottom: 15px;
       min-height: $min-tab-row-height;
+      &__paragraph {
+          color: $tab-row-bg;
+          font-size: 15px;
+          margin-bottom: 15px;
+          font-family: 'Proxima Nova', sans-serif !important;
+          line-height: 16px;
+      }
 
       @include breakpoint($mobile) {
         min-height: 10px;
