@@ -43,7 +43,7 @@
     "reselect": "^4.0.0",
     "slick-carousel": "^1.8.1",
     "uglifyjs-webpack-plugin": "^2.0.1",
-    "validator": "^10.9.0"
+    "validator": "^13.7.0"
   },
   "scripts": {
     "start": "react-scripts start",
